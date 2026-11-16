@@ -258,7 +258,9 @@ function main() {
 
   const filled = blocks(model, report, icons); // first, so a lost block fails before the logo kit is drawn
   const generated = generate(model, version, icons);
-  const { lockup } = JSON.parse(generated.get('logo/ncode/outlines.json').data.toString('utf8'));
+  const outlines = generated.get('logo/ncode/outlines.json');
+  if (!outlines) throw new Error("the generator wrote no logo/ncode/outlines.json, which the guide's pages draw the lockup from");
+  const { lockup } = JSON.parse(outlines.data.toString('utf8'));
   const sources = [...filled]
     .filter(([path]) => path.startsWith('guidelines/'))
     .map(([path, file]) => [path.slice('guidelines/'.length), file.data.toString('utf8')]);
