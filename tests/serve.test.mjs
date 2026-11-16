@@ -22,6 +22,12 @@ test('a request target that names no file is answered 400, and the server keeps 
   assert.equal(page.headers.get('content-security-policy'), CSP);
 });
 
+test("'/' answers the site's root page, which opens the guide", async () => {
+  const page = await get('/');
+  assert.equal(page.status, 200);
+  assert.match(await page.text(), /url=guide\/index\.html/);
+});
+
 test("a path outside the repository is refused, even a sibling whose name starts with the repository folder's", async () => {
   assert.equal((await get(`/..%2f${basename(ROOT)}-sibling/file.txt`)).status, 403);
 });
