@@ -10,8 +10,9 @@ The repository was created under the Apache License 2.0, which covers code. It a
 Group, which identify the source of NCode's products: a license that let anyone alter them, or use them as their own
 logo, would let a modified product pass as NCode's. The fonts it carries have a license of their own. Other NCode
 repositories publish copies of the marks under their own licenses: NCodeGroup/project-template the `{N}` kit in its
-`brand/` folder under the MIT License from v0.82.0 on, and its package icon, which every project made from it
-carries; NCodeGroup/identity the `{id}` kit under the Apache License 2.0.
+`brand/` folder under the MIT License from v0.82.0 on, and its package icon, which it writes into each .NET project
+it sets up to publish NuGet packages under that icon (`package_icon: NCodeGroup.png`); NCodeGroup/identity the `{id}`
+kit under the Apache License 2.0.
 
 ## Decision
 
