@@ -1,6 +1,5 @@
 {
   "$description": "The NCode Identity mark, {id}: the letters i and d, for identity, between the braces of the {N} mark, drawn on a 64-unit grid from straight lines and circular arcs. build.mjs draws every file in logo/identity/ from these numbers, in the colors of the blue ramp in tokens.source.json: blue.600 NCode Blue, blue.300 NCode Blue Light and blue.900 NCode Navy.",
-  "$names": "name: the product the mark stands for, the title of every SVG and the web manifest's name. shortName: the web manifest's short_name. prefix: how every file's name starts. letters: what lib/logo.mjs draws between the braces, N or id. outlinesDescription: the $description of outlines.json.",
   "name": "NCode Identity",
   "shortName": "Identity",
   "prefix": "ncode-identity",
@@ -20,16 +19,13 @@
     "48": { "size": 48, "stroke": 3, "brace": [3, 12], "beakRadius": 4.5, "hookRadius": 3.5, "braceY": [6, 42], "taper": 1, "stem": 3, "bowl": 3, "iX": 15, "dX": [21, 33], "letterY": [12, 24, 36], "dot": [16, 4] }
   },
 
-  "$fit": "How much of its square the mark covers: tight, across seven eighths of it, where the picture is shown small (favicons, NuGet, badges); regular on tiles and avatars; safe inside the center circle of 80% of the width, where a circle is cut from it (profile pictures, maskable icons).",
   "fit": { "tight": 1, "regular": 0.875, "safe": 0.8125 },
   "tileRadius": { "value": 14, "note": "the corner radius of a rounded tile, in the 64 units of its width" },
 
-  "$lockups": "Each lockup is the mark and the wordmark in one drawing, width by height units. mark: the mark's scale and where its canvas's corner goes. wordmark: where the wordmark's path goes. markDigits: the decimals of the mark's part of the lockup's SVG path; the wordmark's part has 2. heights: the heights of its PNG files. file names its files, and key its entry in outlines.json. The cards carry the first lockup.",
   "lockups": [
     { "file": "lockup", "key": "lockup", "width": 371, "height": 64, "mark": [1, 0, 0], "wordmark": [72, 48], "markDigits": 2, "heights": [128, 512], "note": "side by side: the mark's 64, 8 clear, the wordmark on the letters' baseline, and 4 clear after its ink, rounded to a whole unit" },
     { "file": "lockup-stacked", "key": "lockupStacked", "width": 320, "height": 192, "mark": [2, 96, 0], "wordmark": [11.02, 168], "markDigits": 2, "heights": [384, 1536], "note": "stacked: the mark at twice its size over the wordmark, both centered, at least 12 clear at each side, the width a multiple of 4" }
   ],
-  "$cards": "The first lockup centered on a solid card, at most widest of the card's width, scaled in quarter steps. banner: the profile banners. preview: the link previews and GitHub's social preview. descriptor: the descriptor under the lockup.",
   "cards": { "banner": { "widest": 0.5 }, "preview": { "widest": 0.625, "descriptor": true } },
   "wordmark": {
     "note": "\"NCode Identity\" set in Inter Display Medium with HarfBuzz, so the font's kerning applies, and converted to outlines, so no file needs the font: capitals 32 units tall, as tall as the mark's d, the first glyph's origin at x = 0 and the baseline at y = 0.",
