@@ -6,7 +6,7 @@ Issues and pull requests are welcome. [README.md](README.md) explains the projec
 
 - Git, and PowerShell 7 (`pwsh`): every command here runs from the repository root in PowerShell 7.
 - Node.js, the release `.node-version` names, and npm. There are no packages to install: every script uses Node.js built-ins.
-- For a change to the stylesheets, the tokens or a specimen: Playwright with its Chromium. Run `npm install --global playwright` and `npx playwright install chromium`, then point `NODE_PATH` at the folder `npm root -g` prints, because Node.js does not look in npm's global folder: `$env:NODE_PATH = (npm root -g)` in PowerShell. Only the by-hand tools in `tools/` use it.
+- For a change to the stylesheets, the tokens, a specimen or the guide's pages: Playwright with its Chromium. Run `npm install --global playwright` and `npx playwright install chromium`, then point `NODE_PATH` at the folder `npm root -g` prints, because Node.js does not look in npm's global folder: `$env:NODE_PATH = (npm root -g)` in PowerShell. Only the by-hand tools in `tools/` use it.
 - On Windows, `git config --global core.longpaths true`, once: a plan's worktree under `.claude/worktrees/` can pass Windows' 260-character path limit.
 
 ## Set Up
@@ -29,9 +29,9 @@ markers in `guidelines/` and `specimens/`, is written by `npm run build`: change
 what it writes.
 `npm run check` fails on a generated file edited by hand.
 
-For a change to the stylesheets, the tokens, a specimen or the guide's pages, also run `node tools/shoot.mjs --out=<folder>` before and
-after it and compare the screenshots, and `node tools/browser-check.mjs`, which compares the build's color math with a
-browser. Neither runs in CI.
+For a change to the stylesheets, the tokens, a specimen or the guide's pages, also run
+`node tools/shoot.mjs --out=<folder>` before and after it and compare the screenshots, and
+`node tools/browser-check.mjs`, which compares the build's color math with a browser. Neither runs in CI.
 
 `.github/workflows/pages.yml` publishes the guide and the specimens at https://ncodegroup.github.io/brand/ on each
 push to `main`, from the committed files alone. It needs the repository's Pages source set to GitHub Actions, once,
