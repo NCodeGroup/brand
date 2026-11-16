@@ -24,7 +24,7 @@ Once in each clone, run `git config core.hooksPath .githooks`. It turns on `.git
 CI runs the same commands on every pull request, the check first, and fails when the build or the tests change a file. The tests also parse every PowerShell step of `.github/workflows/` with `pwsh`, because a step of `publish.yml` runs only when a release is published.
 
 The sources are `src/`, `lib/`, `build.mjs`, `guidelines/` and `specimens/`. Every file in `tokens/`, `css/`, `fonts/`,
-`brace/`, `icons/`, `logo/`, `mui/`, `syntax/` and `guide/`, `manifest.json`, `index.html`, and each block between
+`brace/`, `icons/`, `logo/`, `mui/`, `syntax/`, `email/`, `slides/` and `guide/`, `manifest.json`, `index.html`, and each block between
 `generated:` markers in `guidelines/` and `specimens/`, is written by `npm run build`: change its source, run the
 build and commit what it writes.
 `npm run check` fails on a generated file edited by hand.
