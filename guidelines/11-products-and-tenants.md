@@ -6,7 +6,7 @@ Four layers decide how a surface looks, each narrower than the last.
 |---|---|---|
 | System | Instrument | Structure: type, shape, depth, space, motion, the neutral case, the status colors, hazard tape, the brace |
 | Organization | NCode | The three anchors; `--nc-brand` is NCode Blue |
-| Product | NCode Identity, NCode.Buffers | A mark of the mark's construction, a name, a descriptor and its cards. No color of its own |
+| Product | NCode Identity, NCode Buffers | A mark of the mark's construction, a name, a descriptor and its cards. No color of its own |
 | Tenant | A customer of NCode Identity | Two colors, the theme, a logo and a display name, at run time |
 
 ## What a Product Owns

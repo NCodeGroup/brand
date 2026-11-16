@@ -1,7 +1,8 @@
 # NCode Trademarks
 
-The names and marks of NCode Group are not covered by this repository's Apache License 2.0. They are copyright NCode
-Group, all rights reserved, and this page says how you may use them.
+The names and marks of NCode Group are not covered by this repository's Apache License 2.0. The names NCode, NCode Group
+and NCode Identity and the marks are trademarks of NCode Group. The marks' artwork, every file in [logo/](logo/README.md),
+is also copyright NCode Group, all rights reserved. This page says how you may use them.
 
 ## What It Covers
 
@@ -9,9 +10,11 @@ Group, all rights reserved, and this page says how you may use them.
 - The marks: the `{N}` mark and the `{id}` mark, alone, with a wordmark, on a tile or in any other form, and every
   file in [logo/](logo/README.md).
 
-The Apache License 2.0 covers this repository's code, tokens, stylesheets and themes. Its section 6 grants no
-permission to use the licensor's trade names, trademarks, service marks or product names, beyond describing where a
-work comes from. The fonts in [fonts/](fonts/) keep their own license, the SIL Open Font License 1.1.
+The Apache License 2.0 covers this repository's code, tokens, stylesheets, braces and themes. A brace alone, as
+[brace/](brace/) draws it for the stylesheets, is a part of the system and no mark: a mark is a brace pair with its
+letters between them. The license's section 6 grants no permission to use the licensor's trade names, trademarks,
+service marks or product names, beyond describing where a work comes from. The fonts in [fonts/](fonts/) are
+copyright their authors and keep their own license, the SIL Open Font License 1.1.
 
 ## What You May Do Without Asking
 
@@ -38,11 +41,18 @@ A fork or a modified distribution of an NCode project replaces the names and the
 license lets you change and share the code; it does not let a changed version carry NCode's names or marks. Keep the
 copyright and license notices the code's license asks for.
 
-## Earlier Copies
+## Copies Under Other Licenses
 
-Copies of the logo kit published in NCodeGroup/project-template, in its `brand/` folder from v0.93.0 on, were released
-under that repository's MIT License. Those copies stay under the license they were published with. The marks in this
-repository are released under the terms on this page.
+Other NCode repositories publish copies of the marks under their own licenses, and those copies stay under the license
+they were published with:
+
+- NCodeGroup/project-template, under its MIT License: the `{N}` logo kit in its `brand/` folder from v0.82.0 on, and
+  the package icon `template/NCodeGroup.png`, which is that kit's blue NuGet tile from the same version on.
+- Each project made from that template: the same icon, `NCodeGroup.png`, as its package icon, under the project's own
+  license.
+- NCodeGroup/identity, under its Apache License 2.0: the `{id}` logo kit in its `brand/` folder.
+
+The marks in this repository are released under the terms on this page.
 
 ## Ask
 

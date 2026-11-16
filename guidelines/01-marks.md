@@ -13,7 +13,8 @@ The `{id}` kit is drawn in NCodeGroup/identity; this release carries the `{N}` k
 
 ## The Names
 
-Write **NCode**, **NCode Group** and **NCode Identity**: a capital N and C, and a space before a product's name.
+Write **NCode**, **NCode Group**, **NCode Identity** and **NCode Buffers**: a capital N and C, and a space before a
+product's name.
 `NCode.Identity` and `NCode.Buffers` are package and namespace names; use them only where code or a package is meant.
 
 ## Which File for What
@@ -70,7 +71,7 @@ The three colors are the anchors of the blue ramp, `blue.600`, `blue.300` and `b
 | NCode Navy | `#0A1F5C` | The dark tile and the dark cards |
 | White | `#FFFFFF` | The mark on NCode Blue |
 
-Contrast, as WCAG measures it: NCode Blue on white, and white on NCode Blue, 8.9 to 1; NCode Blue Light on GitHub's
+Contrast, as WCAG measures it: NCode Blue on white, and white on NCode Blue, 9.0 to 1; NCode Blue Light on GitHub's
 dark page (`#0D1117`) 7.5 to 1, on Visual Studio's dark theme (`#1E1E1E`) 6.6 to 1 and on NCode Navy 6.1 to 1. NCode
 Blue on a dark page is 2.1 to 1, too low to read: use the light mark or a tile there. Under a tenant's colors NCode's
 marks go one color, the text color, and never take the tenant's hue ([Products and tenants](11-products-and-tenants.md)).
@@ -139,5 +140,5 @@ address.
 
 ## License
 
-The marks are not under this repository's Apache License 2.0: they are copyright NCode Group, all rights reserved.
-[TRADEMARKS.md](../TRADEMARKS.md) says how you may use them.
+The marks are not under this repository's Apache License 2.0: they are trademarks of NCode Group, and their files are
+copyright NCode Group, all rights reserved. [TRADEMARKS.md](../TRADEMARKS.md) says how you may use them.

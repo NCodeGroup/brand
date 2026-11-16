@@ -39,10 +39,11 @@ no moving `v1` tag. The changelog, [CHANGELOG.md](../CHANGELOG.md), names the to
 
 | What | License |
 |---|---|
-| The code, the tokens, the stylesheets, the derivation, the Material UI data, the vendoring script, the guide | Apache License 2.0, [LICENSE.txt](../LICENSE.txt) |
-| The names NCode, NCode Group and NCode Identity, and the marks, every file in `logo/` | Copyright NCode Group, all rights reserved: [TRADEMARKS.md](../TRADEMARKS.md) says how you may use them |
-| Instrument Sans and Martian Mono, the files in `fonts/` | SIL Open Font License 1.1, in `fonts/OFL-Instrument-Sans.txt` and `fonts/OFL-Martian-Mono.txt` |
-| The wordmark's outlines, inside the logo files | Drawn from Inter Display, copyright The Inter Project Authors, under the SIL Open Font License 1.1 |
+| The code, the tokens, the stylesheets, the braces in `brace/`, the derivation, the Material UI data, the vendoring script, the guide | Apache License 2.0, [LICENSE.txt](../LICENSE.txt). A brace alone is a part of the system, not a mark |
+| The names NCode, NCode Group and NCode Identity, and the marks, every file in `logo/` | Trademarks of NCode Group; the marks' artwork is copyright NCode Group, all rights reserved. [TRADEMARKS.md](../TRADEMARKS.md) says how you may use them |
+| Instrument Sans and Martian Mono, the files in `fonts/` | Copyright their authors, under the SIL Open Font License 1.1, in `fonts/OFL-Instrument-Sans.txt` and `fonts/OFL-Martian-Mono.txt` |
+| The wordmark's outlines, inside the logo files | Part of the marks, as the row above says. They were drawn from Inter Display, copyright The Inter Project Authors and licensed under the SIL Open Font License 1.1, which is credited here as a courtesy: no file needs or carries the font |
 
-Copies of the logo kit published in NCodeGroup/project-template, in its `brand/` folder from v0.93.0 on, were released
-under that repository's MIT License, and those copies stay under it.
+Other NCode repositories publish copies of the marks under their own licenses, such as NCodeGroup/project-template's
+`brand/` folder under its MIT License from v0.82.0 on, and those copies stay under it; [TRADEMARKS.md](../TRADEMARKS.md)
+lists them.

@@ -8,7 +8,7 @@ import { ROOT, read, readJson } from './helpers.mjs';
 
 const markdown = [
   'README.md', 'CONTRIBUTING.md', 'TRADEMARKS.md', 'AGENTS.md', 'CHANGELOG.md', 'docs/README.md', 'logo/README.md',
-  'specimens/README.md',
+  'src/logo/README.md', 'src/logo/kit.md', 'specimens/README.md',
   ...readdirSync(join(ROOT, 'guidelines')).map((n) => `guidelines/${n}`),
   ...readdirSync(join(ROOT, 'docs/decisions')).filter((n) => /^1\d{3}-.*\.md$/.test(n)).map((n) => `docs/decisions/${n}`),
 ];

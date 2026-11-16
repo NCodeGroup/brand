@@ -11,3 +11,12 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
+
+   The names NCode, NCode Group and NCode Identity and the marks are not
+   licensed under it: they are trademarks of NCode Group, and the marks'
+   artwork, every file in logo/, is copyright NCode Group, all rights
+   reserved. TRADEMARKS.md says how you may use them.
+
+   The fonts in fonts/ are copyright their authors and licensed under the
+   SIL Open Font License, Version 1.1, in fonts/OFL-Instrument-Sans.txt
+   and fonts/OFL-Martian-Mono.txt.

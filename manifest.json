@@ -4,16 +4,16 @@
   "version": "0.1.0",
   "files": {
     "COPYRIGHT.txt": {
-      "bytes": 580,
-      "sha256": "6ee23318ea175e521cee565d5548d6281418be4997b3dc234052ae01d02d41a4"
+      "bytes": 1033,
+      "sha256": "46ce1836a980c0e2b0b53854f11711c2ac1595fd3a6d593cd9df2bbc8cc53907"
     },
     "LICENSE.txt": {
       "bytes": 11357,
       "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
     },
     "TRADEMARKS.md": {
-      "bytes": 2545,
-      "sha256": "704f694b8cb29986e57d99559f49184dfc8c5059b81dd9238dea26c17b05cb5a"
+      "bytes": 3291,
+      "sha256": "8406e2e5de033e50f77874b7a42bf5ca13a439846fcca59bb53f96234360c7bc"
     },
     "brace/brace-lg.svg": {
       "bytes": 783,
@@ -72,8 +72,8 @@
       "sha256": "f9c1655c2c9d1ed5bb8b301a57d1169a1123ffef1a588dc50a7a487810f7d732"
     },
     "logo/README.md": {
-      "bytes": 1346,
-      "sha256": "017109bd16beb855036f36f980a68ac1f414529cb9989ea3711bc1cbd53ccb95"
+      "bytes": 1422,
+      "sha256": "ae1bcb5e25bb05f54e2c1263105971bfeb33c607f401f9e2174185921cdcc51a"
     },
     "logo/ncode/badge/ncode-badge-blue.svg": {
       "bytes": 464,

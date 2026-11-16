@@ -78,13 +78,13 @@ The workflow files come from a Copier template, which owns them: never edit `.te
 
 Which license covers what:
 
-- The code, the tokens, the stylesheets, the derivation, the Material UI data, the vendoring script and the guide are
-  licensed under the [Apache License 2.0](LICENSE.txt).
-- The names NCode, NCode Group and NCode Identity, and the marks in [logo/](logo/README.md), are copyright NCode Group,
-  all rights reserved: [TRADEMARKS.md](TRADEMARKS.md) says how you may use them. You may use the unmodified marks to
-  refer to an NCode project without asking.
-- Instrument Sans and Martian Mono, in [fonts/](fonts/), are licensed under the SIL Open Font License 1.1, whose texts
-  are beside them.
+- The code, the tokens, the stylesheets, the braces in [brace/](brace/), the derivation, the Material UI data, the
+  vendoring script and the guide are licensed under the [Apache License 2.0](LICENSE.txt).
+- The names NCode, NCode Group and NCode Identity and the marks are trademarks of NCode Group, and the marks' artwork,
+  every file in [logo/](logo/README.md), is copyright NCode Group, all rights reserved: [TRADEMARKS.md](TRADEMARKS.md)
+  says how you may use them. You may use the unmodified marks to refer to an NCode project without asking.
+- Instrument Sans and Martian Mono, in [fonts/](fonts/), are copyright their authors and licensed under the SIL Open
+  Font License 1.1, whose texts are beside them.
 
-Copies of the logo kit published earlier in NCodeGroup/project-template, in its `brand/` folder from v0.93.0 on, were
-released under that repository's MIT License, and those copies stay under it.
+Other NCode repositories publish copies of the marks under their own licenses, such as NCodeGroup/project-template's
+`brand/` folder under its MIT License from v0.82.0 on; [TRADEMARKS.md](TRADEMARKS.md) lists them.
