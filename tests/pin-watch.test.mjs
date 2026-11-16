@@ -46,6 +46,13 @@ test('newestEligible names the highest version above the pin that is at least th
   assert.throws(() => newestEligible(candidates, 'latest', NOW), /can't read the pinned version "latest"/);
 });
 
+test('newestEligible counts a release exactly three days old and not one a millisecond younger', () => {
+  const exact = [{ version: '1.73.0', published: daysAgo(3) }];
+  assert.equal(newestEligible(exact, '1.72.0', NOW).version, '1.73.0');
+  const younger = [{ version: '1.73.0', published: new Date(daysAgo(3).getTime() + 1) }];
+  assert.equal(newestEligible(younger, '1.72.0', NOW), null);
+});
+
 test('lucideCandidates skips a draft, a prerelease and a tag that is not x.y.z', () => {
   const releases = [
     { tag_name: '1.73.0', published_at: '2026-11-10T00:00:00Z', draft: false, prerelease: false },
@@ -192,8 +199,11 @@ function fixtureRoot() {
 
 const FONTS_ISSUE = { number: 7, title: 'Update Instrument Sans to 5.4.0', body: '<!-- pin-watch: fonts -->\nold\n' };
 
-/** A fake fetch that answers by URL and records [method, url, parsed body, headers]; registryStatus answers the npm reads. */
-function fakeFetch(calls, registryStatus = 200) {
+/**
+ * A fake fetch that answers by URL and records [method, url, parsed body, headers]; registryStatus answers the npm
+ * reads and issues answers the open pin-update issues.
+ */
+function fakeFetch(calls, registryStatus = 200, issues = [FONTS_ISSUE]) {
   const answer = (status, json) => ({ ok: status >= 200 && status < 300, status, json: async () => json });
   return async (url, init) => {
     calls.push([init.method, url, init.body ? JSON.parse(init.body) : undefined, init.headers ?? {}]);
@@ -205,7 +215,7 @@ function fakeFetch(calls, registryStatus = 200) {
       const release = { tag_name: '1.73.0', published_at: '2026-11-10T00:00:00Z', draft: false, prerelease: false };
       return answer(200, [release]);
     }
-    if (url.includes('/issues?labels=pin-update')) return answer(200, [FONTS_ISSUE]);
+    if (url.includes('/issues?labels=pin-update')) return answer(200, issues);
     if (url.endsWith('/labels/pin-update')) return answer(200, {});
     if (url.endsWith('/labels/dependencies')) return answer(404, {});
     if (init.method === 'POST' && url.endsWith('/issues')) return answer(201, { number: 12 });
@@ -237,6 +247,51 @@ test('runPinWatch opens the Lucide issue, creates the missing label and closes t
     assert.deepEqual(lines, [
       'Opened #12: Update Lucide to 1.73.0',
       'Closed #7: `src/fonts/fonts.lock.json` pins the newest release at least 3 days old.',
+    ]);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+/** The issue text runPinWatch writes for the Lucide fixture: the pin is 1.72.0 and 1.73.0 is the newest eligible. */
+function lucideIssueText(root) {
+  const [watch] = readWatches(root);
+  const release = { version: '1.73.0', published: new Date('2026-11-10T00:00:00Z') };
+  return issueText(watch, [{ input: watch.inputs[0], release }]);
+}
+
+test('runPinWatch rewrites a stale Lucide issue', async () => {
+  const root = fixtureRoot();
+  try {
+    const calls = [];
+    const stale = { number: 5, title: 'Update Lucide to 1.72.5', body: '<!-- pin-watch: lucide -->\nold\n' };
+    const fetch = fakeFetch(calls, 200, [stale]);
+    const lines = await runPinWatch({ root, repo: 'NCodeGroup/brand', token: 't', now: NOW, fetch });
+    const written = calls.filter(([method]) => method !== 'GET').map(([method, url, body]) => [method, url, body]);
+    assert.deepEqual(written, [
+      ['PATCH', 'https://api.github.com/repos/NCodeGroup/brand/issues/5', lucideIssueText(root)],
+    ]);
+    assert.deepEqual(lines, [
+      'Updated #5: Update Lucide to 1.73.0',
+      '`src/fonts/fonts.lock.json` pins the newest release at least 3 days old.',
+    ]);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test('runPinWatch writes nothing when the issue already says what it would', async () => {
+  const root = fixtureRoot();
+  try {
+    const calls = [];
+    const current = { number: 5, ...lucideIssueText(root) };
+    const fetch = fakeFetch(calls, 200, [current]);
+    const lines = await runPinWatch({ root, repo: 'NCodeGroup/brand', token: 't', now: NOW, fetch });
+    assert.ok(calls.length > 0);
+    assert.ok(calls.every(([method]) => method === 'GET'));
+    assert.deepEqual(lines, [
+      '#5 already says: Update Lucide to 1.73.0',
+      '`src/fonts/fonts.lock.json` pins the newest release at least 3 days old.',
     ]);
   } finally {
     rmSync(root, { recursive: true, force: true });
