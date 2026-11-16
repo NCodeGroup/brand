@@ -1143,6 +1143,10 @@
       "bytes": 19272,
       "sha256": "824eee37df98a87a65675dcc37c4c4069dd10dbee645cc9601b3c6b6ed8d1577"
     },
+    "slides/instrument.css": {
+      "bytes": 193079,
+      "sha256": "d52aa89ea7733442a1fd22cfd6765dedb033ae410ae8af447fc969a7d90452dd"
+    },
     "syntax/instrument-screen.json": {
       "bytes": 2685,
       "sha256": "7d619db1d1281254a95f7cccfe739fe3d8c711a77800c94c4977ddfbb1029ea5"

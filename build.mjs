@@ -11,7 +11,7 @@
  *                               <folder>/brand-<version>.tar.gz: manifest.json
  *                               and every file it lists, the archive .github/workflows/publish.yml attaches to a release
  *
- * Generated and committed: tokens/, css/, fonts/, brace/, icons/, logo/, mui/, syntax/, email/ and manifest.json. It removes a file in
+ * Generated and committed: tokens/, css/, fonts/, brace/, icons/, logo/, mui/, syntax/, email/, slides/ and manifest.json. It removes a file in
  * those folders that it does not write. A PNG or ICO that already holds the pixels it draws is kept, so an image
  * another encoder wrote doesn't change while its picture stays the same, and manifest.json hashes the bytes that stay.
  * It also writes the site's pages, guide/ and index.html, from guidelines/ and src/guide/; a release does not carry them.
@@ -44,7 +44,7 @@ import { tokensCss, tokensStaticCss } from './lib/tokens-css.mjs';
 
 const ROOT = dirname(fileURLToPath(import.meta.url));
 /** The folders build.mjs owns: every file in them is generated. */
-const GENERATED = ['tokens', 'css', 'fonts', 'brace', 'icons', 'logo', 'mui', 'syntax', 'email'];
+const GENERATED = ['tokens', 'css', 'fonts', 'brace', 'icons', 'logo', 'mui', 'syntax', 'email', 'slides'];
 /** The folders whose files hold generated blocks. */
 const WITH_BLOCKS = ['guidelines', 'specimens'];
 /** The folder of the guide's pages, which build.mjs owns too, but a release doesn't carry. */
@@ -148,6 +148,8 @@ function generate(model, version, icons) {
   text('mui/instrument.json', json(muiData(model, version)));
   text('syntax/instrument-screen.json', json(syntaxTheme(model, version)));
   text('email/instrument.html', fillTokens(read('src/email/instrument.html'), model, { version, inline: true }));
+  const woff2 = Object.fromEntries([...files].filter(([path]) => /^fonts\/[^/]+\.woff2$/.test(path)).map(([path, file]) => [path.slice('fonts/'.length), file.data]));
+  text('slides/instrument.css', fillTokens(read('src/slides/instrument.css'), model, { version, fonts: embedFonts(read('src/css/fonts.css'), woff2) }));
   return files;
 }
 
