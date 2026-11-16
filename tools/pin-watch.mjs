@@ -104,8 +104,8 @@ const HOW_TO = {
 
 const FOOTER =
   'The pin-watch workflow, `.github/workflows/pin-watch.yml`, checks every Monday: it rewrites this issue when a ' +
-  'newer release is old enough, and closes it once the lock pins the newest one. A release counts once it is 3 ' +
-  'days old, as ADR-0009 in `docs/decisions/project-template/` says.';
+  'newer release is old enough, and closes it once the lock pins the newest one. ' +
+  `A release counts once it is ${COOLDOWN_DAYS} days old, as ADR-0009 in \`docs/decisions/project-template/\` says.`;
 
 /** The title and body of the issue for a watch whose lock is behind: behind is [{ input, release }], never empty. */
 export function issueText(watch, behind) {
@@ -129,7 +129,7 @@ export function issueText(watch, behind) {
   });
   const intro =
     `<!-- pin-watch: ${watch.id} -->\n` +
-    `\`${watch.lock}\` pins a release older than the newest one at least ${COOLDOWN_DAYS} days old:`;
+    `\`${watch.lock}\` pins an older release than the newest one published at least ${COOLDOWN_DAYS} days ago:`;
   const body = [intro, lines.join('\n'), HOW_TO[watch.id], FOOTER].join('\n\n') + '\n';
   return { title: `Update ${joined}`, body };
 }

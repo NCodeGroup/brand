@@ -99,7 +99,7 @@ test('issueText writes the Lucide issue: marker first, both links and the publis
   assert.equal(
     blocks[0],
     '<!-- pin-watch: lucide -->\n' +
-      '`src/icons/lucide.lock.json` pins a release older than the newest one at least 3 days old:',
+      '`src/icons/lucide.lock.json` pins an older release than the newest one published at least 3 days ago:',
   );
   assert.equal(
     blocks[1],
@@ -109,6 +109,7 @@ test('issueText writes the Lucide issue: marker first, both links and the publis
   );
   assert.ok(blocks[2].startsWith('To take it, copy each icon the lock names'));
   assert.ok(blocks[3].startsWith('The pin-watch workflow, `.github/workflows/pin-watch.yml`, checks every Monday'));
+  assert.ok(blocks[3].includes('A release counts once it is 3 days old'));
   assert.ok(body.endsWith('says.\n'));
 });
 
