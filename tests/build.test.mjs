@@ -170,7 +170,7 @@ describe('build.mjs', () => {
     }
   });
 
-  test('a Lucide icon the lock does not pin, a pinned one that is missing and one that is not the pinned file stop the build', () => {
+  test('a Lucide icon the lock does not pin, a missing pinned one and a changed pinned one stop the build', () => {
     const extra = path('src/icons/lucide/extra.svg');
     const pinned = path('src/icons/lucide/minus.svg');
     const bytes = readFileSync(pinned);
