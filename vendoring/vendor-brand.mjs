@@ -17,14 +17,24 @@
 //
 // brand.lock.json: { "version": "0.1.0", "files": { "<vendored path>": { "source": "<path in the release>", "sha256": "" } } }
 // Add a file by adding its entry with an empty sha256, then run --update.
+import { spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
-import { existsSync, lstatSync, mkdirSync, readFileSync, realpathSync, renameSync, rmSync, statSync, writeFileSync } from 'node:fs';
+import { existsSync, lstatSync, mkdirSync, mkdtempSync, readFileSync, realpathSync, renameSync, rmSync, statSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
 import { dirname, isAbsolute, join, normalize, resolve, sep } from 'node:path';
 import process from 'node:process';
 import { parseArgs } from 'node:util';
+import { gunzipSync } from 'node:zlib';
 
 const USAGE = 'Usage: node vendor-brand.mjs --check | --update <version> [--from <folder or https address>] [--lock <file>]';
 const sha256 = (bytes) => createHash('sha256').update(bytes).digest('hex');
+/** The repository that publishes the brand, and the workflow that must have signed a release's archive. */
+const REPO = 'NCodeGroup/brand';
+const SIGNER = `${REPO}/.github/workflows/publish.yml`;
+/** The most a release's archive may hold, packed and unpacked, and the longest one gh command may take. */
+const ARCHIVE_LIMIT = 64 * 1024 * 1024;
+const UNPACKED_LIMIT = 256 * 1024 * 1024;
+const GH_TIMEOUT = 300_000;
 /** The most a manifest.json may hold, and the longest one request may take. */
 const MANIFEST_LIMIT = 1024 * 1024;
 const TIMEOUT = 60_000;
@@ -64,6 +74,53 @@ function destination(root, path) {
   if (real !== top && !real.startsWith(`${top}${sep}`)) throw new Error(`The vendored path "${path}" leaves its folder through a symbolic link`);
   if (existing === file && !statSync(file).isFile()) throw new Error(`The vendored path "${path}" is not a file`);
   return file;
+}
+
+/** Runs the GitHub CLI and returns what it prints, or an error saying why it could not. */
+function gh(args) {
+  const result = spawnSync('gh', args, { encoding: 'utf8', timeout: GH_TIMEOUT, maxBuffer: 16 * 1024 * 1024 });
+  if (result.error?.code === 'ENOENT') {
+    throw new Error('--update needs the GitHub CLI, gh, to download a release and verify its attestation: install it from https://cli.github.com, then run gh auth login, or set GH_TOKEN in CI');
+  }
+  if (result.error) throw result.error;
+  if (result.status !== 0) {
+    const text = (result.stderr || result.stdout || '').trim() || `exit code ${result.status}`;
+    throw new Error(`gh ${args[0]} ${args[1]} failed: ${text}`);
+  }
+  return result.stdout;
+}
+
+/** The regular files of a gzipped ustar archive, as a Map of path to bytes. */
+function unpack(packed, name) {
+  let tar;
+  try {
+    tar = gunzipSync(packed, { maxOutputLength: UNPACKED_LIMIT });
+  } catch (error) {
+    if (error.code === 'ERR_BUFFER_TOO_LARGE') throw new Error(`${name}: the archive unpacks to more than ${UNPACKED_LIMIT} bytes`);
+    throw new Error(`${name}: ${error.message}`);
+  }
+  const files = new Map();
+  let at = 0;
+  while (at + 512 <= tar.length) {
+    if (tar.subarray(at, at + 512).every((byte) => byte === 0)) break;
+    // A field is its bytes up to the first NUL, as UTF-8.
+    const field = (offset, length) => {
+      const raw = tar.subarray(at + offset, at + offset + length);
+      const end = raw.indexOf(0);
+      return raw.subarray(0, end < 0 ? raw.length : end).toString('utf8');
+    };
+    if (field(257, 6) !== 'ustar') throw new Error(`${name}: the entry at byte ${at} is not a ustar header`);
+    const prefix = field(345, 155);
+    const path = prefix ? `${prefix}/${field(0, 100)}` : field(0, 100);
+    const type = field(156, 1);
+    if (type !== '0' && type !== '') throw new Error(`${name} holds ${path}, which is not a file`);
+    const size = Number.parseInt(field(124, 12).trim(), 8);
+    if (!Number.isSafeInteger(size) || size < 0 || at + 512 + size > tar.length) throw new Error(`${name}: ${path} is cut short`);
+    if (files.has(path)) throw new Error(`${name} holds ${path} twice`);
+    files.set(path, tar.subarray(at + 512, at + 512 + size));
+    at += 512 + Math.ceil(size / 512) * 512;
+  }
+  return files;
 }
 
 /** An answer's body, refused once it is larger than `limit` bytes. */
