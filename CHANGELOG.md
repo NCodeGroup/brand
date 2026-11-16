@@ -111,4 +111,10 @@ Until the first stable release, the [Unreleased] section describes the product a
   repository with `contents: read` alone, and only its deploy job holds `pages: write` and `id-token: write`
   ([#4](https://github.com/NCodeGroup/brand/issues/4),
   [ADR-1010](docs/decisions/1010-the-guide-and-the-specimens-are-published-on-github-pages-from-committed-files.md)).
+- `.github/workflows/tag-release.yml` runs `.github/workflows/ci.yml` again on a release's commit, the generated-file
+  check, the build and the tests, and tags the release only once it passes. In this public repository it signs each
+  release tag with gitsign, and `SECURITY.md` says how to check one with `gitsign verify-tag`
+  ([#8](https://github.com/NCodeGroup/brand/issues/8),
+  [ADR-0026](docs/decisions/project-template/0026-tests-gate-coverage-at-the-gold-thresholds-and-a-release-waits-for-them.md),
+  [ADR-0028](docs/decisions/project-template/0028-github-releases-are-immutable-and-their-tags-signed.md)).
 
