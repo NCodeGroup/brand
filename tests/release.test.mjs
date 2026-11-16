@@ -1,9 +1,10 @@
 // The release: manifest.json lists every released file and nothing else, the logo files keep within their platforms'
 // limits, and vendoring/vendor-brand.mjs copies and checks a consumer's files, and refuses a release that does not match,
-// an address it should not trust and a path that would take a write outside the consumer.
+// an address it should not trust, an answer too large or too slow and a path that would take a write outside the
+// consumer. A write that fails partway leaves the consumer's files as they were.
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
-import { cpSync, existsSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, statSync, symlinkSync, writeFileSync } from 'node:fs';
+import { cpSync, existsSync, lstatSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, statSync, symlinkSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, relative, sep } from 'node:path';
 import { after, before, describe, test } from 'node:test';
@@ -56,11 +57,22 @@ describe('the logo kit', () => {
  * Stands in for fetch in the vendoring script's process, loaded with --import, so an https address needs no network:
  * it serves the release folder at any address, as BRAND_FETCH_STUB says. It answers only a request that follows no
  * redirect and has a timeout, except in "redirect" mode, where it answers as a server that redirects to another host
- * does: a fetch that follows the redirect gets what that host serves.
+ * does: a fetch that follows the redirect gets what that host serves. In "large" mode each file but manifest.json comes
+ * with four bytes more than the manifest gives it, and in "large-manifest" mode manifest.json is padded with spaces to
+ * one byte over 1 MiB. In "stall" mode it names the time each AbortSignal.timeout asks for and gives it 100 ms, and an
+ * answer sends its first byte and then nothing: like an open connection, it keeps the process waiting until the
+ * request's signal ends it.
  */
 const FETCH_STUB = `import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 const { release, other, mode } = JSON.parse(process.env.BRAND_FETCH_STUB);
+if (mode === 'stall') {
+  const timeout = AbortSignal.timeout.bind(AbortSignal);
+  AbortSignal.timeout = (ms) => {
+    process.stderr.write('stub: AbortSignal.timeout(' + ms + ') asked for, 100 given\\n');
+    return timeout(100);
+  };
+}
 globalThis.fetch = async (url, init = {}) => {
   const name = decodeURIComponent(new URL(url).pathname.slice(1));
   if (mode === 'redirect') {
@@ -69,8 +81,39 @@ globalThis.fetch = async (url, init = {}) => {
   }
   if (init.redirect !== 'manual' || !(init.signal instanceof AbortSignal)) throw new TypeError('a request that follows redirects or has no timeout');
   const bytes = readFileSync(join(release, name));
+  if (mode === 'stall') {
+    const open = setInterval(() => {}, 60_000);
+    return new Response(new ReadableStream({
+      start(controller) {
+        controller.enqueue(bytes.subarray(0, 1));
+        init.signal.addEventListener('abort', () => { clearInterval(open); controller.error(init.signal.reason); }, { once: true });
+      },
+    }));
+  }
+  if (mode === 'large-manifest' && name === 'manifest.json') return new Response(Buffer.concat([bytes, Buffer.alloc(1024 * 1024 + 1 - bytes.length, ' ')]));
   return new Response(mode === 'large' && name !== 'manifest.json' ? Buffer.concat([bytes, Buffer.from('more')]) : bytes);
 };
+`;
+
+/**
+ * Stands in for writeFileSync in the vendoring script's process, loaded with --import, as BRAND_FS_STUB says. With
+ * "fail", a write to a file whose name starts with it fails, as on a full disk. With "plant", a symbolic link to
+ * "target" appears where the script is about to create a file whose name starts with it, as another process could put
+ * one there.
+ */
+const FS_STUB = `import fs from 'node:fs';
+import { syncBuiltinESMExports } from 'node:module';
+import { basename } from 'node:path';
+const { fail, plant, target } = JSON.parse(process.env.BRAND_FS_STUB);
+const writeFileSync = fs.writeFileSync;
+fs.writeFileSync = (file, data, options) => {
+  const name = basename(String(file));
+  if (fail && name.startsWith(fail)) throw Object.assign(new Error('ENOSPC: no space left on device, write ' + name), { code: 'ENOSPC' });
+  if (plant && name.startsWith(plant) && !fs.lstatSync(file, { throwIfNoEntry: false })) fs.symlinkSync(target, file);
+  return writeFileSync(file, data, options);
+};
+// The script imports writeFileSync by name: this hands it the stand-in.
+syncBuiltinESMExports();
 `;
 
 describe('vendoring/vendor-brand.mjs', () => {
@@ -78,13 +121,17 @@ describe('vendoring/vendor-brand.mjs', () => {
   let release;
   let other;
   let stub;
+  let fsStub;
   const script = () => join(consumer, 'vendor-brand.mjs');
   const lockPath = () => join(consumer, 'brand.lock.json');
   const lock = (files, at = '0.0.0') => writeFileSync(lockPath(), `${JSON.stringify({ version: at, files }, null, 2)}\n`);
   const vendor = (...args) => runNode(consumer, [script(), ...args]);
-  /** The script with fetch stood in for, reading a release at an https address. */
+  /** The script with fetch stood in for, reading a release at an https address; stopped if it runs 20 seconds. */
   const vendorOverHttps = (mode, ...args) =>
-    runNode(consumer, ['--import', pathToFileURL(stub).href, script(), ...args], { BRAND_FETCH_STUB: JSON.stringify({ release, other, mode }) });
+    runNode(consumer, ['--import', pathToFileURL(stub).href, script(), ...args], { BRAND_FETCH_STUB: JSON.stringify({ release, other, mode }) }, 20_000);
+  /** The script with writeFileSync stood in for, as FS_STUB says. */
+  const vendorWithFs = (stubbed, ...args) =>
+    runNode(consumer, ['--import', pathToFileURL(fsStub).href, script(), ...args], { BRAND_FS_STUB: JSON.stringify(stubbed) });
   const version = manifest.version;
   const write = (path, text) => {
     mkdirSync(join(consumer, path, '..'), { recursive: true });
@@ -97,6 +144,8 @@ describe('vendoring/vendor-brand.mjs', () => {
     other = mkdtempSync(join(tmpdir(), 'ncode-brand-other-'));
     stub = join(other, 'fetch-stub.mjs');
     writeFileSync(stub, FETCH_STUB);
+    fsStub = join(other, 'fs-stub.mjs');
+    writeFileSync(fsStub, FS_STUB);
     cpSync(join(ROOT, 'vendoring/vendor-brand.mjs'), script());
     for (const path of ['manifest.json', ...Object.keys(manifest.files)]) cpSync(join(ROOT, path), join(release, path));
     // Another release of the same version, whose manifest matches its own altered tokens.css: what a host that answers
@@ -198,6 +247,26 @@ describe('vendoring/vendor-brand.mjs', () => {
     assert.ok(!existsSync(join(consumer, 'src/brand/large')));
   });
 
+  test('an update over https refuses a manifest.json larger than 1 MiB', () => {
+    lock({ 'src/brand/large-manifest/tokens.css': { source: 'tokens/tokens.css', sha256: '' } });
+    // The padding is spaces, so the manifest still parses: only the bound refuses it.
+    const result = vendorOverHttps('large-manifest', '--update', version, '--from', 'https://release.example/');
+    assert.equal(result.code, 1, result.output);
+    assert.match(result.output, /manifest\.json: the answer is larger than 1048576 bytes/);
+    assert.ok(!existsSync(join(consumer, 'src/brand/large-manifest')));
+  });
+
+  test('an update over https gives each answer a minute, and stops one that stalls once its time is up', () => {
+    lock({ 'src/brand/stalled/tokens.css': { source: 'tokens/tokens.css', sha256: '' } });
+    const lockText = readFileSync(lockPath(), 'utf8');
+    const result = vendorOverHttps('stall', '--update', version, '--from', 'https://release.example/');
+    assert.equal(result.code, 1, result.output);
+    assert.match(result.output, /^stub: AbortSignal\.timeout\(60000\) asked for/m);
+    assert.match(result.output, /^vendor-brand\.mjs: The operation was aborted due to timeout$/m);
+    assert.ok(!existsSync(join(consumer, 'src/brand/stalled')));
+    assert.equal(readFileSync(lockPath(), 'utf8'), lockText);
+  });
+
   test('an update refuses to pin another SHA-256 for a file of the version the lock already pins', () => {
     lock({ 'src/brand/pinned/tokens.css': { source: 'tokens/tokens.css', sha256: '' } });
     assert.equal(vendor('--update', version, '--from', release).code, 0);
@@ -217,12 +286,53 @@ describe('vendoring/vendor-brand.mjs', () => {
       'src/brand/first.css': { source: 'tokens/tokens.css', sha256: '' },
       'src/brand/second.css': { source: 'css/base.css', sha256: '' },
     });
-    const before = readFileSync(lockPath(), 'utf8');
+    const lockText = readFileSync(lockPath(), 'utf8');
     const result = vendor('--update', version, '--from', release);
     assert.equal(result.code, 1, result.output);
     assert.match(result.output, /The vendored path "src\/brand\/second\.css" is not a file/);
     assert.equal(readFileSync(join(consumer, 'src/brand/first.css'), 'utf8'), '/* before */\n');
-    assert.equal(readFileSync(lockPath(), 'utf8'), before);
+    assert.equal(readFileSync(lockPath(), 'utf8'), lockText);
+  });
+
+  test('an update whose write fails partway leaves every vendored file and the lock as they were', () => {
+    write('src/brand/write/first.css', '/* before */\n');
+    lock({
+      'src/brand/write/first.css': { source: 'tokens/tokens.css', sha256: '' },
+      'src/brand/write/second.css': { source: 'css/base.css', sha256: '' },
+    });
+    const lockText = readFileSync(lockPath(), 'utf8');
+    const result = vendorWithFs({ fail: 'second.css' }, '--update', version, '--from', release);
+    assert.equal(result.code, 1, result.output);
+    assert.match(result.output, /ENOSPC: no space left on device, write second\.css/);
+    assert.equal(readFileSync(join(consumer, 'src/brand/write/first.css'), 'utf8'), '/* before */\n');
+    // Nothing written beside them is left behind.
+    assert.deepEqual(readdirSync(join(consumer, 'src/brand/write')), ['first.css']);
+    assert.equal(readFileSync(lockPath(), 'utf8'), lockText);
+  });
+
+  test('an update writes through no symbolic link that appears where it creates a file', (t) => {
+    const outside = mkdtempSync(join(tmpdir(), 'ncode-brand-outside-'));
+    const raced = join(consumer, 'src/brand/raced');
+    try {
+      writeFileSync(join(outside, 'profile'), 'keep\n');
+      try {
+        symlinkSync(join(outside, 'profile'), join(outside, 'probe'));
+      } catch (error) {
+        if (error.code === 'EPERM') return t.skip('this system makes no symbolic link to a file without privileges');
+        throw error;
+      }
+      lock({ 'src/brand/raced/tokens.css': { source: 'tokens/tokens.css', sha256: '' } });
+      const lockText = readFileSync(lockPath(), 'utf8');
+      const result = vendorWithFs({ plant: 'tokens.css', target: join(outside, 'profile') }, '--update', version, '--from', release);
+      assert.equal(result.code, 1, result.output);
+      assert.match(result.output, /EEXIST/);
+      assert.equal(readFileSync(join(outside, 'profile'), 'utf8'), 'keep\n');
+      assert.equal(lstatSync(join(raced, 'tokens.css'), { throwIfNoEntry: false }), undefined);
+      assert.equal(readFileSync(lockPath(), 'utf8'), lockText);
+    } finally {
+      rmSync(raced, { recursive: true, force: true });
+      rmSync(outside, { recursive: true, force: true });
+    }
   });
 
   test('a lock path that leaves its folder is refused, by its name or through a symbolic link', (t) => {

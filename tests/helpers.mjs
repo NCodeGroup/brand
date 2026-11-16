@@ -24,8 +24,12 @@ export function copyRepository() {
   return { dir, remove: () => rmSync(dir, { recursive: true, force: true }) };
 }
 
-/** Runs a Node.js script with arguments in a folder, with more environment variables, and returns its exit code and output. */
-export function runNode(cwd, args, env = {}) {
-  const result = spawnSync(process.execPath, args, { cwd, encoding: 'utf8', env: { ...process.env, ...env } });
-  return { code: result.status, output: `${result.stdout}${result.stderr}` };
+/**
+ * Runs a Node.js script with arguments in a folder, with more environment variables, and returns its exit code and
+ * output. Given a time in milliseconds, it stops a script that runs longer, whose code is then null.
+ */
+export function runNode(cwd, args, env = {}, timeout = undefined) {
+  const result = spawnSync(process.execPath, args, { cwd, encoding: 'utf8', env: { ...process.env, ...env }, timeout });
+  const stopped = result.error?.code === 'ETIMEDOUT' ? `\nStopped after ${timeout} ms.` : '';
+  return { code: result.status, output: `${result.stdout}${result.stderr}${stopped}` };
 }

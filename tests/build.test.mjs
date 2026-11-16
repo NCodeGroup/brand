@@ -230,6 +230,45 @@ describe('build.mjs', () => {
     }
   });
 
+  test('a symbolic link at a page of guidelines/ or specimens/, or at manifest.json, stops the build before it writes', (t) => {
+    const outside = `${repo.dir}-links`;
+    mkdirSync(outside, { recursive: true });
+    /** The text with one generated block emptied, which a build would fill again. */
+    const emptied = (text, name) => {
+      const next = text.replace(new RegExp(`(generated:${name}\\b.*\\n)[\\s\\S]*?(.*/generated:${name}\\b)`), '$1$2');
+      assert.notEqual(next, text, `the block "${name}"`);
+      return next;
+    };
+    const linked = [
+      ['guidelines/02-color.md', (text) => emptied(text, 'ramps')],
+      ['specimens/foundations.css', (text) => emptied(text, 'swatches')],
+      ['manifest.json', () => '{}\n'],
+    ];
+    try {
+      for (const [name, stale] of linked) {
+        // A stale copy of the file outside the repository: a build that followed the link would write over it.
+        const target = join(outside, basename(name));
+        const text = stale(readFileSync(path(name), 'utf8'));
+        writeFileSync(target, text);
+        rmSync(path(name));
+        try {
+          symlinkSync(target, path(name));
+        } catch (error) {
+          if (error.code === 'EPERM') return t.skip('this system makes no symbolic link to a file without privileges');
+          throw error;
+        }
+        const result = build();
+        assert.equal(result.code, 1, result.output);
+        assert.match(result.output, new RegExp(`^build\\.mjs: ${name.replaceAll('.', '\\.')} is a symbolic link: build\\.mjs writes and removes only real files inside the repository$`, 'm'));
+        assert.equal(readFileSync(target, 'utf8'), text, `${name}'s target`);
+        restore(name);
+      }
+    } finally {
+      for (const [name] of linked) restore(name);
+      rmSync(outside, { recursive: true, force: true });
+    }
+  });
+
   test('a PNG another encoder wrote is kept while it holds the same pixels, and rewritten once one pixel differs', () => {
     const kept = 'logo/ncode/nuget/ncode-nuget-tile-blue.png';
     const changed = 'logo/ncode/nuget/ncode-nuget-tile-dark.png';
