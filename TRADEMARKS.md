@@ -1,8 +1,8 @@
 # NCode Trademarks
 
 The names and marks of NCode Group are not covered by this repository's Apache License 2.0. The names NCode, NCode Group
-and NCode Identity and the marks are trademarks of NCode Group. The marks' artwork, every file in [logo/](logo/README.md),
-is also copyright NCode Group, all rights reserved. This page says how you may use them.
+and NCode Identity and the marks are trademarks of NCode Group. The marks' artwork, every file in
+[logo/](logo/README.md), is also copyright NCode Group, all rights reserved. This page says how you may use them.
 
 ## What It Covers
 

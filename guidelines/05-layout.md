@@ -41,5 +41,5 @@ Media queries cannot read custom properties, so `css/base.css` repeats these num
 | 640 px | `--nc-breakpoint-phone` | A table becomes a list of two-line rows, a dialog becomes a sheet that rises from the bottom edge with its keys side by side, and every control is at least 44 pixels high |
 
 No page scrolls sideways at any width: a listing scrolls inside its own screen. The one exception is the kit's catalog,
-[specimens/foundations.html](../specimens/foundations.html), which is laid out for a desktop window. A table that becomes a list keeps its
-table roles in the markup, so assistive technology still reads a table.
+[specimens/foundations.html](../specimens/foundations.html), which is laid out for a desktop window. A table that
+becomes a list keeps its table roles in the markup, so assistive technology still reads a table.
