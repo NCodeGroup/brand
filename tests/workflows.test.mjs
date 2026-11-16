@@ -1,7 +1,34 @@
 // The workflows' PowerShell steps parse: a step of publish.yml runs only when a release is published, so CI
 // parses them all.
 import assert from 'node:assert/strict';
+import { spawnSync } from 'node:child_process';
+import { readdirSync } from 'node:fs';
+import { join } from 'node:path';
 import { test } from 'node:test';
+import { ROOT, read } from './helpers.mjs';
+
+// Reads the JSON blocks `{ file, line, script }` on stdin and prints one `file:line: message` per parse error.
+const PARSE = `
+foreach ($block in [Console]::In.ReadToEnd() | ConvertFrom-Json) {
+  $tokens = $null; $errors = $null
+  [void][System.Management.Automation.Language.Parser]::ParseInput($block.script, [ref]$tokens, [ref]$errors)
+  foreach ($e in $errors) { "$($block.file):$($block.line + $e.Extent.StartLineNumber - 1): $($e.Message)" }
+}`;
+
+/**
+ * Parses each `{ file, line, script }` block with PowerShell's own parser, run through `pwsh`, and returns one
+ * `file:line: message` string per parse error; `line` is the line the script starts on in `file`.
+ */
+function parseErrors(blocks) {
+  const result = spawnSync(
+    'pwsh',
+    ['-NoProfile', '-NonInteractive', '-EncodedCommand', Buffer.from(PARSE, 'utf16le').toString('base64')],
+    { input: JSON.stringify(blocks), encoding: 'utf8' },
+  );
+  assert.ifError(result.error, 'pwsh (PowerShell 7) must be installed to parse the workflows');
+  assert.equal(result.status, 0, result.stderr);
+  return result.stdout.split(/\r?\n/).filter(Boolean);
+}
 
 /**
  * Reads the `run:` steps of a workflow file: the subset of YAML these workflows use, line by line with an
@@ -138,4 +165,33 @@ test('runSteps refuses a run script written as a folded scalar', () => {
     () => runSteps('jobs:\n  a:\n    steps:\n      - run: >\n          echo\n'),
     /line 4: write a run script as a \| block/,
   );
+});
+
+test('parseErrors names the file and line of a script PowerShell can\'t parse', () => {
+  assert.deepEqual(parseErrors([{ file: 'x.yml', line: 10, script: 'ok\n"$LASTEXITCODE: x"' }]), [
+    'x.yml:11: Variable reference is not valid. \':\' was not followed by a valid variable name character. '
+      + 'Consider using ${} to delimit the name.',
+  ]);
+});
+
+test('every PowerShell step of the workflows parses', () => {
+  const blocks = [];
+  const names = readdirSync(join(ROOT, '.github/workflows')).filter((name) => /\.ya?ml$/.test(name)).sort();
+  for (const name of names) {
+    const file = `.github/workflows/${name}`;
+    for (const { line, shell, script } of runSteps(read(file))) {
+      if (shell === 'pwsh' || shell === 'powershell') {
+        blocks.push({ file, line, script: script.replace(/\$\{\{[\s\S]*?\}\}/g, 'EXPRESSION') });
+      }
+    }
+  }
+  assert.ok(
+    blocks.some(
+      (block) =>
+        block.file === '.github/workflows/publish.yml' && block.script.includes('node build.mjs --archive dist'),
+    ),
+    'the Pack step of publish.yml must be among the parsed steps',
+  );
+  const errors = parseErrors(blocks);
+  assert.deepEqual(errors, [], errors.join('\n'));
 });
