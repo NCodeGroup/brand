@@ -10,11 +10,12 @@ and NCode Identity and the marks are trademarks of NCode Group. The marks' artwo
 - The marks: the `{N}` mark and the `{id}` mark, alone, with a wordmark, on a tile or in any other form, and every
   file in [logo/](logo/README.md).
 
-The Apache License 2.0 covers this repository's code, tokens, stylesheets, braces and themes. A brace alone, as
-[brace/](brace/) draws it for the stylesheets, is a part of the system and no mark: a mark is a brace pair with its
-letters between them. The license's section 6 grants no permission to use the licensor's trade names, trademarks,
-service marks or product names, beyond describing where a work comes from. The fonts in [fonts/](fonts/) are
-copyright their authors and keep their own license, the SIL Open Font License 1.1.
+The Apache License 2.0 covers this repository's code, tokens, stylesheets, braces, NCode's own icons and themes. A brace
+alone, as [brace/](brace/) draws it for the stylesheets, is a part of the system and no mark: a mark is a brace pair
+with its letters between them. The license's section 6 grants no permission to use the licensor's trade names,
+trademarks, service marks or product names, beyond describing where a work comes from. The fonts in [fonts/](fonts/) are
+copyright their authors and keep their own license, the SIL Open Font License 1.1. The icons in [icons/](icons/) taken
+from Lucide keep Lucide's licenses, the ISC License and the MIT License, in `icons/LICENSE-Lucide.txt`.
 
 ## What You May Do Without Asking
 

@@ -7,9 +7,9 @@
  *     node build.mjs --check    writes nothing; lists each file that is missing, would change or would be removed,
  *                               and exits 1 when one would                         (npm run check)
  *
- * Generated and committed: tokens/, css/, fonts/, brace/, logo/, mui/ and manifest.json. It removes a file in those
- * folders that it does not write. A PNG or ICO that already holds the pixels it draws is kept, so an image another
- * encoder wrote doesn't change while its picture stays the same, and manifest.json hashes the bytes that stay.
+ * Generated and committed: tokens/, css/, fonts/, brace/, icons/, logo/, mui/ and manifest.json. It removes a file in
+ * those folders that it does not write. A PNG or ICO that already holds the pixels it draws is kept, so an image
+ * another encoder wrote doesn't change while its picture stays the same, and manifest.json hashes the bytes that stay.
  * It also fails when a pairing of the contrast gate is below its floor, and when a block it writes has lost its
  * markers. It writes and removes real files inside the repository alone: it refuses a symbolic link in a folder it
  * writes, and a font name with a path in it. It needs Node.js alone: no packages.
@@ -26,6 +26,7 @@ import { contrastReport } from './lib/contrast.mjs';
 import { createDerive } from './lib/derive-core.mjs';
 import { deriveData, deriveModule, deriveTypes, heldPairings, vectors } from './lib/derive.mjs';
 import { toDtcg } from './lib/dtcg.mjs';
+import { iconBlock, iconFiles, iconGrid, iconList, iconSet } from './lib/icons.mjs';
 import { createLogo, holds, logoKit } from './lib/logo.mjs';
 import { buildModel, resolveColors } from './lib/model.mjs';
 import { tokensModule, tokensTypes } from './lib/module.mjs';
@@ -34,7 +35,7 @@ import { tokensCss, tokensStaticCss } from './lib/tokens-css.mjs';
 
 const ROOT = dirname(fileURLToPath(import.meta.url));
 /** The folders build.mjs owns: every file in them is generated. */
-const GENERATED = ['tokens', 'css', 'fonts', 'brace', 'logo', 'mui'];
+const GENERATED = ['tokens', 'css', 'fonts', 'brace', 'icons', 'logo', 'mui'];
 /** The folders whose files hold generated blocks. */
 const WITH_BLOCKS = ['guidelines', 'specimens'];
 /** Hand-written files a release carries beside the generated folders. */
@@ -54,8 +55,45 @@ const moveLinks = (markdown, from, to) =>
 const cssHeader = (name, version) =>
   `/* NCode Brand ${version}: css/${name}, copied by build.mjs from src/css/${name}; edit that file. Apache-2.0. */\n`;
 
+/**
+ * The icon set: NCode's drawings and the Lucide files that src/icons/lucide.lock.json pins, checked as the fonts are,
+ * and the Lucide version and license the files of icons/ name.
+ */
+function readIcons() {
+  const lock = JSON.parse(read('src/icons/lucide.lock.json'));
+  const locked = new Set();
+  const lucide = {};
+  for (const [name, hash] of Object.entries(lock.icons)) {
+    // A plain icon name: one with a path in it would read outside src/icons/lucide.
+    if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(name)) {
+      throw new Error(`lucide.lock.json names "${name}", which is not the name of an icon`);
+    }
+    const path = join(ROOT, 'src/icons/lucide', `${name}.svg`);
+    if (!existsSync(path)) throw new Error(`src/icons/lucide/${name}.svg is missing: lucide.lock.json names it`);
+    const bytes = readFileSync(path);
+    if (sha256(bytes) !== hash) {
+      throw new Error(`src/icons/lucide/${name}.svg is not the file lucide.lock.json pins (SHA-256 ${hash})`);
+    }
+    lucide[name] = bytes.toString('utf8');
+    locked.add(`${name}.svg`);
+  }
+  const unlocked = readdirSync(join(ROOT, 'src/icons/lucide')).filter((name) => !locked.has(name));
+  if (unlocked.length) {
+    throw new Error(`src/icons/lucide has files lucide.lock.json does not pin: ${unlocked.join(', ')}`);
+  }
+  const licenseBytes = readFileSync(join(ROOT, 'src/icons/LICENSE-Lucide.txt'));
+  if (sha256(licenseBytes) !== lock.license.sha256) {
+    throw new Error('src/icons/LICENSE-Lucide.txt is not the file lucide.lock.json pins');
+  }
+  const text = licenseBytes.toString('utf8');
+  return {
+    set: iconSet({ ncode: read('src/icons/ncode.svg'), lucide }),
+    lucide: { version: lock.version, license: lock.license.name, text },
+  };
+}
+
 /** Every generated file, by its path from the repository root, as { data, image?, entries? }. */
-function generate(model, version) {
+function generate(model, version, icons) {
   const files = new Map();
   const text = (path, content) => files.set(path, { data: Buffer.from(content, 'utf8') });
 
@@ -89,6 +127,8 @@ function generate(model, version) {
 
   const logo = createLogo(model, JSON.parse(read('src/logo/ncode.json')));
   for (const [name, content] of Object.entries(braceFiles(model, logo, version))) text(`brace/${name}`, content);
+  const iconSources = iconFiles(icons.set, { version, lucide: icons.lucide });
+  for (const [name, content] of Object.entries(iconSources)) text(`icons/${name}`, content);
   text('logo/README.md', `<!-- Generated by build.mjs from src/logo/kit.md: edit that file. -->\n\n${moveLinks(read('src/logo/kit.md'), 'src/logo', 'logo')}`);
   for (const [name, file] of logoKit(logo)) files.set(`logo/ncode/${name}`, file);
   for (const [name, file] of logoKit(createLogo(model, JSON.parse(read('src/logo/identity.json'))))) files.set(`logo/identity/${name}`, file);
@@ -99,18 +139,38 @@ function generate(model, version) {
 
 /**
  * The generated blocks of guidelines/ and specimens/, as the whole new text of each file that has one. Every block
- * build.mjs writes must be in a file, once: a block whose markers are gone would keep its old numbers unseen.
+ * build.mjs writes must be in a file, once: a block whose markers are gone would keep its old numbers unseen. A
+ * specimen page's `icons` block holds the symbols of the icons the page uses.
  */
-function blocks(model, report) {
+function blocks(model, report, icons) {
   const { deriveBrand } = createDerive(deriveData(model));
   const guide = guideBlocks(model, report, deriveSweep(model, deriveBrand, heldPairings(), resolveColors));
   const foundations = foundationsBlocks(model, report);
   const out = new Map();
   // The guide's pages share one set of blocks, and each specimen file has its own.
   const places = [
-    [guide, 'a file of guidelines/', readdirSync(join(ROOT, 'guidelines')).filter((n) => n.endsWith('.md')).sort().map((n) => `guidelines/${n}`), false],
-    [foundations.html, 'specimens/foundations.html', ['specimens/foundations.html'], false],
+    [
+      { ...guide, 'icon-list': iconList(icons.set, icons.lucide) },
+      'a file of guidelines/',
+      readdirSync(join(ROOT, 'guidelines')).filter((n) => n.endsWith('.md')).sort().map((n) => `guidelines/${n}`),
+      false,
+    ],
+    [
+      { ...foundations.html, 'icon-grid': iconGrid(icons.set) },
+      'specimens/foundations.html',
+      ['specimens/foundations.html'],
+      false,
+    ],
     [foundations.css, 'specimens/foundations.css', ['specimens/foundations.css'], true],
+    [
+      {},
+      'a page of specimens/',
+      readdirSync(join(ROOT, 'specimens'))
+        .filter((n) => n.endsWith('.html') && n !== 'foundations.html')
+        .sort()
+        .map((n) => `specimens/${n}`),
+      false,
+    ],
   ];
   for (const [bodies, place, paths, css] of places) {
     const filled = new Set();
@@ -118,13 +178,20 @@ function blocks(model, report) {
       const current = read(path);
       let next = current;
       const names = blockNames(current);
+      // A specimen page's icons block is filled from the set, whichever page it is in, and last, so the sprite
+      // holds the symbols the other filled blocks use.
+      const page = path.startsWith('specimens/') && path.endsWith('.html');
       for (const name of names) {
-        if (!(name in bodies)) throw new Error(`${path} has a generated block "${name}" that build.mjs does not write`);
+        const iconsBlock = page && name === 'icons';
+        if (!iconsBlock && !(name in bodies)) {
+          throw new Error(`${path} has a generated block "${name}" that build.mjs does not write`);
+        }
         // fill() fills the first copy of a block, so a second copy would keep its old numbers.
         if (names.indexOf(name) !== names.lastIndexOf(name)) throw new Error(`${path} holds the generated block "${name}" twice`);
-        next = fill(next, name, bodies[name], { css });
+        if (!iconsBlock) next = fill(next, name, bodies[name], { css });
         filled.add(name);
       }
+      if (page && names.includes('icons')) next = fill(next, 'icons', iconBlock(icons.set, next, path), { css });
       out.set(path, { data: Buffer.from(next, 'utf8') });
     }
     for (const name of Object.keys(bodies)) {
@@ -175,9 +242,10 @@ function main() {
   const version = JSON.parse(read('package.json')).version;
   const model = buildModel(JSON.parse(read('src/tokens.source.json')));
   const report = contrastReport(model);
+  const icons = readIcons();
 
-  const filled = blocks(model, report); // first, so a lost block fails before the logo kit is drawn
-  const targets = new Map([...generate(model, version), ...filled]);
+  const filled = blocks(model, report, icons); // first, so a lost block fails before the logo kit is drawn
+  const targets = new Map([...generate(model, version, icons), ...filled]);
   const released = new Map(); // path -> the bytes a release carries after this run
   let changed = 0;
   const lines = [];

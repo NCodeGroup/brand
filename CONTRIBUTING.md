@@ -24,9 +24,9 @@ Once in each clone, run `git config core.hooksPath .githooks`. It turns on `.git
 CI runs the same commands on every pull request, the check first, and fails when the build or the tests change a file.
 
 The sources are `src/`, `lib/`, `build.mjs`, `guidelines/` and `specimens/`. Every file in `tokens/`, `css/`, `fonts/`,
-`brace/`, `logo/` and `mui/`, `manifest.json`, and each block between `generated:` markers in `guidelines/` and
-`specimens/`, is written by `npm run build`: change its source, run the build and commit what it writes. `npm run check`
-fails on a generated file edited by hand.
+`brace/`, `icons/`, `logo/` and `mui/`, `manifest.json`, and each block between `generated:` markers in `guidelines/`
+and `specimens/`, is written by `npm run build`: change its source, run the build and commit what it writes.
+`npm run check` fails on a generated file edited by hand.
 
 For a change to the stylesheets, the tokens or a specimen, also run `node tools/shoot.mjs --out=<folder>` before and
 after it and compare the screenshots, and `node tools/browser-check.mjs`, which compares the build's color math with a

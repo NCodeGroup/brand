@@ -170,6 +170,32 @@ describe('build.mjs', () => {
     }
   });
 
+  test('a Lucide icon the lock does not pin, a missing pinned one and a changed pinned one stop the build', () => {
+    const extra = path('src/icons/lucide/extra.svg');
+    const pinned = path('src/icons/lucide/minus.svg');
+    const bytes = readFileSync(pinned);
+    try {
+      writeFileSync(extra, '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"></svg>\n');
+      let result = check();
+      assert.equal(result.code, 1, result.output);
+      assert.match(result.output, /src\/icons\/lucide has files lucide\.lock\.json does not pin: extra\.svg/);
+      rmSync(extra);
+      rmSync(pinned);
+      result = check();
+      assert.equal(result.code, 1, result.output);
+      assert.match(result.output, /src\/icons\/lucide\/minus\.svg is missing: lucide\.lock\.json names it/);
+      const changed = Buffer.from(bytes);
+      changed[changed.length - 1] ^= 0xff;
+      writeFileSync(pinned, changed);
+      result = check();
+      assert.equal(result.code, 1, result.output);
+      assert.match(result.output, /src\/icons\/lucide\/minus\.svg is not the file lucide\.lock\.json pins/);
+    } finally {
+      rmSync(extra, { force: true });
+      writeFileSync(pinned, bytes);
+    }
+  });
+
   test('every url() in the stylesheets names a file the release carries beside them', () => {
     const manifest = JSON.parse(readFileSync(join(ROOT, 'manifest.json'), 'utf8'));
     const named = [];

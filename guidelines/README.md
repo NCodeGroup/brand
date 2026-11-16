@@ -31,7 +31,7 @@ the whole kit, and each other page is a scene from a real surface.
 | 4 | [Shape, depth and the brace](04-shape-and-depth.md) | Radii, lines, depth, hazard tape, and where a brace may appear |
 | 5 | [Layout and density](05-layout.md) | Space, control heights, the reading measure and the breakpoints |
 | 6 | [Components](06-components.md) | Keys, wells, lamps, screens, the display and the boundary plate |
-| 7 | [Icons](07-icons.md) | How an icon is drawn and used |
+| 7 | [Icons](07-icons.md) | How an icon is drawn and used, and the files of the set |
 | 8 | [Motion](08-motion.md) | What moves, how far and how fast |
 | 9 | [Voice](09-voice.md) | How NCode writes, in prose and in an interface |
 | 10 | [Accessibility](10-accessibility.md) | The floor every surface meets, and the browsers it serves |
@@ -53,7 +53,8 @@ Every path is from the root of a release. Keep the release's folders side by sid
 | A tool or a format with its own theme | `tokens/tokens.json`, in the Design Tokens format 2025.10 |
 | An email, or a page without 2024 CSS | `tokens/tokens.static.css`, every color written out |
 | A logo in a README, a favicon, a package icon | The files in `logo/ncode/`, or `logo/identity/` for NCode Identity, as [Marks](01-marks.md) says |
-| A component that draws the brace or the mark inline | `brace/brace.json`, `logo/ncode/outlines.json`, `logo/identity/outlines.json` |
+| An icon | `icons/sprite.svg` with `css/base.css`, or one `icons/<name>.svg`; `icons/LICENSE-Lucide.txt` with any Lucide icon, as [Icons](07-icons.md) says |
+| A component that draws the brace, an icon or the mark inline | `brace/brace.json`, `icons/icons.json`, `logo/ncode/outlines.json`, `logo/identity/outlines.json` |
 
 [Applying it](12-applying.md) says how, for each.
 

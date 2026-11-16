@@ -28,6 +28,14 @@ Until the first stable release, the [Unreleased] section describes the product a
   License 1.1 texts, pinned by SHA-256 in `src/fonts/fonts.lock.json`.
 - The brace, drawn from the mark's construction: `brace/brace-mark.svg`, the stretching `brace-sm.svg`, `brace-md.svg`
   and `brace-lg.svg`, and `brace/brace.json`, the same pieces as path data.
+- The icon set in `icons/`: NCode's own 41 drawings and 24 icons of Lucide 1.72.0, restyled onto the same 16-unit
+  grid with a stroke of 1.5, square caps and miter joins. Each icon is `icons/<name>.svg`, a symbol `i-<name>` in
+  `icons/sprite.svg` and its shapes in `icons/icons.json`, with a line that stays 1.5 pixels at every size.
+  `build.mjs` draws them from `src/icons/`, where `src/icons/lucide.lock.json` pins each Lucide file by SHA-256, and
+  each specimen page takes its icons from the set, and `specimens/foundations.html` shows every icon at 16 and
+  20 pixels. `icons/LICENSE-Lucide.txt` holds Lucide's ISC and MIT notices
+  ([#3](https://github.com/NCodeGroup/brand/issues/3),
+  [ADR-1008](docs/decisions/1008-the-icon-set-is-ncodes-own-drawings-and-a-pinned-lucide-subset-restyled-to-one-grid.md)).
 - The `{N}` logo kit in `logo/ncode/`: the mark, the lockup and the tiles as SVG and PNG, the favicon set, and the files
   NuGet, GitHub, GitLab, My Apps, profile pictures, badges, link previews, banners and Windows ask for, in NCode Blue,
   NCode Blue Light and NCode Navy from the blue ramp; `logo/ncode/outlines.json`, the mark and the lockup as path data.
@@ -52,7 +60,8 @@ Until the first stable release, the [Unreleased] section describes the product a
 ### Security
 
 - `build.mjs` writes and removes real files inside the repository alone: it refuses a symbolic link in a folder it
-  writes, and a font name in `src/fonts/fonts.lock.json` with a path in it.
+  writes, and a font name in `src/fonts/fonts.lock.json` or an icon name in `src/icons/lucide.lock.json` with a
+  path in it.
 - `vendoring/vendor-brand.mjs` verifies every file against the release's manifest, and checks every destination,
   before it writes any. It refuses a release of another version and, once the lock pins a version, a file of it with
   another hash. It reads an address over https alone, follows no redirect, and bounds each answer's size and time. It
