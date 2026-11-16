@@ -10,7 +10,8 @@ values, with the brace of the `{N}` mark drawn around what one boundary holds. E
 [src/tokens.source.json](src/tokens.source.json), and one Node.js script with no packages, [build.mjs](build.mjs),
 writes everything a consumer takes: the tokens as CSS, Design Tokens JSON and a typed module, the stylesheets, the
 fonts, the braces, the icons, the logo kit and data for a Material UI theme. Consumers copy the files they need from a
-tagged release and check them against its `manifest.json`.
+tagged release's archive, once the GitHub CLI has verified its build provenance, and check them against its
+`manifest.json`.
 
 [The guide](guidelines/README.md) says what Instrument is made of, when to use each part and which file to take, and
 the [specimens](specimens/foundations.html) show every part at work.
@@ -26,7 +27,7 @@ the [specimens](specimens/foundations.html) show every part at work.
 | [icons/](icons/) | NCode's icons and a restyled Lucide subset: one SVG each, a sprite, path data and Lucide's license |
 | [logo/](logo/README.md) | The `{N}` and `{id}` logo kits, for every place a mark appears |
 | [mui/](mui/) | The values a Material UI theme takes, as data |
-| [vendoring/](vendoring/vendor-brand.mjs) | The script a consumer copies to vendor and check a release's files |
+| [vendoring/](vendoring/vendor-brand.mjs) | The script a consumer copies to verify, vendor and check a release's files |
 | [guidelines/](guidelines/README.md) | The guide |
 | [specimens/](specimens/) | Nine pages built on the generated files alone |
 | [src/](src/) | The sources: the tokens, the stylesheets, the fonts and the Lucide icons with their locks, NCode's icons, the marks' geometry |

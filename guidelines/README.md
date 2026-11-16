@@ -66,8 +66,8 @@ may change in any release ([the decision](../docs/decisions/1002-custom-properti
 
 ## Pin a Version
 
-Take files from one tagged release and check them against its `manifest.json`: copy
-[vendoring/vendor-brand.mjs](../vendoring/vendor-brand.mjs) into your repository, name the files you take in a
-`brand.lock.json`, and run it with `--update <version>` to vendor them and with `--check` in your gate to prove they
-did not drift. [Applying it](12-applying.md#vendor-a-release) has the steps, and
-[Versions and license](14-versions-and-license.md) says what a version number promises.
+Take files from one tagged release's archive, whose build provenance the GitHub CLI verifies, and check them against
+its `manifest.json`: copy [vendoring/vendor-brand.mjs](../vendoring/vendor-brand.mjs) into your repository, name the
+files you take in a `brand.lock.json`, and run it with `--update <version>` to verify and vendor them and with
+`--check` in your gate to prove they did not drift. [Applying it](12-applying.md#vendor-a-release) has the steps,
+and [Versions and license](14-versions-and-license.md) says what a version number promises.

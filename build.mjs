@@ -6,6 +6,10 @@
  *     node build.mjs            writes each file that is missing or would change   (npm run build)
  *     node build.mjs --check    writes nothing; lists each file that is missing, would change or would be removed,
  *                               and exits 1 when one would                         (npm run check)
+ *     node build.mjs --archive <folder>
+ *                               checks as --check does and, when no file would change, writes
+ *                               <folder>/brand-<version>.tar.gz: manifest.json
+ *                               and every file it lists, the archive .github/workflows/publish.yml attaches to a release
  *
  * Generated and committed: tokens/, css/, fonts/, brace/, icons/, logo/, mui/ and manifest.json. It removes a file in
  * those folders that it does not write. A PNG or ICO that already holds the pixels it draws is kept, so an image
@@ -16,10 +20,11 @@
  */
 import { createHash } from 'node:crypto';
 import { existsSync, lstatSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
-import { dirname, join, posix } from 'node:path';
+import { dirname, join, posix, resolve } from 'node:path';
 import process from 'node:process';
 import { fileURLToPath } from 'node:url';
 import { parseArgs } from 'node:util';
+import { tarGz } from './lib/archive.mjs';
 import { deriveSweep, fill, foundationsBlocks, guideBlocks, blockNames } from './lib/blocks.mjs';
 import { braceFiles } from './lib/brace.mjs';
 import { contrastReport } from './lib/contrast.mjs';
@@ -41,7 +46,7 @@ const WITH_BLOCKS = ['guidelines', 'specimens'];
 /** Hand-written files a release carries beside the generated folders. */
 const RELEASED_SOURCES = ['LICENSE.txt', 'COPYRIGHT.txt', 'TRADEMARKS.md', 'vendoring/vendor-brand.mjs'];
 
-const USAGE = 'Usage: node build.mjs [--check]';
+const USAGE = 'Usage: node build.mjs [--check | --archive <folder>]';
 const read = (path) => readFileSync(join(ROOT, path), 'utf8');
 const json = (value) => `${JSON.stringify(value, null, 2)}\n`;
 const sha256 = (bytes) => createHash('sha256').update(bytes).digest('hex');
@@ -224,16 +229,18 @@ function filesUnder(folder) {
 function main() {
   let values;
   try {
-    ({ values } = parseArgs({ options: { check: { type: 'boolean', default: false }, help: { type: 'boolean', short: 'h' } } }));
+    ({ values } = parseArgs({
+      options: { check: { type: 'boolean', default: false }, archive: { type: 'string' }, help: { type: 'boolean', short: 'h' } },
+    }));
   } catch (error) {
     console.error(`${error.message}\n${USAGE}`);
     return 2;
   }
   if (values.help) {
-    console.log(`${USAGE}\n\nWrites every generated file of NCode Brand from src/.\n  --check  write nothing; list each file that is missing, would change or would be removed, and exit 1 if any is`);
+    console.log(`${USAGE}\n\nWrites every generated file of NCode Brand from src/.\n  --check  write nothing; list each file that is missing, would change or would be removed, and exit 1 if any is\n  --archive <folder>  check as --check does; when no file would change, write <folder>/brand-<version>.tar.gz`);
     return 0;
   }
-  const check = values.check;
+  const check = values.check || values.archive !== undefined;
   // Before anything is read or written: no folder build.mjs writes in, and nothing in one, is a symbolic link.
   const existing = GENERATED.flatMap(filesUnder);
   for (const folder of WITH_BLOCKS) filesUnder(folder);
@@ -304,7 +311,18 @@ function main() {
   const files = changed === 1 ? '1 file' : `${changed} files`;
   if (check) console.log(changed ? `Missing, stale or extra: ${files}. Run npm run build and commit what it writes.` : 'No file would change.');
   else console.log(changed ? `Wrote or removed ${files}.` : 'No file changed.');
-  return (check && changed) || failing.length ? 1 : 0;
+  const code = (check && changed) || failing.length ? 1 : 0;
+  if (values.archive !== undefined && code === 0) {
+    // The files are read from disk: the check above proved they are what the sources give.
+    const archive = join(resolve(values.archive), `brand-${version}.tar.gz`);
+    mkdirSync(dirname(archive), { recursive: true });
+    writeFileSync(
+      archive,
+      tarGz(['manifest.json', ...Object.keys(manifestFiles)].map((path) => [path, readFileSync(join(ROOT, path))])),
+    );
+    console.log(`${archive}  written: manifest.json and ${Object.keys(manifestFiles).length} released files`);
+  }
+  return code;
 }
 
 try {

@@ -48,7 +48,13 @@ Until the first stable release, the [Unreleased] section describes the product a
 - `mui/instrument.json`: the palette, typography, shape, spacing, shadows, motion and breakpoints a Material UI theme
   takes, as plain data.
 - `manifest.json`, the size and SHA-256 of every released file, and `vendoring/vendor-brand.mjs`, which copies the
-  files a consumer's `brand.lock.json` names from a tagged release and checks them offline.
+  files a consumer's `brand.lock.json` names from a release's archive and checks them offline.
+- Each release's archive, `brand-<version>.tar.gz`: `manifest.json` and every file it lists, packed by
+  `node build.mjs --archive <folder>` from the tagged commit and attached to the GitHub release by
+  `.github/workflows/publish.yml` once a maintainer approves its `release` environment, with its build provenance
+  attestation and that attestation's bundle, `v<version>.intoto.jsonl`
+  ([#5](https://github.com/NCodeGroup/brand/issues/5),
+  [ADR-1009](docs/decisions/1009-a-release-carries-an-attested-archive-and-vendor-brand-verifies-it-before-writing.md)).
 - The guide in `guidelines/`: marks, color, typography, shape and the brace, layout, components, icons, motion, voice,
   accessibility, products and tenants, applying it, the token reference, and versions and license.
 - Nine specimen pages in `specimens/`, built on the generated files alone: the foundations, documentation, a landing
@@ -62,10 +68,15 @@ Until the first stable release, the [Unreleased] section describes the product a
 - `build.mjs` writes and removes real files inside the repository alone: it refuses a symbolic link in a folder it
   writes, and a font name in `src/fonts/fonts.lock.json` or an icon name in `src/icons/lucide.lock.json` with a
   path in it.
-- `vendoring/vendor-brand.mjs` verifies every file against the release's manifest, and checks every destination,
-  before it writes any. It refuses a release of another version and, once the lock pins a version, a file of it with
-  another hash. It reads an address over https alone, follows no redirect, and bounds each answer's size and time. It
-  refuses a lock path that leaves its folder, by its name or through a symbolic link.
+- `vendoring/vendor-brand.mjs --update` downloads a release's archive with the GitHub CLI and refuses it unless
+  `gh attestation verify` proves that `.github/workflows/publish.yml` built it for the release's tag on a
+  GitHub-hosted runner and the attestation names the archive's SHA-256. It refuses an archive that holds a file
+  the manifest does not list, lacks one it lists or holds one of another size or hash, and checks every
+  destination, before it writes any file. It refuses a release of another version and, once the lock pins a
+  version, a file of it with another hash. It bounds the archive to 64 MiB packed and 256 MiB unpacked, and refuses
+  a lock path that leaves its folder, by its name or through a symbolic link
+  ([#5](https://github.com/NCodeGroup/brand/issues/5),
+  [ADR-1009](docs/decisions/1009-a-release-carries-an-attested-archive-and-vendor-brand-verifies-it-before-writing.md)).
 - Every specimen page runs under `Content-Security-Policy: default-src 'self'`: no inline style, no `data:` address and
   no request to another origin.
 - `.github/workflows/pin-watch.yml` runs `tools/pin-watch.mjs` every Monday: for a Lucide or Fontsource release newer
