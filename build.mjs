@@ -10,11 +10,13 @@
  * Generated and committed: tokens/, css/, fonts/, brace/, logo/, mui/ and manifest.json. It removes a file in those
  * folders that it does not write. A PNG or ICO that already holds the pixels it draws is kept, so an image another
  * encoder wrote doesn't change while its picture stays the same, and manifest.json hashes the bytes that stay.
- * It also fails when a pairing of the contrast gate is below its floor. It needs Node.js alone: no packages.
+ * It also fails when a pairing of the contrast gate is below its floor, and when a block it writes has lost its
+ * markers. It writes and removes real files inside the repository alone: it refuses a symbolic link in a folder it
+ * writes, and a font name with a path in it. It needs Node.js alone: no packages.
  */
 import { createHash } from 'node:crypto';
-import { existsSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
-import { dirname, join, relative, sep } from 'node:path';
+import { existsSync, lstatSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
+import { dirname, join } from 'node:path';
 import process from 'node:process';
 import { fileURLToPath } from 'node:url';
 import { parseArgs } from 'node:util';
@@ -33,6 +35,8 @@ import { tokensCss, tokensStaticCss } from './lib/tokens-css.mjs';
 const ROOT = dirname(fileURLToPath(import.meta.url));
 /** The folders build.mjs owns: every file in them is generated. */
 const GENERATED = ['tokens', 'css', 'fonts', 'brace', 'logo', 'mui'];
+/** The folders whose files hold generated blocks. */
+const WITH_BLOCKS = ['guidelines', 'specimens'];
 /** Hand-written files a release carries beside the generated folders. */
 const RELEASED_SOURCES = ['LICENSE.txt', 'COPYRIGHT.txt', 'TRADEMARKS.md', 'vendoring/vendor-brand.mjs'];
 
@@ -40,7 +44,6 @@ const USAGE = 'Usage: node build.mjs [--check]';
 const read = (path) => readFileSync(join(ROOT, path), 'utf8');
 const json = (value) => `${JSON.stringify(value, null, 2)}\n`;
 const sha256 = (bytes) => createHash('sha256').update(bytes).digest('hex');
-const posix = (path) => path.split(sep).join('/');
 
 /** The header a stylesheet copied from src/css gets. */
 const cssHeader = (name, version) =>
@@ -66,6 +69,8 @@ function generate(model, version) {
   const locked = new Set(['fonts.lock.json']);
   for (const family of Object.values(lock.families)) {
     for (const [name, entry] of Object.entries(family.files)) {
+      // A plain file name: one with a path in it would read and write outside src/fonts and fonts/.
+      if (!/^[\w-][\w.-]*$/.test(name)) throw new Error(`fonts.lock.json names "${name}", which is not the name of a file in src/fonts`);
       const path = join(ROOT, 'src/fonts', name);
       if (!existsSync(path)) throw new Error(`src/fonts/${name} is missing: fonts.lock.json names it`);
       const bytes = readFileSync(path);
@@ -86,36 +91,61 @@ function generate(model, version) {
   return files;
 }
 
-/** The generated blocks of guidelines/ and specimens/, as the whole new text of each file that has one. */
+/**
+ * The generated blocks of guidelines/ and specimens/, as the whole new text of each file that has one. Every block
+ * build.mjs writes must be in a file, once: a block whose markers are gone would keep its old numbers unseen.
+ */
 function blocks(model, report) {
   const { deriveBrand } = createDerive(deriveData(model));
   const guide = guideBlocks(model, report, deriveSweep(model, deriveBrand, heldPairings(), resolveColors));
   const foundations = foundationsBlocks(model, report);
   const out = new Map();
-  const targets = [
-    ...readdirSync(join(ROOT, 'guidelines')).filter((n) => n.endsWith('.md')).sort().map((n) => [`guidelines/${n}`, guide, false]),
-    ['specimens/foundations.html', foundations.html, false],
-    ['specimens/foundations.css', foundations.css, true],
+  // The guide's pages share one set of blocks, and each specimen file has its own.
+  const places = [
+    [guide, 'a file of guidelines/', readdirSync(join(ROOT, 'guidelines')).filter((n) => n.endsWith('.md')).sort().map((n) => `guidelines/${n}`), false],
+    [foundations.html, 'specimens/foundations.html', ['specimens/foundations.html'], false],
+    [foundations.css, 'specimens/foundations.css', ['specimens/foundations.css'], true],
   ];
-  for (const [path, bodies, css] of targets) {
-    const current = read(path);
-    let next = current;
-    for (const name of blockNames(current)) {
-      if (!(name in bodies)) throw new Error(`${path} has a generated block "${name}" that build.mjs does not write`);
-      next = fill(next, name, bodies[name], { css });
+  for (const [bodies, place, paths, css] of places) {
+    const filled = new Set();
+    for (const path of paths) {
+      const current = read(path);
+      let next = current;
+      const names = blockNames(current);
+      for (const name of names) {
+        if (!(name in bodies)) throw new Error(`${path} has a generated block "${name}" that build.mjs does not write`);
+        // fill() fills the first copy of a block, so a second copy would keep its old numbers.
+        if (names.indexOf(name) !== names.lastIndexOf(name)) throw new Error(`${path} holds the generated block "${name}" twice`);
+        next = fill(next, name, bodies[name], { css });
+        filled.add(name);
+      }
+      out.set(path, { data: Buffer.from(next, 'utf8') });
     }
-    out.set(path, { data: Buffer.from(next, 'utf8') });
+    for (const name of Object.keys(bodies)) {
+      if (!filled.has(name)) throw new Error(`no generated block "${name}" in ${place}: build.mjs writes it, so restore its markers`);
+    }
   }
   return out;
 }
 
-/** Every file below a folder, as paths from the repository root. */
+/** The error for a symbolic link where build.mjs writes: it would take a write or a removal outside the repository. */
+const linked = (path) => new Error(`${path} is a symbolic link: build.mjs writes and removes only real files inside the repository`);
+
+/**
+ * Every file below a folder, as paths from the repository root. It refuses a symbolic link, the folder's own
+ * included, instead of following it, as readdirSync's recursive option would.
+ */
 function filesUnder(folder) {
-  const base = join(ROOT, folder);
-  if (!existsSync(base)) return [];
-  return readdirSync(base, { recursive: true, withFileTypes: true })
-    .filter((entry) => entry.isFile())
-    .map((entry) => posix(relative(ROOT, join(entry.parentPath, entry.name))));
+  const out = [];
+  const visit = (path) => {
+    const stat = lstatSync(join(ROOT, path), { throwIfNoEntry: false });
+    if (!stat) return;
+    if (stat.isSymbolicLink()) throw linked(path);
+    if (!stat.isDirectory()) return out.push(path);
+    for (const name of readdirSync(join(ROOT, path)).sort()) visit(`${path}/${name}`);
+  };
+  visit(folder);
+  return out;
 }
 
 function main() {
@@ -131,11 +161,17 @@ function main() {
     return 0;
   }
   const check = values.check;
+  // Before anything is read or written: no folder build.mjs writes in, and nothing in one, is a symbolic link.
+  const existing = GENERATED.flatMap(filesUnder);
+  for (const folder of WITH_BLOCKS) filesUnder(folder);
+  if (lstatSync(join(ROOT, 'manifest.json'), { throwIfNoEntry: false })?.isSymbolicLink()) throw linked('manifest.json');
+
   const version = JSON.parse(read('package.json')).version;
   const model = buildModel(JSON.parse(read('src/tokens.source.json')));
   const report = contrastReport(model);
 
-  const targets = new Map([...generate(model, version), ...blocks(model, report)]);
+  const filled = blocks(model, report); // first, so a lost block fails before the logo kit is drawn
+  const targets = new Map([...generate(model, version), ...filled]);
   const released = new Map(); // path -> the bytes a release carries after this run
   let changed = 0;
   const lines = [];
@@ -154,7 +190,7 @@ function main() {
     lines.push(`${path}  ${check ? (exists ? 'would change' : 'missing') : 'written'}`);
   }
 
-  const stale = GENERATED.flatMap(filesUnder).filter((path) => !targets.has(path));
+  const stale = existing.filter((path) => !targets.has(path));
   for (const path of stale) {
     changed++;
     if (!check) rmSync(join(ROOT, path));

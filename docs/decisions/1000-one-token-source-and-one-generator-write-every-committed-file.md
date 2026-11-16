@@ -18,7 +18,9 @@ Every token is written once, in `src/tokens.source.json`. Everything else a rele
 sources in `src/` by one Node.js script, `build.mjs`, and committed. `npm run build` writes; `npm run check` writes
 nothing and fails, naming each file, when a committed file is missing, differs from what the sources give, or is a file
 the generator does not write. The tables of the guide and of `specimens/foundations.html` are generated blocks inside
-hand-written files, between `generated:` markers. The generator and its tests use Node.js built-ins alone: the
+hand-written files, between `generated:` markers; the build and the check fail, naming the block, when a block the
+generator writes is in no file or twice in one. The generator writes and removes real files inside the repository
+alone, and refuses a symbolic link where it writes. The generator and its tests use Node.js built-ins alone: the
 repository has no npm dependency.
 
 - Edit `src/`, `guidelines/` and `specimens/`, outside the generated blocks; never a file in `tokens/`, `css/`,
