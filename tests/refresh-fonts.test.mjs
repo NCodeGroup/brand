@@ -127,7 +127,7 @@ describe('refreshFonts', () => {
     const none = [];
     await assert.rejects(
       refreshFonts({ root: outside.root, fetch: async (...args) => none.push(args) }),
-      /registry\.npmjs\.org/,
+      /^Error: @fontsource-variable\/test-sans 1\.0\.0: the tarball address https:\/\/example\.com\/test-sans-1\.0\.0\.tgz is not a \.tgz under https:\/\/registry\.npmjs\.org\/$/,
     );
     assert.equal(none.length, 0);
   });
