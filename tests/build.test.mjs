@@ -5,9 +5,11 @@
 // else, so the tests do not depend on their order.
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
-import { cpSync, existsSync, lstatSync, mkdirSync, readFileSync, readdirSync, readlinkSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
+import { cpSync, existsSync, lstatSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, readlinkSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
 import { basename, dirname, join } from 'node:path';
 import { after, afterEach, before, describe, test } from 'node:test';
+import { tarGz } from '../lib/archive.mjs';
 import { crc32, decodePng, truecolorPng } from '../lib/png.mjs';
 import { ROOT, copyRepository, runNode } from './helpers.mjs';
 
@@ -117,6 +119,31 @@ describe('build.mjs', () => {
       assert.equal(again.code, 0, again.output);
     } finally {
       unspoil();
+    }
+  });
+
+  test('--archive writes brand-<version>.tar.gz of manifest.json and every file it lists once the check passes, and no archive when it fails', () => {
+    // The folder is outside the copy, so the snapshot after each test holds.
+    const out = mkdtempSync(join(tmpdir(), 'ncode-brand-archive-'));
+    try {
+      const { version, files } = JSON.parse(readFileSync(path('manifest.json'), 'utf8'));
+      const archive = join(out, `brand-${version}.tar.gz`);
+      let result = runNode(repo.dir, ['build.mjs', '--archive', out]);
+      assert.equal(result.code, 0, result.output);
+      const entries = ['manifest.json', ...Object.keys(files)].map((name) => [name, readFileSync(path(name))]);
+      assert.deepEqual(readFileSync(archive), tarGz(entries));
+      rmSync(archive);
+      try {
+        writeFileSync(path('tokens/tokens.css'), '/* edited */\n');
+        result = runNode(repo.dir, ['build.mjs', '--archive', out]);
+        assert.equal(result.code, 1, result.output);
+        assert.match(result.output, /^tokens\/tokens\.css {2}would change$/m);
+        assert.ok(!existsSync(archive));
+      } finally {
+        restore('tokens/tokens.css');
+      }
+    } finally {
+      rmSync(out, { recursive: true, force: true });
     }
   });
 
