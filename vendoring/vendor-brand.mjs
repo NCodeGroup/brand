@@ -22,7 +22,7 @@
 // Add a file by adding its entry with an empty sha256, then run --update.
 import { spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
-import { existsSync, lstatSync, mkdirSync, mkdtempSync, readFileSync, realpathSync, renameSync, rmSync, statSync, writeFileSync } from 'node:fs';
+import { closeSync, existsSync, fstatSync, lstatSync, mkdirSync, mkdtempSync, openSync, readFileSync, realpathSync, renameSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, isAbsolute, join, normalize, resolve, sep } from 'node:path';
 import process from 'node:process';
@@ -161,8 +161,16 @@ async function main() {
     try {
       const archive = values.from ? resolve(values.from) : join(scratch, name);
       if (!values.from) gh(['release', 'download', tag, '--repo', REPO, '--pattern', name, '--output', archive]);
-      if (statSync(archive).size > ARCHIVE_LIMIT) throw new Error(`${name}: the archive is larger than ${ARCHIVE_LIMIT} bytes`);
-      const packed = readFileSync(archive);
+      // One descriptor for the size check and the read, so both see the same file.
+      const descriptor = openSync(archive, 'r');
+      let packed;
+      try {
+        if (fstatSync(descriptor).size > ARCHIVE_LIMIT) throw new Error(`${name}: the archive is larger than ${ARCHIVE_LIMIT} bytes`);
+        packed = readFileSync(descriptor);
+      } finally {
+        closeSync(descriptor);
+      }
+      if (packed.length > ARCHIVE_LIMIT) throw new Error(`${name}: the archive is larger than ${ARCHIVE_LIMIT} bytes`);
       const digest = sha256(packed);
       const verified = JSON.parse(gh([
         'attestation', 'verify', archive, '--repo', REPO, '--signer-workflow', SIGNER, '--source-ref', `refs/tags/${tag}`,
