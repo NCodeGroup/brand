@@ -1,6 +1,6 @@
 # 1000. One token source, and one generator writes every committed file
 
-- **Status:** Accepted
+- **Status:** Accepted (amended by 1010)
 - **Date:** 2026-11-16
 - **Deciders:** NCode Group
 
