@@ -31,7 +31,7 @@ const releaseEntries = (changes = {}) =>
 describe('manifest.json', () => {
   test('lists every file of the generated folders and the released sources, and nothing else', () => {
     const expected = [
-      ...['tokens', 'css', 'fonts', 'brace', 'icons', 'logo', 'mui', 'syntax'].flatMap(filesUnder),
+      ...['tokens', 'css', 'fonts', 'brace', 'icons', 'logo', 'mui', 'syntax', 'email'].flatMap(filesUnder),
       'LICENSE.txt', 'COPYRIGHT.txt', 'TRADEMARKS.md', 'vendoring/vendor-brand.mjs',
     ].sort();
     assert.deepEqual(Object.keys(manifest.files), expected);

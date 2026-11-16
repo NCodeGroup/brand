@@ -47,6 +47,10 @@
       "bytes": 6266,
       "sha256": "f5244cbcc3d2ccc4bba065788e91860574772478a9bd6e01feedee66ae2b8a06"
     },
+    "email/instrument.html": {
+      "bytes": 3814,
+      "sha256": "b571dbd279d848a75c919f7f7bd8e02e946a174a482e68c779598da374e8f537"
+    },
     "fonts/OFL-Instrument-Sans.txt": {
       "bytes": 4538,
       "sha256": "c27a3c53c3beed7f5c26853afa15991478ff7145d3754a36b0382f84e10c0d03"
