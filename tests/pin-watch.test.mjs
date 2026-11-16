@@ -144,6 +144,7 @@ test('issueText names two font families in the title and links each package on n
     ),
   );
   assert.ok(body.includes('node tools/shoot.mjs'));
+  assert.ok(body.includes('node tools/refresh-fonts.mjs --pin'));
   const three = behind.concat(behind[0]);
   assert.match(issueText(watch, three).title, /^Update Instrument Sans to 5\.4\.0, Martian Mono to 5\.4\.0 and /);
 });
