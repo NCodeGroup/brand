@@ -1,11 +1,13 @@
-# NCode Logo Kit
+# NCode Logo Kits
 
-`ncode/` holds the NCode mark, `{N}`: N for NCode, inside the curly braces of code, as vector masters and as the PNG
-and ICO files each place it appears in asks for. `ncode/outlines.json` holds the same drawing as path data, for a page
-or a component that draws the mark inline. [The guide's Marks section](../../guidelines/01-marks.md) says which file is
-for what, and how to use them.
+`ncode/` holds the NCode mark, `{N}`: N for NCode, inside the curly braces of code. `identity/` holds NCode Identity's
+mark, `{id}`: the letters i and d between the same braces. Each holds its mark as vector masters and as the PNG and ICO
+files each place it appears in asks for, and `outlines.json`, the same drawing as path data, for a page or a component
+that draws the mark inline. [The guide's Marks section](../../guidelines/01-marks.md) says which file is for what, and
+how to use them.
 
-build.mjs draws every file here from [src/logo/ncode.json](ncode.json) and the blue ramp of
+build.mjs draws `ncode/` from [src/logo/ncode.json](ncode.json) and `identity/` from
+[src/logo/identity.json](identity.json), in the colors of the blue ramp of
 [src/tokens.source.json](../tokens.source.json). Never edit a file here: change the source and run
 `npm run build`.
 
@@ -15,8 +17,10 @@ The marks are not under this repository's Apache License 2.0. They are trademark
 copyright NCode Group, all rights reserved. [TRADEMARKS.md](../../TRADEMARKS.md) says how you may use them: unmodified,
 to refer to an NCode project, without asking.
 
-NCodeGroup/project-template publishes a copy of this kit in its `brand/` folder, from v0.82.0 on, under its MIT
-License, and that copy stays under it; [TRADEMARKS.md](../../TRADEMARKS.md) lists every copy under another license.
+NCodeGroup/project-template publishes a copy of the `{N}` kit in its `brand/` folder, from v0.82.0 on, under its MIT
+License, and NCodeGroup/identity publishes a copy of the `{id}` kit in its `brand/` folder, under its Apache License
+2.0. Each copy stays under its license; [TRADEMARKS.md](../../TRADEMARKS.md) lists every copy under another license.
 
-The wordmark is Inter Display Medium, converted to outlines, so no file here needs or contains the font. Inter is
-copyright The Inter Project Authors and licensed under the SIL Open Font License 1.1.
+The wordmarks are Inter Display Medium, and the descriptor on the `{id}` link previews is Inter Display Regular,
+converted to outlines, so no file here needs or contains the font. Inter is copyright The Inter Project Authors and
+licensed under the SIL Open Font License 1.1.
