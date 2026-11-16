@@ -444,8 +444,8 @@
       "sha256": "99f914c24f711d74ec06ae5da3884f0e6ae2ebdcd8a0d071d06274cde13aee6a"
     },
     "mui/instrument.json": {
-      "bytes": 19109,
-      "sha256": "dc119d2d8d6fb6c69b99319485cd3033ea6db5ac929cb79159ec389eb1633a6e"
+      "bytes": 19272,
+      "sha256": "b05157a1715f9be2ac43996a13c78cfb8525837c265a9c3889f1f2970be3968e"
     },
     "tokens/derive.d.mts": {
       "bytes": 3880,

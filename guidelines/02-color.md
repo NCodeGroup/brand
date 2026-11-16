@@ -95,6 +95,7 @@ requirement; [Accessibility](10-accessibility.md) says what is measured and why.
 | Lit row: keywords | 1 | 4.5 | 4.92 / 4.92 | 4.80 / 4.80 | 4.80 / 4.80 |
 | Lit row and memory cells: literals | 1 | 4.5 | 7.54 / 7.54 | 7.13 / 7.13 | 6.85 / 6.85 |
 | Focus ring on a screen | 2 | 3 | 4.92 / 4.92 | 4.80 / 4.80 | 4.80 / 4.80 |
+| Material UI's secondary as text: the screen, lit in dark | 6 | 4.5 | 12.64 / 5.86 | 12.14 / 5.68 | 11.92 / 5.61 |
 | Boundary plate: tenant | 1 | 4.5 | 6.10 / 6.10 | 5.95 / 5.95 | 5.95 / 5.95 |
 | Boundary plate: team | 1 | 4.5 | 15.40 / 15.40 | 14.79 / 14.79 | 14.52 / 14.52 |
 | Boundary plate: platform; hazard band | 1 | 4.5 | 9.27 / 9.27 |  |  |
@@ -122,5 +123,5 @@ requirement; [Accessibility](10-accessibility.md) says what is measured and why.
 | Info: alert text | 1 | 4.5 | 16.49 / 15.83 |  |  |
 | Danger: key, hover | 1 | 4.5 | 8.12 / 9.73 |  |  |
 
-1036 measurements of 126 pairings: 0 below the requirement.
+1102 measurements of 132 pairings: 0 below the requirement.
 <!-- /generated:contrast -->

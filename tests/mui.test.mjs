@@ -1,8 +1,12 @@
 // mui/instrument.json, against the tokens it is made from (tokens/tokens.mjs) rather than against its own generator:
-// each variant carries its type role, each elevation is one of the depths in order, and each length is its token in
-// pixels.
+// each variant carries its type role, each elevation is one of the depths in order, each length is its token in
+// pixels, and the secondary color reads as text on the page of either scheme.
 import assert from 'node:assert/strict';
 import { describe, test } from 'node:test';
+import { contrast } from '../lib/color.mjs';
+import { PAIRINGS, TEXT } from '../lib/contrast.mjs';
+import { heldPairings } from '../lib/derive.mjs';
+import { SECONDARY } from '../lib/mui.mjs';
 import * as tokens from '../tokens/tokens.mjs';
 import { readJson } from './helpers.mjs';
 
@@ -117,13 +121,48 @@ describe('the palette', () => {
       assert.equal(palette.mode, scheme);
       assert.deepEqual(palette.instrument, c);
       assert.deepEqual(palette.primary, { main: c.primary, dark: c['primary-hover'], contrastText: c['on-primary'] });
-      // The secondary color is what a tenant's secondary color drives: the screen, with its ink.
-      assert.deepEqual(palette.secondary, { main: c.screen, contrastText: c['on-screen'] });
+      const secondary = SECONDARY[scheme];
+      assert.deepEqual(palette.secondary, { main: c[secondary.main], dark: c[secondary.dark], contrastText: c[secondary.contrastText] });
       assert.deepEqual(palette.error, { main: c.danger, dark: c['danger-hover'], contrastText: c['on-danger'] });
       for (const status of ['warning', 'info', 'success']) assert.deepEqual(palette[status], { main: c[status], contrastText: c[`on-${status}`] });
       assert.deepEqual(palette.background, { default: c.page, paper: c.surface });
       assert.deepEqual(palette.text, { primary: c.text, secondary: c['text-secondary'], disabled: c['text-disabled'] });
       assert.equal(palette.divider, c.border);
+    });
+  }
+});
+
+describe('the secondary color', () => {
+  // Material UI 9.5 paints a palette color's main as text on the page and its sheets: Button's text and outlined
+  // variants, Typography, a checked Checkbox, Switch, IconButton and the Tabs indicator. A contained Button, Fab, Chip
+  // and PaginationItem put contrastText on main, and on dark when touched (read from its npm package).
+  const plates = ['page', 'surface', 'surface-raised'];
+
+  for (const scheme of SCHEMES) {
+    test(`${scheme}: main reaches 4.5 to 1 on the page and its sheets, and contrastText on main and on dark`, () => {
+      const { secondary, background, instrument } = mui.palette[scheme];
+      const grounds = { 'background.default': background.default, 'background.paper': background.paper, 'surface-raised': instrument['surface-raised'] };
+      for (const [name, ground] of Object.entries(grounds)) {
+        const ratio = contrast(secondary.main, ground);
+        assert.ok(ratio >= TEXT, `main ${secondary.main} on ${name} ${ground} is ${ratio.toFixed(2)}`);
+      }
+      for (const shade of ['main', 'dark']) {
+        const ratio = contrast(secondary.contrastText, secondary[shade]);
+        assert.ok(ratio >= TEXT, `contrastText ${secondary.contrastText} on ${shade} ${secondary[shade]} is ${ratio.toFixed(2)}`);
+      }
+    });
+
+    test(`${scheme}: the gate measures each of those pairings for every brand, and the derivation holds each for any color`, () => {
+      // So a tenant's palette, made of the same roles from tokens/derive.mjs, reads as well as NCode's own.
+      const roles = SECONDARY[scheme];
+      const pairs = [...plates.map((bg) => [roles.main, bg]), [roles.contrastText, roles.main], [roles.contrastText, roles.dark]];
+      for (const [a, b] of pairs) {
+        const either = (fg, bg) => (fg === a && bg === b) || (fg === b && bg === a);
+        const gate = PAIRINGS.filter((p) => either(p.fg, p.bg) && p.need >= TEXT && p.brand && p.anyColor && p.themes.includes(scheme));
+        assert.ok(gate.length, `the gate measures ${a} on ${b} in the ${scheme} theme for every brand`);
+        const held = heldPairings().filter((h) => h.fg.length === 1 && either(h.fg[0], h.bg) && h.floor >= TEXT && h.themes.includes(scheme));
+        assert.ok(held.length, `the derivation holds ${a} on ${b} in the ${scheme} theme`);
+      }
     });
   }
 });

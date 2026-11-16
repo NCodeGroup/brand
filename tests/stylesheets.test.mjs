@@ -101,7 +101,9 @@ describe('Starlight', () => {
   test('every pair it paints is a pairing the gate measures for every brand, at its floor or above', () => {
     for (const [fg, bg, need] of PAINTED) {
       const [a, b] = [role(fg), role(bg)];
-      const measured = PAIRINGS.find((p) => ((p.fg === a && p.bg === b) || (p.fg === b && p.bg === a)) && p.need >= need && p.anyColor);
+      // One set of declarations serves both themes, so the pairing must be measured in both.
+      const both = (p) => p.themes.includes('light') && p.themes.includes('dark');
+      const measured = PAIRINGS.find((p) => ((p.fg === a && p.bg === b) || (p.fg === b && p.bg === a)) && p.need >= need && p.anyColor && both(p));
       assert.ok(measured, `${fg} (${a}) on ${bg} (${b}) is no pairing the gate measures at ${need} to 1`);
       assert.ok(measured.brand || ![a, b].some((name) => m.colorByName.get(name).brand), `${a} on ${b} is measured for NCode Blue alone`);
     }

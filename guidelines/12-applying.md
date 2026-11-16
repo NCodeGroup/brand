@@ -42,10 +42,16 @@ Take `mui/instrument.json`, `tokens/tokens.mjs` with `tokens.d.mts`, `tokens/der
 stays in the application, under its own type check and tests.
 
 - `mui/instrument.json` holds the palette of each scheme for NCode's own brand, with every color role under
-  `instrument` and `secondary` set to the screen, as a tenant's secondary color drives it; the typography variants,
-  each set in the type role that names its use, while one it does not name, such as `caption`, keeps Material UI's
-  size; the radius, the space scale and Material UI's spacing unit of 8; the 25 elevations as no shadow and four of
-  Instrument's depths: flush, raised, floating and overlay; the durations, the easings and the breakpoints.
+  `instrument`; the typography variants, each set in the type role that names its use, while one it does not name,
+  such as `caption`, keeps Material UI's size; the radius, the space scale and Material UI's spacing unit of 8; the 25
+  elevations as no shadow and four of Instrument's depths: flush, raised, floating and overlay; the durations, the
+  easings and the breakpoints.
+- The palette's `secondary` takes the colors a tenant's secondary color drives, chosen for how Material UI paints them:
+  `main` as text on the page and its sheets, in a text or outlined key, a checkbox, a switch and a tab's indicator, and
+  `contrastText` on `main` and on `dark`, a contained key at rest and touched. In the light theme `main` is the screen,
+  `contrastText` is `on-screen` and `dark` is `screen-raised`. In the dark theme the screen is about as dark as the
+  page, so `main` is `screen-lit`, `contrastText` is the screen and `dark` is `on-screen-secondary`. The contrast gate
+  measures each of these pairings in its theme for every brand, and `tokens/derive.mjs` holds them for any color.
 - For a tenant, call `deriveBrand(primaryColor, secondaryColor)` from `tokens/derive.mjs` and take its `light` and
   `dark` colors for the primary, screen and scope roles. It never throws: a primary it cannot read falls back to NCode
   Blue and a secondary to the primary, and `adjusted` names any color it moved to reach its contrast floor.

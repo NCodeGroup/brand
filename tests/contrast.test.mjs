@@ -18,13 +18,24 @@ describe('the contrast gate', () => {
     assert.deepEqual(failures, []);
   });
 
-  test('it measures every pairing for NCode Blue, and every brand pairing for each tenant color, in both themes', () => {
-    const brandPairs = PAIRINGS.filter((p) => p.brand);
-    const stressPairs = brandPairs.filter((p) => p.anyColor);
+  test('it measures every pairing for NCode Blue, and every brand pairing for each tenant color, in the themes that paint it', () => {
     const tenants = BRANDS.filter((b) => b.primary && !b.stress).length;
     const stress = BRANDS.filter((b) => b.stress).length;
-    assert.equal(report.measured, 2 * (PAIRINGS.length + tenants * brandPairs.length + stress * stressPairs.length));
+    const times = (p) => p.themes.length * (1 + (p.brand ? tenants : 0) + (p.brand && p.anyColor ? stress : 0));
+    assert.equal(report.measured, PAIRINGS.reduce((n, p) => n + times(p), 0));
     assert.ok(PAIRINGS.every((p) => p.need === TEXT || p.need === UI));
+    assert.ok(PAIRINGS.every((p) => p.themes.length && p.themes.every((t) => t === 'light' || t === 'dark')));
+    // A pairing painted in one theme only is measured there alone: Material UI's secondary is the screen on a light page.
+    const secondary = (theme) => report.rows.filter((r) => r.brand === 'NCode Blue' && r.theme === theme && r.what.startsWith("Material UI's secondary"));
+    assert.deepEqual(secondary('light').map((r) => r.fg), ['screen', 'screen', 'screen']);
+    assert.deepEqual(secondary('dark').map((r) => r.fg), ['screen-lit', 'screen-lit', 'screen-lit']);
+  });
+
+  test('every use is measured in both themes, so each row of the guide\'s table has a light and a dark ratio', () => {
+    for (const brand of BRANDS) {
+      const uses = (theme) => [...new Set(report.rows.filter((r) => r.brand === brand.name && r.theme === theme).map((r) => r.what))].sort();
+      assert.deepEqual(uses('light'), uses('dark'), brand.name);
+    }
   });
 
   test('NCode Blue as text on the page passes in both themes, with the ratios the guide shows', () => {
