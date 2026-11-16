@@ -41,15 +41,19 @@ describe('manifest.json', () => {
 describe('the logo kit', () => {
   test('every file keeps within the limit of the platform it is for', () => {
     const limit = { nuget: LIMITS.nuget, github: LIMITS.github, gitlab: LIMITS.gitlab, myapps: LIMITS.myapps };
-    for (const [folder, max] of Object.entries(limit)) {
-      for (const path of filesUnder(`logo/ncode/${folder}`)) assert.ok(statSync(join(ROOT, path)).size <= max, `${path} is over ${max} bytes`);
+    for (const kit of ['ncode', 'identity']) {
+      for (const [folder, max] of Object.entries(limit)) {
+        for (const path of filesUnder(`logo/${kit}/${folder}`)) assert.ok(statSync(join(ROOT, path)).size <= max, `${path} is over ${max} bytes`);
+      }
     }
   });
 
   test('the NuGet tile is the 128-pixel blue tile NuGet recommends', () => {
-    const png = readFileSync(join(ROOT, 'logo/ncode/nuget/ncode-nuget-tile-blue.png'));
-    assert.equal(png.readUInt32BE(16), 128);
-    assert.equal(png.readUInt32BE(20), 128);
+    for (const path of ['logo/ncode/nuget/ncode-nuget-tile-blue.png', 'logo/identity/nuget/ncode-identity-nuget-tile-blue.png']) {
+      const png = readFileSync(join(ROOT, path));
+      assert.equal(png.readUInt32BE(16), 128, path);
+      assert.equal(png.readUInt32BE(20), 128, path);
+    }
   });
 });
 
