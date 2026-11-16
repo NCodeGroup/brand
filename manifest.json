@@ -36,8 +36,8 @@
       "sha256": "b9bc887f783792a41089cac0a49b5cb314c2f9969aa8dd92c91accd225d5ea3e"
     },
     "css/base.css": {
-      "bytes": 95462,
-      "sha256": "e81856b99a22956fb27a15396ef1f1d1b27d1dbb5df38d7e8da04926126c8c24"
+      "bytes": 95484,
+      "sha256": "bc4ee969837a2ba17fd9a5535d178ea1c33206e895ae3ec8a338036d30e70ebf"
     },
     "css/fonts.css": {
       "bytes": 2615,
@@ -460,28 +460,28 @@
       "sha256": "24f642c01ce152cb3fee1e8925437820b414d70659e586ba1a00e8d4aa3f6c19"
     },
     "tokens/tokens.css": {
-      "bytes": 34302,
-      "sha256": "af2b84f1ea8b54320d03816b83cefb1c46ffa4edbcd5b220ca07214c37faa38f"
+      "bytes": 34311,
+      "sha256": "855b6a2ca2039c1b386046045e410d2c858355c80089a3524d309932429fe9bd"
     },
     "tokens/tokens.d.mts": {
-      "bytes": 25648,
-      "sha256": "bc077cc60f56d2f0dee3f0276ec40f8119930cf25ededc615a7ac645ed78527c"
+      "bytes": 25657,
+      "sha256": "b7806cf1fb9d0b3493d515385898d7970d5ec45eb6841827df54a279dee81798"
     },
     "tokens/tokens.json": {
-      "bytes": 99807,
-      "sha256": "3d15f9d5f41235a510c8c50dd4bc3ac90221b156895e20fc77d2dc91070be6dc"
+      "bytes": 99816,
+      "sha256": "25ca46560270a6ac50e00a8c8e3133247e68c7f3a8b3ac8ac65a5dd4f35abfe8"
     },
     "tokens/tokens.mjs": {
       "bytes": 22282,
       "sha256": "9fe36d6dff38a02fbfeb0f944e87b1627a56773e6e826bbf134ef6bf83769e56"
     },
     "tokens/tokens.static.css": {
-      "bytes": 22453,
-      "sha256": "8061b531584c44dfbea316cacace83d47d2a38c9479cce83cd0a0fb446a87216"
+      "bytes": 22462,
+      "sha256": "965507c8259a0578ac71fdce228a6a2720ce95ac01f74f396156f13c4a2e18ea"
     },
     "vendoring/vendor-brand.mjs": {
-      "bytes": 9071,
-      "sha256": "59ca6e4827fd25b0657f8ab96c9ed76319e1251de2cb93b50d1fa8a272546ead"
+      "bytes": 9108,
+      "sha256": "f6146480fafefe32d31cc3ff921e7d0ecc18d5baaca1791297a7d31a3bf803db"
     }
   }
 }

@@ -192,9 +192,9 @@
     "breakpoint": {
       "$tier": "semantic", "$css": "breakpoint", "$type": "dimension", "$unit": "rem",
       "$note": "Media queries cannot read custom properties, so base.css repeats these numbers; they are exported for a Material UI theme's breakpoints.",
-      "phone": { "value": 40, "note": "640px: below it tables become lists, dialogs become sheets and navigation moves into a sheet" },
-      "tablet": { "value": 68, "note": "1088px: below it the console's navigation moves into a sheet" },
-      "desk": { "value": 80, "note": "1280px: below it documentation drops its page index" }
+      "phone": { "value": 40, "note": "at 640px and below tables become lists, dialogs become sheets and navigation moves into a sheet" },
+      "tablet": { "value": 68, "note": "at 1088px and below the console's navigation moves into a sheet" },
+      "desk": { "value": 80, "note": "at 1280px and below documentation drops its page index" }
     },
 
     "motion": {

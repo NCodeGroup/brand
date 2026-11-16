@@ -252,9 +252,9 @@ Public.
 
 | Custom property | Value | What it is |
 |---|---|---|
-| `--nc-breakpoint-phone` | `40rem` | 640px: below it tables become lists, dialogs become sheets and navigation moves into a sheet |
-| `--nc-breakpoint-tablet` | `68rem` | 1088px: below it the console's navigation moves into a sheet |
-| `--nc-breakpoint-desk` | `80rem` | 1280px: below it documentation drops its page index |
+| `--nc-breakpoint-phone` | `40rem` | at 640px and below tables become lists, dialogs become sheets and navigation moves into a sheet |
+| `--nc-breakpoint-tablet` | `68rem` | at 1088px and below the console's navigation moves into a sheet |
+| `--nc-breakpoint-desk` | `80rem` | at 1280px and below documentation drops its page index |
 
 ### Motion
 

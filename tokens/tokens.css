@@ -160,9 +160,9 @@
   --nc-bleed: 1.25rem; /* how far a listing or a table starts before the reading column, so its content lines up with the text */
 
   /* Media queries cannot read custom properties, so base.css repeats these numbers; they are exported for a Material UI theme's breakpoints. */
-  --nc-breakpoint-phone: 40rem; /* 640px: below it tables become lists, dialogs become sheets and navigation moves into a sheet */
-  --nc-breakpoint-tablet: 68rem; /* 1088px: below it the console's navigation moves into a sheet */
-  --nc-breakpoint-desk: 80rem; /* 1280px: below it documentation drops its page index */
+  --nc-breakpoint-phone: 40rem; /* at 640px and below tables become lists, dialogs become sheets and navigation moves into a sheet */
+  --nc-breakpoint-tablet: 68rem; /* at 1088px and below the console's navigation moves into a sheet */
+  --nc-breakpoint-desk: 80rem; /* at 1280px and below documentation drops its page index */
 
   --nc-dur-press: 70ms; /* a key going down */
   --nc-dur-quick: 120ms; /* hover, a change of color */

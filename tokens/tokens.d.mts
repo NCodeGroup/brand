@@ -471,11 +471,11 @@ export declare const size: {
 
 /** Where a layout changes. */
 export declare const breakpoint: {
-  /** 640px: below it tables become lists, dialogs become sheets and navigation moves into a sheet */
+  /** at 640px and below tables become lists, dialogs become sheets and navigation moves into a sheet */
   readonly phone: string;
-  /** 1088px: below it the console's navigation moves into a sheet */
+  /** at 1088px and below the console's navigation moves into a sheet */
   readonly tablet: string;
-  /** 1280px: below it documentation drops its page index */
+  /** at 1280px and below documentation drops its page index */
   readonly desk: string;
 };
 

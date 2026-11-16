@@ -9,9 +9,9 @@
 //       Reads that release's manifest.json, refuses it unless it is that version, takes each file the lock names,
 //       refuses a file whose SHA-256 is not the manifest's, then writes the files and the lock. --from defaults to
 //       https://raw.githubusercontent.com/NCodeGroup/brand/v<version>, the release's tag. An address is read over
-//       https alone: a redirect, an answer larger than the manifest gives the file and one slower than a minute are
-//       refused. A release never changes, so when the lock already pins that version, a file whose SHA-256 is not the
-//       pinned one is refused too.
+//       https alone: a redirect, an answer larger than the manifest gives the file (manifest.json itself at most
+//       1 MiB) and one slower than a minute are refused. A release never changes, so when the lock already pins that
+//       version, a file whose SHA-256 is not the pinned one is refused too.
 //   --lock <file>  the lock to use, brand.lock.json by default. Vendored paths are relative to its folder, and nothing
 //       is written outside it, by a path or through a symbolic link.
 //

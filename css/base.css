@@ -919,7 +919,7 @@ textarea.well[wrap="off"] { white-space: pre; overflow-x: auto; }
 .secret { display: flex; align-items: center; gap: var(--nc-space-3); padding: 0.5rem 0.5rem 0.5rem 1rem; }
 .screen .secret__value { flex: 1 1 auto; min-width: 0; padding: 0; border: 0; background: none; color: var(--nc-color-screen-hot); font-size: var(--nc-text-sm); line-height: 1.6; white-space: normal; word-break: break-all; }
 
-/* ---- the console below 1088px: the selector, the way out and the session move into a sheet */
+/* ---- the console at 1088px and below: the selector, the way out and the session move into a sheet */
 
 @media (max-width: 68rem) {
   .scope { grid-template-columns: minmax(0, 1fr); }
@@ -974,7 +974,7 @@ textarea.well[wrap="off"] { white-space: pre; overflow-x: auto; }
   .pagehead__actions .key { display: flex; }
   /* Every control takes a full touch target, and 16px type so a phone does not zoom into a field. */
   .console .key:not(.key--sm), .console .well:not(.well--sm) { min-height: var(--nc-control-lg); }
-  .console .well:not(.well--sm), .console textarea.well { font-size: var(--nc-text-base); }
+  .console .well:not(.well--sm), .console textarea.well:not(.well--sm) { font-size: var(--nc-text-base); }
 
   /*
    * A table becomes a list: each row is two lines, the ID and its keys, then what the other columns said.

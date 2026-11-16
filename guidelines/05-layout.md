@@ -34,7 +34,7 @@ workspace's height. A table's unused rows keep the row rhythm, ruled but empty.
 Media queries cannot read custom properties, so `css/base.css` repeats these numbers, and `tokens/tokens.mjs` and
 `mui/instrument.json` export them for a theme's breakpoints.
 
-| Below | Token | What changes |
+| At and below | Token | What changes |
 |---|---|---|
 | 1280 px | `--nc-breakpoint-desk` | Documentation drops its page index |
 | 1088 px | `--nc-breakpoint-tablet` | The console's selector, the way out and the session move into a sheet |

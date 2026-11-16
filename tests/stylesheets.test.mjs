@@ -146,3 +146,16 @@ describe('the foundations page', () => {
     assert.deepEqual(low, []);
   });
 });
+
+describe('base.css on a phone', () => {
+  test('the console and a dialog set a field to 16 pixels except a small one, a textarea included', () => {
+    const phone = rules(read('css/base.css')).filter((r) => r.at.join(' ') === '@media (max-width: 40rem)');
+    const fields = phone
+      .filter((r) => r.declarations['font-size'] === 'var(--nc-text-base)')
+      .flatMap((r) => r.selector.split(',').map((s) => s.trim()))
+      .filter((s) => /^\.(console|dialog) /.test(s) && /\.well|textarea/.test(s));
+    assert.ok(fields.some((s) => s.includes('textarea')), 'the console sets its textareas');
+    assert.ok(fields.length >= 3, fields.join(' | '));
+    for (const selector of fields) assert.match(selector, /:not\(\.well--sm\)$/, selector);
+  });
+});
