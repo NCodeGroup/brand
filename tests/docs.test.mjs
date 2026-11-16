@@ -92,9 +92,10 @@ describe('specimens', () => {
   test("the {N} mark in a specimen's sprite is the kit's own drawing", () => {
     const outlines = readJson('logo/ncode/outlines.json');
     for (const page of pages) {
-      const mark = /<symbol id="logo-ncode-mark" viewBox="0 0 64 64"><path d="([^"]+)"/.exec(read(`specimens/${page}`));
+      const html = read(`specimens/${page}`);
+      const mark = /<symbol id="logo-ncode-mark" viewBox="0 0 64 64"><path d="([^"]+)"/.exec(html);
       if (mark) assert.equal(mark[1], outlines.mark.d, page);
-      const lockup = /<symbol id="logo-ncode" viewBox="0 0 212 64"><path d="([^"]+)"/.exec(read(`specimens/${page}`));
+      const lockup = /<symbol id="logo-ncode" viewBox="0 0 212 64"><path d="([^"]+)"/.exec(html);
       if (lockup) assert.equal(lockup[1], outlines.lockup.d, page);
     }
   });
@@ -103,12 +104,13 @@ describe('specimens', () => {
     const outlines = readJson('logo/identity/outlines.json');
     let matches = 0;
     for (const page of pages) {
-      const mark = /<symbol id="logo-identity-mark" viewBox="0 0 64 64"><path d="([^"]+)"/.exec(read(`specimens/${page}`));
+      const html = read(`specimens/${page}`);
+      const mark = /<symbol id="logo-identity-mark" viewBox="0 0 64 64"><path d="([^"]+)"/.exec(html);
       if (mark) {
         assert.equal(mark[1], outlines.mark.d, page);
         matches += 1;
       }
-      const lockup = /<symbol id="logo-identity" viewBox="0 0 371 64"><path d="([^"]+)"/.exec(read(`specimens/${page}`));
+      const lockup = /<symbol id="logo-identity" viewBox="0 0 371 64"><path d="([^"]+)"/.exec(html);
       if (lockup) {
         assert.equal(lockup[1], outlines.lockup.d, page);
         matches += 1;
