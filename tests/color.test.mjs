@@ -7,8 +7,9 @@ import {
   parseHex, relativeLch, relativeOklch, rgbToHex, withOklchLightness,
 } from '../lib/color.mjs';
 import { decodeIco, icoBytes } from '../lib/ico.mjs';
+import { holds } from '../lib/logo.mjs';
 import { num, roundHalfEven, toFixedHalfEven } from '../lib/numbers.mjs';
-import { decodePng, pngBytes, sameImage } from '../lib/png.mjs';
+import { crc32, decodePng, pngBytes, sameImage } from '../lib/png.mjs';
 
 const near = (actual, expected, tolerance, what) =>
   assert.ok(Math.abs(actual - expected) <= tolerance, `${what}: ${actual} is not within ${tolerance} of ${expected}`);
@@ -147,5 +148,29 @@ describe('the logo kit\'s numbers and files', () => {
     assert.equal(entries[1].png, true);
     assert.ok(sameImage(entries[0].image, image(16)));
     assert.ok(sameImage(entries[1].image, image(32)));
+  });
+
+  test('a PNG that fails a CRC or is interlaced does not decode, so the build rewrites it', () => {
+    const image = { width: 3, height: 2, data: new Uint8Array([0, 51, 204, 255, 255, 255, 255, 255, 0, 0, 0, 0, 0, 51, 204, 128, 9, 9, 9, 255, 0, 51, 204, 255]) };
+    const good = pngBytes(image);
+    const ihdrCrc = 8 + 8 + 13; // after the signature, the IHDR chunk's length and type, and its 13 bytes
+    const badCrc = Buffer.from(good);
+    badCrc[ihdrCrc + 3] ^= 0xff; // the pixels stay the same; only the checksum is wrong
+    assert.throws(() => decodePng(badCrc), /the PNG's IHDR chunk fails its CRC/);
+    assert.equal(holds(badCrc, { data: good, image }), false);
+    const interlaced = Buffer.from(good);
+    interlaced[ihdrCrc - 1] = 1; // IHDR's interlace method, with its CRC written to match
+    interlaced.writeUInt32BE(crc32(interlaced.subarray(12, ihdrCrc)), ihdrCrc);
+    assert.throws(() => decodePng(interlaced), /interlaced PNGs are not supported/);
+  });
+
+  test('an ICO bitmap whose mask disagrees with its alpha does not decode, so the build rewrites it', () => {
+    const size = 16;
+    const image = { width: size, height: size, data: new Uint8Array(size * size * 4).map((_, i) => (i % 4 === 3 ? (i % 8 ? 255 : 0) : i % 4 === 0 && i % 8 ? 200 : 0)) };
+    const good = icoBytes([image], 32);
+    const bad = Buffer.from(good);
+    bad[6 + 16 + 40 + size * size * 4] ^= 0x80; // the mask bit of the first pixel of the bottom row; its alpha stays
+    assert.throws(() => decodeIco(bad), /the ICO's entry 1 has a mask that doesn't match its alpha/);
+    assert.equal(holds(bad, { data: good, entries: [{ png: false, image }] }), false);
   });
 });

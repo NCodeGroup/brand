@@ -1,11 +1,11 @@
 // The tenant derivation: the released module reproduces its vectors, agrees with tokens.css wherever the CSS rules
-// reach every floor, and holds every pairing it promises for any color.
+// reach every floor, and holds every pairing it promises for any color, moving a color only as far as its floor.
 import assert from 'node:assert/strict';
 import { describe, test } from 'node:test';
-import { contrast } from '../lib/color.mjs';
+import { contrast, hexToOklch } from '../lib/color.mjs';
 import { BRANDS } from '../lib/contrast.mjs';
 import { createDerive } from '../lib/derive-core.mjs';
-import { deriveData, heldPairings } from '../lib/derive.mjs';
+import { GUARDS, deriveData, heldPairings } from '../lib/derive.mjs';
 import { resolveColors } from '../lib/model.mjs';
 import * as released from '../tokens/derive.mjs';
 import { model, read, readJson } from './helpers.mjs';
@@ -19,6 +19,14 @@ const sweep = [];
 for (let r = 0; r <= 8; r++) for (let g = 0; g <= 8; g++) for (let b = 0; b <= 8; b++) {
   sweep.push(`#${[r, g, b].map((v) => Math.round((v / 8) * 255).toString(16).padStart(2, '0')).join('')}`.toUpperCase());
 }
+let swept;
+/** What the derivation gives for each color of the sweep, worked out once. */
+const derivedSweep = () => (swept ??= sweep.map((hex) => [hex, lib.deriveBrand(hex)]));
+/** Every color of one theme: the derived ones over the ones no tenant changes. */
+const allColors = (derived, theme) => ({ ...resolveColors(m, theme), ...derived[theme] });
+/** How far a guard's checks reach, as the lowest of their ratios, each divided by its floor. */
+const reach = (guard, colors) =>
+  Math.min(...guard.checks.map(({ fg, bg, floor }) => Math.max(...fg.map((f) => contrast(colors[f], colors[bg]))) / floor));
 
 describe('tokens/derive.mjs, as released', () => {
   test('imports nothing, so a consumer vendors one file', () => {
@@ -64,10 +72,9 @@ describe('the contrast guards', () => {
   test('every pairing the derivation promises reaches its floor for every color of the sweep, in both themes', () => {
     const held = heldPairings();
     const failures = [];
-    for (const hex of sweep) {
-      const derived = lib.deriveBrand(hex);
+    for (const [hex, derived] of derivedSweep()) {
       for (const theme of ['light', 'dark']) {
-        const colors = { ...resolveColors(m, theme), ...derived[theme] };
+        const colors = allColors(derived, theme);
         for (const pairing of held.filter((p) => p.themes.includes(theme))) {
           const ratio = Math.max(...pairing.fg.map((fg) => contrast(colors[fg], colors[pairing.bg])));
           if (ratio < pairing.floor) failures.push(`${hex} ${theme}: ${pairing.fg.join('|')} on ${pairing.bg} is ${ratio.toFixed(2)}`);
@@ -84,10 +91,42 @@ describe('the contrast guards', () => {
     assert.notEqual(derived.light.screen, lib.deriveBrand('#0F766E').light.screen);
   });
 
-  test('a very bright green is too light as text, so a guard darkens it', () => {
+  test('a guard moves a color in steps of lightness until it reaches its floor, and no further than 5% past it', () => {
+    // White or black passes every floor, so a step search that ran the wrong way, or not at all, would still hold
+    // every pairing: the stop shows it searched.
+    const moved = [];
+    for (const [hex, derived] of derivedSweep()) {
+      for (const theme of ['light', 'dark']) {
+        const colors = allColors(derived, theme);
+        for (const guard of GUARDS.filter((g) => g.token && g.themes.includes(theme) && derived.adjusted[theme].includes(g.token))) {
+          const ratio = reach(guard, colors);
+          moved.push(ratio);
+          assert.ok(ratio >= 1 && ratio < 1.05, `${hex} ${theme}: ${guard.token} reaches ${ratio.toFixed(4)} times its floor`);
+        }
+      }
+    }
+    assert.ok(moved.length >= 30, `the sweep moves ${moved.length} colors by a single-color guard`);
+  });
+
+  test('a very bright green is too light as text, so a guard darkens it to its floor and keeps its hue', () => {
     const derived = lib.deriveBrand('#00FF00');
     assert.deepEqual(derived.adjusted.light, ['primary-text']);
-    assert.ok(contrast(derived.light['primary-text'], '#FFFFFF') >= 4.5);
+    const text = derived.light['primary-text'];
+    assert.ok(contrast(text, '#FFFFFF') >= 4.5);
+    assert.notEqual(text, '#000000');
+    assert.ok(Math.abs(hexToOklch(text)[2] - hexToOklch('#00FF00')[2]) < 1, `${text} keeps the hue of #00FF00`);
+  });
+
+  test('a guard whose floor no lightness reaches ends at black going down and at white going up, and names the color', () => {
+    const unreachable = (token, themes, direction) => ({ token, themes, direction, checks: [{ fg: [token], bg: 'page', floor: 22 }] });
+    const derive = createDerive({
+      ...deriveData(m),
+      guards: [unreachable('primary-text', ['light'], -1), unreachable('screen-lit', ['dark'], 1)],
+    });
+    const derived = derive.deriveBrand('#0F766E');
+    assert.equal(derived.light['primary-text'], '#000000');
+    assert.equal(derived.dark['screen-lit'], '#FFFFFF');
+    assert.deepEqual(derived.adjusted, { light: ['primary-text'], dark: ['screen-lit'] });
   });
 });
 
