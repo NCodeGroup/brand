@@ -31,6 +31,12 @@ Until the first stable release, the [Unreleased] section describes the product a
 - The `{N}` logo kit in `logo/ncode/`: the mark, the lockup and the tiles as SVG and PNG, the favicon set, and the files
   NuGet, GitHub, GitLab, My Apps, profile pictures, badges, link previews, banners and Windows ask for, in NCode Blue,
   NCode Blue Light and NCode Navy from the blue ramp; `logo/ncode/outlines.json`, the mark and the lockup as path data.
+- The `{id}` logo kit in `logo/identity/`, NCode Identity's mark: the files of the `{N}` kit under `ncode-identity-`
+  names, a stacked lockup in `lockup/ncode-identity-lockup-stacked-*`, and link previews that carry the descriptor
+  "OpenID Connect and OAuth 2.x for .NET"; `logo/identity/outlines.json`, the mark and both lockups as path data.
+  `build.mjs` draws it from `src/logo/identity.json` with the code that draws the `{N}` kit
+  ([#2](https://github.com/NCodeGroup/brand/issues/2),
+  [ADR-1007](docs/decisions/1007-every-ncode-marks-kit-is-drawn-here-by-one-kit-writer.md)).
 - `mui/instrument.json`: the palette, typography, shape, spacing, shadows, motion and breakpoints a Material UI theme
   takes, as plain data.
 - `manifest.json`, the size and SHA-256 of every released file, and `vendoring/vendor-brand.mjs`, which copies the

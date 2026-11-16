@@ -23,12 +23,12 @@ the [specimens](specimens/foundations.html) show every part at work.
 | [css/](css/) | `base.css`, the element and component styles; `fonts.css`; `starlight.css`, for a Starlight site |
 | [fonts/](fonts/) | Instrument Sans and Martian Mono, with their licenses |
 | [brace/](brace/) | The brace as SVG masks and as path data |
-| [logo/](logo/README.md) | The `{N}` logo kit, for every place the mark appears |
+| [logo/](logo/README.md) | The `{N}` and `{id}` logo kits, for every place a mark appears |
 | [mui/](mui/) | The values a Material UI theme takes, as data |
 | [vendoring/](vendoring/vendor-brand.mjs) | The script a consumer copies to vendor and check a release's files |
 | [guidelines/](guidelines/README.md) | The guide |
 | [specimens/](specimens/) | Nine pages built on the generated files alone |
-| [src/](src/) | The sources: the tokens, the stylesheets, the fonts and their lock, the mark's geometry |
+| [src/](src/) | The sources: the tokens, the stylesheets, the fonts and their lock, the marks' geometry |
 
 Every file in `tokens/`, `css/`, `fonts/`, `brace/`, `logo/` and `mui/`, and `manifest.json`, is generated: change its
 source in `src/` and run `npm run build`.

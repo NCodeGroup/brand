@@ -9,7 +9,8 @@ masters and as the PNG and ICO files each place it appears in asks for. build.mj
 | <img src="../logo/ncode/tile/ncode-tile-blue.svg" width="88" alt="The mark in white on a blue tile"> | <img src="../logo/ncode/tile/ncode-tile-white.svg" width="88" alt="The mark in blue on a white tile"> | <img src="../logo/ncode/tile/ncode-tile-dark.svg" width="88" alt="The mark in light blue on a navy tile"> | <img src="../logo/ncode/mark/ncode-mark-auto.svg" width="88" alt="The mark alone"> | <img src="../logo/ncode/lockup/ncode-lockup-auto.svg" height="88" alt="The mark and the NCode wordmark"> |
 
 Each product has a mark of the same construction, its own letters between the same braces: `{id}` for NCode Identity.
-The `{id}` kit is drawn in NCodeGroup/identity; this release carries the `{N}` kit.
+[logo/identity/](../logo/identity/) holds its kit, drawn by the same code from
+[src/logo/identity.json](../src/logo/identity.json): [The `{id}` Kit](#the-id-kit) says where it differs.
 
 ## The Names
 
@@ -19,7 +20,7 @@ product's name.
 
 ## Which File for What
 
-Every path is under `logo/ncode/`. Where a row names a folder's blue tile, the folder also holds the other
+Every path is under `logo/ncode/`. The `{id}` kit's are under `logo/identity/`. Where a row names a folder's blue tile, the folder also holds the other
 [variants](#variants).
 
 | Use | File | What it is |
@@ -137,6 +138,31 @@ that matches the reader's theme when a `<picture>` names both:
 
 nuget.org renders CommonMark only, so a package's README takes one image in Markdown: the blue lockup at the same
 address.
+
+## The `{id}` Kit
+
+`logo/identity/` holds every file of the `{N}` kit, in the same folders, named `ncode-identity-` where the `{N}` kit
+has `ncode-`, such as `nuget/ncode-identity-nuget-tile-blue.png` and `windows/ncode-identity.ico`; its
+`site.webmanifest` names it "NCode Identity", "Identity" for short.
+
+| Tile, blue | Tile, white | Tile, dark | Mark | Lockup | Lockup, stacked |
+|---|---|---|---|---|---|
+| <img src="../logo/identity/tile/ncode-identity-tile-blue.svg" width="88" alt="The {id} mark in white on a blue tile"> | <img src="../logo/identity/tile/ncode-identity-tile-white.svg" width="88" alt="The {id} mark in blue on a white tile"> | <img src="../logo/identity/tile/ncode-identity-tile-dark.svg" width="88" alt="The {id} mark in light blue on a navy tile"> | <img src="../logo/identity/mark/ncode-identity-mark-auto.svg" width="88" alt="The {id} mark alone"> | <img src="../logo/identity/lockup/ncode-identity-lockup-auto.svg" height="56" alt="The {id} mark and the NCode Identity wordmark"> | <img src="../logo/identity/lockup/ncode-identity-lockup-stacked-auto.svg" height="88" alt="The {id} mark above the NCode Identity wordmark"> |
+
+- **A stacked lockup**: `lockup/ncode-identity-lockup-stacked-<color>.svg`, and as PNG 384 and 1536 high. It sets the
+  mark at twice its size above the wordmark, for a space nearer a square. Keep it at least 72 pixels high.
+- **The descriptor**: the link previews, `social/ncode-identity-og-*.png`, and `github/ncode-identity-github-social-*.png`
+  carry "OpenID Connect and OAuth 2.x for .NET" under the lockup, in Inter Display Regular. The banners carry the
+  lockup alone.
+- **The drawing**: the braces are point for point the `{N}` mark's. The letters have a stroke of 4: the d is 16 wide and
+  32 high, with a ring 16 across as its bowl, and the i is as high as the bowl, under a dot 5 across. Up to 24 pixels
+  the bowl is three bars around a hole, and up to 32 the dot is a square. Below 16 pixels the letters can't be told
+  apart.
+- **The wordmark**: "NCode Identity", two words, in Inter Display Medium from Inter 4.1, with capitals as tall as the
+  d. [src/logo/identity.json](../src/logo/identity.json) names the font files.
+
+Name its files by their address at a release's tag, as [In a README](#in-a-readme) says, with `logo/identity/` for
+`logo/ncode/`.
 
 ## License
 

@@ -98,4 +98,22 @@ describe('specimens', () => {
       if (lockup) assert.equal(lockup[1], outlines.lockup.d, page);
     }
   });
+
+  test("the {id} mark in a specimen's sprite is the kit's own drawing", () => {
+    const outlines = readJson('logo/identity/outlines.json');
+    let matches = 0;
+    for (const page of pages) {
+      const mark = /<symbol id="logo-identity-mark" viewBox="0 0 64 64"><path d="([^"]+)"/.exec(read(`specimens/${page}`));
+      if (mark) {
+        assert.equal(mark[1], outlines.mark.d, page);
+        matches += 1;
+      }
+      const lockup = /<symbol id="logo-identity" viewBox="0 0 371 64"><path d="([^"]+)"/.exec(read(`specimens/${page}`));
+      if (lockup) {
+        assert.equal(lockup[1], outlines.lockup.d, page);
+        matches += 1;
+      }
+    }
+    assert.ok(matches >= 10, `${matches} sprites match`);
+  });
 });

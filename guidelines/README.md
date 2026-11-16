@@ -25,7 +25,7 @@ the whole kit, and each other page is a scene from a real surface.
 
 | # | Section | What it decides |
 |---|---|---|
-| 1 | [Marks](01-marks.md) | The `{N}` mark, its files, its clear space and sizes, and how to write the names |
+| 1 | [Marks](01-marks.md) | The `{N}` and `{id}` marks, their files, their clear space and sizes, and how to write the names |
 | 2 | [Color](02-color.md) | The ramps, the roles components read, and the computed contrast |
 | 3 | [Typography](03-typography.md) | The two voices, the type roles and the scale |
 | 4 | [Shape, depth and the brace](04-shape-and-depth.md) | Radii, lines, depth, hazard tape, and where a brace may appear |
@@ -52,8 +52,8 @@ Every path is from the root of a release. Keep the release's folders side by sid
 | A Material UI application | `mui/instrument.json`, `tokens/tokens.mjs`, `tokens/derive.mjs`, `css/fonts.css` with `fonts/` |
 | A tool or a format with its own theme | `tokens/tokens.json`, in the Design Tokens format 2025.10 |
 | An email, or a page without 2024 CSS | `tokens/tokens.static.css`, every color written out |
-| A logo in a README, a favicon, a package icon | The files in `logo/ncode/`, as [Marks](01-marks.md) says |
-| A component that draws the brace or the mark inline | `brace/brace.json`, `logo/ncode/outlines.json` |
+| A logo in a README, a favicon, a package icon | The files in `logo/ncode/`, or `logo/identity/` for NCode Identity, as [Marks](01-marks.md) says |
+| A component that draws the brace or the mark inline | `brace/brace.json`, `logo/ncode/outlines.json`, `logo/identity/outlines.json` |
 
 [Applying it](12-applying.md) says how, for each.
 
