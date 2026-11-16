@@ -1,7 +1,10 @@
 // The icon sources: a path scales onto the 16-unit grid and keeps its arc flags and rotations, a Lucide file is
 // restyled only when it is drawn the way lib/icons.mjs reads, and NCode's symbols parse into elements.
 import assert from 'node:assert/strict';
+import { readdirSync } from 'node:fs';
+import { join } from 'node:path';
 import { describe, test } from 'node:test';
+import { ROOT, read } from './helpers.mjs';
 import {
   iconBlock, iconFiles, iconList, iconSet, parseNcode, restyleLucide, scalePath, symbol,
 } from '../lib/icons.mjs';
@@ -159,4 +162,21 @@ describe('the icon set', () => {
     assert.match(list, /\| NCode, in `src\/icons\/ncode\.svg` \| Butt caps \| `arrow-left`, `eye` \|/);
     assert.match(list, /\| Lucide 1\.72\.0, restyled \| Square caps \| `clock` \|/);
   });
+});
+
+describe('the specimens', () => {
+  const pages = readdirSync(join(ROOT, 'specimens')).filter((n) => n.endsWith('.html')).sort();
+
+  test('hold nine pages', () => {
+    assert.equal(pages.length, 9);
+  });
+
+  for (const page of pages) {
+    test(`${page} takes its icon symbols from the set`, () => {
+      const html = read(`specimens/${page}`);
+      const block = html.match(/<!-- generated:icons -->\n[\s\S]*?<!-- \/generated:icons -->/);
+      assert.ok(block, `specimens/${page} holds no icons block`);
+      assert.equal(html.replace(block[0], '').includes('<symbol id="i-'), false);
+    });
+  }
 });
