@@ -4,11 +4,12 @@
 // write outside the consumer. A write that fails partway leaves the consumer's files as they were.
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
-import { cpSync, existsSync, lstatSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, statSync, symlinkSync, writeFileSync } from 'node:fs';
+import { cpSync, existsSync, lstatSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, statSync, symlinkSync, truncateSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
-import { join, relative, sep } from 'node:path';
+import { dirname, join, relative, sep } from 'node:path';
 import { after, before, describe, test } from 'node:test';
 import { pathToFileURL } from 'node:url';
+import { gunzipSync, gzipSync } from 'node:zlib';
 import { tarGz } from '../lib/archive.mjs';
 import { LIMITS } from '../lib/logo.mjs';
 import { ROOT, readJson, runNode } from './helpers.mjs';
@@ -340,6 +341,98 @@ describe('vendoring/vendor-brand.mjs', () => {
       rmSync(join(consumer, 'linked'), { force: true });
       rmSync(join(consumer, 'vendor'), { recursive: true, force: true });
       rmSync(outside, { recursive: true, force: true });
+    }
+  });
+
+  /** Locks tokens.css under src/brand/<folder>/ and returns the lock's text, to compare after a refused update. */
+  const lockOne = (folder) => {
+    lock({ [`src/brand/${folder}/tokens.css`]: { source: 'tokens/tokens.css', sha256: '' } });
+    return readFileSync(lockPath(), 'utf8');
+  };
+  /** Asserts that an update wrote nothing: the folder `lockOne` locked does not exist and the lock is as it was. */
+  const assertUntouched = (folder, lockText) => {
+    assert.ok(!existsSync(join(consumer, 'src/brand', folder)), `src/brand/${folder} exists`);
+    assert.equal(readFileSync(lockPath(), 'utf8'), lockText);
+  };
+
+  test("an update without --from downloads the archive of the release's tag with gh, verifies it as publish.yml signs it, and leaves no download behind", () => {
+    lockOne('download');
+    rmSync(ghLog(), { force: true });
+    const result = update('--update', version);
+    assert.equal(result.code, 0, result.output);
+    const [download, verify] = calls();
+    const archive = download[download.indexOf('--output') + 1];
+    assert.deepEqual(download, ['release', 'download', `v${version}`, '--repo', 'NCodeGroup/brand', '--pattern', `brand-${version}.tar.gz`, '--output', archive]);
+    assert.deepEqual(verify, [
+      'attestation', 'verify', archive, '--repo', 'NCodeGroup/brand', '--signer-workflow', 'NCodeGroup/brand/.github/workflows/publish.yml',
+      '--source-ref', `refs/tags/v${version}`, '--deny-self-hosted-runners', '--format', 'json',
+    ]);
+    assert.ok(!existsSync(dirname(archive)));
+    assert.deepEqual(readFileSync(join(consumer, 'src/brand/download/tokens.css')), readFileSync(join(ROOT, 'tokens/tokens.css')));
+    rmSync(join(consumer, 'src/brand/download'), { recursive: true, force: true });
+  });
+
+  test('an update refuses an archive gh does not verify, or whose attestation names another SHA-256, and writes nothing', () => {
+    const lockText = lockOne('verify');
+    let result = vendorWithGh('unverified', release, '--update', version, '--from', release);
+    assert.equal(result.code, 1, result.output);
+    assert.match(result.output, /gh attestation verify failed: Error: failed to fetch attestations for subject/);
+    assertUntouched('verify', lockText);
+    result = vendorWithGh('other-digest', release, '--update', version, '--from', release);
+    assert.equal(result.code, 1, result.output);
+    assert.match(result.output, /gh verified an attestation, but none names the archive's SHA-256/);
+    assertUntouched('verify', lockText);
+  });
+
+  test('an update without the GitHub CLI says where to get it', () => {
+    const lockText = lockOne('missing');
+    const result = vendorWithGh('missing', release, '--update', version, '--from', release);
+    assert.equal(result.code, 1, result.output);
+    assert.match(result.output, /--update needs the GitHub CLI, gh, to download a release and verify its attestation: install it from https:\/\/cli\.github\.com/);
+    assertUntouched('missing', lockText);
+  });
+
+  test('an update refuses an archive larger than 64 MiB before gh sees it, and one that unpacks to more than 256 MiB', () => {
+    const lockText = lockOne('bounds');
+    const large = join(other, 'large.tar.gz');
+    const bomb = join(other, 'bomb.tar.gz');
+    try {
+      writeFileSync(large, '');
+      truncateSync(large, 64 * 1024 * 1024 + 1);
+      rmSync(ghLog(), { force: true });
+      let result = update('--update', version, '--from', large);
+      assert.equal(result.code, 1, result.output);
+      assert.match(result.output, /the archive is larger than 67108864 bytes/);
+      assert.ok(!existsSync(ghLog()));
+      assertUntouched('bounds', lockText);
+      writeFileSync(bomb, gzipSync(Buffer.alloc(256 * 1024 * 1024 + 1)));
+      result = update('--update', version, '--from', bomb);
+      assert.equal(result.code, 1, result.output);
+      assert.match(result.output, /the archive unpacks to more than 268435456 bytes/);
+      assertUntouched('bounds', lockText);
+    } finally {
+      rmSync(large, { force: true });
+      rmSync(bomb, { force: true });
+    }
+  });
+
+  test('an update refuses an archive that holds a file its manifest does not list, lacks one it lists, or holds an entry that is not a file', () => {
+    const lockText = lockOne('entries');
+    const folder = Buffer.from(gunzipSync(readFileSync(release)));
+    // The first entry is manifest.json: type flag 5 makes it a folder.
+    folder[156] = 0x35;
+    const cases = [
+      ['extra.tar.gz', tarGz([...releaseEntries(), ['tokens/extra.css', Buffer.from('/* extra */\n')]]), /holds tokens\/extra\.css, which the release's manifest does not list/],
+      ['short.tar.gz', tarGz(releaseEntries().filter(([path]) => path !== 'css/base.css')), /css\/base\.css: the release's manifest lists it, but brand-[\d.]+\.tar\.gz does not hold it/],
+      ['folder.tar.gz', gzipSync(folder), /holds manifest\.json, which is not a file/],
+    ];
+    for (const [file, bytes, message] of cases) {
+      const path = join(other, file);
+      writeFileSync(path, bytes);
+      const result = update('--update', version, '--from', path);
+      assert.equal(result.code, 1, result.output);
+      assert.match(result.output, message);
+      assertUntouched('entries', lockText);
     }
   });
 });
