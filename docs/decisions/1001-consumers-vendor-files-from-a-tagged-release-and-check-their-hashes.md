@@ -18,7 +18,8 @@ SHA-256 hashes. The release's `manifest.json` lists every released file with its
 the files it takes in a `brand.lock.json` and runs `vendoring/vendor-brand.mjs`, a Node.js script with no packages:
 `--update <version>` reads the release's manifest at its tag, refuses a release of another version and a file whose
 hash differs, and writes the files and the hashes; `--check` proves, with no network, that no vendored file drifted.
-The consumer runs `--check` in its gate and in CI.
+The consumer runs `--check` in its gate and in CI. A tag never moves, so `--update` also refuses a hash other than
+the one the lock already pins for that version; it follows no redirect, and writes nothing outside the lock's folder.
 
 No npm package and no NuGet package is published. When a second JavaScript product needs the brand, the package to
 publish is `@ncodegroup/brand`, carrying the release's files and nothing else.

@@ -45,8 +45,10 @@ notes are that section.
 
 - `build.mjs` writes and removes real files inside the repository alone: it refuses a symbolic link in a folder it
   writes, and a font name in `src/fonts/fonts.lock.json` with a path in it.
-- `vendoring/vendor-brand.mjs` verifies every file against the release's manifest before it writes any, refuses a
-  release of another version, and refuses a lock path that leaves its folder.
+- `vendoring/vendor-brand.mjs` verifies every file against the release's manifest, and checks every destination,
+  before it writes any. It refuses a release of another version and, once the lock pins a version, a file of it with
+  another hash. It reads an address over https alone, follows no redirect, and bounds each answer's size and time. It
+  refuses a lock path that leaves its folder, by its name or through a symbolic link.
 - Every specimen page runs under `Content-Security-Policy: default-src 'self'`: no inline style, no `data:` address and
   no request to another origin.
 

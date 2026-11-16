@@ -480,8 +480,8 @@
       "sha256": "85d9212b296444f267dea8aa4dfce3ee8e7ce2de94dba282eabd6ce31e3bd61a"
     },
     "vendoring/vendor-brand.mjs": {
-      "bytes": 5551,
-      "sha256": "48e6f4179ffb5a2d2040debf23ed0943a873c0f021d76113376209ea6def4718"
+      "bytes": 9071,
+      "sha256": "59ca6e4827fd25b0657f8ab96c9ed76319e1251de2cb93b50d1fa8a272546ead"
     }
   }
 }

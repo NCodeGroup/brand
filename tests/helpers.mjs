@@ -24,8 +24,8 @@ export function copyRepository() {
   return { dir, remove: () => rmSync(dir, { recursive: true, force: true }) };
 }
 
-/** Runs a Node.js script with arguments in a folder, and returns its exit code and its output. */
-export function runNode(cwd, args) {
-  const result = spawnSync(process.execPath, args, { cwd, encoding: 'utf8' });
+/** Runs a Node.js script with arguments in a folder, with more environment variables, and returns its exit code and output. */
+export function runNode(cwd, args, env = {}) {
+  const result = spawnSync(process.execPath, args, { cwd, encoding: 'utf8', env: { ...process.env, ...env } });
   return { code: result.status, output: `${result.stdout}${result.stderr}` };
 }

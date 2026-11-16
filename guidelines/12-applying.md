@@ -85,9 +85,11 @@ Take files from one tagged release, and prove in your own gate that they did not
    }
    ```
 
-3. Run `node vendor-brand.mjs --update 0.1.0`. It reads that release's `manifest.json` at the tag `v0.1.0`, refuses a
-   release of another version and a file whose SHA-256 is not the manifest's, then writes the files and pins each hash
-   in the lock. `--from <folder>` reads a release from a folder instead, such as a clone at the tag.
+3. Run `node vendor-brand.mjs --update 0.1.0`. It reads that release's `manifest.json` at the tag `v0.1.0`, over https
+   with no redirect, refuses a release of another version and a file whose SHA-256 is not the manifest's, then writes
+   the files and pins each hash in the lock. A release never changes, so once the lock pins a version, it refuses a
+   file of that version with another hash. It writes nothing outside the lock's folder, by a path or through a
+   symbolic link. `--from <folder>` reads a release from a folder instead, such as a clone at the tag.
 4. Run `node vendor-brand.mjs --check` in your gate and in CI. It needs no network, and fails, naming the file, when a
    vendored file is missing or differs from the lock.
 
