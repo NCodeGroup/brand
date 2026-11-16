@@ -3,6 +3,7 @@
 // archive gh does not verify, one that does not match its manifest or is too large, and a path that would take a
 // write outside the consumer. A write that fails partway leaves the consumer's files as they were.
 import assert from 'node:assert/strict';
+import { spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { cpSync, existsSync, lstatSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, statSync, symlinkSync, truncateSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -433,6 +434,32 @@ describe('vendoring/vendor-brand.mjs', () => {
       assert.equal(result.code, 1, result.output);
       assert.match(result.output, message);
       assertUntouched('entries', lockText);
+    }
+  });
+
+  test('an update reads an archive the system tar packs in the ustar format, as it reads the one lib/archive.mjs packs', (t) => {
+    const staged = mkdtempSync(join(tmpdir(), 'ncode-brand-tar-'));
+    try {
+      const entries = releaseEntries();
+      for (const [path, bytes] of entries) {
+        mkdirSync(dirname(join(staged, path)), { recursive: true });
+        writeFileSync(join(staged, path), bytes);
+      }
+      // tar, not lib/archive.mjs, packs it, so the reader is checked against another writer. The working folder and
+      // relative names keep tar from reading `C:` as a host.
+      const packed = spawnSync('tar', ['--format=ustar', '-czf', 'brand.tar.gz', ...entries.map(([path]) => path)], {
+        cwd: staged,
+        encoding: 'utf8',
+      });
+      if (packed.error?.code === 'ENOENT') return t.skip('this system has no tar');
+      assert.equal(packed.status, 0, packed.stderr);
+      lockOne('tar');
+      const result = update('--update', version, '--from', join(staged, 'brand.tar.gz'));
+      assert.equal(result.code, 0, result.output);
+      assert.deepEqual(readFileSync(join(consumer, 'src/brand/tar/tokens.css')), readFileSync(join(ROOT, 'tokens/tokens.css')));
+    } finally {
+      rmSync(staged, { recursive: true, force: true });
+      rmSync(join(consumer, 'src/brand/tar'), { recursive: true, force: true });
     }
   });
 });
