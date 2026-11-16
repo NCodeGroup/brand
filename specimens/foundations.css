@@ -147,6 +147,8 @@
 .fd-states th, .fd-states td { padding: 0.5625rem var(--nc-space-3) 0.6875rem 0; text-align: start; vertical-align: middle; }
 .fd-states thead th { padding-bottom: var(--nc-space-2); }
 .fd-states th[scope="row"] { width: 5.5rem; }
+/* A table wider than its panel scrolls inside it. */
+.fd-scroll { overflow-x: auto; }
 .fd-tip { position: relative; display: inline-flex; margin-inline-start: var(--nc-space-3); }
 .fd-tip .tooltip { position: absolute; bottom: calc(100% + 0.625rem); left: 50%; transform: translateX(-50%); }
 .fd-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--nc-space-5); align-items: start; }
@@ -375,9 +377,22 @@
 /* /generated:swatches */
 
 @media (max-width: 72rem) {
-  .fd-intro, .fd-section__head, .fd-cols--2, .fd-cols--3 { grid-template-columns: minmax(0, 1fr); }
+  .fd__bar { flex-wrap: wrap; }
+  .fd__scenes { flex: 1 1 100%; flex-wrap: wrap; margin-inline-start: 0; }
+  .fd-intro, .fd-section__head, .fd-cols--2, .fd-cols--3, .fd-contrast { grid-template-columns: minmax(0, 1fr); }
   .fd-principles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .fd-roles, .fd-contrast, .fd-uses, .fd-construct { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .fd-roles, .fd-uses, .fd-construct { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .fd-intro__name .headline { font-size: var(--nc-text-6xl); }
   .fd-rule { grid-template-columns: minmax(0, 1fr); }
+}
+/* A phone: one column, ramps that wrap, and wide tables and listings that scroll inside their panel. */
+@media (max-width: 40rem) {
+  .fd-intro__name .headline { font-size: var(--nc-text-5xl); }
+  .ramp { grid-template-columns: minmax(0, 1fr); }
+  .ramp__cells { grid-auto-flow: row; grid-template-columns: repeat(auto-fill, minmax(4.5rem, 1fr)); }
+  .fd-roles, .fd-uses, .fd-construct { grid-template-columns: minmax(0, 1fr); }
+  .fd-contrast, .fd-motion { overflow-x: auto; }
+  .fd-boundaries .display { max-width: 100%; }
+  .fd-type__row { grid-template-columns: minmax(0, 1fr); gap: var(--nc-space-3); }
+  .fd-sig, .fd-sig__stage { grid-template-columns: minmax(0, 1fr); }
 }

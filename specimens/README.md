@@ -3,12 +3,12 @@
 Nine pages built on the generated files alone: `../tokens/tokens.css`, `../css/fonts.css` and `../css/base.css`, with
 the braces from `../brace/`. [foundations.html](foundations.html) holds the whole kit; each other page is a scene from a
 real surface: documentation, a landing page, a product page, sign-in, consent, the console, a client's settings, and
-the states between screens. `foundations.html` is a catalog, laid out for a window at least 1280 pixels wide; every
-other page is checked at 390 pixels too, where none scrolls sideways.
+the states between screens. `foundations.html` is a catalog, laid out for a window 1280 pixels wide that folds to one column on a phone; every
+page is checked at 390 pixels too, where none scrolls sideways.
 
 Serve the repository to open them, because a browser loads no CSS mask from a `file:` address: `node tools/serve.mjs`
-prints the address, and serves every file under a strict `Content-Security-Policy`, `default-src 'self'`. `params.js`
-reads these parameters:
+prints the address, and serves every file under a strict `Content-Security-Policy`, `default-src 'self'`. They are published at
+https://ncodegroup.github.io/brand/specimens/foundations.html. `params.js` reads these parameters:
 
 | Parameter | What it does |
 |---|---|
