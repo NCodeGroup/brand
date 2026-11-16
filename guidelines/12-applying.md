@@ -74,6 +74,19 @@ Take `tokens/tokens.json`, in the Design Tokens Community Group format 2025.10. 
 semantic colors and shadows under `light` and `dark`. A token a tenant's colors change carries its CSS rule in
 `$extensions["org.ncode.instrument"]`. A group that sets a tier names it there, and the groups inside it inherit it.
 
+## Icons
+
+Take `icons/sprite.svg` beside `css/base.css`, and use an icon by its symbol, `i-<name>`:
+
+```html
+<svg class="icon" aria-hidden="true"><use href="brand/icons/sprite.svg#i-search"/></svg>
+```
+
+The sprite loads from the page's own origin, under `default-src 'self'`, and `.icon` gives the icon its size and
+stroke. Take `icons/<name>.svg` for one icon alone, and `icons/icons.json` for a component that draws an icon's
+shapes inline. Vendor `icons/LICENSE-Lucide.txt` with any icon from Lucide: [Icons](07-icons.md) says which they
+are.
+
 ## A README, a Favicon, a Package Icon
 
 [Marks](01-marks.md) says which file of `logo/ncode/` or `logo/identity/` each place takes, and how to name a file by
