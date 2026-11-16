@@ -4,16 +4,16 @@
   "version": "0.2.1",
   "files": {
     "COPYRIGHT.txt": {
-      "bytes": 1033,
-      "sha256": "46ce1836a980c0e2b0b53854f11711c2ac1595fd3a6d593cd9df2bbc8cc53907"
+      "bytes": 1314,
+      "sha256": "338cb619771a00171548c5ec48143f0bbaf7938985699aa9d1486c6c188bed81"
     },
     "LICENSE.txt": {
       "bytes": 11357,
       "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
     },
     "TRADEMARKS.md": {
-      "bytes": 3595,
-      "sha256": "9dd7aa1e9e9d8957961301dad79a965758bc6ce7187520f38fde02c9fb242f03"
+      "bytes": 3754,
+      "sha256": "9f6d36fbb7aba17abd6667846d0224fb1c4a4729353a3b3748d9b1d1ccedf2c8"
     },
     "brace/brace-lg.svg": {
       "bytes": 783,

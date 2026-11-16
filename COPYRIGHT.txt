@@ -20,3 +20,8 @@
    The fonts in fonts/ are copyright their authors and licensed under the
    SIL Open Font License, Version 1.1, in fonts/OFL-Instrument-Sans.txt
    and fonts/OFL-Martian-Mono.txt.
+
+   The icons in icons/ that icons/icons.json gives the source "lucide" are
+   copyright Lucide Icons and Contributors, and those Lucide derives from
+   Feather also copyright Cole Bemis: they are licensed under the ISC
+   License and the MIT License, in icons/LICENSE-Lucide.txt.
