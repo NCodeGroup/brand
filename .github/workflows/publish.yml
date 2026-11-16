@@ -13,8 +13,9 @@
 #
 # A release made with a workflow's GITHUB_TOKEN, as tag-release.yml makes it, starts no workflow, so
 # .template/Publish-Release.ps1 starts this one through workflow_dispatch, on the tag and with the tag as input. To
-# attach a release's archive by hand: Actions > Publish release archive > Run workflow, with its tag. A rerun packs the
-# archive again and replaces the assets. The project owns this file: template updates never change it.
+# attach a release's archive by hand: Actions > Publish release archive > Run workflow, choosing the tag under Use
+# workflow from and entering it as the input: a run from a branch is refused by the release environment.
+# A rerun packs the archive again and replaces the assets. The project owns this file: template updates never change it.
 name: Publish release archive
 
 on:
@@ -56,7 +57,7 @@ jobs:
           "tag=$env:TAG" >> $env:GITHUB_OUTPUT
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          # The tagged commit, also in a run started by hand from another branch.
+          # The tagged commit, which a run started by hand names with its tag input.
           ref: refs/tags/${{ steps.version.outputs.tag }}
           # Every branch's history, for the check below.
           fetch-depth: 0
