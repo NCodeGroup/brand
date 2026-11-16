@@ -26,7 +26,7 @@ import { contrastReport } from './lib/contrast.mjs';
 import { createDerive } from './lib/derive-core.mjs';
 import { deriveData, deriveModule, deriveTypes, heldPairings, vectors } from './lib/derive.mjs';
 import { toDtcg } from './lib/dtcg.mjs';
-import { iconFiles, iconSet } from './lib/icons.mjs';
+import { iconBlock, iconFiles, iconSet } from './lib/icons.mjs';
 import { createLogo, holds, logoKit } from './lib/logo.mjs';
 import { buildModel, resolveColors } from './lib/model.mjs';
 import { tokensModule, tokensTypes } from './lib/module.mjs';
@@ -130,9 +130,10 @@ function generate(model, version, icons) {
 
 /**
  * The generated blocks of guidelines/ and specimens/, as the whole new text of each file that has one. Every block
- * build.mjs writes must be in a file, once: a block whose markers are gone would keep its old numbers unseen.
+ * build.mjs writes must be in a file, once: a block whose markers are gone would keep its old numbers unseen. A
+ * specimen page's `icons` block holds the symbols of the icons the page uses.
  */
-function blocks(model, report) {
+function blocks(model, report, icons) {
   const { deriveBrand } = createDerive(deriveData(model));
   const guide = guideBlocks(model, report, deriveSweep(model, deriveBrand, heldPairings(), resolveColors));
   const foundations = foundationsBlocks(model, report);
@@ -142,6 +143,7 @@ function blocks(model, report) {
     [guide, 'a file of guidelines/', readdirSync(join(ROOT, 'guidelines')).filter((n) => n.endsWith('.md')).sort().map((n) => `guidelines/${n}`), false],
     [foundations.html, 'specimens/foundations.html', ['specimens/foundations.html'], false],
     [foundations.css, 'specimens/foundations.css', ['specimens/foundations.css'], true],
+    [{}, 'a page of specimens/', readdirSync(join(ROOT, 'specimens')).filter((n) => n.endsWith('.html') && n !== 'foundations.html').sort().map((n) => `specimens/${n}`), false],
   ];
   for (const [bodies, place, paths, css] of places) {
     const filled = new Set();
@@ -149,11 +151,14 @@ function blocks(model, report) {
       const current = read(path);
       let next = current;
       const names = blockNames(current);
+      // A specimen page's icons block is filled from the set, whichever page it is in.
+      const page = path.startsWith('specimens/') && path.endsWith('.html');
       for (const name of names) {
-        if (!(name in bodies)) throw new Error(`${path} has a generated block "${name}" that build.mjs does not write`);
+        const iconsBlock = page && name === 'icons';
+        if (!iconsBlock && !(name in bodies)) throw new Error(`${path} has a generated block "${name}" that build.mjs does not write`);
         // fill() fills the first copy of a block, so a second copy would keep its old numbers.
         if (names.indexOf(name) !== names.lastIndexOf(name)) throw new Error(`${path} holds the generated block "${name}" twice`);
-        next = fill(next, name, bodies[name], { css });
+        next = fill(next, name, iconsBlock ? iconBlock(icons.set, current, path) : bodies[name], { css });
         filled.add(name);
       }
       out.set(path, { data: Buffer.from(next, 'utf8') });
@@ -208,7 +213,7 @@ function main() {
   const report = contrastReport(model);
   const icons = readIcons();
 
-  const filled = blocks(model, report); // first, so a lost block fails before the logo kit is drawn
+  const filled = blocks(model, report, icons); // first, so a lost block fails before the logo kit is drawn
   const targets = new Map([...generate(model, version, icons), ...filled]);
   const released = new Map(); // path -> the bytes a release carries after this run
   let changed = 0;
