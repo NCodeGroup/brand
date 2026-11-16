@@ -3,6 +3,7 @@
 import assert from 'node:assert/strict';
 import { readdirSync } from 'node:fs';
 import { describe, test } from 'node:test';
+import { toDtcg, toResolver } from '../lib/dtcg.mjs';
 import { listTokens } from '../lib/model.mjs';
 import * as tokens from '../tokens/tokens.mjs';
 import { model, read, readJson } from './helpers.mjs';
@@ -127,6 +128,68 @@ describe('the Design Tokens file', () => {
       if (key.startsWith('$')) continue;
       const tier = group.$extensions?.['org.ncode.instrument']?.tier ?? Object.values(group).find((g) => g?.$extensions?.['org.ncode.instrument']?.tier)?.$extensions['org.ncode.instrument'].tier;
       assert.ok(['primitive', 'semantic'].includes(tier), `${key} has no tier`);
+    }
+  });
+});
+
+describe('the resolver file', () => {
+  const doc = toResolver(m, readJson('package.json').version);
+  const dtcgDoc = toDtcg(m, readJson('package.json').version);
+  const merge = (target, source) => {
+    for (const [key, value] of Object.entries(source)) {
+      const plain = value && typeof value === 'object' && !Array.isArray(value) && !('$value' in value);
+      if (plain) {
+        if (!target[key] || typeof target[key] !== 'object') target[key] = {};
+        merge(target[key], value);
+      } else target[key] = structuredClone(value);
+    }
+  };
+  const resolve = (theme) => {
+    const tree = {};
+    for (const { $ref } of doc.resolutionOrder) {
+      const item = $ref.slice(2).split('/').reduce((node, key) => node[key], doc);
+      const sources = $ref.startsWith('#/modifiers/') ? item.contexts[theme] : item.sources;
+      for (const source of sources) merge(tree, source);
+    }
+    return tree;
+  };
+  const tokensOf = (node, path = [], out = []) => {
+    if ('$value' in node) out.push({ path: path.join('.'), value: node.$value });
+    else for (const [key, child] of Object.entries(node)) if (!key.startsWith('$') && child && typeof child === 'object') tokensOf(child, [...path, key], out);
+    return out;
+  };
+
+  test('it names the 2025.10 resolver format, a theme modifier that defaults to light, and the tenant inputs', () => {
+    assert.equal(doc.version, '2025.10');
+    assert.equal(doc.$schema, 'https://www.designtokens.org/schemas/2025.10/resolver.json');
+    assert.deepEqual(doc.resolutionOrder, [{ $ref: '#/sets/instrument' }, { $ref: '#/modifiers/theme' }]);
+    assert.deepEqual(Object.keys(doc.modifiers.theme.contexts), ['light', 'dark']);
+    assert.equal(doc.modifiers.theme.default, 'light');
+    assert.ok(doc.sets.instrument.$extensions['org.ncode.instrument'].tenantInputs);
+  });
+
+  test('each theme resolves to the groups of tokens/tokens.json, with its semantic tokens under theme', () => {
+    for (const theme of ['light', 'dark']) {
+      const tree = resolve(theme);
+      const expected = Object.keys(dtcgDoc).filter((k) => !['$schema', '$description', '$extensions', 'light', 'dark'].includes(k));
+      assert.deepEqual(Object.keys(tree).sort(), [...expected, 'theme'].sort(), theme);
+      for (const key of expected) assert.deepEqual(tree[key], dtcgDoc[key], `${theme}: ${key}`);
+      assert.deepEqual(tree.theme, JSON.parse(JSON.stringify(dtcgDoc[theme]).replaceAll(`{${theme}.`, '{theme.')), theme);
+    }
+  });
+
+  test('every reference in a resolved theme names a token of that theme', () => {
+    for (const theme of ['light', 'dark']) {
+      const found = tokensOf(resolve(theme));
+      const paths = new Set(found.map((t) => t.path));
+      const refs = [];
+      const collect = (value) => {
+        if (typeof value === 'string') for (const ref of value.matchAll(/\{([^}]+)\}/g)) refs.push(ref[1]);
+        else if (value && typeof value === 'object') for (const inner of Object.values(value)) collect(inner);
+      };
+      for (const t of found) collect(t.value);
+      assert.ok(refs.length > 100, theme);
+      assert.deepEqual(refs.filter((r) => !paths.has(r)), [], theme);
     }
   });
 });
