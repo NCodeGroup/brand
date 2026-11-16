@@ -75,6 +75,426 @@
       "bytes": 1422,
       "sha256": "ae1bcb5e25bb05f54e2c1263105971bfeb33c607f401f9e2174185921cdcc51a"
     },
+    "logo/identity/badge/ncode-identity-badge-blue.svg": {
+      "bytes": 578,
+      "sha256": "408f063c8d5e4a2528162d7d52256817e71fc92e3695efd6010db2fafa8465c5"
+    },
+    "logo/identity/badge/ncode-identity-badge-light.svg": {
+      "bytes": 578,
+      "sha256": "4dab6b63a0b7cea9f10f00bae93ab651513b00d862d4e2b7ae6eaceaff8b39a5"
+    },
+    "logo/identity/badge/ncode-identity-badge-white.svg": {
+      "bytes": 578,
+      "sha256": "c9e3f3364a15c6bfe1c8036ae6a8a881a54dbb62dc31431c9c097748e8f4a3e8"
+    },
+    "logo/identity/badge/shields-logo-blue.txt": {
+      "bytes": 815,
+      "sha256": "4832402e949aa75470b53bb39ae9415f4c9206a5f087a7f219517f691b6b26b3"
+    },
+    "logo/identity/badge/shields-logo-light.txt": {
+      "bytes": 815,
+      "sha256": "cebbb3ed3c00308f3362aced89d36313c79370ade13a695dcdcee044b793ca71"
+    },
+    "logo/identity/badge/shields-logo-white.txt": {
+      "bytes": 815,
+      "sha256": "82a7ffce6b0f3298691958de893b35ff6e83361f1ee367b30d0b0d8844df805b"
+    },
+    "logo/identity/favicon/apple-touch-icon.png": {
+      "bytes": 1888,
+      "sha256": "7b25344a3eb5ee0e3e4d901c4a02a9fbeaa17571eba51c46badaa0d2caeb59eb"
+    },
+    "logo/identity/favicon/favicon.ico": {
+      "bytes": 5129,
+      "sha256": "3eef5a3a171528948eeb491c48523d077ebf453c22d723d3d4e72bd07751ec3a"
+    },
+    "logo/identity/favicon/favicon.svg": {
+      "bytes": 743,
+      "sha256": "ea65f153ee2a98c24a9de104a3065fbf4053168ab2238e8c0f969222910d70cb"
+    },
+    "logo/identity/favicon/icon-192.png": {
+      "bytes": 2300,
+      "sha256": "4cccf2440928e5808c6e674730386b98ecb2378fa2214c13905f21dd653a1387"
+    },
+    "logo/identity/favicon/icon-512.png": {
+      "bytes": 6741,
+      "sha256": "960209588742fe5102f9cd1cc3e9118e501119e16d844883b3afca7a170f7cf3"
+    },
+    "logo/identity/favicon/icon-maskable-512.png": {
+      "bytes": 4296,
+      "sha256": "9d40002e1c6bb42de871d70d958f02281ef8831fd0472df7909e0b0f267f9bf9"
+    },
+    "logo/identity/favicon/site.webmanifest": {
+      "bytes": 484,
+      "sha256": "aca247da9681fd6976aa8725a0d2aec23d4cc7e6dbc1e085d069a850d86d5998"
+    },
+    "logo/identity/favicon/transparent/favicon-dark.ico": {
+      "bytes": 3458,
+      "sha256": "4945b2df19dc9b87250c16ca092e3bec6db84e8044712b9671711d807477d6db"
+    },
+    "logo/identity/favicon/transparent/favicon.ico": {
+      "bytes": 3387,
+      "sha256": "1a5fa40c7be11503b5c33410a5a68111cb9345481ed33f945e37b14e3b10d05e"
+    },
+    "logo/identity/favicon/transparent/favicon.svg": {
+      "bytes": 763,
+      "sha256": "e5ce9465e0b8e8d9556904c22b8ea2f8864c762467951d17e0e8d8352f1d0a68"
+    },
+    "logo/identity/github/ncode-identity-github-avatar-mark-blue.png": {
+      "bytes": 5237,
+      "sha256": "b878911f4739734412cafb7fde28615b82928fbc4725f75c95393c15684b3c9c"
+    },
+    "logo/identity/github/ncode-identity-github-avatar-mark-light.png": {
+      "bytes": 5237,
+      "sha256": "f229bf1327db29fddb601c2d02ee4b6eb7f1b34e24b432e72aaf2c51d6469e43"
+    },
+    "logo/identity/github/ncode-identity-github-avatar-tile-blue.png": {
+      "bytes": 10223,
+      "sha256": "5b704d8724dccfcd6051641261be05d5f7432ff3f91081424923e8bb7be1d9b8"
+    },
+    "logo/identity/github/ncode-identity-github-avatar-tile-dark.png": {
+      "bytes": 10245,
+      "sha256": "8c75098610d9fe5e81e998640796d955523be49fad20e38575cd434f23a547af"
+    },
+    "logo/identity/github/ncode-identity-github-avatar-tile-white.png": {
+      "bytes": 10172,
+      "sha256": "83227b0cd11f94b73390399d480da27a8809a4b92cd02960a131878b935d8631"
+    },
+    "logo/identity/github/ncode-identity-github-social-blue.png": {
+      "bytes": 32436,
+      "sha256": "af31c0fc61f4376b7d35bfd34300f3f141dd375ff4dccfd9c12c19a14fb056c5"
+    },
+    "logo/identity/github/ncode-identity-github-social-dark.png": {
+      "bytes": 32342,
+      "sha256": "0b84e10ed8f993d4cd504a09b09d7ffd94ad22e1ae38d30619f890045420d34d"
+    },
+    "logo/identity/github/ncode-identity-github-social-light.png": {
+      "bytes": 32394,
+      "sha256": "0e9a80a9dfc233f69193e209af612cacfb0ee2afc450cf1af92de53fe5f9686c"
+    },
+    "logo/identity/gitlab/logo.png": {
+      "bytes": 1614,
+      "sha256": "746b2c1a790386c897fc16d8b893174bfef224e54409ea16d3b9d8dfa853a81f"
+    },
+    "logo/identity/gitlab/ncode-identity-gitlab-avatar-mark-blue.png": {
+      "bytes": 1695,
+      "sha256": "82141aaf11a7a6a0efe2a46ebe22db9d1f84391b0b5ea573e9ee4d42403d5ab3"
+    },
+    "logo/identity/gitlab/ncode-identity-gitlab-avatar-mark-light.png": {
+      "bytes": 1695,
+      "sha256": "4f63e48aa9bfde66d3efeebfbfa18ffa4257e8d1ad5fc50c77a1ff1fb9cb8066"
+    },
+    "logo/identity/gitlab/ncode-identity-gitlab-avatar-tile-blue.png": {
+      "bytes": 1614,
+      "sha256": "746b2c1a790386c897fc16d8b893174bfef224e54409ea16d3b9d8dfa853a81f"
+    },
+    "logo/identity/gitlab/ncode-identity-gitlab-avatar-tile-dark.png": {
+      "bytes": 1550,
+      "sha256": "96c221b67d13089d9c1b9d37b4e43a273751ae4259bd46041a2ec65860183368"
+    },
+    "logo/identity/gitlab/ncode-identity-gitlab-avatar-tile-white.png": {
+      "bytes": 1607,
+      "sha256": "1c08b6c531356fad865e555c8e41b80961a1fefaa5c17780492ac788f9452513"
+    },
+    "logo/identity/lockup/ncode-identity-lockup-auto.svg": {
+      "bytes": 4125,
+      "sha256": "440c8017725b618570624dbc4bbfbdc9bed38eb4de43b494d9b43584c30c846a"
+    },
+    "logo/identity/lockup/ncode-identity-lockup-black-h128.png": {
+      "bytes": 7351,
+      "sha256": "32f3119967c05d65ef66e82d0df7155bfb946edf2274d1c9354458aaf9316657"
+    },
+    "logo/identity/lockup/ncode-identity-lockup-black-h512.png": {
+      "bytes": 32800,
+      "sha256": "30958612816b344af1cecf2c68157dc6afbe964ae85040d18b1e6d2c882a2cdf"
+    },
+    "logo/identity/lockup/ncode-identity-lockup-black.svg": {
+      "bytes": 4053,
+      "sha256": "d09be5177eefca71f5e391a3a2cecaae279503e379620c0d7474fe0753c1926a"
+    },
+    "logo/identity/lockup/ncode-identity-lockup-blue-h128.png": {
+      "bytes": 7351,
+      "sha256": "fcd89831ecc5ffa6f8373ef07cf5fc841571a41cad8a5cb525b572db56fc3a18"
+    },
+    "logo/identity/lockup/ncode-identity-lockup-blue-h512.png": {
+      "bytes": 32800,
+      "sha256": "b9f1f267273daad4786eb10f833381f8c5f5e655454b66243153392ca32bb21c"
+    },
+    "logo/identity/lockup/ncode-identity-lockup-blue.svg": {
+      "bytes": 4053,
+      "sha256": "89d9b367283ed92953f13d19c5d8ebbe42afdfa42133fa50431cc008eaeaa7d2"
+    },
+    "logo/identity/lockup/ncode-identity-lockup-light-h128.png": {
+      "bytes": 7351,
+      "sha256": "e6af5373f467ba4894103cf285c853bb2bc224a45463f7ad6947b1a8adb8f7dc"
+    },
+    "logo/identity/lockup/ncode-identity-lockup-light-h512.png": {
+      "bytes": 32800,
+      "sha256": "3c934678c3e2ee66227d515b82a8876161a1dbc28c9af16f72fc7eff91e66049"
+    },
+    "logo/identity/lockup/ncode-identity-lockup-light.svg": {
+      "bytes": 4053,
+      "sha256": "bb3ac99e090b9b2ae0fefa08cd5479fb896b56fde162a4de72f1e083d59cac18"
+    },
+    "logo/identity/lockup/ncode-identity-lockup-stacked-auto.svg": {
+      "bytes": 4391,
+      "sha256": "1ed82181ba11333d767e1b98b2194e83f552bf1684609491f6f91e14b8841108"
+    },
+    "logo/identity/lockup/ncode-identity-lockup-stacked-black-h1536.png": {
+      "bytes": 42257,
+      "sha256": "a35e2135710a5dbd4b0ef98b30f17f475ae0e4629f8e0a395a3968ffeb778f4b"
+    },
+    "logo/identity/lockup/ncode-identity-lockup-stacked-black-h384.png": {
+      "bytes": 8828,
+      "sha256": "a2b9b1631de24bf4ac0fafa02adfef8c3f590e7e8a8eaa4cf774a6a24805a3e3"
+    },
+    "logo/identity/lockup/ncode-identity-lockup-stacked-black.svg": {
+      "bytes": 4319,
+      "sha256": "16152d534a9c62e940183eb02e170aa772daa9acbc826738244e46936c3c5fef"
+    },
+    "logo/identity/lockup/ncode-identity-lockup-stacked-blue-h1536.png": {
+      "bytes": 42257,
+      "sha256": "a74a495a247369447adff1e589083b2326c10d08639b32fb4d8104c04a2c1e3d"
+    },
+    "logo/identity/lockup/ncode-identity-lockup-stacked-blue-h384.png": {
+      "bytes": 8828,
+      "sha256": "f26556cc5a7a5ddfc5d4077d5e74a3a9c4346c9ceb568ff69ffcf76e7649482d"
+    },
+    "logo/identity/lockup/ncode-identity-lockup-stacked-blue.svg": {
+      "bytes": 4319,
+      "sha256": "c9c000d15ce7dbb725f63e71118a58586fb948bfcb978e276b3a3adc5b2547ca"
+    },
+    "logo/identity/lockup/ncode-identity-lockup-stacked-light-h1536.png": {
+      "bytes": 42257,
+      "sha256": "e543ed134dbd54f6eb80a2840052fe9fdd2405d18c16cde51073236929cae146"
+    },
+    "logo/identity/lockup/ncode-identity-lockup-stacked-light-h384.png": {
+      "bytes": 8828,
+      "sha256": "b2241c6be5aca7450bf97f1eff6011b7dc1ff0bdbcc2217867ef28bda208b470"
+    },
+    "logo/identity/lockup/ncode-identity-lockup-stacked-light.svg": {
+      "bytes": 4319,
+      "sha256": "38fa1adc18cd062e864c5e3884845beb74df28bec0de0d9a00f083c7ad9f7e9f"
+    },
+    "logo/identity/lockup/ncode-identity-lockup-stacked-white-h1536.png": {
+      "bytes": 42257,
+      "sha256": "b0d006f3b7d646c9b758a08551f37b3d97514dd0b6c2fde177e6a6cb158f74b1"
+    },
+    "logo/identity/lockup/ncode-identity-lockup-stacked-white-h384.png": {
+      "bytes": 8828,
+      "sha256": "09222b2d4b88a9f5a230df13cebaa4b26713335c757e970f8d66e13aa2f52ba8"
+    },
+    "logo/identity/lockup/ncode-identity-lockup-stacked-white.svg": {
+      "bytes": 4319,
+      "sha256": "26cd9f940bdfb6b3ef50210d4fa8fa4582e5e21b53bd551c5d4440237e38568f"
+    },
+    "logo/identity/lockup/ncode-identity-lockup-white-h128.png": {
+      "bytes": 7351,
+      "sha256": "66b51c47502f7bfb40c0847254b8de373c752239cbdd777df650a6071036c75f"
+    },
+    "logo/identity/lockup/ncode-identity-lockup-white-h512.png": {
+      "bytes": 32800,
+      "sha256": "8228889acac46109a31f60239302025c5864e648584291042aa254a0ec3202f1"
+    },
+    "logo/identity/lockup/ncode-identity-lockup-white.svg": {
+      "bytes": 4053,
+      "sha256": "41f668fb59a699242343ee2ae7de75a5e4150e361478c105f09a11074fe7e17e"
+    },
+    "logo/identity/mark/ncode-identity-mark-auto.svg": {
+      "bytes": 753,
+      "sha256": "72327aea6a3ca039cec989ccc446af130c294db79478dbec56300e6c2035e694"
+    },
+    "logo/identity/mark/ncode-identity-mark-black-1024.png": {
+      "bytes": 12687,
+      "sha256": "f0fd4e27356743d4ca0b75ef0c7657b4d5170abfcf4a055d03586a046ad829db"
+    },
+    "logo/identity/mark/ncode-identity-mark-black-256.png": {
+      "bytes": 2155,
+      "sha256": "d2d388a9d3b06d71af5bdb19bd355b03bd282e447c013d76ed11598e942f63c4"
+    },
+    "logo/identity/mark/ncode-identity-mark-black.svg": {
+      "bytes": 681,
+      "sha256": "0882f8cb2fbc0d51157fdccdccbd2e3d4cfefd95656489484233c40bd747ddd0"
+    },
+    "logo/identity/mark/ncode-identity-mark-blue-1024.png": {
+      "bytes": 12687,
+      "sha256": "d1da57eb1f4654458ec2c3abeb2cd00e076221e691fe02ef216941b16d5d982c"
+    },
+    "logo/identity/mark/ncode-identity-mark-blue-256.png": {
+      "bytes": 2155,
+      "sha256": "08069ef72e99b852aaa26b34acaccc325cd22e830affdf94ab8c0b54e868cc0a"
+    },
+    "logo/identity/mark/ncode-identity-mark-blue.svg": {
+      "bytes": 681,
+      "sha256": "05545a339f5158aa1d413396a935f60b6d90e359d925844eed5cd3c194fb3853"
+    },
+    "logo/identity/mark/ncode-identity-mark-light-1024.png": {
+      "bytes": 12687,
+      "sha256": "7de9231f4004a7de3c4506949b7fce0f4414fa9e043fb1e231fb9b59a1ec9c26"
+    },
+    "logo/identity/mark/ncode-identity-mark-light-256.png": {
+      "bytes": 2155,
+      "sha256": "99b82568a7e7505c76f967e1dfc95ca245589d50c837a10a488b4b6fcb3f8d56"
+    },
+    "logo/identity/mark/ncode-identity-mark-light.svg": {
+      "bytes": 681,
+      "sha256": "0fd8c0ff2f009a3764180930aa94f7772e38729373b702abff105df825ff1da8"
+    },
+    "logo/identity/mark/ncode-identity-mark-white-1024.png": {
+      "bytes": 12687,
+      "sha256": "0a94506455636101b3586f59f4a7bd8db221962af5a95177d2dc5eb8ef2ba271"
+    },
+    "logo/identity/mark/ncode-identity-mark-white-256.png": {
+      "bytes": 2155,
+      "sha256": "0eb9c7713cb9bf4a807dfa4affa1c6c12bbb561c4a0f55ad018c54967a7b47e7"
+    },
+    "logo/identity/mark/ncode-identity-mark-white.svg": {
+      "bytes": 681,
+      "sha256": "803fa06dbb27ef03fe0ed2215cd1121bf2097b44c5d9f6cbbb59adbfc55afe9b"
+    },
+    "logo/identity/myapps/ncode-identity-myapps-tile-blue.png": {
+      "bytes": 2254,
+      "sha256": "8d21d1718ef066193956f608dfbcd8c612cea5e46b7498ceedd5a6068b0700fc"
+    },
+    "logo/identity/myapps/ncode-identity-myapps-tile-dark.png": {
+      "bytes": 2148,
+      "sha256": "2766f23f401a953f904e697e23a550c64df2cb1a645fc057946ec45a71de3020"
+    },
+    "logo/identity/myapps/ncode-identity-myapps-tile-white.png": {
+      "bytes": 2280,
+      "sha256": "24cf7e9b5e00caa4ed295a19ebed312f2f2d1a688730ed5219e90cf54d60b44f"
+    },
+    "logo/identity/nuget/ncode-identity-nuget-mark-blue.png": {
+      "bytes": 948,
+      "sha256": "f312ffee7f08d1e7d81a5ca6fa21c53a0581b0c9caf96923af65073d4e125024"
+    },
+    "logo/identity/nuget/ncode-identity-nuget-mark-light.png": {
+      "bytes": 948,
+      "sha256": "0d520db7aee86cbb2bf8b29254ccc742c6da86c447ac8175f1135dcb7a01428b"
+    },
+    "logo/identity/nuget/ncode-identity-nuget-tile-blue.png": {
+      "bytes": 1272,
+      "sha256": "78840ee2dd0d38c3668805c3aef51728212061078f20e6181f4b26382eab34e0"
+    },
+    "logo/identity/nuget/ncode-identity-nuget-tile-dark.png": {
+      "bytes": 1273,
+      "sha256": "7704a3de8c5a93b4c1f6da6e43fa9258653c6d9b126af856ef7ba388b488a876"
+    },
+    "logo/identity/nuget/ncode-identity-nuget-tile-white.png": {
+      "bytes": 1272,
+      "sha256": "2af3a47338dc31b3ab9380d067aa77cb2cf023ad5144496691abbce91f4cd284"
+    },
+    "logo/identity/outlines.json": {
+      "bytes": 12492,
+      "sha256": "4d26736a124a1545195832c1805f08193c67d3fe448ed856725d701bb54c0716"
+    },
+    "logo/identity/profile/ncode-identity-profile-mark-blue.png": {
+      "bytes": 10292,
+      "sha256": "7cc41fa51e0e0cd0e8c26033e4fd6f82ed4bc72a24a4784e8a3bce06dcd21652"
+    },
+    "logo/identity/profile/ncode-identity-profile-mark-light.png": {
+      "bytes": 10292,
+      "sha256": "6f84e2bb8389a49d9e0ce520fb4e65a434b2324fb3e01d46aba9cc7569401d78"
+    },
+    "logo/identity/profile/ncode-identity-profile-tile-blue.png": {
+      "bytes": 10332,
+      "sha256": "ad996da6804d75a75d70f135922fc13bc88ce9f843e8ef8aa47fb070e1fd938b"
+    },
+    "logo/identity/profile/ncode-identity-profile-tile-dark.png": {
+      "bytes": 10129,
+      "sha256": "412090a5b1770eeb8cb671d2c9c1a4a512e26761c20fc2167b379aed84e7bb88"
+    },
+    "logo/identity/profile/ncode-identity-profile-tile-white.png": {
+      "bytes": 11255,
+      "sha256": "6884c4d0e8e8479bc9e0512445254272fca10488f818fa7ced61946162fe38ab"
+    },
+    "logo/identity/social/ncode-identity-banner-blue.png": {
+      "bytes": 19428,
+      "sha256": "55d8b300f23531284ae5275b5d2c7710dc2d5907559ac71c91bc693e1b583f51"
+    },
+    "logo/identity/social/ncode-identity-banner-dark.png": {
+      "bytes": 19649,
+      "sha256": "585bac73f21f341e18845939d05fe0990205b7967332f16988cf57d348d84162"
+    },
+    "logo/identity/social/ncode-identity-banner-light.png": {
+      "bytes": 19420,
+      "sha256": "bd61ea31d823e53cc43065b00ae5e618c89c1065f5ca62e63446314b7a5c749f"
+    },
+    "logo/identity/social/ncode-identity-og-blue.png": {
+      "bytes": 32070,
+      "sha256": "98802c7eaaccebc3ee9d20f65b09e29e205ec82a84a0035736fff65d3f5e43c4"
+    },
+    "logo/identity/social/ncode-identity-og-dark.png": {
+      "bytes": 31998,
+      "sha256": "084372e940c8cc872cd648ef9c133280095bdcb6867a71852e572264820fd2b7"
+    },
+    "logo/identity/social/ncode-identity-og-light.png": {
+      "bytes": 32039,
+      "sha256": "1c73af0e0f31c6d3f0b967ba38c747316b9775d1d5e795c5e18594fbd78dd18f"
+    },
+    "logo/identity/tile/ncode-identity-tile-blue-1024.png": {
+      "bytes": 29854,
+      "sha256": "dd13207b6e802bf9aac9c68afce80307e61535de335688fc2aa64cd53b4a87ed"
+    },
+    "logo/identity/tile/ncode-identity-tile-blue-256.png": {
+      "bytes": 3167,
+      "sha256": "5c3b1dd665fc9fcc4f19f04070289d8be1703eb157e851c9b9ba907cec19c1f8"
+    },
+    "logo/identity/tile/ncode-identity-tile-blue-square-1024.png": {
+      "bytes": 10992,
+      "sha256": "1ffdeb112eedcc9d2d3bbff55fc9afb0318c68d385e6f8f09d8f223a21f34710"
+    },
+    "logo/identity/tile/ncode-identity-tile-blue-square.svg": {
+      "bytes": 971,
+      "sha256": "dfdfd430adca2617f3e9888c66f00ddbb8fb2da53f8b30144a7e08bd807e4830"
+    },
+    "logo/identity/tile/ncode-identity-tile-blue.svg": {
+      "bytes": 984,
+      "sha256": "f38fb1f9f240ea399339beb5b05b987a824ef8176de58220551dbb7dc4f3277b"
+    },
+    "logo/identity/tile/ncode-identity-tile-dark-1024.png": {
+      "bytes": 30629,
+      "sha256": "8adb2c55a53c041666023d977b63c4cd681c0a1110be18c66e0c542c305cf0fc"
+    },
+    "logo/identity/tile/ncode-identity-tile-dark-256.png": {
+      "bytes": 3148,
+      "sha256": "be5af8f46c348c82233a90aac7080c626e94d609e59dcbfe04beae8448b5e32a"
+    },
+    "logo/identity/tile/ncode-identity-tile-dark-square-1024.png": {
+      "bytes": 10730,
+      "sha256": "9175b70de2c42bb467717c6055fb29f17d3a03e1c3810624e7fd6912247c6e3d"
+    },
+    "logo/identity/tile/ncode-identity-tile-dark-square.svg": {
+      "bytes": 971,
+      "sha256": "d288cf4b3df729263161e3914e1f60ca4be221434c9a59dcd25c3439cf59b771"
+    },
+    "logo/identity/tile/ncode-identity-tile-dark.svg": {
+      "bytes": 984,
+      "sha256": "ee27f6fe45daf8e16f5364250cf84afec20d39e1a0d6278560062404af869330"
+    },
+    "logo/identity/tile/ncode-identity-tile-white-1024.png": {
+      "bytes": 30314,
+      "sha256": "55ef71b3b0811a0915441a5ac418cde8de0b6a90660f683565a0792e64555275"
+    },
+    "logo/identity/tile/ncode-identity-tile-white-256.png": {
+      "bytes": 3167,
+      "sha256": "1099e69b71b9e9faaa0abd3062fac4e987983d1071f68d2fec9b2a4c7ed11408"
+    },
+    "logo/identity/tile/ncode-identity-tile-white-square-1024.png": {
+      "bytes": 11848,
+      "sha256": "c05b38482158a8b7ccdb3e02c86b93650c3a4a7cda155a66d58fc77675ec29a8"
+    },
+    "logo/identity/tile/ncode-identity-tile-white-square.svg": {
+      "bytes": 971,
+      "sha256": "e3add8939a038ffd9c6f7eaec1320ece2bd33f3e68ba6de6ea5609fc4ca8f301"
+    },
+    "logo/identity/tile/ncode-identity-tile-white.svg": {
+      "bytes": 984,
+      "sha256": "0bda42e6adbf6b484c4ca76363c423ac1ec1694d5775b545c66d6ace69519486"
+    },
+    "logo/identity/windows/ncode-identity.ico": {
+      "bytes": 49706,
+      "sha256": "d974028bc63547978d3a04e91bce6855d4d446af0f5a991cb9c9ff55c0d4bdd3"
+    },
     "logo/ncode/badge/ncode-badge-blue.svg": {
       "bytes": 464,
       "sha256": "6622e33aa450a0e8a9d7bae4b8732d08ef0da423fe599905dbdb400783597f90"
