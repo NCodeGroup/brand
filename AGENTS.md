@@ -21,6 +21,7 @@ Run from the repository root in PowerShell 7. Node.js alone: there are no packag
 - Check: `npm run check` writes nothing, names each generated file or block that is missing, stale or extra, and fails then, or when a contrast pairing is below its floor; it is the Landing gate and a CI step
 - Test: `npm run test` runs `tests/*.test.mjs` with `node --test`
 - By hand, with Playwright installed where Node.js finds it, as `CONTRIBUTING.md` says: `node tools/shoot.mjs --out=<folder>` screenshots the specimens and fails on a console error, a failed request, a CSP violation or sideways scrolling; `node tools/browser-check.mjs` compares the build's color math, the static palette and the brace fallback with a browser
+- By hand, without Playwright: `node tools/pin-watch.mjs --dry-run --repo=NCodeGroup/brand` names the Lucide and Fontsource releases newer than the locks pin and at least three days old; the weekly `pin-watch` workflow runs it without `--dry-run` and keeps one `pin-update` issue per lock
 
 ## Landing
 

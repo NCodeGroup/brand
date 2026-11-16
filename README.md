@@ -49,6 +49,11 @@ Run from the repository root in PowerShell 7. The scripts need only the Node.js 
 contrast pairing is below its floor; it is the gate before a push, and CI runs it. `tools/shoot.mjs` and
 `tools/browser-check.mjs` check the specimens and the colors in a browser, by hand, with Playwright.
 
+The weekly `pin-watch` workflow opens an issue, labeled `pin-update`, when Lucide or Fontsource publishes a release
+newer than `src/icons/lucide.lock.json` or `src/fonts/fonts.lock.json` pins that is at least three days old, and
+closes it once the lock pins it; `/plan-issue` plans it. `node tools/pin-watch.mjs --dry-run --repo=NCodeGroup/brand`
+prints what it would do, and needs no token.
+
 ## AI-Assisted Workflow
 
 This repository is set up for plan-then-execute coding: Claude Opus plans each change into `PLAN.md`, a cheaper model executes it one verified step at a time, and any step that needs a decision goes back to Opus. [AGENTS.md](AGENTS.md) is the index of the instructions every agent follows.
