@@ -22,7 +22,7 @@ const filesUnder = (folder) =>
 describe('manifest.json', () => {
   test('lists every file of the generated folders and the released sources, and nothing else', () => {
     const expected = [
-      ...['tokens', 'css', 'fonts', 'brace', 'logo', 'mui'].flatMap(filesUnder),
+      ...['tokens', 'css', 'fonts', 'brace', 'icons', 'logo', 'mui'].flatMap(filesUnder),
       'LICENSE.txt', 'COPYRIGHT.txt', 'TRADEMARKS.md', 'vendoring/vendor-brand.mjs',
     ].sort();
     assert.deepEqual(Object.keys(manifest.files), expected);
