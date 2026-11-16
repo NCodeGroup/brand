@@ -1,0 +1,1047 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>Instrument · the look and feel of NCode</title>
+<link rel="icon" href="../logo/ncode/favicon/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../css/fonts.css">
+<link rel="stylesheet" href="../tokens/tokens.css">
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="foundations.css">
+<script src="params.js"></script>
+</head>
+<body class="fd">
+<svg class="sprite" aria-hidden="true" focusable="false" width="0" height="0">
+  <symbol id="i-search" viewBox="0 0 16 16"><circle cx="7" cy="7" r="4.5"/><path d="M10.5 10.5 14 14"/></symbol>
+  <symbol id="i-arrow-right" viewBox="0 0 16 16"><path d="M2.5 8H13M9 3.5 13.5 8 9 12.5"/></symbol>
+  <symbol id="i-arrow-up-right" viewBox="0 0 16 16"><path d="M4.5 11.5 11.5 4.5M5.5 4.5h6v6"/></symbol>
+  <symbol id="i-chevron-down" viewBox="0 0 16 16"><path d="M3.5 6 8 10.5 12.5 6"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 16 16"><path d="M8 3v10M3 8h10"/></symbol>
+  <symbol id="i-close" viewBox="0 0 16 16"><path d="M4 4l8 8M12 4l-8 8"/></symbol>
+  <symbol id="i-check" viewBox="0 0 16 16"><path d="M3 8.5 6.5 12 13 4.5"/></symbol>
+  <symbol id="i-edit" viewBox="0 0 16 16"><path d="M2.75 13.25 3.5 10l7.25-7.25a1.4 1.4 0 0 1 2 0l.5.5a1.4 1.4 0 0 1 0 2L6 12.5l-3.25.75ZM9.5 4 12 6.5"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 16 16"><path d="M2.5 4.25h11M6 4.25v-1.5h4v1.5M3.75 4.25l.75 9.5h7l.75-9.5M6.75 7v4M9.25 7v4"/></symbol>
+  <symbol id="i-info" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6.25"/><path d="M8 7.25v4"/><circle cx="8" cy="4.85" r=".9" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-caution" viewBox="0 0 16 16"><path d="M8 2 14.5 13.5h-13L8 2Z"/><path d="M8 6.5V10"/><circle cx="8" cy="11.6" r=".85" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-error" viewBox="0 0 16 16"><path d="M5.5 1.75h5l3.75 3.75v5l-3.75 3.75h-5L1.75 10.5v-5L5.5 1.75Z"/><path d="M8 4.75v4"/><circle cx="8" cy="11.1" r=".85" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-success" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6.25"/><path d="M5 8.25 7.25 10.5 11.25 6"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 16 16"><circle cx="8" cy="8" r="2.75"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.05 3.05l1.4 1.4M11.55 11.55l1.4 1.4M3.05 12.95l1.4-1.4M11.55 4.45l1.4-1.4"/></symbol>
+  <symbol id="i-moon" viewBox="0 0 16 16"><path d="M13.5 9.75A5.75 5.75 0 1 1 6.25 2.5a4.75 4.75 0 0 0 7.25 7.25Z"/></symbol>
+  <symbol id="i-people" viewBox="0 0 16 16"><circle cx="6" cy="5.25" r="2.5"/><path d="M1.5 13.5c.4-2.5 2.1-3.9 4.5-3.9s4.1 1.4 4.5 3.9M10.75 2.9a2.5 2.5 0 0 1 0 4.7M12.25 9.9c1.2.6 2 1.8 2.25 3.6"/></symbol>
+  <symbol id="i-globe" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6.25"/><path d="M1.75 8h12.5"/><ellipse cx="8" cy="8" rx="2.75" ry="6.25"/></symbol>
+  <symbol id="i-building" viewBox="0 0 16 16"><path d="M3.25 14.25V2.75h6.5v11.5M9.75 6.5h3v7.75M1.5 14.25h13M5.5 5.5h2M5.5 8.25h2M5.5 11h2"/></symbol>
+  <symbol id="logo-ncode" viewBox="0 0 212 64"><path d="M16 12H15A3 3 0 0 0 12 15V27A8 8 0 0 1 10.245 32A8 8 0 0 1 12 37V49A3 3 0 0 0 15 52H16V56H15A7 7 0 0 1 8 49V37A4 4 0 0 0 4 33V31A4 4 0 0 0 8 27V15A7 7 0 0 1 15 8H16ZM20 16H25.5L39 39.351V16H44V48H38.5L25 24.649V48H20ZM48 8H49A7 7 0 0 1 56 15V27A4 4 0 0 0 60 31V33A4 4 0 0 0 56 37V49A7 7 0 0 1 49 56H48V52H49A3 3 0 0 0 52 49V37A8 8 0 0 1 53.755 32A8 8 0 0 1 52 27V15A3 3 0 0 0 49 12H48ZM74.92 48H79.69V30.69C79.69 29.27 79.67 26.5 79.52 22.74C81.64 26.39 83.38 29.29 84.28 30.71L95.22 48H100.54V16H95.75V35.05C95.75 36.21 95.8 38.94 95.88 41.26C94.59 38.98 93.18 36.55 92.42 35.35L80.2 16H74.92ZM120.11 48.52C127.09 48.52 132.5 44.2 133.59 37.39H128.76C127.75 41.73 124.49 44.16 120.15 44.16C113.84 44.16 109.97 39.26 109.97 32.02C109.97 24.74 113.84 19.84 120.15 19.84C124.51 19.84 127.8 22.29 128.74 26.65H133.59C132.48 19.82 127.09 15.48 120.11 15.48C111.26 15.48 105.18 22.16 105.18 32.02C105.18 41.81 111.28 48.52 120.11 48.52ZM147.58 48.52C154.06 48.52 158.42 43.68 158.42 36.7C158.42 29.68 154.06 24.81 147.58 24.81C141.09 24.81 136.71 29.68 136.71 36.7C136.71 43.68 141.09 48.52 147.58 48.52ZM147.58 44.61C143.69 44.61 141.3 41.54 141.3 36.7C141.3 31.83 143.71 28.71 147.58 28.71C151.44 28.71 153.85 31.83 153.85 36.7C153.85 41.51 151.46 44.61 147.58 44.61ZM171.16 48.45C174.12 48.45 176.66 47.18 178.18 44.54H178.22V48H182.67V16H178.14V28.61H178.09C176.63 26.09 174.08 24.87 171.14 24.87C165.27 24.87 161.32 29.66 161.32 36.66C161.32 43.68 165.25 48.45 171.16 48.45ZM172.08 44.54C168.43 44.54 165.92 41.77 165.92 36.66C165.92 31.53 168.43 28.76 172.08 28.76C175.95 28.76 178.44 31.89 178.44 36.66C178.44 41.43 175.95 44.54 172.08 44.54ZM197.47 48.52C202.6 48.52 206.64 45.49 207.47 41.11H203.11C202.47 43.25 200.49 44.74 197.53 44.74C193.56 44.74 191.28 41.97 191.13 37.88H207.82V36.66C207.82 29.66 203.65 24.81 197.23 24.81C191.04 24.81 186.66 29.79 186.66 36.7C186.66 43.55 190.74 48.52 197.47 48.52ZM191.17 34.45C191.56 30.84 193.86 28.59 197.27 28.59C200.71 28.59 203.03 30.84 203.39 34.45Z"/></symbol>
+  <symbol id="logo-ncode-mark" viewBox="0 0 64 64"><path d="M16 12H15A3 3 0 0 0 12 15V27A8 8 0 0 1 10.245 32A8 8 0 0 1 12 37V49A3 3 0 0 0 15 52H16V56H15A7 7 0 0 1 8 49V37A4 4 0 0 0 4 33V31A4 4 0 0 0 8 27V15A7 7 0 0 1 15 8H16ZM20 16H25.5L39 39.351V16H44V48H38.5L25 24.649V48H20ZM48 8H49A7 7 0 0 1 56 15V27A4 4 0 0 0 60 31V33A4 4 0 0 0 56 37V49A7 7 0 0 1 49 56H48V52H49A3 3 0 0 0 52 49V37A8 8 0 0 1 53.755 32A8 8 0 0 1 52 27V15A3 3 0 0 0 49 12H48Z"/></symbol>
+  <symbol id="logo-identity-mark" viewBox="0 0 64 64"><path d="M16 12H15A3 3 0 0 0 12 15V27A8 8 0 0 1 10.245 32A8 8 0 0 1 12 37V49A3 3 0 0 0 15 52H16V56H15A7 7 0 0 1 8 49V37A4 4 0 0 0 4 33V31A4 4 0 0 0 8 27V15A7 7 0 0 1 15 8H16ZM20 32H24V48H20ZM24.5 24A2.5 2.5 0 0 1 19.5 24A2.5 2.5 0 0 1 24.5 24ZM40 16H44V48H40ZM44 40A8 8 0 0 1 28 40A8 8 0 0 1 44 40ZM40 40A4 4 0 0 0 32 40A4 4 0 0 0 40 40ZM48 8H49A7 7 0 0 1 56 15V27A4 4 0 0 0 60 31V33A4 4 0 0 0 56 37V49A7 7 0 0 1 49 56H48V52H49A3 3 0 0 0 52 49V37A8 8 0 0 1 53.755 32A8 8 0 0 1 52 27V15A3 3 0 0 0 49 12H48Z"/></symbol>
+</svg>
+
+<header class="sitebar fd__bar">
+  <a class="sitebar__brand" href="foundations.html">
+    <svg class="logo logo--ncode" viewBox="0 0 212 64" role="img" aria-label="NCode"><use href="#logo-ncode"/></svg>
+    <span class="sitebar__product">Look and feel</span>
+  </a>
+  <nav class="fd__scenes" aria-label="Scenes">
+    <a class="key key--sm key--ghost" href="docs.html">Documentation</a>
+    <a class="key key--sm key--ghost" href="hero.html">Landing</a>
+    <a class="key key--sm key--ghost" href="product.html">Product</a>
+    <a class="key key--sm key--ghost" href="signin.html">Sign-in</a>
+    <a class="key key--sm key--ghost" href="consent.html">Consent</a>
+    <a class="key key--sm key--ghost" href="console.html">Console</a>
+    <a class="key key--sm key--ghost" href="settings.html">Settings</a>
+    <a class="key key--sm key--ghost" href="states.html">States</a>
+  </nav>
+  <div class="sitebar__tools">
+    <span class="keyset themeswitch" role="group" aria-label="Theme">
+      <a class="key key--icon themeswitch__light" href="?theme=light" aria-label="Light theme"><svg class="icon" aria-hidden="true"><use href="#i-sun"/></svg></a>
+      <a class="key key--icon themeswitch__dark" href="?theme=dark" aria-label="Dark theme"><svg class="icon" aria-hidden="true"><use href="#i-moon"/></svg></a>
+    </span>
+  </div>
+</header>
+
+<main class="fd__main">
+
+  <!-- ============================================================ the idea -->
+  <section class="fd-intro" aria-labelledby="direction">
+    <div class="fd-intro__name">
+      <p class="label">The look and feel of NCode</p>
+      <h1 class="headline" id="direction">Instrument</h1>
+      <div class="fd-intro__marks" aria-hidden="true">
+        <svg class="logo logo--mark" viewBox="0 0 64 64"><use href="#logo-ncode-mark"/></svg>
+        <svg class="logo logo--mark" viewBox="0 0 64 64"><use href="#logo-identity-mark"/></svg>
+      </div>
+    </div>
+    <div class="fd-intro__concept">
+      <p class="lead">NCode's mark is a value held between the braces of code. Instrument builds every surface the same way: a neutral, precisely made case of engraved labels, keys and wells that holds live values, lit on screens and lamps, with the mark's own brace drawn around what one boundary holds.</p>
+      <p class="lead">Identity is infrastructure, so it should feel like well-made equipment: you can see what every part is, what state it is in, and which security boundary you are acting in, before you touch anything.</p>
+    </div>
+    <ol class="fd-principles">
+      <li class="plate"><span class="label">01</span><h2 class="h4">The frame is fixed, the value is live</h2><p>Structure is stone and engraved type. Color belongs to values, to state and to the tenant, so the look survives any brand color.</p></li>
+      <li class="plate"><span class="label">02</span><h2 class="h4">A brace marks a scope</h2><p>The mark's brace is drawn around what one boundary holds, and nowhere else. It is never decoration.</p></li>
+      <li class="plate"><span class="label">03</span><h2 class="h4">Names are engraved, values are displayed</h2><p>A fixed part carries narrow capitals. Anything read off the system, an ID, a count, a date, code, is monospace.</p></li>
+      <li class="plate"><span class="label">04</span><h2 class="h4">Depth means one thing</h2><p>A lip below: press it. A shade above: fill it. Flush: a plate. Hard edges only, no gradients, no glow.</p></li>
+      <li class="plate"><span class="label">05</span><h2 class="h4">State is lit, and said</h2><p>A lamp or a lit plate always sits beside a word, and its shape changes with the state. Color never works alone.</p></li>
+      <li class="plate"><span class="label">06</span><h2 class="h4">Hazards wear tape</h2><p>Test environments, cautions and the platform boundary carry amber and black stripes, in both themes.</p></li>
+      <li class="plate"><span class="label">07</span><h2 class="h4">Keys travel, readouts tick</h2><p>A key moves two pixels in 70 milliseconds. A value changes in one step. Nothing else moves.</p></li>
+    </ol>
+  </section>
+
+  <!-- ============================================================ color -->
+  <section class="fd-section" aria-labelledby="color">
+    <header class="fd-section__head">
+      <span class="step" aria-hidden="true">01</span>
+      <h2 id="color">Color</h2>
+      <p>One blue, bent through the logo kit's three exact colors. One neutral, Stone, with a trace of warm olive so it takes no side against a tenant's hue. Amber is the only other voice.</p>
+    </header>
+
+    <div class="plate fd-panel">
+      <div class="plate__head"><h3 class="label">Ramps</h3><p class="fd-legend">In each cell: step, hex, contrast on white, contrast on black</p></div>
+      <div class="plate__body fd-ramps">
+<!-- generated:ramps -->
+        <div class="ramp">
+          <p class="ramp__name"><span class="h4">Blue</span><span class="label">Brand</span></p>
+          <ol class="ramp__cells ramp__cells--11">
+            <li class="sw sw-blue-50"><span class="label">50</span><span class="sw__hex">#F2F5FF</span><span class="sw__ratio">1.09 · 19.28</span></li>
+            <li class="sw sw-blue-100"><span class="label">100</span><span class="sw__hex">#E4EBFF</span><span class="sw__ratio">1.19 · 17.63</span></li>
+            <li class="sw sw-blue-200"><span class="label">200</span><span class="sw__hex">#C3D2FF</span><span class="sw__ratio">1.50 · 13.98</span></li>
+            <li class="sw sw-blue-300"><span class="label">300</span><span class="sw__anchor">NCode Blue Light</span><span class="sw__hex">#809FFF</span><span class="sw__ratio">2.52 · 8.32</span></li>
+            <li class="sw sw-blue-400"><span class="label">400</span><span class="sw__hex">#557EFA</span><span class="sw__ratio">3.65 · 5.75</span></li>
+            <li class="sw sw-blue-500 sw--dark"><span class="label">500</span><span class="sw__hex">#2757E8</span><span class="sw__ratio">5.81 · 3.61</span></li>
+            <li class="sw sw-blue-600 sw--dark"><span class="label">600</span><span class="sw__anchor">NCode Blue</span><span class="sw__hex">#0033CC</span><span class="sw__ratio">8.95 · 2.35</span></li>
+            <li class="sw sw-blue-700 sw--dark"><span class="label">700</span><span class="sw__hex">#032AA7</span><span class="sw__ratio">11.09 · 1.89</span></li>
+            <li class="sw sw-blue-800 sw--dark"><span class="label">800</span><span class="sw__hex">#08257F</span><span class="sw__ratio">13.28 · 1.58</span></li>
+            <li class="sw sw-blue-900 sw--dark"><span class="label">900</span><span class="sw__anchor">NCode Navy</span><span class="sw__hex">#0A1F5C</span><span class="sw__ratio">15.40 · 1.36</span></li>
+            <li class="sw sw-blue-950 sw--dark"><span class="label">950</span><span class="sw__hex">#071339</span><span class="sw__ratio">18.08 · 1.16</span></li>
+          </ol>
+        </div>
+        <div class="ramp">
+          <p class="ramp__name"><span class="h4">Stone</span><span class="label">Neutral</span></p>
+          <ol class="ramp__cells ramp__cells--16">
+            <li class="sw sw-stone-0"><span class="label">0</span><span class="sw__hex">#FFFFFF</span><span class="sw__ratio">1.00 · 21.00</span></li>
+            <li class="sw sw-stone-50"><span class="label">50</span><span class="sw__hex">#F7F7F4</span><span class="sw__ratio">1.07 · 19.57</span></li>
+            <li class="sw sw-stone-100"><span class="label">100</span><span class="sw__hex">#F0F0ED</span><span class="sw__ratio">1.14 · 18.39</span></li>
+            <li class="sw sw-stone-200"><span class="label">200</span><span class="sw__hex">#E9E9E4</span><span class="sw__ratio">1.22 · 17.24</span></li>
+            <li class="sw sw-stone-300"><span class="label">300</span><span class="sw__hex">#D9D9D4</span><span class="sw__ratio">1.42 · 14.83</span></li>
+            <li class="sw sw-stone-400"><span class="label">400</span><span class="sw__hex">#BEBEB8</span><span class="sw__ratio">1.87 · 11.25</span></li>
+            <li class="sw sw-stone-450"><span class="label">450</span><span class="sw__hex">#93938C</span><span class="sw__ratio">3.09 · 6.79</span></li>
+            <li class="sw sw-stone-500"><span class="label">500</span><span class="sw__hex">#797972</span><span class="sw__ratio">4.38 · 4.79</span></li>
+            <li class="sw sw-stone-600 sw--dark"><span class="label">600</span><span class="sw__hex">#5E5E58</span><span class="sw__ratio">6.53 · 3.22</span></li>
+            <li class="sw sw-stone-700 sw--dark"><span class="label">700</span><span class="sw__hex">#4B4B45</span><span class="sw__ratio">8.78 · 2.39</span></li>
+            <li class="sw sw-stone-800 sw--dark"><span class="label">800</span><span class="sw__hex">#343430</span><span class="sw__ratio">12.50 · 1.68</span></li>
+            <li class="sw sw-stone-850 sw--dark"><span class="label">850</span><span class="sw__hex">#282824</span><span class="sw__ratio">14.80 · 1.42</span></li>
+            <li class="sw sw-stone-900 sw--dark"><span class="label">900</span><span class="sw__hex">#1E1E1B</span><span class="sw__ratio">16.71 · 1.26</span></li>
+            <li class="sw sw-stone-925 sw--dark"><span class="label">925</span><span class="sw__hex">#171714</span><span class="sw__ratio">17.96 · 1.17</span></li>
+            <li class="sw sw-stone-950 sw--dark"><span class="label">950</span><span class="sw__hex">#11110F</span><span class="sw__ratio">18.90 · 1.11</span></li>
+            <li class="sw sw-stone-975 sw--dark"><span class="label">975</span><span class="sw__hex">#0A0A08</span><span class="sw__ratio">19.81 · 1.06</span></li>
+          </ol>
+        </div>
+        <div class="ramp">
+          <p class="ramp__name"><span class="h4">Green</span><span class="label">Success</span></p>
+          <ol class="ramp__cells ramp__cells--9">
+            <li class="sw sw-green-50"><span class="label">50</span><span class="sw__hex">#ECFAEF</span><span class="sw__ratio">1.08 · 19.49</span></li>
+            <li class="sw sw-green-100"><span class="label">100</span><span class="sw__hex">#D3F5DB</span><span class="sw__ratio">1.18 · 17.85</span></li>
+            <li class="sw sw-green-300"><span class="label">300</span><span class="sw__hex">#7ADE95</span><span class="sw__ratio">1.65 · 12.71</span></li>
+            <li class="sw sw-green-500"><span class="label">500</span><span class="sw__hex">#20A04E</span><span class="sw__ratio">3.39 · 6.20</span></li>
+            <li class="sw sw-green-600 sw--dark"><span class="label">600</span><span class="sw__hex">#11813C</span><span class="sw__ratio">4.97 · 4.23</span></li>
+            <li class="sw sw-green-700 sw--dark"><span class="label">700</span><span class="sw__hex">#126630</span><span class="sw__ratio">7.07 · 2.97</span></li>
+            <li class="sw sw-green-800 sw--dark"><span class="label">800</span><span class="sw__hex">#0D4A22</span><span class="sw__ratio">10.40 · 2.02</span></li>
+            <li class="sw sw-green-900 sw--dark"><span class="label">900</span><span class="sw__hex">#083518</span><span class="sw__ratio">13.70 · 1.53</span></li>
+            <li class="sw sw-green-950 sw--dark"><span class="label">950</span><span class="sw__hex">#092210</span><span class="sw__ratio">16.83 · 1.25</span></li>
+          </ol>
+        </div>
+        <div class="ramp">
+          <p class="ramp__name"><span class="h4">Amber</span><span class="label">Warning, hazard, hot</span></p>
+          <ol class="ramp__cells ramp__cells--10">
+            <li class="sw sw-amber-50"><span class="label">50</span><span class="sw__hex">#FFF6E1</span><span class="sw__ratio">1.08 · 19.52</span></li>
+            <li class="sw sw-amber-100"><span class="label">100</span><span class="sw__hex">#FFECB8</span><span class="sw__ratio">1.17 · 17.94</span></li>
+            <li class="sw sw-amber-300"><span class="label">300</span><span class="sw__hex">#FAC13B</span><span class="sw__ratio">1.65 · 12.76</span></li>
+            <li class="sw sw-amber-400"><span class="label">400</span><span class="sw__hex">#F4AD1D</span><span class="sw__ratio">1.94 · 10.84</span></li>
+            <li class="sw sw-amber-500"><span class="label">500</span><span class="sw__hex">#DC8900</span><span class="sw__ratio">2.76 · 7.62</span></li>
+            <li class="sw sw-amber-600"><span class="label">600</span><span class="sw__hex">#B96A00</span><span class="sw__ratio">4.10 · 5.12</span></li>
+            <li class="sw sw-amber-700 sw--dark"><span class="label">700</span><span class="sw__hex">#8F4D05</span><span class="sw__ratio">6.50 · 3.23</span></li>
+            <li class="sw sw-amber-800 sw--dark"><span class="label">800</span><span class="sw__hex">#623606</span><span class="sw__ratio">10.25 · 2.05</span></li>
+            <li class="sw sw-amber-900 sw--dark"><span class="label">900</span><span class="sw__hex">#442504</span><span class="sw__ratio">13.89 · 1.51</span></li>
+            <li class="sw sw-amber-950 sw--dark"><span class="label">950</span><span class="sw__hex">#2A1907</span><span class="sw__ratio">16.93 · 1.24</span></li>
+          </ol>
+        </div>
+        <div class="ramp">
+          <p class="ramp__name"><span class="h4">Red</span><span class="label">Danger</span></p>
+          <ol class="ramp__cells ramp__cells--9">
+            <li class="sw sw-red-50"><span class="label">50</span><span class="sw__hex">#FFF2F0</span><span class="sw__ratio">1.09 · 19.21</span></li>
+            <li class="sw sw-red-100"><span class="label">100</span><span class="sw__hex">#FFE2DF</span><span class="sw__ratio">1.22 · 17.20</span></li>
+            <li class="sw sw-red-300"><span class="label">300</span><span class="sw__hex">#FF958D</span><span class="sw__ratio">2.11 · 9.94</span></li>
+            <li class="sw sw-red-500"><span class="label">500</span><span class="sw__hex">#DE3C37</span><span class="sw__ratio">4.37 · 4.81</span></li>
+            <li class="sw sw-red-600 sw--dark"><span class="label">600</span><span class="sw__hex">#C01F1C</span><span class="sw__ratio">6.08 · 3.45</span></li>
+            <li class="sw sw-red-700 sw--dark"><span class="label">700</span><span class="sw__hex">#9C1B18</span><span class="sw__ratio">8.13 · 2.58</span></li>
+            <li class="sw sw-red-800 sw--dark"><span class="label">800</span><span class="sw__hex">#711612</span><span class="sw__ratio">11.50 · 1.83</span></li>
+            <li class="sw sw-red-900 sw--dark"><span class="label">900</span><span class="sw__hex">#4D1612</span><span class="sw__ratio">14.59 · 1.44</span></li>
+            <li class="sw sw-red-950 sw--dark"><span class="label">950</span><span class="sw__hex">#31100D</span><span class="sw__ratio">17.35 · 1.21</span></li>
+          </ol>
+        </div>
+<!-- /generated:ramps -->
+      </div>
+    </div>
+
+    <div class="plate fd-panel">
+      <div class="plate__head"><h3 class="label">Roles</h3><p class="fd-legend">The semantic tokens components read; these swatches follow the theme</p></div>
+      <div class="plate__body fd-roles">
+<!-- generated:roles -->
+        <div class="rolegroup">
+          <h4 class="label">Case and plates</h4>
+          <ul class="rolegroup__list">
+            <li><span class="rolesw rolesw-page"></span><code>page</code></li>
+            <li><span class="rolesw rolesw-page-sunken"></span><code>page-sunken</code></li>
+            <li><span class="rolesw rolesw-surface"></span><code>surface</code></li>
+            <li><span class="rolesw rolesw-surface-raised"></span><code>surface-raised</code></li>
+            <li><span class="rolesw rolesw-surface-sunken"></span><code>surface-sunken</code></li>
+            <li><span class="rolesw rolesw-well"></span><code>well</code></li>
+          </ul>
+        </div>
+        <div class="rolegroup">
+          <h4 class="label">Keys</h4>
+          <ul class="rolegroup__list">
+            <li><span class="rolesw rolesw-control"></span><code>control</code></li>
+            <li><span class="rolesw rolesw-control-hover"></span><code>control-hover</code></li>
+            <li><span class="rolesw rolesw-control-pressed"></span><code>control-pressed</code></li>
+            <li><span class="rolesw rolesw-ghost-hover"></span><code>ghost-hover</code></li>
+            <li><span class="rolesw rolesw-ghost-pressed"></span><code>ghost-pressed</code></li>
+          </ul>
+        </div>
+        <div class="rolegroup">
+          <h4 class="label">Lines</h4>
+          <ul class="rolegroup__list">
+            <li><span class="rolesw rolesw-border"></span><code>border</code></li>
+            <li><span class="rolesw rolesw-border-strong"></span><code>border-strong</code></li>
+            <li><span class="rolesw rolesw-lamp-unlit"></span><code>lamp-unlit</code></li>
+          </ul>
+        </div>
+        <div class="rolegroup">
+          <h4 class="label">Type</h4>
+          <ul class="rolegroup__list">
+            <li><span class="rolesw rolesw-text"></span><code>text</code></li>
+            <li><span class="rolesw rolesw-text-secondary"></span><code>text-secondary</code></li>
+            <li><span class="rolesw rolesw-text-muted"></span><code>text-muted</code></li>
+            <li><span class="rolesw rolesw-text-disabled"></span><code>text-disabled</code></li>
+          </ul>
+        </div>
+        <div class="rolegroup">
+          <h4 class="label">Primary, from --nc-brand</h4>
+          <ul class="rolegroup__list">
+            <li><span class="rolesw rolesw-primary"></span><code>primary</code></li>
+            <li><span class="rolesw rolesw-on-primary"></span><code>on-primary</code></li>
+            <li><span class="rolesw rolesw-primary-shade"></span><code>primary-shade</code></li>
+            <li><span class="rolesw rolesw-primary-hover"></span><code>primary-hover</code></li>
+            <li><span class="rolesw rolesw-primary-pressed"></span><code>primary-pressed</code></li>
+            <li><span class="rolesw rolesw-primary-edge"></span><code>primary-edge</code></li>
+            <li><span class="rolesw rolesw-primary-lip"></span><code>primary-lip</code></li>
+            <li><span class="rolesw rolesw-primary-text"></span><code>primary-text</code></li>
+            <li><span class="rolesw rolesw-primary-subtle"></span><code>primary-subtle</code></li>
+            <li><span class="rolesw rolesw-primary-subtle-border"></span><code>primary-subtle-border</code></li>
+            <li><span class="rolesw rolesw-focus"></span><code>focus</code></li>
+          </ul>
+        </div>
+        <div class="rolegroup">
+          <h4 class="label">Screen, from --nc-brand-secondary</h4>
+          <ul class="rolegroup__list">
+            <li><span class="rolesw rolesw-screen"></span><code>screen</code></li>
+            <li><span class="rolesw rolesw-screen-raised"></span><code>screen-raised</code></li>
+            <li><span class="rolesw rolesw-screen-border"></span><code>screen-border</code></li>
+            <li><span class="rolesw rolesw-screen-lit"></span><code>screen-lit</code></li>
+            <li><span class="rolesw rolesw-on-screen"></span><code>on-screen</code></li>
+            <li><span class="rolesw rolesw-on-screen-secondary"></span><code>on-screen-secondary</code></li>
+            <li><span class="rolesw rolesw-on-screen-muted"></span><code>on-screen-muted</code></li>
+            <li><span class="rolesw rolesw-screen-hot"></span><code>screen-hot</code></li>
+          </ul>
+        </div>
+        <div class="rolegroup">
+          <h4 class="label">Scope braces</h4>
+          <ul class="rolegroup__list">
+            <li><span class="rolesw rolesw-scope-tenant"></span><code>scope-tenant</code></li>
+            <li><span class="rolesw rolesw-scope-team"></span><code>scope-team</code></li>
+            <li><span class="rolesw rolesw-scope-platform"></span><code>scope-platform</code></li>
+          </ul>
+        </div>
+        <div class="rolegroup">
+          <h4 class="label">Depth</h4>
+          <ul class="rolegroup__list">
+            <li><span class="rolesw rolesw-lip"></span><code>lip</code></li>
+            <li><span class="rolesw rolesw-shade"></span><code>shade</code></li>
+            <li><span class="rolesw rolesw-screen-shade"></span><code>screen-shade</code></li>
+            <li><span class="rolesw rolesw-glint"></span><code>glint</code></li>
+            <li><span class="rolesw rolesw-shadow"></span><code>shadow</code></li>
+            <li><span class="rolesw rolesw-scrim"></span><code>scrim</code></li>
+          </ul>
+        </div>
+        <div class="rolegroup">
+          <h4 class="label">Success</h4>
+          <ul class="rolegroup__list">
+            <li><span class="rolesw rolesw-success"></span><code>success</code></li>
+            <li><span class="rolesw rolesw-on-success"></span><code>on-success</code></li>
+            <li><span class="rolesw rolesw-success-mark"></span><code>success-mark</code></li>
+            <li><span class="rolesw rolesw-success-text"></span><code>success-text</code></li>
+            <li><span class="rolesw rolesw-success-subtle"></span><code>success-subtle</code></li>
+            <li><span class="rolesw rolesw-success-border"></span><code>success-border</code></li>
+          </ul>
+        </div>
+        <div class="rolegroup">
+          <h4 class="label">Warning</h4>
+          <ul class="rolegroup__list">
+            <li><span class="rolesw rolesw-warning"></span><code>warning</code></li>
+            <li><span class="rolesw rolesw-on-warning"></span><code>on-warning</code></li>
+            <li><span class="rolesw rolesw-warning-mark"></span><code>warning-mark</code></li>
+            <li><span class="rolesw rolesw-warning-text"></span><code>warning-text</code></li>
+            <li><span class="rolesw rolesw-warning-subtle"></span><code>warning-subtle</code></li>
+            <li><span class="rolesw rolesw-warning-border"></span><code>warning-border</code></li>
+          </ul>
+        </div>
+        <div class="rolegroup">
+          <h4 class="label">Danger</h4>
+          <ul class="rolegroup__list">
+            <li><span class="rolesw rolesw-danger"></span><code>danger</code></li>
+            <li><span class="rolesw rolesw-on-danger"></span><code>on-danger</code></li>
+            <li><span class="rolesw rolesw-danger-mark"></span><code>danger-mark</code></li>
+            <li><span class="rolesw rolesw-danger-text"></span><code>danger-text</code></li>
+            <li><span class="rolesw rolesw-danger-subtle"></span><code>danger-subtle</code></li>
+            <li><span class="rolesw rolesw-danger-border"></span><code>danger-border</code></li>
+            <li><span class="rolesw rolesw-danger-hover"></span><code>danger-hover</code></li>
+            <li><span class="rolesw rolesw-danger-lip"></span><code>danger-lip</code></li>
+          </ul>
+        </div>
+        <div class="rolegroup">
+          <h4 class="label">Info</h4>
+          <ul class="rolegroup__list">
+            <li><span class="rolesw rolesw-info"></span><code>info</code></li>
+            <li><span class="rolesw rolesw-on-info"></span><code>on-info</code></li>
+            <li><span class="rolesw rolesw-info-mark"></span><code>info-mark</code></li>
+            <li><span class="rolesw rolesw-info-text"></span><code>info-text</code></li>
+            <li><span class="rolesw rolesw-info-subtle"></span><code>info-subtle</code></li>
+            <li><span class="rolesw rolesw-info-border"></span><code>info-border</code></li>
+          </ul>
+        </div>
+        <div class="rolegroup">
+          <h4 class="label">Hazard tape</h4>
+          <ul class="rolegroup__list">
+            <li><span class="rolesw rolesw-hazard"></span><code>hazard</code></li>
+            <li><span class="rolesw rolesw-on-hazard"></span><code>on-hazard</code></li>
+          </ul>
+        </div>
+        <div class="rolegroup">
+          <h4 class="label">NCode's marks</h4>
+          <ul class="rolegroup__list">
+            <li><span class="rolesw rolesw-logo"></span><code>logo</code></li>
+          </ul>
+        </div>
+<!-- /generated:roles -->
+      </div>
+    </div>
+
+    <div class="plate fd-panel">
+      <div class="plate__head"><h3 class="label">A tenant's two colors</h3><p class="fd-legend">The primary colors what you press. The secondary colors what you are shown: screens and the scope brace.</p></div>
+      <div class="fd-tenants">
+        <div class="fd-tenant" data-brand-scope>
+          <p class="fd-tenant__name"><span class="label">NCode</span><code>#0033CC</code></p>
+          <span class="key key--primary">Create client</span>
+          <span class="key">Cancel</span>
+          <span class="display fd-tenant__display"><span class="boundary" data-scope="tenant"><svg class="icon" aria-hidden="true"><use href="#i-building"/></svg><span class="label">Tenant</span><span class="boundary__name">contoso</span></span><span class="display__title"><span>Clients</span></span></span>
+          <span class="brace" data-scope="tenant"><span class="tag tag--value">scope</span></span>
+          <label class="choice"><input class="switch" type="checkbox" role="switch" checked aria-label="Require PKCE"></label>
+          <label class="choice"><input class="radio" type="radio" checked aria-label="Confidential"></label>
+          <span class="status"><span class="lamp" aria-hidden="true"></span><a class="link" href="#color">web-portal</a></span>
+          <span class="readout">8</span>
+          <span class="well fd-tenant__well is-focused">alex</span>
+        </div>
+        <div class="fd-tenant fd-tenant--teal" data-brand-scope>
+          <p class="fd-tenant__name"><span class="label">Primary only</span><code>#0F766E</code></p>
+          <span class="key key--primary">Create client</span>
+          <span class="key">Cancel</span>
+          <span class="display fd-tenant__display"><span class="boundary" data-scope="tenant"><svg class="icon" aria-hidden="true"><use href="#i-building"/></svg><span class="label">Tenant</span><span class="boundary__name">contoso</span></span><span class="display__title"><span>Clients</span></span></span>
+          <span class="brace" data-scope="tenant"><span class="tag tag--value">scope</span></span>
+          <label class="choice"><input class="switch" type="checkbox" role="switch" checked aria-label="Require PKCE"></label>
+          <label class="choice"><input class="radio" type="radio" checked aria-label="Confidential"></label>
+          <span class="status"><span class="lamp" aria-hidden="true"></span><a class="link" href="#color">web-portal</a></span>
+          <span class="readout">8</span>
+          <span class="well fd-tenant__well is-focused">alex</span>
+        </div>
+        <div class="fd-tenant fd-tenant--orange" data-brand-scope>
+          <p class="fd-tenant__name"><span class="label">Primary only</span><code>#C2410C</code></p>
+          <span class="key key--primary">Create client</span>
+          <span class="key">Cancel</span>
+          <span class="display fd-tenant__display"><span class="boundary" data-scope="tenant"><svg class="icon" aria-hidden="true"><use href="#i-building"/></svg><span class="label">Tenant</span><span class="boundary__name">contoso</span></span><span class="display__title"><span>Clients</span></span></span>
+          <span class="brace" data-scope="tenant"><span class="tag tag--value">scope</span></span>
+          <label class="choice"><input class="switch" type="checkbox" role="switch" checked aria-label="Require PKCE"></label>
+          <label class="choice"><input class="radio" type="radio" checked aria-label="Confidential"></label>
+          <span class="status"><span class="lamp" aria-hidden="true"></span><a class="link" href="#color">web-portal</a></span>
+          <span class="readout">8</span>
+          <span class="well fd-tenant__well is-focused">alex</span>
+        </div>
+        <div class="fd-tenant fd-tenant--teal-rust" data-brand-scope>
+          <p class="fd-tenant__name"><span class="label">Primary and secondary</span><code>#0F766E</code><code>#7C2D12</code></p>
+          <span class="key key--primary">Create client</span>
+          <span class="key">Cancel</span>
+          <span class="display fd-tenant__display"><span class="boundary" data-scope="tenant"><svg class="icon" aria-hidden="true"><use href="#i-building"/></svg><span class="label">Tenant</span><span class="boundary__name">contoso</span></span><span class="display__title"><span>Clients</span></span></span>
+          <span class="brace" data-scope="tenant"><span class="tag tag--value">scope</span></span>
+          <label class="choice"><input class="switch" type="checkbox" role="switch" checked aria-label="Require PKCE"></label>
+          <label class="choice"><input class="radio" type="radio" checked aria-label="Confidential"></label>
+          <span class="status"><span class="lamp" aria-hidden="true"></span><a class="link" href="#color">web-portal</a></span>
+          <span class="readout">8</span>
+          <span class="well fd-tenant__well is-focused">alex</span>
+        </div>
+        <div class="fd-tenant fd-tenant--orange-navy" data-brand-scope>
+          <p class="fd-tenant__name"><span class="label">Primary and secondary</span><code>#C2410C</code><code>#1E3A5F</code></p>
+          <span class="key key--primary">Create client</span>
+          <span class="key">Cancel</span>
+          <span class="display fd-tenant__display"><span class="boundary" data-scope="tenant"><svg class="icon" aria-hidden="true"><use href="#i-building"/></svg><span class="label">Tenant</span><span class="boundary__name">contoso</span></span><span class="display__title"><span>Clients</span></span></span>
+          <span class="brace" data-scope="tenant"><span class="tag tag--value">scope</span></span>
+          <label class="choice"><input class="switch" type="checkbox" role="switch" checked aria-label="Require PKCE"></label>
+          <label class="choice"><input class="radio" type="radio" checked aria-label="Confidential"></label>
+          <span class="status"><span class="lamp" aria-hidden="true"></span><a class="link" href="#color">web-portal</a></span>
+          <span class="readout">8</span>
+          <span class="well fd-tenant__well is-focused">alex</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="plate fd-panel">
+      <div class="plate__head"><h3 class="label">Computed contrast</h3>
+<!-- generated:contrast-summary -->
+          <p class="fd-legend">WCAG 2.2, computed by build.mjs from the tokens: 1102 measurements of 132 pairings; 0 below the requirement. The lowest ratio of each use is shown.</p>
+<!-- /generated:contrast-summary -->
+      </div>
+      <div class="fd-contrast">
+<!-- generated:contrast -->
+        <table class="table fd-contrast__table">
+          <caption class="label">NCode Blue: neutrals, brand and screens</caption>
+          <thead><tr><th class="label" scope="col">Use</th><th class="label" scope="col">Pairs</th><th class="label num" scope="col">Needs</th><th class="label num" scope="col">Light</th><th class="label num" scope="col">Dark</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Text</th><td class="value">9</td><td class="value num">4.5</td><td class="value num">12.68</td><td class="value num">10.94</td></tr>
+            <tr><th scope="row">Text on a ghost key, touched</th><td class="value">3</td><td class="value num">4.5</td><td class="value num">12.21</td><td class="value num">9.39</td></tr>
+            <tr><th scope="row">Secondary text</th><td class="value">7</td><td class="value num">4.5</td><td class="value num">6.19</td><td class="value num">7.92</td></tr>
+            <tr><th scope="row">Engraved labels, setting keys, placeholders</th><td class="value">5</td><td class="value num">4.5</td><td class="value num">5.35</td><td class="value num">4.78</td></tr>
+            <tr><th scope="row">Edge of a control</th><td class="value">6</td><td class="value num">3</td><td class="value num">3.09</td><td class="value num">3.37</td></tr>
+            <tr><th scope="row">NCode's mark</th><td class="value">4</td><td class="value num">3</td><td class="value num">7.35</td><td class="value num">5.86</td></tr>
+            <tr><th scope="row">Brand as text, lamp, focus ring</th><td class="value">6</td><td class="value num">4.5</td><td class="value num">7.35</td><td class="value num">5.68</td></tr>
+            <tr><th scope="row">Primary key: label</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">8.95</td><td class="value num">7.16</td></tr>
+            <tr><th scope="row">Primary key, hover</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">11.11</td><td class="value num">8.99</td></tr>
+            <tr><th scope="row">Primary key, pressed</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">12.77</td><td class="value num">5.47</td></tr>
+            <tr><th scope="row">Primary key against its plate: its face</th><td class="value">3</td><td class="value num">3</td><td class="value num">7.35</td><td class="value num">5.86</td></tr>
+            <tr><th scope="row">Primary key against its plate: its edge or its face</th><td class="value">3</td><td class="value num">3</td><td class="value num">10.48</td><td class="value num">5.86</td></tr>
+            <tr><th scope="row">Text on a selected option</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">15.69</td><td class="value num">12.56</td></tr>
+            <tr><th scope="row">Secondary text on a selected option</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">7.67</td><td class="value num">7.68</td></tr>
+            <tr><th scope="row">Screen: values</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">15.40</td><td class="value num">15.40</td></tr>
+            <tr><th scope="row">Screen: code</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">10.23</td><td class="value num">10.23</td></tr>
+            <tr><th scope="row">Screen: comments, unlit steps</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">6.63</td><td class="value num">6.63</td></tr>
+            <tr><th scope="row">Screen: keywords, lit labels, braces</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">6.10</td><td class="value num">6.10</td></tr>
+            <tr><th scope="row">Screen: literals, hot bytes, a secret</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">9.35</td><td class="value num">9.35</td></tr>
+            <tr><th scope="row">Lit row: values</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">12.42</td><td class="value num">12.42</td></tr>
+            <tr><th scope="row">Lit row: code</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">8.25</td><td class="value num">8.25</td></tr>
+            <tr><th scope="row">Lit row: keywords</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">4.92</td><td class="value num">4.92</td></tr>
+            <tr><th scope="row">Lit row and memory cells: literals</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">7.54</td><td class="value num">7.54</td></tr>
+            <tr><th scope="row">Focus ring on a screen</th><td class="value">2</td><td class="value num">3</td><td class="value num">4.92</td><td class="value num">4.92</td></tr>
+            <tr><th scope="row">Material UI's secondary as text: the screen, lit in dark</th><td class="value">6</td><td class="value num">4.5</td><td class="value num">12.64</td><td class="value num">5.86</td></tr>
+            <tr><th scope="row">Boundary plate: tenant</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">6.10</td><td class="value num">6.10</td></tr>
+          </tbody>
+        </table>
+        <table class="table fd-contrast__table">
+          <caption class="label">NCode Blue: boundaries and status</caption>
+          <thead><tr><th class="label" scope="col">Use</th><th class="label" scope="col">Pairs</th><th class="label num" scope="col">Needs</th><th class="label num" scope="col">Light</th><th class="label num" scope="col">Dark</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Boundary plate: team</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">15.40</td><td class="value num">15.40</td></tr>
+            <tr><th scope="row">Boundary plate: platform; hazard band</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">9.27</td><td class="value num">9.27</td></tr>
+            <tr><th scope="row">Boundary plate against its plate: tenant (bezel or fill)</th><td class="value">3</td><td class="value num">3</td><td class="value num">13.48</td><td class="value num">5.86</td></tr>
+            <tr><th scope="row">Boundary plate against its plate: team (bezel or fill)</th><td class="value">3</td><td class="value num">3</td><td class="value num">13.48</td><td class="value num">14.79</td></tr>
+            <tr><th scope="row">Boundary plate against its plate: platform (bezel or fill)</th><td class="value">3</td><td class="value num">3</td><td class="value num">13.48</td><td class="value num">7.63</td></tr>
+            <tr><th scope="row">Scope brace: tenant</th><td class="value">2</td><td class="value num">3</td><td class="value num">7.35</td><td class="value num">7.11</td></tr>
+            <tr><th scope="row">Scope brace: team</th><td class="value">2</td><td class="value num">3</td><td class="value num">14.74</td><td class="value num">15.73</td></tr>
+            <tr><th scope="row">Scope brace: platform (the stronger stripe of the tape)</th><td class="value">2</td><td class="value num">3</td><td class="value num">14.74</td><td class="value num">9.27</td></tr>
+            <tr><th scope="row">Success: text</th><td class="value">4</td><td class="value num">4.5</td><td class="value num">5.80</td><td class="value num">8.95</td></tr>
+            <tr><th scope="row">Success: lamp, icon, bar</th><td class="value">5</td><td class="value num">3</td><td class="value num">4.07</td><td class="value num">8.95</td></tr>
+            <tr><th scope="row">Success: label on fill</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">4.96</td><td class="value num">10.18</td></tr>
+            <tr><th scope="row">Success: alert text</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">16.66</td><td class="value num">14.73</td></tr>
+            <tr><th scope="row">Warning: text</th><td class="value">4</td><td class="value num">4.5</td><td class="value num">5.33</td><td class="value num">8.98</td></tr>
+            <tr><th scope="row">Warning: lamp, icon, bar</th><td class="value">5</td><td class="value num">3</td><td class="value num">3.36</td><td class="value num">8.98</td></tr>
+            <tr><th scope="row">Warning: label on fill</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">9.27</td><td class="value num">9.27</td></tr>
+            <tr><th scope="row">Warning: alert text</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">16.69</td><td class="value num">14.82</td></tr>
+            <tr><th scope="row">Danger: text</th><td class="value">5</td><td class="value num">4.5</td><td class="value num">6.67</td><td class="value num">7.00</td></tr>
+            <tr><th scope="row">Danger: lamp, icon, bar</th><td class="value">5</td><td class="value num">3</td><td class="value num">4.99</td><td class="value num">7.00</td></tr>
+            <tr><th scope="row">Danger: label on fill</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">6.07</td><td class="value num">8.20</td></tr>
+            <tr><th scope="row">Danger: alert text</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">16.43</td><td class="value num">15.19</td></tr>
+            <tr><th scope="row">Info: text</th><td class="value">4</td><td class="value num">4.5</td><td class="value num">9.10</td><td class="value num">5.86</td></tr>
+            <tr><th scope="row">Info: lamp, icon, bar</th><td class="value">5</td><td class="value num">3</td><td class="value num">7.35</td><td class="value num">5.86</td></tr>
+            <tr><th scope="row">Info: label on fill</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">8.95</td><td class="value num">7.16</td></tr>
+            <tr><th scope="row">Info: alert text</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">16.49</td><td class="value num">15.83</td></tr>
+            <tr><th scope="row">Danger: key, hover</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">8.12</td><td class="value num">9.73</td></tr>
+          </tbody>
+        </table>
+        <table class="table fd-contrast__table">
+          <caption class="label">Tenant teal: #0F766E, everything derived</caption>
+          <thead><tr><th class="label" scope="col">Use</th><th class="label" scope="col">Pairs</th><th class="label num" scope="col">Needs</th><th class="label num" scope="col">Light</th><th class="label num" scope="col">Dark</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Brand as text, lamp, focus ring</th><td class="value">6</td><td class="value num">4.5</td><td class="value num">5.10</td><td class="value num">5.94</td></tr>
+            <tr><th scope="row">Primary key: label</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">5.47</td><td class="value num">7.46</td></tr>
+            <tr><th scope="row">Primary key, hover</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">7.31</td><td class="value num">9.19</td></tr>
+            <tr><th scope="row">Primary key, pressed</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">8.92</td><td class="value num">5.67</td></tr>
+            <tr><th scope="row">Primary key against its plate: its face</th><td class="value">3</td><td class="value num">3</td><td class="value num">4.49</td><td class="value num">6.20</td></tr>
+            <tr><th scope="row">Primary key against its plate: its edge or its face</th><td class="value">3</td><td class="value num">3</td><td class="value num">7.32</td><td class="value num">6.20</td></tr>
+            <tr><th scope="row">Text on a selected option</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">16.11</td><td class="value num">12.42</td></tr>
+            <tr><th scope="row">Secondary text on a selected option</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">7.87</td><td class="value num">7.59</td></tr>
+            <tr><th scope="row">Screen: values</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">14.79</td><td class="value num">14.79</td></tr>
+            <tr><th scope="row">Screen: code</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">9.99</td><td class="value num">9.99</td></tr>
+            <tr><th scope="row">Screen: comments, unlit steps</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">6.46</td><td class="value num">6.46</td></tr>
+            <tr><th scope="row">Screen: keywords, lit labels, braces</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">6.20</td><td class="value num">6.20</td></tr>
+            <tr><th scope="row">Screen: literals, hot bytes, a secret</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">8.98</td><td class="value num">8.98</td></tr>
+            <tr><th scope="row">Lit row: values</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">11.75</td><td class="value num">11.75</td></tr>
+            <tr><th scope="row">Lit row: code</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">7.93</td><td class="value num">7.93</td></tr>
+            <tr><th scope="row">Lit row: keywords</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">4.92</td><td class="value num">4.92</td></tr>
+            <tr><th scope="row">Lit row and memory cells: literals</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">7.13</td><td class="value num">7.13</td></tr>
+            <tr><th scope="row">Focus ring on a screen</th><td class="value">2</td><td class="value num">3</td><td class="value num">4.92</td><td class="value num">4.92</td></tr>
+            <tr><th scope="row">Material UI's secondary as text: the screen, lit in dark</th><td class="value">6</td><td class="value num">4.5</td><td class="value num">12.14</td><td class="value num">6.20</td></tr>
+            <tr><th scope="row">Boundary plate: tenant</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">6.20</td><td class="value num">6.20</td></tr>
+            <tr><th scope="row">Boundary plate: team</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">14.79</td><td class="value num">14.79</td></tr>
+            <tr><th scope="row">Boundary plate against its plate: tenant (bezel or fill)</th><td class="value">3</td><td class="value num">3</td><td class="value num">12.96</td><td class="value num">6.20</td></tr>
+            <tr><th scope="row">Boundary plate against its plate: team (bezel or fill)</th><td class="value">3</td><td class="value num">3</td><td class="value num">12.96</td><td class="value num">14.79</td></tr>
+            <tr><th scope="row">Boundary plate against its plate: platform (bezel or fill)</th><td class="value">3</td><td class="value num">3</td><td class="value num">12.96</td><td class="value num">7.63</td></tr>
+            <tr><th scope="row">Scope brace: tenant</th><td class="value">2</td><td class="value num">3</td><td class="value num">5.10</td><td class="value num">7.52</td></tr>
+          </tbody>
+        </table>
+        <table class="table fd-contrast__table">
+          <caption class="label">Tenant orange: #C2410C, everything derived</caption>
+          <thead><tr><th class="label" scope="col">Use</th><th class="label" scope="col">Pairs</th><th class="label num" scope="col">Needs</th><th class="label num" scope="col">Light</th><th class="label num" scope="col">Dark</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Brand as text, lamp, focus ring</th><td class="value">6</td><td class="value num">4.5</td><td class="value num">5.79</td><td class="value num">5.52</td></tr>
+            <tr><th scope="row">Primary key: label</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">5.17</td><td class="value num">6.97</td></tr>
+            <tr><th scope="row">Primary key, hover</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">6.97</td><td class="value num">8.82</td></tr>
+            <tr><th scope="row">Primary key, pressed</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">8.59</td><td class="value num">5.32</td></tr>
+            <tr><th scope="row">Primary key against its plate: its face</th><td class="value">3</td><td class="value num">3</td><td class="value num">4.25</td><td class="value num">5.68</td></tr>
+            <tr><th scope="row">Primary key against its plate: its edge or its face</th><td class="value">3</td><td class="value num">3</td><td class="value num">7.05</td><td class="value num">5.68</td></tr>
+            <tr><th scope="row">Text on a selected option</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">16.09</td><td class="value num">12.59</td></tr>
+            <tr><th scope="row">Secondary text on a selected option</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">7.86</td><td class="value num">7.70</td></tr>
+            <tr><th scope="row">Screen: values</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">15.50</td><td class="value num">15.50</td></tr>
+            <tr><th scope="row">Screen: code</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">10.27</td><td class="value num">10.27</td></tr>
+            <tr><th scope="row">Screen: comments, unlit steps</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">6.64</td><td class="value num">6.64</td></tr>
+            <tr><th scope="row">Screen: keywords, lit labels, braces</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">5.95</td><td class="value num">5.95</td></tr>
+            <tr><th scope="row">Screen: literals, hot bytes, a secret</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">9.42</td><td class="value num">9.42</td></tr>
+            <tr><th scope="row">Lit row: values</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">12.52</td><td class="value num">12.52</td></tr>
+            <tr><th scope="row">Lit row: code</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">8.30</td><td class="value num">8.30</td></tr>
+            <tr><th scope="row">Lit row: keywords</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">4.81</td><td class="value num">4.81</td></tr>
+            <tr><th scope="row">Lit row and memory cells: literals</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">7.61</td><td class="value num">7.61</td></tr>
+            <tr><th scope="row">Focus ring on a screen</th><td class="value">2</td><td class="value num">3</td><td class="value num">4.81</td><td class="value num">4.81</td></tr>
+            <tr><th scope="row">Material UI's secondary as text: the screen, lit in dark</th><td class="value">6</td><td class="value num">4.5</td><td class="value num">12.73</td><td class="value num">5.68</td></tr>
+            <tr><th scope="row">Boundary plate: tenant</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">5.95</td><td class="value num">5.95</td></tr>
+            <tr><th scope="row">Boundary plate: team</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">15.50</td><td class="value num">15.50</td></tr>
+            <tr><th scope="row">Boundary plate against its plate: tenant (bezel or fill)</th><td class="value">3</td><td class="value num">3</td><td class="value num">13.58</td><td class="value num">5.68</td></tr>
+            <tr><th scope="row">Boundary plate against its plate: team (bezel or fill)</th><td class="value">3</td><td class="value num">3</td><td class="value num">13.58</td><td class="value num">14.79</td></tr>
+            <tr><th scope="row">Boundary plate against its plate: platform (bezel or fill)</th><td class="value">3</td><td class="value num">3</td><td class="value num">13.58</td><td class="value num">7.63</td></tr>
+            <tr><th scope="row">Scope brace: tenant</th><td class="value">2</td><td class="value num">3</td><td class="value num">5.79</td><td class="value num">6.90</td></tr>
+          </tbody>
+        </table>
+        <table class="table fd-contrast__table">
+          <caption class="label">Tenant teal, secondary rust: #0F766E and #7C2D12, everything derived</caption>
+          <thead><tr><th class="label" scope="col">Use</th><th class="label" scope="col">Pairs</th><th class="label num" scope="col">Needs</th><th class="label num" scope="col">Light</th><th class="label num" scope="col">Dark</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Brand as text, lamp, focus ring</th><td class="value">6</td><td class="value num">4.5</td><td class="value num">5.10</td><td class="value num">5.94</td></tr>
+            <tr><th scope="row">Primary key: label</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">5.47</td><td class="value num">7.46</td></tr>
+            <tr><th scope="row">Primary key, hover</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">7.31</td><td class="value num">9.19</td></tr>
+            <tr><th scope="row">Primary key, pressed</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">8.92</td><td class="value num">5.67</td></tr>
+            <tr><th scope="row">Primary key against its plate: its face</th><td class="value">3</td><td class="value num">3</td><td class="value num">4.49</td><td class="value num">6.20</td></tr>
+            <tr><th scope="row">Primary key against its plate: its edge or its face</th><td class="value">3</td><td class="value num">3</td><td class="value num">7.32</td><td class="value num">6.20</td></tr>
+            <tr><th scope="row">Text on a selected option</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">16.11</td><td class="value num">12.42</td></tr>
+            <tr><th scope="row">Secondary text on a selected option</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">7.87</td><td class="value num">7.59</td></tr>
+            <tr><th scope="row">Screen: values</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">15.30</td><td class="value num">15.30</td></tr>
+            <tr><th scope="row">Screen: code</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">10.15</td><td class="value num">10.15</td></tr>
+            <tr><th scope="row">Screen: comments, unlit steps</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">6.59</td><td class="value num">6.59</td></tr>
+            <tr><th scope="row">Screen: keywords, lit labels, braces</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">5.96</td><td class="value num">5.96</td></tr>
+            <tr><th scope="row">Screen: literals, hot bytes, a secret</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">9.29</td><td class="value num">9.29</td></tr>
+            <tr><th scope="row">Lit row: values</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">12.32</td><td class="value num">12.32</td></tr>
+            <tr><th scope="row">Lit row: code</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">8.17</td><td class="value num">8.17</td></tr>
+            <tr><th scope="row">Lit row: keywords</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">4.80</td><td class="value num">4.80</td></tr>
+            <tr><th scope="row">Lit row and memory cells: literals</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">7.48</td><td class="value num">7.48</td></tr>
+            <tr><th scope="row">Focus ring on a screen</th><td class="value">2</td><td class="value num">3</td><td class="value num">4.80</td><td class="value num">4.80</td></tr>
+            <tr><th scope="row">Material UI's secondary as text: the screen, lit in dark</th><td class="value">6</td><td class="value num">4.5</td><td class="value num">12.56</td><td class="value num">5.76</td></tr>
+            <tr><th scope="row">Boundary plate: tenant</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">5.96</td><td class="value num">5.96</td></tr>
+            <tr><th scope="row">Boundary plate: team</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">15.30</td><td class="value num">15.30</td></tr>
+            <tr><th scope="row">Boundary plate against its plate: tenant (bezel or fill)</th><td class="value">3</td><td class="value num">3</td><td class="value num">13.40</td><td class="value num">5.76</td></tr>
+            <tr><th scope="row">Boundary plate against its plate: team (bezel or fill)</th><td class="value">3</td><td class="value num">3</td><td class="value num">13.40</td><td class="value num">14.79</td></tr>
+            <tr><th scope="row">Boundary plate against its plate: platform (bezel or fill)</th><td class="value">3</td><td class="value num">3</td><td class="value num">13.40</td><td class="value num">7.63</td></tr>
+            <tr><th scope="row">Scope brace: tenant</th><td class="value">2</td><td class="value num">3</td><td class="value num">7.69</td><td class="value num">6.99</td></tr>
+          </tbody>
+        </table>
+        <table class="table fd-contrast__table">
+          <caption class="label">Tenant orange, secondary navy: #C2410C and #1E3A5F, everything derived</caption>
+          <thead><tr><th class="label" scope="col">Use</th><th class="label" scope="col">Pairs</th><th class="label num" scope="col">Needs</th><th class="label num" scope="col">Light</th><th class="label num" scope="col">Dark</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Brand as text, lamp, focus ring</th><td class="value">6</td><td class="value num">4.5</td><td class="value num">5.79</td><td class="value num">5.52</td></tr>
+            <tr><th scope="row">Primary key: label</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">5.17</td><td class="value num">6.97</td></tr>
+            <tr><th scope="row">Primary key, hover</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">6.97</td><td class="value num">8.82</td></tr>
+            <tr><th scope="row">Primary key, pressed</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">8.59</td><td class="value num">5.32</td></tr>
+            <tr><th scope="row">Primary key against its plate: its face</th><td class="value">3</td><td class="value num">3</td><td class="value num">4.25</td><td class="value num">5.68</td></tr>
+            <tr><th scope="row">Primary key against its plate: its edge or its face</th><td class="value">3</td><td class="value num">3</td><td class="value num">7.05</td><td class="value num">5.68</td></tr>
+            <tr><th scope="row">Text on a selected option</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">16.09</td><td class="value num">12.59</td></tr>
+            <tr><th scope="row">Secondary text on a selected option</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">7.86</td><td class="value num">7.70</td></tr>
+            <tr><th scope="row">Screen: values</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">15.08</td><td class="value num">15.08</td></tr>
+            <tr><th scope="row">Screen: code</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">10.12</td><td class="value num">10.12</td></tr>
+            <tr><th scope="row">Screen: comments, unlit steps</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">6.52</td><td class="value num">6.52</td></tr>
+            <tr><th scope="row">Screen: keywords, lit labels, braces</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">6.10</td><td class="value num">6.10</td></tr>
+            <tr><th scope="row">Screen: literals, hot bytes, a secret</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">9.16</td><td class="value num">9.16</td></tr>
+            <tr><th scope="row">Lit row: values</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">12.04</td><td class="value num">12.04</td></tr>
+            <tr><th scope="row">Lit row: code</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">8.08</td><td class="value num">8.08</td></tr>
+            <tr><th scope="row">Lit row: keywords</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">4.87</td><td class="value num">4.87</td></tr>
+            <tr><th scope="row">Lit row and memory cells: literals</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">7.31</td><td class="value num">7.31</td></tr>
+            <tr><th scope="row">Focus ring on a screen</th><td class="value">2</td><td class="value num">3</td><td class="value num">4.87</td><td class="value num">4.87</td></tr>
+            <tr><th scope="row">Material UI's secondary as text: the screen, lit in dark</th><td class="value">6</td><td class="value num">4.5</td><td class="value num">12.38</td><td class="value num">5.99</td></tr>
+            <tr><th scope="row">Boundary plate: tenant</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">6.10</td><td class="value num">6.10</td></tr>
+            <tr><th scope="row">Boundary plate: team</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">15.08</td><td class="value num">15.08</td></tr>
+            <tr><th scope="row">Boundary plate against its plate: tenant (bezel or fill)</th><td class="value">3</td><td class="value num">3</td><td class="value num">13.21</td><td class="value num">5.99</td></tr>
+            <tr><th scope="row">Boundary plate against its plate: team (bezel or fill)</th><td class="value">3</td><td class="value num">3</td><td class="value num">13.21</td><td class="value num">14.79</td></tr>
+            <tr><th scope="row">Boundary plate against its plate: platform (bezel or fill)</th><td class="value">3</td><td class="value num">3</td><td class="value num">13.21</td><td class="value num">7.63</td></tr>
+            <tr><th scope="row">Scope brace: tenant</th><td class="value">2</td><td class="value num">3</td><td class="value num">9.44</td><td class="value num">7.27</td></tr>
+          </tbody>
+        </table>
+        <table class="table fd-contrast__table">
+          <caption class="label">Stress colors: the lowest of #FACC15, #38BDF8, #DC2626, #16A34A, #F1F5F9, #111827</caption>
+          <thead><tr><th class="label" scope="col">Use</th><th class="label" scope="col">Pairs</th><th class="label num" scope="col">Needs</th><th class="label num" scope="col">Light</th><th class="label num" scope="col">Dark</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Brand as text, lamp, focus ring</th><td class="value">6</td><td class="value num">4.5</td><td class="value num">4.84</td><td class="value num">5.50</td></tr>
+            <tr><th scope="row">Primary key: label</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">4.82</td><td class="value num">6.91</td></tr>
+            <tr><th scope="row">Primary key, hover</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">6.52</td><td class="value num">8.73</td></tr>
+            <tr><th scope="row">Primary key, pressed</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">8.08</td><td class="value num">5.30</td></tr>
+            <tr><th scope="row">Primary key against its plate: its edge or its face</th><td class="value">3</td><td class="value num">3</td><td class="value num">3.90</td><td class="value num">5.61</td></tr>
+            <tr><th scope="row">Text on a selected option</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">14.92</td><td class="value num">12.40</td></tr>
+            <tr><th scope="row">Secondary text on a selected option</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">7.29</td><td class="value num">7.58</td></tr>
+            <tr><th scope="row">Screen: values</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">14.52</td><td class="value num">14.52</td></tr>
+            <tr><th scope="row">Screen: code</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">9.92</td><td class="value num">9.92</td></tr>
+            <tr><th scope="row">Screen: comments, unlit steps</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">6.41</td><td class="value num">6.41</td></tr>
+            <tr><th scope="row">Screen: keywords, lit labels, braces</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">5.95</td><td class="value num">5.95</td></tr>
+            <tr><th scope="row">Screen: literals, hot bytes, a secret</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">8.82</td><td class="value num">8.82</td></tr>
+            <tr><th scope="row">Lit row: values</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">11.27</td><td class="value num">11.27</td></tr>
+            <tr><th scope="row">Lit row: code</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">7.70</td><td class="value num">7.70</td></tr>
+            <tr><th scope="row">Lit row: keywords</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">4.80</td><td class="value num">4.80</td></tr>
+            <tr><th scope="row">Lit row and memory cells: literals</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">6.85</td><td class="value num">6.85</td></tr>
+            <tr><th scope="row">Focus ring on a screen</th><td class="value">2</td><td class="value num">3</td><td class="value num">4.80</td><td class="value num">4.80</td></tr>
+            <tr><th scope="row">Material UI's secondary as text: the screen, lit in dark</th><td class="value">6</td><td class="value num">4.5</td><td class="value num">11.92</td><td class="value num">5.61</td></tr>
+            <tr><th scope="row">Boundary plate: tenant</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">5.95</td><td class="value num">5.95</td></tr>
+            <tr><th scope="row">Boundary plate: team</th><td class="value">1</td><td class="value num">4.5</td><td class="value num">14.52</td><td class="value num">14.52</td></tr>
+            <tr><th scope="row">Boundary plate against its plate: tenant (bezel or fill)</th><td class="value">3</td><td class="value num">3</td><td class="value num">12.71</td><td class="value num">5.61</td></tr>
+            <tr><th scope="row">Boundary plate against its plate: team (bezel or fill)</th><td class="value">3</td><td class="value num">3</td><td class="value num">12.71</td><td class="value num">14.79</td></tr>
+            <tr><th scope="row">Boundary plate against its plate: platform (bezel or fill)</th><td class="value">3</td><td class="value num">3</td><td class="value num">12.71</td><td class="value num">7.63</td></tr>
+            <tr><th scope="row">Scope brace: tenant</th><td class="value">2</td><td class="value num">3</td><td class="value num">4.84</td><td class="value num">6.82</td></tr>
+          </tbody>
+        </table>
+<!-- /generated:contrast -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ type -->
+  <section class="fd-section" aria-labelledby="type">
+    <header class="fd-section__head">
+      <span class="step" aria-hidden="true">02</span>
+      <h2 id="type">Type</h2>
+      <p>Instrument Sans carries names and reading, and its width axis is part of the voice: 82% for engraved labels, 86% for headings, 100% for text. Martian Mono carries every value: 75% wide for code and values, 100% on a readout.</p>
+    </header>
+
+    <div class="plate fd-panel fd-type">
+<!-- generated:typeroles -->
+      <div class="fd-type__row"><p class="label">Headline<br>76 / 76 · 600 · 86% · -0.028em</p><p class="ty-headline">Secrets that clean up</p></div>
+      <div class="fd-type__row"><p class="label">Title<br>44 / 48 · 600 · 86% · -0.022em</p><p class="ty-title">Clients</p></div>
+      <div class="fd-type__row"><p class="label">Title, long<br>56 / 58 · 600 · 86% · -0.026em</p><p class="ty-title-long">Quick start</p></div>
+      <div class="fd-type__row"><p class="label">Heading<br>28 / 33 · 600 · 86% · -0.012em</p><p class="ty-heading">Verify a signature</p></div>
+      <div class="fd-type__row"><p class="label">Heading, long<br>36 / 41 · 600 · 86% · -0.022em</p><p class="ty-heading-long">Choosing a buffer</p></div>
+      <div class="fd-type__row"><p class="label">Subheading<br>22 / 29 · 600 · 86% · -0.012em</p><p class="ty-subheading">New client</p></div>
+      <div class="fd-type__row"><p class="label">Minor<br>16 / 21 · 600 · 100%</p><p class="ty-minor">Client authentication</p></div>
+      <div class="fd-type__row"><p class="label">Lead<br>22 / 33 · 400 · 100%</p><p class="ty-lead fd-type__lead">This page derives a key from a password, verifies an HMAC-SHA256 signature with it, and zeroes the derived key when the method returns.</p></div>
+      <div class="fd-type__row"><p class="label">Body<br>16 / 24 · 400 · 100%</p><p class="ty-body fd-type__body">Applications that can request tokens from this tenant.</p></div>
+      <div class="fd-type__row"><p class="label">Reading<br>17 / 29 · 400 · 100%</p><p class="ty-reading fd-type__body">Disposing the owner zeroes the whole buffer, so the key never outlives the method. There is no finalizer: a buffer that is never disposed is never zeroed.</p></div>
+      <div class="fd-type__row"><p class="label">Ui<br>14 / 21 · 400 · 100%</p><p class="ty-ui fd-type__body">Lowercase letters, digits and hyphens. It cannot be changed later.</p></div>
+      <div class="fd-type__row"><p class="label">Field<br>13 / 17 · 600 · 100%</p><p class="ty-field">Access token lifetime</p></div>
+      <div class="fd-type__row"><p class="label">Label<br>11 / 13 · 600 · 82% · +0.08em</p><p class="ty-label">Client ID &nbsp; Type &nbsp; Status &nbsp; Created &nbsp; Rows per page</p></div>
+      <div class="fd-type__row"><p class="label">Value<br>13 / 18 · 500 · 75% · -0.01em</p><p class="ty-value">billing-service &nbsp; 2026-10-02 &nbsp; alex@contoso.example &nbsp; 0O 1lI</p></div>
+      <div class="fd-type__row"><p class="label">Code<br>13 / 22 · 400 · 75%</p><p class="ty-code">using var keyOwner = BufferFactory.Rent(32, isSensitive: true, out Span&lt;byte&gt; key);</p></div>
+      <div class="fd-type__row"><p class="label">Readout<br>12 / 12 · 500 · 100%</p><p class="ty-readout">00:05:00 &nbsp; 32 bytes &nbsp; 404</p></div>
+<!-- /generated:typeroles -->
+    </div>
+  </section>
+
+  <!-- ============================================================ shape, depth, space, motion -->
+  <section class="fd-section" aria-labelledby="shape">
+    <header class="fd-section__head">
+      <span class="step" aria-hidden="true">03</span>
+      <h2 id="shape">Shape, depth, space and motion</h2>
+      <p>Radii grow with the size of the part, from a cell to a module. Depth is three hard-edged states and one soft shadow, kept for overlays. Space is a 4-pixel scale. Motion is short and mechanical.</p>
+    </header>
+
+    <div class="fd-cols fd-cols--2">
+      <div class="plate fd-panel">
+        <div class="plate__head"><h3 class="label">Radii</h3></div>
+        <div class="plate__body fd-radii">
+          <figure><span class="fd-radius fd-radius--cell"></span><figcaption><span class="label">Cell</span><code>2px</code></figcaption></figure>
+          <figure><span class="fd-radius fd-radius--plate"></span><figcaption><span class="label">Label plate</span><code>4px</code></figcaption></figure>
+          <figure><span class="fd-radius fd-radius--control"></span><figcaption><span class="label">Key, well</span><code>6px</code></figcaption></figure>
+          <figure><span class="fd-radius fd-radius--panel"></span><figcaption><span class="label">Plate, screen</span><code>10px</code></figcaption></figure>
+          <figure><span class="fd-radius fd-radius--module"></span><figcaption><span class="label">Module</span><code>14px</code></figcaption></figure>
+          <figure><span class="fd-radius fd-radius--round"></span><figcaption><span class="label">Lamp</span><code>round</code></figcaption></figure>
+        </div>
+      </div>
+      <div class="plate fd-panel">
+        <div class="plate__head"><h3 class="label">Lines</h3></div>
+        <div class="plate__body fd-lines">
+          <figure><span class="fd-line fd-line--hair"></span><figcaption><span class="label">Hairline between parts</span><code>1px border</code></figcaption></figure>
+          <figure><span class="fd-line fd-line--edge"></span><figcaption><span class="label">Edge of a control, 3 to 1</span><code>1px border-strong</code></figcaption></figure>
+          <figure><span class="fd-line fd-line--focus"></span><figcaption><span class="label">Focus ring</span><code>2px, 2px clear</code></figcaption></figure>
+          <figure><span class="fd-line fd-line--tape"></span><figcaption><span class="label">Hazard tape</span><code>45°, 8px</code></figcaption></figure>
+        </div>
+      </div>
+    </div>
+
+    <div class="plate fd-panel">
+      <div class="plate__head"><h3 class="label">Depth</h3><p class="fd-legend">A lip below means raised. A shade above means recessed. Blur appears only under overlays.</p></div>
+      <div class="plate__body fd-depth">
+        <figure><span class="fd-depth__box fd-depth__box--recessed"></span><figcaption><span class="label">Recessed</span><span>Wells, screens, latched keys</span></figcaption></figure>
+        <figure><span class="fd-depth__box fd-depth__box--flush"></span><figcaption><span class="label">Flush</span><span>Plates</span></figcaption></figure>
+        <figure><span class="fd-depth__box fd-depth__box--raised"></span><figcaption><span class="label">Raised</span><span>Keys, a card</span></figcaption></figure>
+        <figure><span class="fd-depth__box fd-depth__box--floating"></span><figcaption><span class="label">Floating</span><span>Menus, tooltips</span></figcaption></figure>
+        <figure><span class="fd-depth__box fd-depth__box--overlay"></span><figcaption><span class="label">Overlay</span><span>Dialogs, sheets</span></figcaption></figure>
+      </div>
+    </div>
+
+    <div class="fd-cols fd-cols--2">
+      <div class="plate fd-panel">
+        <div class="plate__head"><h3 class="label">Space</h3></div>
+        <div class="plate__body fd-space">
+          <p><span class="fd-bar fd-bar--1"></span><code>space-1</code><span class="value">2</span></p>
+          <p><span class="fd-bar fd-bar--2"></span><code>space-2</code><span class="value">4</span></p>
+          <p><span class="fd-bar fd-bar--3"></span><code>space-3</code><span class="value">8</span></p>
+          <p><span class="fd-bar fd-bar--4"></span><code>space-4</code><span class="value">12</span></p>
+          <p><span class="fd-bar fd-bar--5"></span><code>space-5</code><span class="value">16</span></p>
+          <p><span class="fd-bar fd-bar--6"></span><code>space-6</code><span class="value">24</span></p>
+          <p><span class="fd-bar fd-bar--7"></span><code>space-7</code><span class="value">32</span></p>
+          <p><span class="fd-bar fd-bar--8"></span><code>space-8</code><span class="value">48</span></p>
+          <p><span class="fd-bar fd-bar--9"></span><code>space-9</code><span class="value">64</span></p>
+          <p><span class="fd-bar fd-bar--10"></span><code>space-10</code><span class="value">96</span></p>
+        </div>
+      </div>
+      <div class="plate fd-panel">
+        <div class="plate__head"><h3 class="label">Motion</h3></div>
+        <div class="fd-motion">
+          <table class="table">
+            <thead><tr><th class="label" scope="col">Token</th><th class="label" scope="col">Value</th><th class="label" scope="col">Used for</th></tr></thead>
+            <tbody>
+              <tr><td><code>dur-press</code></td><td class="value">70ms</td><td>A key going down</td></tr>
+              <tr><td><code>dur-quick</code></td><td class="value">120ms</td><td>Hover, a change of color</td></tr>
+              <tr><td><code>dur-move</code></td><td class="value">200ms</td><td>A switch sliding</td></tr>
+              <tr><td><code>dur-enter</code></td><td class="value">280ms</td><td>A dialog arriving</td></tr>
+              <tr><td><code>ease-out</code></td><td class="value">.2, 0, 0, 1</td><td>Everything that travels</td></tr>
+              <tr><td><code>ease-tick</code></td><td class="value">steps(1)</td><td>Readouts: values change in one step</td></tr>
+              <tr><td><code>reduced motion</code></td><td class="value">none</td><td>No transition and no animation at all</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ the brace -->
+  <section class="fd-section" aria-labelledby="brace">
+    <header class="fd-section__head">
+      <span class="step" aria-hidden="true">04</span>
+      <h2 id="brace">The brace</h2>
+      <p>The one motif that comes straight from the mark. It is drawn from the mark's own geometry, never from a font, and it means one thing.</p>
+    </header>
+
+    <div class="plate fd-rule">
+      <div class="fd-rule__mark" aria-hidden="true"><span class="fd-brace fd-brace--lg"></span></div>
+      <p class="fd-rule__text">A brace marks a scope: it is drawn around what one named boundary holds, a security boundary or the lifetime of a secret, and nowhere else.</p>
+    </div>
+
+    <div class="plate fd-panel">
+      <div class="plate__head"><h3 class="label">Construction</h3><p class="fd-legend">Straight stems, circular hooks, and a cusp whose tip is half the stroke high. build.mjs draws every brace.</p></div>
+      <div class="fd-construct">
+        <figure>
+          <div class="fd-construct__stage"><svg class="fd-construct__mark" viewBox="0 0 64 64" aria-hidden="true"><use href="#logo-ncode-mark"/></svg></div>
+          <figcaption><span class="label">The mark</span><span>A value between two braces. It is never redrawn, stretched or set in a font.</span></figcaption>
+        </figure>
+        <figure>
+          <div class="fd-construct__stage"><span class="fd-brace fd-brace--mark"></span></div>
+          <figcaption><span class="label">Its brace</span><span>The mark's own brace, from the mark's geometry. Stroke 4, hook radius 5, cusp radius 6, of 64 units.</span><code>brace/brace-mark.svg</code></figcaption>
+        </figure>
+        <figure>
+          <div class="fd-construct__stage fd-construct__stage--sizes"><span class="fd-brace fd-brace--sm"></span><span class="fd-brace fd-brace--md"></span><span class="fd-brace fd-brace--lg"></span></div>
+          <figcaption><span class="label">Stretched</span><span>Strokes of 2, 3 and 4 pixels. The hooks and the cusp keep their size; only the stems take the height.</span><code>brace-sm · brace-md · brace-lg</code></figcaption>
+        </figure>
+        <figure>
+          <div class="fd-construct__stage fd-construct__stage--inks"><span class="fd-brace fd-brace--lg"></span><span class="fd-brace fd-brace--lg fd-brace--team"></span><span class="fd-brace fd-brace--lg fd-brace--platform"></span></div>
+          <figcaption><span class="label">Three inks</span><span>A tenant's brace takes the tenant's color, a team's is plain ink, the platform's is hazard tape.</span><code>scope-tenant · scope-team · scope-platform</code></figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <div class="plate fd-panel">
+      <div class="plate__head"><h3 class="label">The boundary plate</h3><p class="fd-legend">The kind and the name of a boundary between the mark's own braces: on the display, and wherever a dialog restates it</p></div>
+      <div class="plate__body fd-boundaries">
+        <span class="boundary" data-scope="tenant"><svg class="icon" aria-hidden="true"><use href="#i-building"/></svg><span class="label">Tenant</span><span class="boundary__name">contoso</span></span>
+        <span class="boundary" data-scope="team"><svg class="icon" aria-hidden="true"><use href="#i-people"/></svg><span class="label">Team</span><span class="boundary__name">Platform Engineering</span></span>
+        <span class="boundary" data-scope="platform"><svg class="icon" aria-hidden="true"><use href="#i-globe"/></svg><span class="label">Platform</span></span>
+        <span class="boundary boundary--sm" data-scope="tenant"><svg class="icon" aria-hidden="true"><use href="#i-building"/></svg><span class="label">Tenant</span><span class="boundary__name">contoso</span></span>
+        <div class="display"><ol class="mode" aria-label="Security boundary"><li class="mode__step"><span class="lamp lamp--off" aria-hidden="true"></span><span class="label">Platform</span></li><li class="mode__step mode__step--active"><span class="boundary" data-scope="team"><svg class="icon" aria-hidden="true"><use href="#i-people"/></svg><span class="label">Team</span><span class="boundary__name">Platform Engineering</span></span></li></ol><span class="display__title"><span>Tenants</span></span></div>
+        <div class="display"><ol class="mode" aria-label="Security boundary"><li class="mode__step mode__step--active"><span class="boundary" data-scope="platform"><svg class="icon" aria-hidden="true"><use href="#i-globe"/></svg><span class="label">Platform</span></span></li></ol><span class="display__title"><span>Teams</span></span></div>
+      </div>
+    </div>
+
+    <div class="fd-uses">
+      <figure class="plate fd-use">
+        <div class="fd-use__stage"><div class="brace brace--md" data-scope="tenant"><div class="plate plate--raised fd-mini fd-mini--card"><span class="fd-mini__line fd-mini__line--short"></span><span class="fd-mini__line"></span><span class="fd-mini__line"></span><span class="fd-mini__key"></span></div></div></div>
+        <figcaption><span class="fd-verdict fd-verdict--do"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-check"/></svg>Do</span><h3 class="h4">Frame what a boundary holds</h3><p>A console's workspace, a tenant's sign-in card: everything between the braces belongs to that boundary.</p></figcaption>
+      </figure>
+      <figure class="plate fd-use">
+        <div class="fd-use__stage fd-use__stage--screen"><div class="brace brace--md brace--lit"><div class="fd-mini fd-mini--cells"><span class="cell cell--zero"><i>00</i></span><span class="cell cell--zero"><i>00</i></span><span class="cell cell--cursor"><b>71</b></span><span class="cell"><b>0B</b></span></div></div></div>
+        <figcaption><span class="fd-verdict fd-verdict--do"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-check"/></svg>Do</span><h3 class="h4">Frame a secret's lifetime</h3><p>In memory and in a listing, the brace spans from where a secret is created to where it is zeroed.</p></figcaption>
+      </figure>
+      <figure class="plate fd-use">
+        <div class="fd-use__stage"><span class="boundary" data-scope="tenant"><svg class="icon" aria-hidden="true"><use href="#i-building"/></svg><span class="label">Tenant</span><span class="boundary__name">contoso</span></span></div>
+        <figcaption><span class="fd-verdict fd-verdict--do"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-check"/></svg>Do</span><h3 class="h4">Name the boundary on its plate</h3><p>A dialog that acts inside a boundary restates it with the same plate the display shows.</p></figcaption>
+      </figure>
+      <figure class="plate fd-use">
+        <div class="fd-use__stage"><p class="display boot__display"><span class="boot__lamps" aria-hidden="true"><span class="lamp"></span><span class="lamp"></span><span class="lamp"></span></span><span class="label">Loading configuration</span></p></div>
+        <figcaption><span class="fd-verdict fd-verdict--do"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-check"/></svg>Do</span><h3 class="h4">Leave it out when no scope is known</h3><p>A loading screen, a not-found page and a landing page for no product have no boundary, so they have no brace.</p></figcaption>
+      </figure>
+      <figure class="plate fd-use">
+        <div class="fd-use__stage"><div class="fd-struck"><div class="brace brace--md"><p class="alert fd-mini"><svg class="icon" aria-hidden="true"><use href="#i-info"/></svg><span>A note is not a scope.</span></p></div></div></div>
+        <figcaption><span class="fd-verdict fd-verdict--dont"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-close"/></svg>Don't</span><h3 class="h4">Brace a callout, a quote or a list</h3><p>A note already has its signal bar, and a caution its tape. A brace there would only decorate.</p></figcaption>
+      </figure>
+      <figure class="plate fd-use">
+        <div class="fd-use__stage"><div class="fd-struck"><p class="h1 fd-lit">{ Clients }</p></div></div>
+        <figcaption><span class="fd-verdict fd-verdict--dont"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-close"/></svg>Don't</span><h3 class="h4">Set a brace in a font</h3><p>A font's braces and the mark's differ. Every brace comes from the mark's geometry, as a mask.</p></figcaption>
+      </figure>
+      <figure class="plate fd-use">
+        <div class="fd-use__stage"><div class="fd-struck"><div class="brace brace--md" data-scope="tenant"><div class="brace brace--sm fd-nest" data-scope="tenant"><div class="plate plate--raised fd-mini fd-mini--card"><span class="fd-mini__line fd-mini__line--short"></span><span class="fd-mini__line"></span><span class="fd-mini__line"></span><span class="fd-mini__key"></span></div></div></div></div></div>
+        <figcaption><span class="fd-verdict fd-verdict--dont"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-close"/></svg>Don't</span><h3 class="h4">Stack braces in one view</h3><p>One pair frames a view. The boundary plate restates it; a second frame would blur which boundary is meant.</p></figcaption>
+      </figure>
+      <figure class="plate fd-use">
+        <div class="fd-use__stage"><div class="fd-struck"><span class="boundary" data-scope="tenant"><span class="label">Beta</span></span></div></div>
+        <figcaption><span class="fd-verdict fd-verdict--dont"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-close"/></svg>Don't</span><h3 class="h4">Put anything else on the plate</h3><p>The plate names Platform, Team or Tenant. It is not a tag, a badge or a status.</p></figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ============================================================ signature -->
+  <section class="fd-section" aria-labelledby="signature">
+    <header class="fd-section__head">
+      <span class="step" aria-hidden="true">05</span>
+      <h2 id="signature">Signature</h2>
+      <p>Six more parts, used the same way on every surface. Cover the logo and they still say NCode; change the brand color and they still do.</p>
+    </header>
+
+    <div class="fd-cols fd-cols--3">
+      <figure class="plate fd-sig">
+        <div class="fd-sig__stage">
+          <div class="display"><ol class="mode" aria-label="Security boundary"><li class="mode__step"><span class="lamp lamp--off" aria-hidden="true"></span><span class="label">Platform</span></li><li class="mode__step"><span class="lamp lamp--off" aria-hidden="true"></span><span class="label">Team</span></li><li class="mode__step mode__step--active"><span class="boundary" data-scope="tenant"><svg class="icon" aria-hidden="true"><use href="#i-building"/></svg><span class="label">Tenant</span><span class="boundary__name">contoso</span></span></li></ol></div>
+        </div>
+        <figcaption><h3 class="h4">The display</h3><p>State lives on one dark screen in the bar, never among the controls: the three boundaries in order with the one you act in lit, the page, and who is signed in.</p></figcaption>
+      </figure>
+
+      <figure class="plate fd-sig">
+        <div class="fd-sig__stage fd-sig__stage--row">
+          <span class="key key--primary">New client</span>
+          <span class="key">Cancel</span>
+          <span class="key is-pressed">Pressed</span>
+          <span class="keyset" role="tablist" aria-label="Sample tabs"><span class="key" role="tab" aria-selected="true"><span class="lamp"></span>Latched</span><span class="key" role="tab" aria-selected="false">Up</span></span>
+          <span class="well fd-sig__well">A well</span>
+        </div>
+        <figcaption><h3 class="h4">Keys and wells</h3><p>A key stands two pixels proud on a hard lip and travels down when pressed; a chosen key stays down with its lamp lit. A well is cut in, with a shade under its top edge.</p></figcaption>
+      </figure>
+
+      <figure class="plate fd-sig">
+        <div class="fd-sig__stage fd-sig__stage--row">
+          <span class="status"><span class="lamp lamp--success"></span>Active</span>
+          <span class="status status--off"><span class="lamp lamp--off"></span>Disabled</span>
+          <span class="chip chip--warning"><svg class="icon" aria-hidden="true"><use href="#i-caution"/></svg>Expiring</span>
+          <span class="chip chip--danger"><svg class="icon" aria-hidden="true"><use href="#i-error"/></svg>Revoked</span>
+          <span class="readout">8</span>
+        </div>
+        <figcaption><h3 class="h4">Lamps</h3><p>State is a lamp beside a word. Lit and filled is on, a hollow ring is off, a triangle warns, an octagon stops: the shape carries what the color says.</p></figcaption>
+      </figure>
+
+      <figure class="plate fd-sig">
+        <div class="fd-sig__stage">
+          <div class="screen fd-sig__screen"><pre><code><span class="line"><span class="tk-c">// zeroed when keyOwner is disposed</span></span>
+<span class="line line--lit"><span class="tk-k">using var</span> keyOwner = <span class="tk-t">BufferFactory</span>.Rent(<span class="tk-n">32</span>);</span></code></pre></div>
+        </div>
+        <figcaption><h3 class="h4">Screens</h3><p>Values, code and memory are shown on a deep field of the secondary hue: for NCode, exactly Navy with Blue Light type. Amber marks a literal or a live secret.</p></figcaption>
+      </figure>
+
+      <figure class="plate fd-sig">
+        <div class="fd-sig__stage fd-sig__stage--pairs">
+          <dl class="pairs">
+            <div><dt class="label">Client ID</dt><dd class="value">billing-service</dd></div>
+            <div><dt class="label">Type</dt><dd>Machine</dd></div>
+            <div><dt class="label">Created</dt><dd class="value">2026-10-02</dd></div>
+            <div><dt class="label">Signed in as</dt><dd class="value">alex@contoso.example</dd></div>
+          </dl>
+        </div>
+        <figcaption><h3 class="h4">Engraved names, displayed values</h3><p>Narrow capitals for the fixed parts of the case, monospace for what the system reports. A field's own label is sentence case, because a form is read.</p></figcaption>
+      </figure>
+
+      <figure class="plate fd-sig">
+        <div class="fd-sig__stage">
+          <p class="hazard fd-sig__hazard"><span class="hazard__text"><svg class="icon" aria-hidden="true"><use href="#i-caution"/></svg>This is a test environment.</span></p>
+          <p class="alert alert--warning"><svg class="icon" aria-hidden="true"><use href="#i-caution"/></svg><span><strong class="label alert__word">Caution</strong>There is no finalizer, so always use <code>using</code>.</span></p>
+        </div>
+        <figcaption><h3 class="h4">Hazard tape</h3><p>The one pattern in the system, and it always means the same: this is not routine. It marks non-production tenants, cautions and the platform boundary.</p></figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ============================================================ components -->
+  <section class="fd-section" aria-labelledby="components">
+    <header class="fd-section__head">
+      <span class="step" aria-hidden="true">06</span>
+      <h2 id="components">Components</h2>
+      <p>The compact set the scenes are built from. Each maps onto one Material UI component and a few lines of theme override.</p>
+    </header>
+
+    <div class="plate fd-panel">
+      <div class="plate__head"><h3 class="label">Keys</h3><p class="fd-legend">Button, IconButton, ToggleButton</p></div>
+      <div class="plate__body">
+        <table class="fd-states">
+          <thead><tr><th></th><th class="label" scope="col">Default</th><th class="label" scope="col">Hover</th><th class="label" scope="col">Focus-visible</th><th class="label" scope="col">Pressed</th><th class="label" scope="col">Disabled</th></tr></thead>
+          <tbody>
+            <tr><th class="label" scope="row">Primary</th><td><button class="key key--primary" type="button">Create client</button></td><td><button class="key key--primary is-hovered" type="button">Create client</button></td><td><button class="key key--primary is-focused" type="button">Create client</button></td><td><button class="key key--primary is-pressed" type="button">Create client</button></td><td><button class="key key--primary" type="button" disabled>Create client</button></td></tr>
+            <tr><th class="label" scope="row">Secondary</th><td><button class="key" type="button">Cancel</button></td><td><button class="key is-hovered" type="button">Cancel</button></td><td><button class="key is-focused" type="button">Cancel</button></td><td><button class="key is-pressed" type="button">Cancel</button></td><td><button class="key" type="button" disabled>Cancel</button></td></tr>
+            <tr><th class="label" scope="row">Ghost</th><td><button class="key key--ghost" type="button">Sign out</button></td><td><button class="key key--ghost is-hovered" type="button">Sign out</button></td><td><button class="key key--ghost is-focused" type="button">Sign out</button></td><td><button class="key key--ghost is-pressed" type="button">Sign out</button></td><td><button class="key key--ghost" type="button" disabled>Sign out</button></td></tr>
+            <tr><th class="label" scope="row">Danger</th><td><button class="key key--danger" type="button">Delete</button></td><td><button class="key key--danger is-hovered" type="button">Delete</button></td><td><button class="key key--danger is-focused" type="button">Delete</button></td><td><button class="key key--danger is-pressed" type="button">Delete</button></td><td><button class="key key--danger" type="button" disabled>Delete</button></td></tr>
+          </tbody>
+        </table>
+        <div class="fd-row fd-row--ruled">
+          <span class="label fd-row__label">Sizes and icons</span>
+          <button class="key key--sm" type="button">Small 28</button>
+          <button class="key" type="button">Medium 36</button>
+          <button class="key key--lg" type="button">Large 44</button>
+          <button class="key key--primary" type="button"><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg>New client</button>
+          <button class="key" type="button">GitHub<svg class="icon" aria-hidden="true"><use href="#i-arrow-up-right"/></svg></button>
+          <button class="key key--icon" type="button" aria-label="Edit"><svg class="icon" aria-hidden="true"><use href="#i-edit"/></svg></button>
+          <button class="key key--icon key--ghost" type="button" aria-label="Delete"><svg class="icon" aria-hidden="true"><use href="#i-trash"/></svg></button>
+          <span class="fd-tip"><span class="tooltip" role="tooltip">Edit client</span><button class="key key--icon is-hovered" type="button" aria-label="Edit client"><svg class="icon" aria-hidden="true"><use href="#i-edit"/></svg></button></span>
+          <span class="label fd-row__label fd-row__label--gap">Tabs</span>
+          <span class="keyset" role="tablist" aria-label="Client">
+            <button class="key" type="button" role="tab" aria-selected="false">Secrets</button>
+            <button class="key" type="button" role="tab" aria-selected="true"><span class="lamp" aria-hidden="true"></span>Settings</button>
+            <button class="key" type="button" role="tab" aria-selected="false">Access</button>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="fd-cols fd-cols--2">
+      <div class="plate fd-panel">
+        <div class="plate__head"><h3 class="label">Wells</h3><p class="fd-legend">TextField, Select: the label above, in sentence case</p></div>
+        <div class="plate__body fd-fields">
+          <div class="field">
+            <div class="field__head"><label class="field__label" for="f-default">Client ID</label><span class="field__flag">Required</span></div>
+            <input class="well well--mono" id="f-default" type="text" placeholder="web-portal">
+          </div>
+          <div class="field">
+            <div class="field__head"><label class="field__label" for="f-focus">Focused</label><span class="field__key">client_id</span></div>
+            <input class="well well--mono is-focused" id="f-focus" type="text" value="web-portal">
+          </div>
+          <div class="field field--error">
+            <div class="field__head"><label class="field__label" for="f-error">Access token lifetime</label><span class="field__key">access_token_lifetime</span></div>
+            <input class="well well--mono" id="f-error" type="text" value="20 minutes" aria-invalid="true" aria-describedby="f-error-hint">
+            <p class="field__hint" id="f-error-hint"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-error"/></svg><span>Not a duration. Write it as <code>hh:mm:ss</code>.</span></p>
+          </div>
+          <div class="field field--disabled">
+            <div class="field__head"><label class="field__label" for="f-disabled">Disabled</label></div>
+            <input class="well well--mono" id="f-disabled" type="text" value="web-portal" disabled>
+          </div>
+          <div class="field">
+            <div class="field__head"><label class="field__label" for="f-select">Type</label></div>
+            <span class="select"><select class="well" id="f-select"><option>Confidential</option><option>Public</option><option>Machine</option></select><svg class="icon icon--sm" aria-hidden="true"><use href="#i-chevron-down"/></svg></span>
+            <p class="field__hint">Runs on a server and can keep a secret</p>
+          </div>
+          <div class="field">
+            <div class="field__head"><label class="field__label" for="f-search">With a keycap hint</label></div>
+            <span class="well-wrap well-wrap--start well-wrap--hint"><svg class="icon well-wrap__start" aria-hidden="true"><use href="#i-search"/></svg><input class="well" id="f-search" type="search" placeholder="Search"><span class="well-wrap__end" aria-hidden="true"><kbd>Ctrl</kbd><kbd>K</kbd></span></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="plate fd-panel">
+        <div class="plate__head"><h3 class="label">Choices and status</h3><p class="fd-legend">Checkbox, Radio, Switch, Chip</p></div>
+        <div class="plate__body fd-choices">
+          <div class="fd-row">
+            <span class="label fd-row__label">Check</span>
+            <label class="choice"><input class="check" type="checkbox">Off</label>
+            <label class="choice"><input class="check" type="checkbox" checked>On</label>
+            <label class="choice"><input class="check is-focused" type="checkbox" checked>Focus</label>
+            <label class="choice is-disabled"><input class="check" type="checkbox" disabled>Disabled</label>
+          </div>
+          <div class="fd-row">
+            <span class="label fd-row__label">Radio</span>
+            <label class="choice"><input class="radio" type="radio" name="fd-radio">Public</label>
+            <label class="choice"><input class="radio" type="radio" name="fd-radio" checked>Confidential</label>
+            <label class="choice is-disabled"><input class="radio" type="radio" name="fd-radio" disabled>Disabled</label>
+          </div>
+          <div class="fd-row">
+            <span class="label fd-row__label">Switch</span>
+            <label class="choice"><input class="switch" type="checkbox" role="switch">Off</label>
+            <label class="choice"><input class="switch" type="checkbox" role="switch" checked>On</label>
+            <label class="choice is-disabled"><input class="switch" type="checkbox" role="switch" disabled>Disabled</label>
+            <label class="choice is-disabled"><input class="switch" type="checkbox" role="switch" checked disabled>Locked on</label>
+          </div>
+          <div class="fd-row fd-row--ruled">
+            <span class="label fd-row__label">Chips</span>
+            <span class="chip chip--success"><span class="lamp lamp--success" aria-hidden="true"></span>Active</span>
+            <span class="chip"><span class="lamp lamp--off" aria-hidden="true"></span>Disabled</span>
+            <span class="chip chip--warning"><svg class="icon" aria-hidden="true"><use href="#i-caution"/></svg>Expiring</span>
+            <span class="chip chip--danger"><svg class="icon" aria-hidden="true"><use href="#i-error"/></svg>Revoked</span>
+            <span class="chip chip--info"><svg class="icon" aria-hidden="true"><use href="#i-info"/></svg>Rotating</span>
+          </div>
+          <div class="fd-row">
+            <span class="label fd-row__label">In a table</span>
+            <span class="status"><span class="lamp lamp--success" aria-hidden="true"></span>Active</span>
+            <span class="status status--off"><span class="lamp lamp--off" aria-hidden="true"></span>Disabled</span>
+            <span class="label fd-row__label fd-row__label--gap">Tags</span>
+            <span class="tag">Open source</span>
+            <span class="tag tag--value">v5</span>
+            <kbd>Ctrl</kbd>
+            <span class="placeholder">[price]</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="fd-cols fd-cols--2">
+      <div class="plate fd-panel">
+        <div class="plate__head"><h3 class="label">Alerts</h3><p class="fd-legend">Alert: four severities, each with its own icon shape and signal word</p></div>
+        <div class="plate__body fd-alerts">
+          <p class="alert"><svg class="icon" aria-hidden="true"><use href="#i-info"/></svg><span><strong class="label alert__word">Note</strong><code>Rent</code> hands back a span sliced to exactly the length you asked for.</span></p>
+          <p class="alert alert--success"><svg class="icon" aria-hidden="true"><use href="#i-success"/></svg><span><strong class="label alert__word">Done</strong>The client <code>cli-tools</code> was created.</span></p>
+          <p class="alert alert--warning"><svg class="icon" aria-hidden="true"><use href="#i-caution"/></svg><span><strong class="label alert__word">Caution</strong>A buffer that is never disposed is never zeroed.</span></p>
+          <p class="alert alert--danger"><svg class="icon" aria-hidden="true"><use href="#i-error"/></svg><span><strong class="label alert__word">Error</strong>The username or password is incorrect.</span></p>
+        </div>
+      </div>
+
+      <div class="fd-stack">
+        <div class="plate fd-panel fd-card">
+          <div class="plate__head"><h3 class="label">Card</h3><span class="readout">8</span></div>
+          <div class="plate__body">
+            <h4 class="h3">Clients</h4>
+            <p class="fd-card__text">Applications that can request tokens from this tenant.</p>
+          </div>
+          <div class="plate__foot"><span class="status"><span class="lamp lamp--success" aria-hidden="true"></span>6 active</span><span class="status status--off"><span class="lamp lamp--off" aria-hidden="true"></span>2 disabled</span><a class="key key--sm fd-card__key" href="console.html">Open<svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></a></div>
+        </div>
+
+        <div class="fd-dialogstage">
+          <div class="dialog" role="group" aria-labelledby="fd-dialog-title">
+            <div class="dialog__head"><div class="dialog__heading"><h3 class="dialog__title" id="fd-dialog-title">Delete billing-service?</h3><span class="boundary boundary--sm" data-scope="tenant"><svg class="icon" aria-hidden="true"><use href="#i-building"/></svg><span class="label">Tenant</span><span class="boundary__name">contoso</span></span></div><button class="key key--sm key--icon key--ghost" type="button" aria-label="Close"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></button></div>
+            <div class="dialog__body"><p class="alert alert--danger"><svg class="icon" aria-hidden="true"><use href="#i-error"/></svg><span>This cannot be undone.</span></p></div>
+            <div class="dialog__foot"><button class="key" type="button">Cancel</button><button class="key key--danger" type="button">Delete</button></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+</body>
+</html>

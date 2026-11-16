@@ -1,0 +1,400 @@
+{
+  "$description": "Instrument: the design tokens of NCode's look and feel, and the one place a token is written. build.mjs writes every file in tokens/ from it, and the token tables of guidelines/ and specimens/foundations.html. Each group has a $tier, which the groups inside it inherit: primitive tokens are private raw material that may change in any release, and semantic tokens are the public contract (docs/decisions/1002-custom-properties-take-the-nc-prefix-and-only-semantic-tokens-are-public.md).",
+  "name": "Instrument",
+
+  "$grammar": {
+    "reference": "\"{stone.200}\" is a primitive color, \"{color.text}\" a semantic color, \"{brand}\" and \"{brand-secondary}\" the two tenant inputs.",
+    "theme": "{ \"light\": <value>, \"dark\": <value> } gives one value per theme; a plain value serves both.",
+    "from": "{ \"from\": <color>, \"l\": <expr>, \"c\": <expr>, \"h\": <expr> } is CSS oklch(from <color> l c h): each channel is an expression of the origin's OKLCH l (0 to 1), c and h (degrees), with + - * /, min(), max() and clamp(). With \"space\": \"lch\" it is CSS lch(from <color> l c h), whose l runs from 0 to 100 and follows luminance.",
+    "mix": "{ \"mix\": [<a>, <b>], \"share\": 13 } is CSS color-mix(in oklab, <a>, <b> 13%).",
+    "alpha": "{ \"alpha\": [<color>, 0.08] } is that color at 8% opacity.",
+    "ramp step": "[L, C, h] is an OKLCH color, reduced in chroma until it fits sRGB; a hex string is used as written."
+  },
+
+  "base": {
+    "color": {
+      "$tier": "primitive",
+      "blue": {
+        "$note": "Blue: the logo kit's hue, 225 degrees in HSL. 300, 600 and 900 are the kit's exact colors; the other steps bend the hue the way those three do.",
+        "$use": "Brand",
+        "50": [0.972, 0.014, 272],
+        "100": [0.94, 0.031, 271],
+        "200": [0.868, 0.071, 270],
+        "300": { "value": "#809FFF", "note": "NCode Blue Light" },
+        "400": [0.628, 0.19, 267],
+        "500": [0.522, 0.225, 265],
+        "600": { "value": "#0033CC", "note": "NCode Blue" },
+        "700": [0.372, 0.2, 264],
+        "800": [0.318, 0.155, 264.5],
+        "900": { "value": "#0A1F5C", "note": "NCode Navy" },
+        "950": [0.205, 0.076, 266.1]
+      },
+      "stone": {
+        "$note": "Stone: the neutral. A trace of warm olive (OKLCH hue 106), so the case has no opinion about a tenant's color.",
+        "$use": "Neutral",
+        "0": "#FFFFFF",
+        "50": [0.975, 0.004, 106],
+        "100": [0.955, 0.005, 106],
+        "200": [0.9326, 0.0067, 106.5],
+        "300": [0.885, 0.008, 106],
+        "400": [0.8, 0.009, 106],
+        "450": [0.66, 0.01, 106],
+        "500": [0.574, 0.01, 106],
+        "600": [0.48, 0.01, 106],
+        "700": [0.41, 0.009, 106],
+        "800": [0.325, 0.008, 106],
+        "850": [0.275, 0.007, 106],
+        "900": [0.235, 0.006, 106],
+        "925": [0.205, 0.006, 106],
+        "950": [0.178, 0.005, 106],
+        "975": [0.145, 0.005, 106]
+      },
+      "green": {
+        "$note": "Green: success.",
+        "$use": "Success",
+        "50": [0.972, 0.022, 152],
+        "100": [0.94, 0.05, 152],
+        "300": [0.82, 0.14, 151],
+        "500": [0.62, 0.16, 150],
+        "600": [0.53, 0.14, 150],
+        "700": [0.45, 0.115, 150],
+        "800": [0.36, 0.09, 150],
+        "900": [0.29, 0.07, 151],
+        "950": [0.225, 0.045, 151]
+      },
+      "amber": {
+        "$note": "Amber: the one supporting hue. Warning, hazard tape, and a sensitive value on a screen.",
+        "$use": "Warning, hazard, hot",
+        "50": [0.975, 0.03, 90],
+        "100": [0.945, 0.07, 90],
+        "300": [0.84, 0.155, 84],
+        "400": [0.795, 0.16, 78],
+        "500": [0.7, 0.155, 68],
+        "600": [0.6, 0.14, 62],
+        "700": [0.49, 0.115, 58],
+        "800": [0.38, 0.085, 60],
+        "900": [0.3, 0.065, 62],
+        "950": [0.23, 0.04, 65]
+      },
+      "red": {
+        "$note": "Red: danger.",
+        "$use": "Danger",
+        "50": [0.97, 0.016, 25],
+        "100": [0.935, 0.035, 25],
+        "300": [0.78, 0.13, 25],
+        "500": [0.6, 0.2, 27],
+        "600": [0.52, 0.195, 28],
+        "700": [0.45, 0.165, 28],
+        "800": [0.36, 0.125, 28],
+        "900": [0.29, 0.085, 27],
+        "950": [0.225, 0.055, 27]
+      }
+    },
+
+    "font": {
+      "family": {
+        "$tier": "semantic", "$css": "font", "$type": "fontFamily",
+        "sans": { "value": ["Instrument Sans Variable", "Instrument Sans", "system-ui", "-apple-system", "Segoe UI", "Roboto", "Helvetica Neue", "Arial", "sans-serif"], "note": "names, headings and reading" },
+        "mono": { "value": ["Martian Mono Variable", "Martian Mono", "ui-monospace", "Cascadia Mono", "SF Mono", "Menlo", "Consolas", "monospace"], "note": "every value the system reports, and code" }
+      },
+      "width": {
+        "$tier": "primitive", "$css": "width", "$type": "number", "$unit": "%",
+        "$note": "Width is part of the voice: labels are engraved narrow, headings a little condensed, text at full width.",
+        "label": 82,
+        "display": 86,
+        "text": 100,
+        "code": { "value": 75, "note": "Martian Mono at 75% has a 0.6em advance, the usual width of a code face" },
+        "readout": { "value": 100, "note": "a short value on a screen is set wide, like a display" }
+      },
+      "weight": {
+        "$tier": "primitive", "$css": "weight", "$type": "fontWeight",
+        "regular": 400,
+        "medium": 500,
+        "semibold": 600,
+        "bold": 700
+      },
+      "size": {
+        "$tier": "primitive", "$css": "text", "$type": "dimension", "$unit": "rem",
+        "2xs": { "value": 0.6875, "note": "11px: engraved labels" },
+        "xs": { "value": 0.75, "note": "12px" },
+        "sm": { "value": 0.8125, "note": "13px: dense interface, code, field labels" },
+        "md": { "value": 0.875, "note": "14px: interface" },
+        "base": { "value": 1, "note": "16px" },
+        "reading": { "value": 1.0625, "note": "17px: long-form documentation" },
+        "lg": { "value": 1.1875, "note": "19px" },
+        "xl": { "value": 1.375, "note": "22px: lead" },
+        "2xl": { "value": 1.75, "note": "28px" },
+        "3xl": { "value": 2.25, "note": "36px" },
+        "4xl": { "value": 2.75, "note": "44px" },
+        "5xl": { "value": 3.5, "note": "56px" },
+        "6xl": { "value": 4.75, "note": "76px" }
+      },
+      "leading": {
+        "$tier": "primitive", "$css": "leading", "$type": "number",
+        "flat": 1,
+        "tight": 1.08,
+        "snug": 1.3,
+        "normal": 1.5,
+        "reading": 1.7
+      },
+      "tracking": {
+        "$tier": "primitive", "$css": "tracking", "$type": "dimension", "$unit": "em",
+        "label": 0.08,
+        "display": -0.022,
+        "heading": -0.012,
+        "normal": 0
+      }
+    },
+
+    "space": {
+      "$tier": "semantic", "$css": "space", "$type": "dimension", "$unit": "rem",
+      "0": 0,
+      "1": { "value": 0.125, "note": "2px" },
+      "2": { "value": 0.25, "note": "4px" },
+      "3": { "value": 0.5, "note": "8px" },
+      "4": { "value": 0.75, "note": "12px" },
+      "5": { "value": 1, "note": "16px" },
+      "6": { "value": 1.5, "note": "24px" },
+      "7": { "value": 2, "note": "32px" },
+      "8": { "value": 3, "note": "48px" },
+      "9": { "value": 4, "note": "64px" },
+      "10": { "value": 6, "note": "96px" }
+    },
+
+    "radius": {
+      "$tier": "semantic", "$css": "radius", "$type": "dimension", "$unit": "px",
+      "cell": { "value": 2, "note": "memory cells, check boxes" },
+      "plate": { "value": 4, "note": "label plates, tags, keycaps" },
+      "control": { "value": 6, "note": "keys and wells" },
+      "panel": { "value": 10, "note": "plates, screens" },
+      "module": { "value": 14, "note": "the outermost modules: dialogs, cards" },
+      "round": { "value": 999, "note": "lamps" }
+    },
+
+    "border": {
+      "$tier": "semantic", "$css": "border", "$type": "dimension", "$unit": "px",
+      "hair": 1,
+      "bold": 2
+    },
+
+    "size": {
+      "$tier": "semantic", "$css": "", "$type": "dimension",
+      "travel": { "value": 2, "unit": "px", "note": "how far a key stands above its plate, and how far it moves when pressed" },
+      "focus-width": { "value": 2, "unit": "px" },
+      "focus-gap": { "value": 2, "unit": "px" },
+      "control-sm": { "value": 1.75, "unit": "rem", "note": "28px" },
+      "control-md": { "value": 2.25, "unit": "rem", "note": "36px" },
+      "control-lg": { "value": 2.75, "unit": "rem", "note": "44px: every control on a phone" },
+      "measure": { "value": 41, "unit": "rem", "note": "the reading column of long-form documentation: about 70 characters at the reading size" },
+      "bleed": { "value": 1.25, "unit": "rem", "note": "how far a listing or a table starts before the reading column, so its content lines up with the text" }
+    },
+
+    "breakpoint": {
+      "$tier": "semantic", "$css": "breakpoint", "$type": "dimension", "$unit": "rem",
+      "$note": "Media queries cannot read custom properties, so base.css repeats these numbers; they are exported for a Material UI theme's breakpoints.",
+      "phone": { "value": 40, "note": "at 640px and below tables become lists, dialogs become sheets and navigation moves into a sheet" },
+      "tablet": { "value": 68, "note": "at 1088px and below the console's navigation moves into a sheet" },
+      "desk": { "value": 80, "note": "at 1280px and below documentation drops its page index" }
+    },
+
+    "motion": {
+      "$tier": "semantic",
+      "duration": {
+        "$css": "dur", "$type": "duration", "$unit": "ms",
+        "press": { "value": 70, "note": "a key going down" },
+        "quick": { "value": 120, "note": "hover, a change of color" },
+        "move": { "value": 200, "note": "a switch sliding" },
+        "enter": { "value": 280, "note": "a dialog arriving" }
+      },
+      "easing": {
+        "$css": "ease",
+        "out": { "value": [0.2, 0, 0, 1], "type": "cubicBezier" },
+        "in-out": { "value": [0.4, 0, 0.2, 1], "type": "cubicBezier" },
+        "tick": { "value": "steps(1, end)", "type": "css", "note": "a readout changes in one step; it never glides" }
+      }
+    },
+
+    "brace": {
+      "$tier": "semantic",
+      "$note": "The brace is drawn the way the mark's brace is: straight stems, circular hooks at the ends and a cusp of two arcs whose tip is half the stroke high. w is the stroke, r the hook's radius and c the cusp's, both on the centerline, and e the straight end of a hook, all in pixels. 'mark' is the mark's own brace in its 64-unit grid. The others take any height: their hooks and cusp keep their size and only the stems stretch. Their radii are about twice the mark's for the same stroke, so the shape still reads as a brace when the stems are long.",
+      "mark": { "w": 4, "r": 5, "c": 6, "e": 1 },
+      "sm": { "w": 2, "r": 4, "c": 4, "e": 2, "note": "a lifetime in a code listing" },
+      "md": { "w": 3, "r": 6.5, "c": 7.5, "e": 3, "note": "a card, the memory panel" },
+      "lg": { "w": 4, "r": 9, "c": 10, "e": 4, "note": "the frame of a console workspace" }
+    }
+  },
+
+  "brand": {
+    "$tier": "semantic",
+    "$note": "The two values a tenant may replace: BrandingConfig.primaryColor and BrandingConfig.secondaryColor. NCode's own surfaces leave the first at NCode Blue and the second unset, so it follows the first.",
+    "brand": { "value": "{blue.600}", "note": "primaryColor: what you press. Keys, links, focus, selection." },
+    "brand-secondary": { "value": "{brand}", "note": "secondaryColor: what you are shown. Screens and the tenant's scope braces. It follows the primary until a tenant sets it." }
+  },
+
+  "semantic": {
+    "color": {
+      "$tier": "semantic",
+      "case": {
+        "$note": "The case and its parts.",
+        "page": { "value": { "light": "{stone.200}", "dark": "{stone.975}" }, "note": "the case" },
+        "page-sunken": { "value": { "light": "{stone.300}", "dark": "#050504" }, "note": "a recess cut into the case" },
+        "surface": { "value": { "light": "{stone.50}", "dark": "{stone.925}" }, "note": "a plate" },
+        "surface-raised": { "value": { "light": "{stone.0}", "dark": "{stone.850}" }, "note": "the brightest sheet: a dialog, a menu, a page of documentation" },
+        "surface-sunken": { "value": { "light": "{stone.100}", "dark": "{stone.950}" }, "note": "a recess cut into a plate: a table head, a footer" },
+        "well": { "value": { "light": "{stone.0}", "dark": "{stone.975}" }, "note": "a field" }
+      },
+      "control": {
+        "$note": "A neutral key.",
+        "control": { "value": { "light": "{stone.0}", "dark": "{stone.850}" }, "note": "its face" },
+        "control-hover": { "light": "{stone.100}", "dark": "{stone.800}" },
+        "control-pressed": { "light": "{stone.300}", "dark": "{stone.950}" },
+        "ghost-hover": { "value": { "light": { "alpha": ["{stone.925}", 0.08] }, "dark": { "alpha": ["{stone.100}", 0.1] } }, "note": "the face a ghost key gains under the pointer: the text color, thinned" },
+        "ghost-pressed": { "light": { "alpha": ["{stone.925}", 0.15] }, "dark": { "alpha": ["{stone.100}", 0.18] } }
+      },
+      "line": {
+        "$note": "Lines.",
+        "border": { "value": { "light": "{stone.300}", "dark": "{stone.800}" }, "note": "a hairline between parts: decoration, it carries no meaning alone" },
+        "border-strong": { "value": "{stone.500}", "note": "the edge of a control: 3 to 1 against every surface in both themes" },
+        "lamp-unlit": { "value": { "light": "{stone.400}", "dark": "{stone.700}" }, "note": "an unlit lamp in a selector: decoration, the word and the latched key carry the state" }
+      },
+      "text": {
+        "$note": "Type.",
+        "text": { "light": "{stone.925}", "dark": "{stone.100}" },
+        "text-secondary": { "light": "{stone.700}", "dark": "{stone.400}" },
+        "text-muted": { "value": { "light": "{stone.600}", "dark": "{stone.450}" }, "note": "engraved labels, placeholders" },
+        "text-disabled": { "light": "{stone.500}", "dark": "{stone.600}" }
+      },
+      "success": {
+        "$note": "Status. -mark is the lamp, icon or line (3 to 1 on every surface); -text is running text (4.5 to 1).",
+        "success": { "light": "{green.600}", "dark": "{green.300}" },
+        "on-success": { "light": "{stone.0}", "dark": "{green.950}" },
+        "success-mark": { "light": "{green.600}", "dark": "{green.300}" },
+        "success-text": { "light": "{green.700}", "dark": "{green.300}" },
+        "success-subtle": { "light": "{green.50}", "dark": "{green.950}" },
+        "success-border": { "light": "{green.300}", "dark": "{green.800}" }
+      },
+      "warning": {
+        "warning": "{amber.400}",
+        "on-warning": "{stone.925}",
+        "warning-mark": { "light": "{amber.600}", "dark": "{amber.300}" },
+        "warning-text": { "light": "{amber.700}", "dark": "{amber.300}" },
+        "warning-subtle": { "light": "{amber.50}", "dark": "{amber.950}" },
+        "warning-border": { "light": "{amber.300}", "dark": "{amber.800}" }
+      },
+      "danger": {
+        "danger": { "light": "{red.600}", "dark": "{red.300}" },
+        "on-danger": { "light": "{stone.0}", "dark": "{red.950}" },
+        "danger-mark": { "light": "{red.600}", "dark": "{red.300}" },
+        "danger-text": { "light": "{red.700}", "dark": "{red.300}" },
+        "danger-subtle": { "light": "{red.50}", "dark": "{red.950}" },
+        "danger-border": { "light": "{red.300}", "dark": "{red.800}" },
+        "danger-hover": { "light": "{red.700}", "dark": { "mix": ["{red.300}", "#FFFFFF"], "share": 22 } },
+        "danger-lip": { "light": "{red.800}", "dark": "{red.700}" }
+      },
+      "info": {
+        "info": { "light": "{blue.600}", "dark": "{blue.300}" },
+        "on-info": { "light": "{stone.0}", "dark": "{blue.950}" },
+        "info-mark": { "light": "{blue.600}", "dark": "{blue.300}" },
+        "info-text": { "light": "{blue.700}", "dark": "{blue.300}" },
+        "info-subtle": { "light": "{blue.50}", "dark": "{blue.950}" },
+        "info-border": { "light": "{blue.200}", "dark": "{blue.800}" }
+      },
+      "hazard": {
+        "$note": "Hazard tape: the same in both themes, as tape is.",
+        "hazard": "{amber.400}",
+        "on-hazard": "{stone.925}"
+      },
+      "logo": {
+        "$note": "NCode's own marks: blue, or light blue on dark. Under a tenant's color they go one color (the text color), as the logo kit allows; they never take the tenant's hue.",
+        "logo": { "light": "{blue.600}", "dark": "{blue.300}" }
+      },
+      "depth": {
+        "$note": "Depth is drawn with hard edges, never with blur: a lip below means raised, a shade above means recessed.",
+        "lip": { "value": { "light": "{stone.400}", "dark": "#000000" }, "note": "the side of a raised part" },
+        "shade": { "value": { "light": { "alpha": ["{stone.925}", 0.08] }, "dark": { "alpha": ["#000000", 0.55] } }, "note": "the shadow inside a recess" },
+        "screen-shade": { "value": { "alpha": ["#000000", 0.3] }, "note": "the shadow inside a screen's top edge, the same in both themes" },
+        "glint": { "value": { "light": "{stone.0}", "dark": { "alpha": ["#FFFFFF", 0.06] } }, "note": "light on a top edge" },
+        "shadow": { "value": { "light": { "alpha": ["{stone.925}", 0.2] }, "dark": { "alpha": ["#000000", 0.7] } }, "note": "the only soft shadow, under overlays" },
+        "scrim": { "light": { "alpha": ["{stone.925}", 0.5] }, "dark": { "alpha": ["#000000", 0.68] } }
+      },
+      "primary": {
+        "$brand": true,
+        "$note": "Primary, derived from --nc-brand: what you press.",
+        "primary": { "value": { "light": "{brand}", "dark": { "from": "{brand}", "l": "0.7206", "c": "min(c, 0.1444)", "h": "h + 5.3" } }, "note": "NCode Blue becomes exactly NCode Blue Light in the dark theme" },
+        "on-primary": { "value": { "light": { "from": "{brand}", "space": "lch", "l": "clamp(0, (49.4 - l) * 9999, 100)", "c": "0", "h": "0" }, "dark": { "from": "{brand}", "l": "0.205", "c": "min(c * 0.32, 0.076)", "h": "h + 2.4" } }, "note": "white, or black when the tenant's color is lighter than CIE lightness 49.4, near where the label with the higher contrast changes. A color at the flip itself can fall short in CSS; tokens/derive.mjs chooses by measured contrast" },
+        "primary-shade": { "value": { "light": { "from": "{brand}", "space": "lch", "l": "clamp(0, (l - 49.4) * 9999, 100)", "c": "0", "h": "0" }, "dark": "#FFFFFF" }, "note": "what a primary key's face moves toward when it is touched: away from its label, so the label gains contrast" },
+        "primary-hover": { "light": { "mix": ["{color.primary}", "{color.primary-shade}"], "share": 13 }, "dark": { "mix": ["{color.primary}", "{color.primary-shade}"], "share": 22 } },
+        "primary-pressed": { "light": { "mix": ["{color.primary}", "{color.primary-shade}"], "share": 22 }, "dark": { "mix": ["{color.primary}", "#000000"], "share": 10 } },
+        "primary-edge": { "value": { "light": { "from": "{color.primary}", "l": "min(l * 0.78, 0.55)", "c": "c * 0.78", "h": "h" }, "dark": { "mix": ["{color.primary}", "#000000"], "share": 10 } }, "note": "the outline of a primary key: darker than its face, and never lighter than OKLCH lightness 0.55, so it reaches 3 to 1 against a light plate whatever the tenant's color" },
+        "primary-lip": { "light": { "mix": ["{color.primary}", "#000000"], "share": 40 }, "dark": { "mix": ["{color.primary}", "#000000"], "share": 48 } },
+        "primary-text": { "value": { "light": { "from": "{brand}", "l": "min(l, 0.48)", "c": "c", "h": "h" }, "dark": "{color.primary}" }, "note": "the brand as text, line or lamp: at most OKLCH lightness 0.48 in the light theme, 4.5 to 1 on every surface for all but the brightest greens, which tokens/derive.mjs darkens further" },
+        "primary-subtle": { "value": { "light": { "mix": ["{stone.0}", "{color.primary}"], "share": 8 }, "dark": { "mix": ["{stone.925}", "{color.primary}"], "share": 16 } }, "note": "the wash behind a selected option" },
+        "primary-subtle-border": { "light": { "mix": ["{stone.0}", "{color.primary}"], "share": 30 }, "dark": { "mix": ["{stone.925}", "{color.primary}"], "share": 42 } },
+        "focus": { "value": "{color.primary-text}", "note": "the focus ring" }
+      },
+      "screen": {
+        "$brand": true,
+        "$note": "The screen, derived from --nc-brand-secondary: what you are shown. A screen is the same in both themes: a deep field of the hue with lit values on it. NCode Blue yields exactly NCode Navy and NCode Blue Light.",
+        "screen": { "from": "{brand-secondary}", "l": "0.2697", "c": "c * 0.478", "h": "h + 1.2" },
+        "screen-raised": { "value": { "from": "{brand-secondary}", "l": "0.335", "c": "c * 0.62", "h": "h + 0.8" }, "note": "a lit row, a memory cell" },
+        "screen-border": { "from": "{brand-secondary}", "l": "0.4", "c": "c * 0.6", "h": "h" },
+        "screen-lit": { "value": { "from": "{brand-secondary}", "l": "0.7206", "c": "min(c, 0.1444)", "h": "h + 5.3" }, "note": "keywords, lit labels, the lit boundary plate, braces on a screen" },
+        "on-screen": "{stone.0}",
+        "on-screen-secondary": { "from": "{brand-secondary}", "l": "0.868", "c": "min(c * 0.3, 0.071)", "h": "h + 6.9" },
+        "on-screen-muted": { "from": "{brand-secondary}", "l": "0.74", "c": "min(c * 0.24, 0.058)", "h": "h + 4" },
+        "screen-hot": { "value": "{amber.300}", "note": "a literal, a sensitive value" }
+      },
+      "scope": {
+        "$brand": true,
+        "$note": "The ink of a scope brace on the case, one per kind of security boundary.",
+        "scope-tenant": { "value": { "light": { "from": "{brand-secondary}", "l": "min(l, 0.48)", "c": "c", "h": "h" }, "dark": "{color.screen-lit}" }, "note": "a tenant's braces take the tenant's secondary color" },
+        "scope-team": { "value": "{color.text}", "note": "a team's braces are plain ink" },
+        "scope-platform": { "value": "{color.hazard}", "note": "the platform's braces are hazard tape: this color striped with on-hazard" }
+      }
+    },
+
+    "type": {
+      "$tier": "semantic",
+      "$note": "Type roles. Each names a family, a size, a line height, a weight, a width and a tracking from the primitives (or gives a number). tokens.css carries each as a font shorthand, --nc-type-<role>; width and tracking are set beside it.",
+      "headline": { "family": "sans", "size": "6xl", "leading": "flat", "weight": "semibold", "width": "display", "tracking": -0.028, "note": "the one headline of a landing page" },
+      "title": { "family": "sans", "size": "4xl", "leading": "tight", "weight": "semibold", "width": "display", "tracking": "display", "note": "the title of a page" },
+      "title-long": { "family": "sans", "size": "5xl", "leading": 1.04, "weight": "semibold", "width": "display", "tracking": -0.026, "note": "the title of a long-form page" },
+      "heading": { "family": "sans", "size": "2xl", "leading": 1.18, "weight": "semibold", "width": "display", "tracking": "heading", "note": "a section" },
+      "heading-long": { "family": "sans", "size": "3xl", "leading": 1.14, "weight": "semibold", "width": "display", "tracking": "display", "note": "a section of a long-form page" },
+      "subheading": { "family": "sans", "size": "xl", "leading": "snug", "weight": "semibold", "width": "display", "tracking": "heading", "note": "a group within a section, the title of a dialog" },
+      "minor": { "family": "sans", "size": "base", "leading": "snug", "weight": "semibold", "width": "text", "tracking": "normal", "note": "the smallest heading" },
+      "lead": { "family": "sans", "size": "xl", "leading": 1.5, "weight": "regular", "width": "text", "tracking": "normal", "note": "the first paragraph of a long-form page" },
+      "body": { "family": "sans", "size": "base", "leading": "normal", "weight": "regular", "width": "text", "tracking": "normal", "note": "running text outside long-form pages" },
+      "reading": { "family": "sans", "size": "reading", "leading": "reading", "weight": "regular", "width": "text", "tracking": "normal", "note": "long-form documentation, on the measure" },
+      "ui": { "family": "sans", "size": "md", "leading": "normal", "weight": "regular", "width": "text", "tracking": "normal", "note": "the interface" },
+      "field": { "family": "sans", "size": "sm", "leading": "snug", "weight": "semibold", "width": "text", "tracking": "normal", "note": "the label of a field: sentence case, because a form is read, not scanned" },
+      "label": { "family": "sans", "size": "2xs", "leading": 1.2, "weight": "semibold", "width": "label", "tracking": "label", "case": "uppercase", "note": "engraved: the name of a fixed part. Column heads, group heads, tags, the boundary's kind" },
+      "value": { "family": "mono", "size": "sm", "leading": 1.4, "weight": "medium", "width": "code", "tracking": -0.01, "note": "displayed: anything read off the system" },
+      "code": { "family": "mono", "size": "sm", "leading": 1.7, "weight": "regular", "width": "code", "tracking": "normal", "note": "a listing" },
+      "readout": { "family": "mono", "size": "xs", "leading": "flat", "weight": "medium", "width": "readout", "tracking": "normal", "note": "a short value on a screen" }
+    },
+
+    "elevation": {
+      "$tier": "semantic",
+      "$note": "Box shadows. Offsets and blurs in pixels; a color is a semantic color.",
+      "recessed": [{ "inset": true, "x": 0, "y": "{travel}", "blur": 0, "spread": 0, "color": "{color.shade}" }],
+      "flush": [
+        { "inset": true, "x": 0, "y": 1, "blur": 0, "spread": 0, "color": "{color.glint}" },
+        { "x": 0, "y": 1, "blur": 0, "spread": 0, "color": "{color.lip}" }
+      ],
+      "raised": [
+        { "inset": true, "x": 0, "y": 1, "blur": 0, "spread": 0, "color": "{color.glint}" },
+        { "x": 0, "y": "{travel}", "blur": 0, "spread": 0, "color": "{color.lip}" }
+      ],
+      "floating": [
+        { "x": 0, "y": 1, "blur": 0, "spread": 0, "color": "{color.lip}" },
+        { "x": 0, "y": 10, "blur": 24, "spread": -8, "color": "{color.shadow}" }
+      ],
+      "overlay": [
+        { "inset": true, "x": 0, "y": 1, "blur": 0, "spread": 0, "color": "{color.glint}" },
+        { "x": 0, "y": "{travel}", "blur": 0, "spread": 0, "color": "{color.lip}" },
+        { "x": 0, "y": 28, "blur": 64, "spread": -16, "color": "{color.shadow}" }
+      ]
+    }
+  }
+}

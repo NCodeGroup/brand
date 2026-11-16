@@ -65,3 +65,10 @@ records are indexed in [project-template/](project-template/README.md).
 
 | ADR | Decision | Status |
 | --- | --- | --- |
+| [1000](1000-one-token-source-and-one-generator-write-every-committed-file.md) | One token source, and one generator writes every committed file | Accepted |
+| [1001](1001-consumers-vendor-files-from-a-tagged-release-and-check-their-hashes.md) | Consumers vendor files from a tagged release and check their hashes | Accepted |
+| [1002](1002-custom-properties-take-the-nc-prefix-and-only-semantic-tokens-are-public.md) | Custom properties take the --nc- prefix, and only semantic tokens are public | Accepted |
+| [1003](1003-code-and-tokens-are-apache-2-0-and-the-names-and-marks-are-reserved.md) | Code and tokens are Apache-2.0, and the names and marks are reserved | Accepted |
+| [1004](1004-a-rename-is-a-major-version-and-a-value-change-is-never-a-patch.md) | A rename is a major version, and a value change is never a patch | Accepted |
+| [1005](1005-this-repository-ships-data-and-stylesheets-never-a-frameworks-theme-code.md) | This repository ships data and stylesheets, never a framework's theme code | Accepted |
+| [1006](1006-contrast-is-computed-in-node-and-the-tenant-derivation-guards-it.md) | Contrast is computed in Node, and the tenant derivation guards it | Accepted |

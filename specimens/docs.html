@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>Quick start · NCode.Buffers</title>
+<link rel="icon" href="../logo/ncode/favicon/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../css/fonts.css">
+<link rel="stylesheet" href="../tokens/tokens.css">
+<link rel="stylesheet" href="../css/base.css">
+<script src="params.js"></script>
+</head>
+<body class="docs">
+<svg class="sprite" aria-hidden="true" focusable="false" width="0" height="0">
+  <symbol id="i-search" viewBox="0 0 16 16"><circle cx="7" cy="7" r="4.5"/><path d="M10.5 10.5 14 14"/></symbol>
+  <symbol id="i-arrow-left" viewBox="0 0 16 16"><path d="M13.5 8H3M7 3.5 2.5 8 7 12.5"/></symbol>
+  <symbol id="i-arrow-right" viewBox="0 0 16 16"><path d="M2.5 8H13M9 3.5 13.5 8 9 12.5"/></symbol>
+  <symbol id="i-arrow-up-right" viewBox="0 0 16 16"><path d="M4.5 11.5 11.5 4.5M5.5 4.5h6v6"/></symbol>
+  <symbol id="i-close" viewBox="0 0 16 16"><path d="M4 4l8 8M12 4l-8 8"/></symbol>
+  <symbol id="i-copy" viewBox="0 0 16 16"><rect x="5.75" y="5.75" width="7.5" height="7.5" rx="1"/><path d="M10.25 5.75v-2a1 1 0 0 0-1-1h-5.5a1 1 0 0 0-1 1v5.5a1 1 0 0 0 1 1h2"/></symbol>
+  <symbol id="i-info" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6.25"/><path d="M8 7.25v4"/><circle cx="8" cy="4.85" r=".9" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-caution" viewBox="0 0 16 16"><path d="M8 2 14.5 13.5h-13L8 2Z"/><path d="M8 6.5V10"/><circle cx="8" cy="11.6" r=".85" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 16 16"><circle cx="8" cy="8" r="2.75"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.05 3.05l1.4 1.4M11.55 11.55l1.4 1.4M3.05 12.95l1.4-1.4M11.55 4.45l1.4-1.4"/></symbol>
+  <symbol id="i-moon" viewBox="0 0 16 16"><path d="M13.5 9.75A5.75 5.75 0 1 1 6.25 2.5a4.75 4.75 0 0 0 7.25 7.25Z"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 16 16"><path d="M2.5 4.25h11M2.5 8h11M2.5 11.75h11"/></symbol>
+  <symbol id="i-file" viewBox="0 0 16 16"><path d="M3.75 1.75h5.5l3 3v9.5h-8.5V1.75ZM9.25 1.75v3h3"/></symbol>
+  <symbol id="logo-ncode" viewBox="0 0 212 64"><path d="M16 12H15A3 3 0 0 0 12 15V27A8 8 0 0 1 10.245 32A8 8 0 0 1 12 37V49A3 3 0 0 0 15 52H16V56H15A7 7 0 0 1 8 49V37A4 4 0 0 0 4 33V31A4 4 0 0 0 8 27V15A7 7 0 0 1 15 8H16ZM20 16H25.5L39 39.351V16H44V48H38.5L25 24.649V48H20ZM48 8H49A7 7 0 0 1 56 15V27A4 4 0 0 0 60 31V33A4 4 0 0 0 56 37V49A7 7 0 0 1 49 56H48V52H49A3 3 0 0 0 52 49V37A8 8 0 0 1 53.755 32A8 8 0 0 1 52 27V15A3 3 0 0 0 49 12H48ZM74.92 48H79.69V30.69C79.69 29.27 79.67 26.5 79.52 22.74C81.64 26.39 83.38 29.29 84.28 30.71L95.22 48H100.54V16H95.75V35.05C95.75 36.21 95.8 38.94 95.88 41.26C94.59 38.98 93.18 36.55 92.42 35.35L80.2 16H74.92ZM120.11 48.52C127.09 48.52 132.5 44.2 133.59 37.39H128.76C127.75 41.73 124.49 44.16 120.15 44.16C113.84 44.16 109.97 39.26 109.97 32.02C109.97 24.74 113.84 19.84 120.15 19.84C124.51 19.84 127.8 22.29 128.74 26.65H133.59C132.48 19.82 127.09 15.48 120.11 15.48C111.26 15.48 105.18 22.16 105.18 32.02C105.18 41.81 111.28 48.52 120.11 48.52ZM147.58 48.52C154.06 48.52 158.42 43.68 158.42 36.7C158.42 29.68 154.06 24.81 147.58 24.81C141.09 24.81 136.71 29.68 136.71 36.7C136.71 43.68 141.09 48.52 147.58 48.52ZM147.58 44.61C143.69 44.61 141.3 41.54 141.3 36.7C141.3 31.83 143.71 28.71 147.58 28.71C151.44 28.71 153.85 31.83 153.85 36.7C153.85 41.51 151.46 44.61 147.58 44.61ZM171.16 48.45C174.12 48.45 176.66 47.18 178.18 44.54H178.22V48H182.67V16H178.14V28.61H178.09C176.63 26.09 174.08 24.87 171.14 24.87C165.27 24.87 161.32 29.66 161.32 36.66C161.32 43.68 165.25 48.45 171.16 48.45ZM172.08 44.54C168.43 44.54 165.92 41.77 165.92 36.66C165.92 31.53 168.43 28.76 172.08 28.76C175.95 28.76 178.44 31.89 178.44 36.66C178.44 41.43 175.95 44.54 172.08 44.54ZM197.47 48.52C202.6 48.52 206.64 45.49 207.47 41.11H203.11C202.47 43.25 200.49 44.74 197.53 44.74C193.56 44.74 191.28 41.97 191.13 37.88H207.82V36.66C207.82 29.66 203.65 24.81 197.23 24.81C191.04 24.81 186.66 29.79 186.66 36.7C186.66 43.55 190.74 48.52 197.47 48.52ZM191.17 34.45C191.56 30.84 193.86 28.59 197.27 28.59C200.71 28.59 203.03 30.84 203.39 34.45Z"/></symbol>
+</svg>
+
+<a class="skip" href="#content">Skip to content</a>
+
+<header class="sitebar">
+  <a class="sitebar__brand" href="hero.html">
+    <svg class="logo logo--ncode" viewBox="0 0 212 64" role="img" aria-label="NCode"><use href="#logo-ncode"/></svg>
+    <span class="sitebar__product">Buffers</span>
+  </a>
+
+  <a class="key key--icon sitebar__menu" href="docs.html?nav=1" aria-label="Menu">
+    <svg class="icon" aria-hidden="true"><use href="#i-menu"/></svg>
+  </a>
+
+  <label class="well-wrap well-wrap--start well-wrap--hint sitebar__search">
+    <span class="vh">Search the documentation</span>
+    <svg class="icon well-wrap__start" aria-hidden="true"><use href="#i-search"/></svg>
+    <input class="well" type="search" placeholder="Search">
+    <span class="well-wrap__end" aria-hidden="true"><kbd>Ctrl</kbd><kbd>K</kbd></span>
+  </label>
+
+  <div class="sitebar__tools">
+    <span class="readout" title="Version"><span class="vh">Version </span>v5</span>
+    <a class="key sitebar__github" href="https://github.com/NCodeGroup/Buffers">
+      GitHub
+      <svg class="icon" aria-hidden="true"><use href="#i-arrow-up-right"/></svg>
+    </a>
+    <span class="keyset themeswitch" role="group" aria-label="Theme">
+      <a class="key key--icon themeswitch__light" href="?theme=light" aria-label="Light theme"><svg class="icon" aria-hidden="true"><use href="#i-sun"/></svg></a>
+      <a class="key key--icon themeswitch__dark" href="?theme=dark" aria-label="Dark theme"><svg class="icon" aria-hidden="true"><use href="#i-moon"/></svg></a>
+    </span>
+  </div>
+</header>
+
+<div class="docs__frame">
+
+  <nav class="plate docs__nav" aria-label="Documentation">
+    <div class="sheet__head only-sheet">
+      <span class="sitebar__brand">
+        <svg class="logo logo--ncode" viewBox="0 0 212 64" role="img" aria-label="NCode"><use href="#logo-ncode"/></svg>
+        <span class="sitebar__product">Buffers</span>
+      </span>
+      <a class="key key--icon key--ghost" href="docs.html" aria-label="Close the menu"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></a>
+    </div>
+      <section class="navgroup">
+        <h2 class="label navgroup__label">Start here</h2>
+        <ul class="navlist">
+          <li><a class="navkey" href="#why"><span>Why NCode.Buffers</span></a></li>
+          <li><a class="navkey" href="docs.html" aria-current="page"><span>Quick start</span><span class="lamp" aria-hidden="true"></span></a></li>
+          <li><a class="navkey" href="#choosing"><span>Choosing a buffer</span></a></li>
+        </ul>
+      </section>
+      <section class="navgroup">
+        <h2 class="label navgroup__label">Guides</h2>
+        <ul class="navlist">
+          <li><a class="navkey" href="#derive"><span>Derive a key from a password</span></a></li>
+          <li><a class="navkey" href="#mac"><span>Verify a MAC in constant time</span></a></li>
+          <li><a class="navkey" href="#byte-array"><span>Hand a secret to an API that wants <code>byte[]</code></span></a></li>
+          <li><a class="navkey" href="#unknown-length"><span>Build a secret of unknown length</span></a></li>
+          <li><a class="navkey" href="#text"><span>Read secrets from text</span></a></li>
+        </ul>
+      </section>
+      <section class="navgroup">
+        <h2 class="label navgroup__label">Concepts</h2>
+        <ul class="navlist">
+          <li><a class="navkey" href="#leaks"><span>How secrets leak from managed memory</span></a></li>
+          <li><a class="navkey" href="#pinning"><span>Pinning and the Pinned Object Heap</span></a></li>
+          <li><a class="navkey" href="#zeroing"><span>Zeroing that sticks</span></a></li>
+          <li><a class="navkey" href="#threat-model"><span>Threat model and limits</span></a></li>
+        </ul>
+      </section>
+      <section class="navgroup">
+        <h2 class="label navgroup__label">Reference</h2>
+        <ul class="navlist">
+          <li><a class="navkey" href="#api"><span>API at a glance</span></a></li>
+          <li><a class="navkey" href="#changelog"><span>Changelog</span></a></li>
+        </ul>
+      </section>
+  </nav>
+
+  <main class="plate docs__sheet" id="content">
+    <article class="prose">
+      <nav class="crumbs label" aria-label="Breadcrumb">
+        <a href="#start-here">Start here</a>
+        <span aria-hidden="true">/</span>
+        <span aria-current="page">Quick start</span>
+      </nav>
+
+      <h1>Quick start</h1>
+      <p class="lead">This page derives a key from a password, verifies an HMAC-SHA256 signature with it, and zeroes the derived key and the expected MAC when the method returns.</p>
+
+      <h2 id="install">Install</h2>
+
+      <div class="screen command wide">
+        <code><span class="command__prompt" aria-hidden="true">$ </span>dotnet add package NCode.Buffers</code>
+        <span class="label" aria-hidden="true">Shell</span>
+        <button class="key key--sm key--icon key--screen" type="button" aria-label="Copy the command"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button>
+      </div>
+
+      <h2 id="verify">Verify a signature</h2>
+
+      <p><code>BufferFactory.Rent</code> hands back a pinned, pooled buffer and an owner. Disposing the owner zeroes the whole buffer, so the key never outlives the method.</p>
+
+      <figure class="screen wide">
+        <figcaption class="screen__head">
+          <span class="screen__name"><svg class="icon" aria-hidden="true"><use href="#i-file"/></svg>Signatures.cs</span>
+          <span class="screen__tools">
+            <span class="label" aria-hidden="true">C#</span>
+            <button class="key key--sm key--icon key--screen" type="button" aria-label="Copy the code"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button>
+          </span>
+        </figcaption>
+        <pre><code><span class="line"><span class="tk-k">public static bool</span> <span class="tk-t">VerifySignature</span>(</span>
+<span class="line">    <span class="tk-t">ReadOnlySpan</span>&lt;<span class="tk-k">byte</span>&gt; password,</span>
+<span class="line">    <span class="tk-t">ReadOnlySpan</span>&lt;<span class="tk-k">byte</span>&gt; salt,</span>
+<span class="line">    <span class="tk-t">ReadOnlySpan</span>&lt;<span class="tk-k">byte</span>&gt; payload,</span>
+<span class="line">    <span class="tk-t">ReadOnlySpan</span>&lt;<span class="tk-k">byte</span>&gt; signature</span>
+<span class="line">)</span>
+<span class="line">{</span>
+<span class="line">    <span class="tk-c">// A pinned, pooled 32-byte key, zeroed when keyOwner is disposed.</span></span>
+<span class="lifetime"><span class="line line--lit">    <span class="tk-k">using var</span> keyOwner = <span class="tk-t">BufferFactory</span>.Rent(<span class="tk-n">32</span>, isSensitive: <span class="tk-n">true</span>, <span class="tk-k">out</span> <span class="tk-t">Span</span>&lt;<span class="tk-k">byte</span>&gt; key);</span>
+<span class="line">    <span class="tk-t">Rfc2898DeriveBytes</span>.Pbkdf2(password, salt, key, iterations: <span class="tk-n">600_000</span>, <span class="tk-t">HashAlgorithmName</span>.SHA256);</span>
+<span class="line"></span>
+<span class="line">    <span class="tk-c">// The expected MAC lives on the stack and is zeroed when expectedLifetime is disposed.</span></span>
+<span class="line">    <span class="tk-t">Span</span>&lt;<span class="tk-k">byte</span>&gt; expected = <span class="tk-k">stackalloc byte</span>[<span class="tk-t">HMACSHA256</span>.HashSizeInBytes];</span>
+<span class="line line--lit">    <span class="tk-k">using var</span> expectedLifetime = expected.GetSecureLifetime();</span>
+<span class="line">    <span class="tk-t">HMACSHA256</span>.HashData(key, payload, expected);</span>
+<span class="line"></span>
+<span class="line">    <span class="tk-c">// Constant time, so the comparison doesn't reveal where the MACs differ.</span></span>
+<span class="line">    <span class="tk-k">return</span> <span class="tk-t">CryptographicOperations</span>.FixedTimeEquals(expected, signature);</span>
+<span class="line">}</span></span></code></pre>
+        <!-- The one brace in the listing marks a scope: the lifetime of the key. -->
+        <p class="screen__foot"><span class="legend-brace" aria-hidden="true"></span><span>The brace spans the lifetime of <code>key</code>: from the line that rents it to the brace that ends the method, where it is zeroed.</span></p>
+      </figure>
+
+      <aside class="alert callout" aria-labelledby="note-1">
+        <svg class="icon" aria-hidden="true"><use href="#i-info"/></svg>
+        <p><strong class="label alert__word" id="note-1">Note</strong><code>Rent</code> hands back a span sliced to exactly the length you asked for, even when the pooled buffer behind it is larger.</p>
+      </aside>
+
+      <aside class="alert alert--warning callout" aria-labelledby="caution-1">
+        <svg class="icon" aria-hidden="true"><use href="#i-caution"/></svg>
+        <p><strong class="label alert__word" id="caution-1">Caution</strong>There is no finalizer. A buffer that is never disposed is never zeroed, so always use <code>using</code>.</p>
+      </aside>
+
+      <h2 id="choosing">Choosing a buffer</h2>
+
+      <div class="tableframe wide">
+        <table class="table spec" role="table">
+          <thead role="rowgroup">
+            <tr role="row">
+              <th class="label" role="columnheader" scope="col">API</th>
+              <th class="label" role="columnheader" scope="col">Use it when</th>
+              <th class="label" role="columnheader" scope="col">Pooled</th>
+            </tr>
+          </thead>
+          <tbody role="rowgroup">
+            <tr role="row">
+              <th role="rowheader" scope="row"><code>Rent</code></th>
+              <td role="cell">You need a temporary buffer for a key, password or other secret</td>
+              <td role="cell"><span class="status"><span class="label cell-label">Pooled</span><span class="lamp lamp--success" aria-hidden="true"></span>Yes</span></td>
+            </tr>
+            <tr role="row">
+              <th role="rowheader" scope="row"><code>CreatePooledBufferWriter</code></th>
+              <td role="cell">You write a secret whose length you don't know up front</td>
+              <td role="cell"><span class="status"><span class="label cell-label">Pooled</span><span class="lamp lamp--success" aria-hidden="true"></span>Yes</span></td>
+            </tr>
+            <tr role="row">
+              <th role="rowheader" scope="row"><code>CreatePinnedArray</code></th>
+              <td role="cell">An API needs a <code>T[]</code>, within one synchronous scope</td>
+              <td role="cell"><span class="status status--off"><span class="label cell-label">Pooled</span><span class="lamp lamp--off" aria-hidden="true"></span>No</span></td>
+            </tr>
+            <tr role="row">
+              <th role="rowheader" scope="row"><code>GetSecureLifetime</code></th>
+              <td role="cell">You already have the memory, usually <code>stackalloc</code></td>
+              <td role="cell"><span class="status status--off"><span class="label cell-label">Pooled</span><span class="lamp lamp--off" aria-hidden="true"></span>No</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </article>
+
+    <nav class="pagenav" aria-label="Previous and next page">
+      <a class="key pagenav__key pagenav__key--prev" href="#why">
+        <svg class="icon icon--lg" aria-hidden="true"><use href="#i-arrow-left"/></svg>
+        <span><span class="label">Previous</span><span class="pagenav__title">Why NCode.Buffers</span></span>
+      </a>
+      <a class="key pagenav__key pagenav__key--next" href="#choosing-a-buffer">
+        <span><span class="label">Next</span><span class="pagenav__title">Choosing a buffer</span></span>
+        <svg class="icon icon--lg" aria-hidden="true"><use href="#i-arrow-right"/></svg>
+      </a>
+    </nav>
+  </main>
+
+  <aside class="docs__toc" aria-labelledby="toc-title">
+    <h2 class="label" id="toc-title">On this page</h2>
+    <ol class="toc">
+      <li><a class="toc__link" href="#install" aria-current="location"><span class="lamp" aria-hidden="true"></span>Install</a></li>
+      <li><a class="toc__link" href="#verify"><span class="lamp lamp--off" aria-hidden="true"></span>Verify a signature</a></li>
+      <li><a class="toc__link" href="#choosing"><span class="lamp lamp--off" aria-hidden="true"></span>Choosing a buffer</a></li>
+    </ol>
+  </aside>
+
+</div>
+
+<a class="navscrim" href="docs.html" aria-label="Close the menu"></a>
+
+</body>
+</html>

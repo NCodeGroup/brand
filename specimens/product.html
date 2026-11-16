@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>NCode Identity: hosted or self-hosted</title>
+<link rel="icon" href="../logo/ncode/favicon/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../css/fonts.css">
+<link rel="stylesheet" href="../tokens/tokens.css">
+<link rel="stylesheet" href="../css/base.css">
+<script src="params.js"></script>
+</head>
+<body class="landing product">
+<svg class="sprite" aria-hidden="true" focusable="false" width="0" height="0">
+  <symbol id="i-arrow-right" viewBox="0 0 16 16"><path d="M2.5 8H13M9 3.5 13.5 8 9 12.5"/></symbol>
+  <symbol id="i-arrow-up-right" viewBox="0 0 16 16"><path d="M4.5 11.5 11.5 4.5M5.5 4.5h6v6"/></symbol>
+  <symbol id="i-caution" viewBox="0 0 16 16"><path d="M8 2 14.5 13.5h-13L8 2Z"/><path d="M8 6.5V10"/><circle cx="8" cy="11.6" r=".85" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 16 16"><circle cx="8" cy="8" r="2.75"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.05 3.05l1.4 1.4M11.55 11.55l1.4 1.4M3.05 12.95l1.4-1.4M11.55 4.45l1.4-1.4"/></symbol>
+  <symbol id="i-moon" viewBox="0 0 16 16"><path d="M13.5 9.75A5.75 5.75 0 1 1 6.25 2.5a4.75 4.75 0 0 0 7.25 7.25Z"/></symbol>
+  <symbol id="i-layers" viewBox="0 0 16 16"><path d="M8 2.25 14 5.25 8 8.25 2 5.25 8 2.25ZM2.25 8.25 8 11.1l5.75-2.85M2.25 11 8 13.85 13.75 11"/></symbol>
+  <symbol id="i-key" viewBox="0 0 16 16"><circle cx="5.25" cy="10.75" r="2.75"/><path d="M7.2 8.8 13.5 2.5M10.5 5.5l2 2"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 16 16"><rect x="3" y="7.25" width="10" height="6.5" rx="1"/><path d="M5.25 7.25V5a2.75 2.75 0 0 1 5.5 0v2.25M8 9.75v1.5"/></symbol>
+  <symbol id="i-people" viewBox="0 0 16 16"><circle cx="6" cy="5.25" r="2.5"/><path d="M1.5 13.5c.4-2.5 2.1-3.9 4.5-3.9s4.1 1.4 4.5 3.9M10.75 2.9a2.5 2.5 0 0 1 0 4.7M12.25 9.9c1.2.6 2 1.8 2.25 3.6"/></symbol>
+  <symbol id="i-server" viewBox="0 0 16 16"><rect x="2.25" y="2.5" width="11.5" height="4.5" rx="1"/><rect x="2.25" y="9" width="11.5" height="4.5" rx="1"/><path d="M4.5 4.75h1.25M4.5 11.25h1.25"/></symbol>
+  <symbol id="i-globe" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6.25"/><path d="M1.75 8h12.5"/><ellipse cx="8" cy="8" rx="2.75" ry="6.25"/></symbol>
+  <symbol id="i-building" viewBox="0 0 16 16"><path d="M3.25 14.25V2.75h6.5v11.5M9.75 6.5h3v7.75M1.5 14.25h13M5.5 5.5h2M5.5 8.25h2M5.5 11h2"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 16 16"><path d="M8 1.75 13.25 3.75v4.1c0 3.1-2.1 5.3-5.25 6.4-3.15-1.1-5.25-3.3-5.25-6.4v-4.1L8 1.75Z"/><path d="M5.75 8 7.4 9.65 10.4 6.4"/></symbol>
+  <symbol id="i-cloud" viewBox="0 0 16 16"><path d="M4.75 12.75h6.9a2.85 2.85 0 0 0 .5-5.66A4.25 4.25 0 0 0 3.9 8.1a2.4 2.4 0 0 0 .85 4.65Z"/></symbol>
+  <symbol id="logo-ncode" viewBox="0 0 212 64"><path d="M16 12H15A3 3 0 0 0 12 15V27A8 8 0 0 1 10.245 32A8 8 0 0 1 12 37V49A3 3 0 0 0 15 52H16V56H15A7 7 0 0 1 8 49V37A4 4 0 0 0 4 33V31A4 4 0 0 0 8 27V15A7 7 0 0 1 15 8H16ZM20 16H25.5L39 39.351V16H44V48H38.5L25 24.649V48H20ZM48 8H49A7 7 0 0 1 56 15V27A4 4 0 0 0 60 31V33A4 4 0 0 0 56 37V49A7 7 0 0 1 49 56H48V52H49A3 3 0 0 0 52 49V37A8 8 0 0 1 53.755 32A8 8 0 0 1 52 27V15A3 3 0 0 0 49 12H48ZM74.92 48H79.69V30.69C79.69 29.27 79.67 26.5 79.52 22.74C81.64 26.39 83.38 29.29 84.28 30.71L95.22 48H100.54V16H95.75V35.05C95.75 36.21 95.8 38.94 95.88 41.26C94.59 38.98 93.18 36.55 92.42 35.35L80.2 16H74.92ZM120.11 48.52C127.09 48.52 132.5 44.2 133.59 37.39H128.76C127.75 41.73 124.49 44.16 120.15 44.16C113.84 44.16 109.97 39.26 109.97 32.02C109.97 24.74 113.84 19.84 120.15 19.84C124.51 19.84 127.8 22.29 128.74 26.65H133.59C132.48 19.82 127.09 15.48 120.11 15.48C111.26 15.48 105.18 22.16 105.18 32.02C105.18 41.81 111.28 48.52 120.11 48.52ZM147.58 48.52C154.06 48.52 158.42 43.68 158.42 36.7C158.42 29.68 154.06 24.81 147.58 24.81C141.09 24.81 136.71 29.68 136.71 36.7C136.71 43.68 141.09 48.52 147.58 48.52ZM147.58 44.61C143.69 44.61 141.3 41.54 141.3 36.7C141.3 31.83 143.71 28.71 147.58 28.71C151.44 28.71 153.85 31.83 153.85 36.7C153.85 41.51 151.46 44.61 147.58 44.61ZM171.16 48.45C174.12 48.45 176.66 47.18 178.18 44.54H178.22V48H182.67V16H178.14V28.61H178.09C176.63 26.09 174.08 24.87 171.14 24.87C165.27 24.87 161.32 29.66 161.32 36.66C161.32 43.68 165.25 48.45 171.16 48.45ZM172.08 44.54C168.43 44.54 165.92 41.77 165.92 36.66C165.92 31.53 168.43 28.76 172.08 28.76C175.95 28.76 178.44 31.89 178.44 36.66C178.44 41.43 175.95 44.54 172.08 44.54ZM197.47 48.52C202.6 48.52 206.64 45.49 207.47 41.11H203.11C202.47 43.25 200.49 44.74 197.53 44.74C193.56 44.74 191.28 41.97 191.13 37.88H207.82V36.66C207.82 29.66 203.65 24.81 197.23 24.81C191.04 24.81 186.66 29.79 186.66 36.7C186.66 43.55 190.74 48.52 197.47 48.52ZM191.17 34.45C191.56 30.84 193.86 28.59 197.27 28.59C200.71 28.59 203.03 30.84 203.39 34.45Z"/></symbol>
+</svg>
+
+<a class="skip" href="#content">Skip to content</a>
+
+<!-- The product is not released, and the page says so first. -->
+<p class="hazard" role="status">
+  <span class="hazard__text">
+    <svg class="icon" aria-hidden="true"><use href="#i-caution"/></svg>
+    Pre-release. NCode Identity is under active development and is not ready for production use.
+  </span>
+</p>
+
+<header class="sitebar landing__bar">
+  <a class="sitebar__brand" href="product.html">
+    <svg class="logo logo--ncode" viewBox="0 0 212 64" role="img" aria-label="NCode"><use href="#logo-ncode"/></svg>
+    <span class="sitebar__product">Identity</span>
+  </a>
+  <nav class="sitebar__links" aria-label="Site">
+    <a class="key key--sm key--ghost" href="product.html" aria-current="page">Product</a>
+    <a class="key key--sm key--ghost" href="docs.html">Documentation</a>
+    <a class="key key--sm key--ghost" href="https://github.com/NCodeGroup/identity">GitHub<svg class="icon icon--sm" aria-hidden="true"><use href="#i-arrow-up-right"/></svg></a>
+  </nav>
+  <div class="sitebar__tools">
+    <span class="keyset themeswitch" role="group" aria-label="Theme">
+      <a class="key key--icon themeswitch__light" href="?theme=light" aria-label="Light theme"><svg class="icon" aria-hidden="true"><use href="#i-sun"/></svg></a>
+      <a class="key key--icon themeswitch__dark" href="?theme=dark" aria-label="Dark theme"><svg class="icon" aria-hidden="true"><use href="#i-moon"/></svg></a>
+    </span>
+  </div>
+</header>
+
+<main class="landing__main" id="content">
+
+  <section class="pitch" aria-labelledby="pitch-title">
+    <div class="pitch__copy">
+      <ul class="pitch__eyebrow" aria-label="About the product">
+        <li class="tag">OpenID Connect</li>
+        <li class="tag">OAuth 2.x</li>
+        <li class="tag">Apache-2.0</li>
+      </ul>
+      <h1 class="headline" id="pitch-title">One identity provider, hosted or self-hosted.</h1>
+      <p class="pitch__sub">NCode Identity is an OpenID Connect and OAuth 2.x provider for .NET, with a management console. The hosted platform runs only the published artifacts it offers self-hosters, so both run the same thing.</p>
+      <div class="pitch__actions">
+        <a class="key key--primary key--lg" href="#start">
+          Create a tenant
+          <svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg>
+        </a>
+        <a class="key key--lg" href="https://github.com/NCodeGroup/identity">
+          Read the source
+          <svg class="icon" aria-hidden="true"><use href="#i-arrow-up-right"/></svg>
+        </a>
+      </div>
+      <p class="pitch__note">Sign-up for the hosted platform opens <span class="placeholder">[date]</span>. Until then the source, the decisions and the open issues are public.</p>
+    </div>
+
+    <!-- The signature visual: a setting passing down through the boundaries, each drawn as the brace it is. -->
+    <figure class="plate plate--raised monitor" aria-label="An example. The platform sets a ceiling of 30 minutes on the access token lifetime, and requires PKCE. A team, a tenant and a client each shorten the lifetime. None can lengthen it or turn PKCE off.">
+      <figcaption class="monitor__lamps" aria-hidden="true">
+        <span class="status"><span class="lamp"></span><span class="label">Settings merge downward</span></span>
+        <span class="monitor__size"><span class="label">In force</span><span class="readout">00:05:00</span></span>
+      </figcaption>
+
+      <div class="screen lattice" aria-hidden="true">
+        <div class="lattice__scope">
+          <span class="boundary boundary--sm" data-scope="platform"><svg class="icon" aria-hidden="true"><use href="#i-globe"/></svg><span class="label">Platform</span></span>
+          <div class="lattice__body brace brace--md brace--left" data-scope="platform">
+            <p class="lattice__row"><span>require_pkce</span><span class="tk-n">true</span><span class="label">Floor</span></p>
+            <p class="lattice__row"><span>access_token_lifetime</span><span class="tk-n">00:30:00</span><span class="label">Ceiling</span></p>
+            <div class="lattice__scope">
+              <span class="boundary boundary--sm" data-scope="team"><svg class="icon" aria-hidden="true"><use href="#i-people"/></svg><span class="label">Team<span class="vh">:</span></span><span class="boundary__name">Platform Engineering</span></span>
+              <div class="lattice__body brace brace--md brace--left" data-scope="team">
+                <p class="lattice__row"><span>access_token_lifetime</span><span class="tk-n">00:15:00</span><span class="label">Shorter</span></p>
+                <div class="lattice__scope">
+                  <span class="boundary boundary--sm" data-scope="tenant"><svg class="icon" aria-hidden="true"><use href="#i-building"/></svg><span class="label">Tenant<span class="vh">:</span></span><span class="boundary__name">contoso</span></span>
+                  <div class="lattice__body brace brace--md brace--left brace--lit">
+                    <p class="lattice__row"><span>access_token_lifetime</span><span class="tk-n">00:10:00</span><span class="label">Shorter</span></p>
+                    <p class="lattice__row lattice__row--live"><span class="lattice__client"><svg class="icon" aria-hidden="true"><use href="#i-server"/></svg>web-portal</span><span class="tk-n">00:05:00</span><span class="label">In force</span></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </figure>
+  </section>
+
+  <section class="claims claims--4" aria-label="What it does">
+    <article class="plate claim">
+      <p class="claim__index"><span class="lamp" aria-hidden="true"></span><span class="label">01</span></p>
+      <h2 class="claim__title">Secure by default.</h2>
+      <p class="claim__text">Authorization code with PKCE is the interactive path. The implicit and hybrid flows are off unless an operator widens the setting, and so is anonymous client registration.</p>
+      <svg class="icon claim__icon" aria-hidden="true"><use href="#i-shield"/></svg>
+    </article>
+    <article class="plate claim">
+      <p class="claim__index"><span class="lamp" aria-hidden="true"></span><span class="label">02</span></p>
+      <h2 class="claim__title">Settings that cannot be loosened.</h2>
+      <p class="claim__text">Platform, team, tenant, resource-server and client settings merge by declared rules. A tenant cannot configure its way out of a platform or team security decision.</p>
+      <svg class="icon claim__icon" aria-hidden="true"><use href="#i-layers"/></svg>
+    </article>
+    <article class="plate claim">
+      <p class="claim__index"><span class="lamp" aria-hidden="true"></span><span class="label">03</span></p>
+      <h2 class="claim__title">Tokens bound to their holder.</h2>
+      <p class="claim__text">Access tokens can be sender-constrained with DPoP or mutual TLS. A FAPI 2.0 security profile tightens every setting it governs in one move.</p>
+      <svg class="icon claim__icon" aria-hidden="true"><use href="#i-key"/></svg>
+    </article>
+    <article class="plate claim">
+      <p class="claim__index"><span class="lamp" aria-hidden="true"></span><span class="label">04</span></p>
+      <h2 class="claim__title">Secrets encrypted at rest.</h2>
+      <p class="claim__text">Every stored secret is encrypted under a root key held in AWS KMS, Azure Key Vault or Google Cloud KMS. Each tenant has its own master key, so deleting a tenant crypto-shreds its data.</p>
+      <svg class="icon claim__icon" aria-hidden="true"><use href="#i-lock"/></svg>
+    </article>
+  </section>
+
+  <ul class="standards" aria-label="Specifications it implements">
+    <li class="label">Implements</li>
+    <li class="tag tag--value">OpenID Connect Core 1.0</li>
+    <li class="tag tag--value">RFC 7591</li>
+    <li class="tag tag--value">RFC 8628</li>
+    <li class="tag tag--value">RFC 8693</li>
+    <li class="tag tag--value">RFC 8705</li>
+    <li class="tag tag--value">RFC 8707</li>
+    <li class="tag tag--value">RFC 9126</li>
+    <li class="tag tag--value">RFC 9449</li>
+    <li class="tag tag--value">RFC 9701</li>
+    <li><span class="chip chip--warning"><svg class="icon" aria-hidden="true"><use href="#i-caution"/></svg>OpenID Foundation certification in progress</span></li>
+  </ul>
+
+  <header class="sectionhead">
+    <div>
+      <span class="label">Two ways to run it</span>
+      <h2 id="compare-title">Self-hosted and hosted, side by side.</h2>
+    </div>
+    <p>The code a self-hoster could use is public, and so is the infrastructure code of the hosted platform. The managed offering keeps private only its own parts: billing and metering, sign-up, the customer portal, support tooling and private runbooks.</p>
+  </header>
+
+  <section class="plate compare" aria-labelledby="compare-title">
+    <table class="compare__table">
+      <thead>
+        <tr>
+          <th scope="col"><span class="vh">What is compared</span></th>
+          <th scope="col">
+            <span class="compare__name"><svg class="icon icon--lg" aria-hidden="true"><use href="#i-server"/></svg>Self-hosted</span>
+            <span class="compare__sub">You run it, on your infrastructure.</span>
+          </th>
+          <th scope="col">
+            <span class="compare__name"><svg class="icon icon--lg" aria-hidden="true"><use href="#i-cloud"/></svg>Hosted</span>
+            <span class="compare__sub">NCode runs it, at <span class="value">ncodeid.net</span>.</span>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">What runs</th>
+          <td data-label="Self-hosted">The packages, the host and console images, and the host chart. A host takes the layers it needs and replaces the rest through public contracts.</td>
+          <td data-label="Hosted">Only the published artifacts the platform offers self-hosters.</td>
+        </tr>
+        <tr>
+          <th scope="row">Source</th>
+          <td data-label="Self-hosted">Public, under Apache-2.0.</td>
+          <td data-label="Hosted">The same source, and the platform's infrastructure code, also public. Its security does not depend on hiding how it is built.</td>
+        </tr>
+        <tr>
+          <th scope="row">Your environments</th>
+          <td data-label="Self-hosted">As many deployments as you choose to run.</td>
+          <td data-label="Hosted">Tenants on the production platform. Your development, test and staging are tenants too.</td>
+        </tr>
+        <tr>
+          <th scope="row">Root key for secrets</th>
+          <td data-label="Self-hosted">Yours, in AWS KMS, Azure Key Vault or Google Cloud KMS.</td>
+          <td data-label="Hosted"><span class="placeholder">[who holds the root key]</span></td>
+        </tr>
+        <tr>
+          <th scope="row">Operations</th>
+          <td data-label="Self-hosted">Yours: upgrades, backups, monitoring.</td>
+          <td data-label="Hosted">NCode's. Infrastructure changes are planned on a pull request and applied after review.</td>
+        </tr>
+        <tr>
+          <th scope="row">Price</th>
+          <td data-label="Self-hosted">No license fee.</td>
+          <td data-label="Hosted"><span class="placeholder">[price]</span></td>
+        </tr>
+        <tr>
+          <th scope="row">Limits</th>
+          <td data-label="Self-hosted">Your own settings.</td>
+          <td data-label="Hosted"><span class="placeholder">[tenants, users and requests per plan]</span></td>
+        </tr>
+        <tr>
+          <th scope="row">Availability and support</th>
+          <td data-label="Self-hosted">Yours to keep running. Known work is tracked in public issues.</td>
+          <td data-label="Hosted"><span class="placeholder">[availability target]</span> <span class="placeholder">[support terms]</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="plate plate--raised cta" id="start" aria-labelledby="cta-title">
+    <div>
+      <h2 id="cta-title">Start with one tenant.</h2>
+      <p>A tenant holds its own clients, keys and settings. Create one on the hosted platform when sign-up opens <span class="placeholder">[date]</span>, or run the reference server on your own machine today.</p>
+    </div>
+    <div class="cta__keys">
+      <a class="key key--primary key--lg" href="#start">Create a tenant<svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
+      <a class="key key--lg" href="https://github.com/NCodeGroup/identity#running-the-reference-server">Run it locally<svg class="icon" aria-hidden="true"><use href="#i-arrow-up-right"/></svg></a>
+    </div>
+  </section>
+
+  <footer class="sitefoot">
+    <p>NCode Identity is open source under Apache-2.0. Square brackets on this page mark facts that are not decided yet.</p>
+    <p class="sitefoot__links">
+      <a class="link link--quiet" href="https://github.com/NCodeGroup/identity">identity</a>
+      <a class="link link--quiet" href="https://github.com/NCodeGroup/identity-platform">identity-platform</a>
+      <a class="link link--quiet" href="#security">Security</a>
+    </p>
+  </footer>
+
+</main>
+
+</body>
+</html>
