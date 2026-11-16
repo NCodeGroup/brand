@@ -3,9 +3,10 @@
 ## What a Version Number Promises
 
 A release is a Git tag, `v<major>.<minor>.<patch>`, with a `manifest.json` that holds the SHA-256 of every file it
-carries. Its public surface is the names, meanings and files a consumer depends on: the semantic tokens and their
-custom properties, the classes of `css/base.css`, the exports of `tokens/tokens.mjs` and `tokens/derive.mjs`, the
-files' paths, the typefaces and the marks. The version number says how that surface changed
+carries, and a GitHub release that carries those files in one archive, `brand-<version>.tar.gz`, with a signed
+build provenance attestation. Its public surface is the names, meanings and files a consumer depends on: the semantic
+tokens and their custom properties, the classes of `css/base.css`, the exports of `tokens/tokens.mjs` and
+`tokens/derive.mjs`, the files' paths, the typefaces and the marks. The version number says how that surface changed
 ([the decision](../docs/decisions/1004-a-rename-is-a-major-version-and-a-value-change-is-never-a-patch.md)).
 
 | Change | Version |
@@ -31,9 +32,10 @@ the first product ships on Instrument; from then on the table binds.
 
 ## How to Pin
 
-Pin an exact version, never a range: vendor files from one tag and check them against its manifest
-([Applying it](12-applying.md#vendor-a-release)), or name a file by its address at a tag. No tag moves, and there is
-no moving `v1` tag. The changelog, [CHANGELOG.md](../CHANGELOG.md), names the tokens and files each release touches.
+Pin an exact version, never a range: vendor files from one release's attested archive and check them against its
+manifest ([Applying it](12-applying.md#vendor-a-release)), or name a file by its address at a tag. No tag moves, and
+there is no moving `v1` tag. The changelog, [CHANGELOG.md](../CHANGELOG.md), names the tokens and files each release
+touches.
 
 ## Which License Covers What
 
