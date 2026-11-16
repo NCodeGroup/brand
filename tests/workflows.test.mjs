@@ -5,6 +5,7 @@ import { spawnSync } from 'node:child_process';
 import { readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { test } from 'node:test';
+import { SITE_FOLDERS } from '../lib/guide.mjs';
 import { ROOT, read } from './helpers.mjs';
 
 // Reads the JSON blocks `{ file, line, script }` on stdin and prints one `file:line: message` per parse error.
@@ -194,4 +195,21 @@ test('every PowerShell step of the workflows parses', () => {
   );
   const errors = parseErrors(blocks);
   assert.deepEqual(errors, [], errors.join('\n'));
+});
+
+test('pages.yml pins every action, writes only from its deploy job, and copies the folders the site serves', () => {
+  const text = read('.github/workflows/pages.yml');
+  const uses = [...text.matchAll(/\buses:\s*(\S+)/g)].map((match) => match[1]);
+  assert.ok(uses.length > 0, 'pages.yml must use actions');
+  for (const value of uses) {
+    assert.match(value, /^[\w.-]+\/[\w./-]+@[0-9a-f]{40}$/, `${value} must be pinned by its commit SHA`);
+  }
+  assert.match(text, /^permissions:\n  contents: read\n/m);
+  const writes = [...text.matchAll(/^\s+([\w-]+): write$/gm)].map((match) => match[1]).sort();
+  assert.deepEqual(writes, ['id-token', 'pages']);
+  assert.ok(text.includes('npm run check'), 'pages.yml must run npm run check');
+  const list = /foreach \(\$folder in ([^)]*)\)/.exec(text);
+  assert.ok(list, 'pages.yml must copy the site folders with a foreach ($folder in ...) loop');
+  const folders = [...list[1].matchAll(/'([^']+)'/g)].map((match) => match[1]);
+  assert.deepEqual(folders, SITE_FOLDERS);
 });

@@ -1,0 +1,64 @@
+name: Pages
+
+# Publishes the guide and the specimens at https://ncodegroup.github.io/brand/ on each push to main (ADR-1010). It
+# builds nothing: build.mjs wrote every page and it is committed, and npm run check proves the committed files are
+# what the sources give before the site is copied from them. The job that assembles the site reads the repository
+# with contents: read alone; only the deploy job can write, and only to Pages. Pages must publish from GitHub Actions
+# (Settings > Pages > Source), a setting a maintainer makes once.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# One deployment at a time; a newer push waits for the one in progress instead of cancelling it.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Assemble the site
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .node-version
+      - name: Check that every committed page is what the sources give
+        run: npm run check
+      # The folders the pages load, as lib/guide.mjs's SITE_FOLDERS lists them, and the root page.
+      - name: Copy the site's files
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Path _site | Out-Null
+          Copy-Item -LiteralPath index.html -Destination _site
+          foreach ($folder in 'brace', 'css', 'fonts', 'guide', 'icons', 'logo', 'specimens', 'tokens') {
+              Copy-Item -LiteralPath $folder -Destination _site -Recurse
+          }
+      - uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
+        with:
+          path: _site
+
+  deploy:
+    name: Deploy to GitHub Pages
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      pages: write
+      # The OIDC token that proves to Pages the artifact came from this workflow.
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1
