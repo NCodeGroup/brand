@@ -41,6 +41,10 @@ jobs:
         run: npm ci
       - name: Check the decision index
         run: ./.template/Test-AdrIndex.ps1
+      # Before the build, which would rewrite a stale file: every committed file of tokens/, css/, fonts/, brace/,
+      # logo/, mui/, manifest.json and the generated blocks of guidelines/ and specimens/ must be what src/ gives.
+      - name: Check the generated files
+        run: npm run check
       - name: Build
         if: hashFiles('package.json') != ''
         run: |
@@ -49,3 +53,10 @@ jobs:
         if: hashFiles('package.json') != ''
         run: |
           npm run test
+      - name: Check that the build and the tests changed no file
+        run: |
+          $changed = git status --porcelain
+          if ($changed) {
+              $changed
+              throw 'The build or the tests changed the files above: run npm run build and commit what it writes.'
+          }
