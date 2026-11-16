@@ -26,7 +26,7 @@ import { contrastReport } from './lib/contrast.mjs';
 import { createDerive } from './lib/derive-core.mjs';
 import { deriveData, deriveModule, deriveTypes, heldPairings, vectors } from './lib/derive.mjs';
 import { toDtcg } from './lib/dtcg.mjs';
-import { iconBlock, iconFiles, iconSet } from './lib/icons.mjs';
+import { iconBlock, iconFiles, iconList, iconSet } from './lib/icons.mjs';
 import { createLogo, holds, logoKit } from './lib/logo.mjs';
 import { buildModel, resolveColors } from './lib/model.mjs';
 import { tokensModule, tokensTypes } from './lib/module.mjs';
@@ -140,7 +140,7 @@ function blocks(model, report, icons) {
   const out = new Map();
   // The guide's pages share one set of blocks, and each specimen file has its own.
   const places = [
-    [guide, 'a file of guidelines/', readdirSync(join(ROOT, 'guidelines')).filter((n) => n.endsWith('.md')).sort().map((n) => `guidelines/${n}`), false],
+    [{ ...guide, 'icon-list': iconList(icons.set, icons.lucide) }, 'a file of guidelines/', readdirSync(join(ROOT, 'guidelines')).filter((n) => n.endsWith('.md')).sort().map((n) => `guidelines/${n}`), false],
     [foundations.html, 'specimens/foundations.html', ['specimens/foundations.html'], false],
     [foundations.css, 'specimens/foundations.css', ['specimens/foundations.css'], true],
     [{}, 'a page of specimens/', readdirSync(join(ROOT, 'specimens')).filter((n) => n.endsWith('.html') && n !== 'foundations.html').sort().map((n) => `specimens/${n}`), false],
