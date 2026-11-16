@@ -110,13 +110,22 @@ describe('Starlight', () => {
     assert.ok(BRANDS.length > 1);
   });
 
-  test('its headings follow the guide: 36 and 28 pixels on a phone, 56 and 36 from 40 rem on', () => {
+  test('its headings follow the guide: 36 and 28 pixels where base.css sets a phone, 56 and 36 at every width beyond', () => {
     const all = rules(read('css/starlight.css'));
     const at = (media) => Object.assign({}, ...all.filter((r) => (media ? r.at.includes(media) : !r.at.length)).map((r) => r.declarations));
+    // base.css sets a long-form page's phone headings up to and at its edge; Starlight's larger ones start past it, so
+    // at no width do both apply.
+    const phone = find(rules(read('css/base.css')), '.prose > h1').filter((r) => r.at.length).map((r) => r.at.join(' '));
+    assert.equal(phone.length, 1);
+    const edge = /^@media \(max-width: ([\d.]+rem)\)$/.exec(phone[0])?.[1];
+    assert.ok(edge, `${phone[0]} is a max-width query`);
+    const wider = `@media (width > ${edge})`;
     assert.equal(at()['--sl-text-h1'], 'var(--nc-text-3xl)');
     assert.equal(at()['--sl-text-h2'], 'var(--nc-text-2xl)');
-    assert.equal(at('@media (min-width: 40rem)')['--sl-text-h1'], 'var(--nc-text-5xl)');
-    assert.equal(at('@media (min-width: 40rem)')['--sl-text-h2'], 'var(--nc-text-3xl)');
+    assert.equal(at(wider)['--sl-text-h1'], 'var(--nc-text-5xl)');
+    assert.equal(at(wider)['--sl-text-h2'], 'var(--nc-text-3xl)');
+    const media = all.filter((r) => r.at.length && ('--sl-text-h1' in r.declarations || '--sl-text-h2' in r.declarations));
+    assert.deepEqual([...new Set(media.map((r) => r.at.join(' ')))], [wider]);
     for (const step of ['xl', '2xl', '3xl', '4xl', '5xl', '6xl']) assert.equal(at()[`--sl-text-${step}`], `var(--nc-text-${step})`, step);
   });
 });

@@ -110,8 +110,9 @@
   --sl-menu-button-size: var(--nc-control-md);
 }
 
-/* From base.css's 40rem on, a long-form page's title is title-long's size, 56 pixels, and a section heading-long's, 36. */
-@media (min-width: 40rem) {
+/* Wider than 40rem, where base.css's phone rules (max-width: 40rem) end, a long-form page's title is title-long's
+   size, 56 pixels, and a section heading-long's, 36. */
+@media (width > 40rem) {
   :root,
   :root[data-theme='light'] {
     --sl-text-h1: var(--nc-text-5xl);
