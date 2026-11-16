@@ -1,8 +1,10 @@
 // The site's link rules of lib/guide.mjs: where a link of a guide source goes on the published page.
 import assert from 'node:assert/strict';
+import { existsSync, readdirSync } from 'node:fs';
+import { join, posix } from 'node:path';
 import { describe, test } from 'node:test';
-import { guideFiles, guideLink, pageName } from '../lib/guide.mjs';
-import { read } from './helpers.mjs';
+import { META_CSP, REPOSITORY, SITE_FOLDERS, guideFiles, guideLink, pageName } from '../lib/guide.mjs';
+import { ROOT, read, readJson } from './helpers.mjs';
 
 describe('guideLink', () => {
   const cases = [
@@ -96,5 +98,77 @@ describe('guideFiles', () => {
 
   test('a source the renderer cannot render names its file', () => {
     assert.throws(() => guideFiles(input({ sources: [['01-a.md', '> q']] })), /guidelines\/01-a\.md: /);
+  });
+});
+
+describe('the committed site', () => {
+  const exists = (path) => existsSync(join(ROOT, path));
+  const hasScheme = (target) => /^[a-z][a-z0-9+.-]*:/i.test(target) || target.startsWith('//');
+  const sources = readdirSync(join(ROOT, 'guidelines'));
+  const pages = readdirSync(join(ROOT, 'guide')).filter((name) => name.endsWith('.html'));
+
+  test('guide/ holds a page for each file of guidelines/, the stylesheet and nothing else', () => {
+    const expected = [...sources.map(pageName), 'guide.css'].sort();
+    assert.deepEqual(readdirSync(join(ROOT, 'guide')).sort(), expected);
+  });
+
+  for (const page of pages) {
+    test(`guide/${page}: the policy, no inline style, unique ids, local loads, links that resolve`, () => {
+      const html = read(`guide/${page}`);
+      assert.ok(
+        html.includes(`<meta http-equiv="Content-Security-Policy" content="${META_CSP}">`),
+        'the Content-Security-Policy <meta> element',
+      );
+      assert.ok(!html.includes(' style="'), 'an inline style, which the Content-Security-Policy refuses');
+      assert.ok(!html.includes('<style'), 'a <style> element, which the Content-Security-Policy refuses');
+
+      // Code samples show markup as text: a `href="…"` in a <code> element is no link.
+      const markup = html.replace(/<code>[\s\S]*?<\/code>/g, '');
+      const ids = [...markup.matchAll(/\sid="([^"]*)"/g)].map((match) => match[1]);
+      assert.deepEqual(ids.filter((id, index) => ids.indexOf(id) !== index), [], 'a repeated id');
+
+      const loads = [...markup.matchAll(/<(?:link|script|img|use)\b[^>]*?\s(?:href|src)="([^"]*)"/g)].map((match) => match[1]);
+      assert.ok(loads.length >= 4, 'the page loads its files');
+      assert.deepEqual(loads.filter(hasScheme), [], 'a request to another origin');
+
+      const lockup = /<symbol id="logo-ncode" viewBox="0 0 212 64"><path d="([^"]+)"/.exec(html);
+      assert.ok(lockup, 'the logo-ncode symbol');
+      assert.equal(lockup[1], readJson('logo/ncode/outlines.json').lockup.d);
+
+      const broken = [];
+      const targets = [...markup.matchAll(/\s(?:href|src)="([^"]*)"/g)].map((match) => match[1]);
+      for (const target of targets) {
+        if (target.startsWith(`${REPOSITORY}/`)) {
+          const match = /^(?:tree|blob)\/main\/([^#]*)/.exec(target.slice(REPOSITORY.length + 1));
+          if (!match || !exists(match[1])) broken.push(`${target}: no such path in the repository`);
+          continue;
+        }
+        if (hasScheme(target)) continue;
+        const [beforeFragment, ...rest] = target.split('#');
+        const fragment = rest.join('#');
+        const file = beforeFragment.split('?')[0];
+        const path = file === '' ? `guide/${page}` : posix.normalize(posix.join('guide', file));
+        if (path !== 'index.html' && !SITE_FOLDERS.includes(path.split('/')[0])) {
+          broken.push(`${target}: ${path} is not a published file`);
+        } else if (!exists(path)) {
+          broken.push(`${target}: ${path} does not exist`);
+        } else if (fragment && /\.(?:html|svg)$/.test(path) && !read(path).includes(`id="${fragment}"`)) {
+          broken.push(`${target}: ${path} has no id="${fragment}"`);
+        }
+      }
+      assert.deepEqual(broken, []);
+    });
+  }
+
+  test('index.html sends the reader to the guide, states the policy and links to files that exist', () => {
+    const html = read('index.html');
+    assert.ok(html.includes('url=guide/index.html'));
+    assert.ok(html.includes(`<meta http-equiv="Content-Security-Policy" content="${META_CSP}">`));
+    const hrefs = [...html.matchAll(/\shref="([^"]*)"/g)].map((match) => match[1]);
+    assert.ok(hrefs.length > 0);
+    assert.deepEqual(
+      hrefs.filter((href) => !hasScheme(href) && !exists(href.split('#')[0].split('?')[0])),
+      [],
+    );
   });
 });
