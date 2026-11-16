@@ -14,6 +14,7 @@
  * Generated and committed: tokens/, css/, fonts/, brace/, icons/, logo/, mui/ and manifest.json. It removes a file in
  * those folders that it does not write. A PNG or ICO that already holds the pixels it draws is kept, so an image
  * another encoder wrote doesn't change while its picture stays the same, and manifest.json hashes the bytes that stay.
+ * It also writes the site's pages, guide/ and index.html, from guidelines/ and src/guide/; a release does not carry them.
  * It also fails when a pairing of the contrast gate is below its floor, and when a block it writes has lost its
  * markers. It writes and removes real files inside the repository alone: it refuses a symbolic link in a folder it
  * writes, and a font name with a path in it. It needs Node.js alone: no packages.
@@ -31,6 +32,7 @@ import { contrastReport } from './lib/contrast.mjs';
 import { createDerive } from './lib/derive-core.mjs';
 import { deriveData, deriveModule, deriveTypes, heldPairings, vectors } from './lib/derive.mjs';
 import { toDtcg } from './lib/dtcg.mjs';
+import { guideFiles } from './lib/guide.mjs';
 import { iconBlock, iconFiles, iconGrid, iconList, iconSet } from './lib/icons.mjs';
 import { createLogo, holds, logoKit } from './lib/logo.mjs';
 import { buildModel, resolveColors } from './lib/model.mjs';
@@ -43,6 +45,8 @@ const ROOT = dirname(fileURLToPath(import.meta.url));
 const GENERATED = ['tokens', 'css', 'fonts', 'brace', 'icons', 'logo', 'mui'];
 /** The folders whose files hold generated blocks. */
 const WITH_BLOCKS = ['guidelines', 'specimens'];
+/** The folder of the guide's pages, which build.mjs owns too, but a release doesn't carry. */
+const SITE = 'guide';
 /** Hand-written files a release carries beside the generated folders. */
 const RELEASED_SOURCES = ['LICENSE.txt', 'COPYRIGHT.txt', 'TRADEMARKS.md', 'vendoring/vendor-brand.mjs'];
 
@@ -242,9 +246,10 @@ function main() {
   }
   const check = values.check || values.archive !== undefined;
   // Before anything is read or written: no folder build.mjs writes in, and nothing in one, is a symbolic link.
-  const existing = GENERATED.flatMap(filesUnder);
+  const existing = [...GENERATED, SITE].flatMap(filesUnder);
   for (const folder of WITH_BLOCKS) filesUnder(folder);
   if (lstatSync(join(ROOT, 'manifest.json'), { throwIfNoEntry: false })?.isSymbolicLink()) throw linked('manifest.json');
+  if (lstatSync(join(ROOT, 'index.html'), { throwIfNoEntry: false })?.isSymbolicLink()) throw linked('index.html');
 
   const version = JSON.parse(read('package.json')).version;
   const model = buildModel(JSON.parse(read('src/tokens.source.json')));
@@ -252,7 +257,20 @@ function main() {
   const icons = readIcons();
 
   const filled = blocks(model, report, icons); // first, so a lost block fails before the logo kit is drawn
-  const targets = new Map([...generate(model, version, icons), ...filled]);
+  const generated = generate(model, version, icons);
+  const { lockup } = JSON.parse(generated.get('logo/ncode/outlines.json').data.toString('utf8'));
+  const sources = [...filled]
+    .filter(([path]) => path.startsWith('guidelines/'))
+    .map(([path, file]) => [path.slice('guidelines/'.length), file.data.toString('utf8')]);
+  const site = guideFiles({
+    sources,
+    version,
+    lockup,
+    page: read('src/guide/page.html'),
+    index: read('src/guide/index.html'),
+    css: read('src/guide/guide.css'),
+  });
+  const targets = new Map([...generated, ...filled, ...[...site].map(([path, text]) => [path, { data: Buffer.from(text, 'utf8') }])]);
   const released = new Map(); // path -> the bytes a release carries after this run
   let changed = 0;
   const lines = [];

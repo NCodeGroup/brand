@@ -283,7 +283,30 @@ describe('build.mjs', () => {
     }
   });
 
-  test('a symbolic link at a page of guidelines/ or specimens/, or at manifest.json, stops the build before it writes', (t) => {
+  test("the guide's pages: an edited, missing or extra page fails the check, a build repairs it, and the manifest lists none", () => {
+    try {
+      const page = path('guide/01-marks.html');
+      writeFileSync(page, `${readFileSync(page, 'utf8')}<!-- edited -->\n`);
+      writeFileSync(path('guide/extra.html'), '<!-- not generated -->\n');
+      rmSync(path('index.html'));
+      const result = check();
+      assert.equal(result.code, 1, result.output);
+      assert.match(result.output, /^guide\/01-marks\.html {2}would change$/m);
+      assert.match(result.output, /^guide\/extra\.html {2}would be removed/m);
+      assert.match(result.output, /^index\.html {2}missing$/m);
+      const built = build();
+      assert.equal(built.code, 0, built.output);
+      const again = check();
+      assert.equal(again.code, 0, again.output);
+      const { files } = JSON.parse(readFileSync(path('manifest.json'), 'utf8'));
+      assert.deepEqual(Object.keys(files).filter((name) => name.startsWith('guide/') || name === 'index.html'), []);
+    } finally {
+      restore('guide');
+      restore('index.html');
+    }
+  });
+
+  test('a symbolic link at a page of guidelines/ or specimens/, or at manifest.json or index.html, stops the build before it writes', (t) => {
     const outside = `${repo.dir}-links`;
     mkdirSync(outside, { recursive: true });
     /** The text with one generated block emptied, which a build would fill again. */
@@ -296,6 +319,7 @@ describe('build.mjs', () => {
       ['guidelines/02-color.md', (text) => emptied(text, 'ramps')],
       ['specimens/foundations.css', (text) => emptied(text, 'swatches')],
       ['manifest.json', () => '{}\n'],
+      ['index.html', () => 'stale\n'],
     ];
     try {
       for (const [name, stale] of linked) {
