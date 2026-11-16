@@ -139,3 +139,111 @@ export function chooseAction(issues, watch, text) {
   const same = normal(issue.title) === normal(text.title) && normal(issue.body) === normal(text.body);
   return { kind: same ? 'none' : 'edit', number: issue.number };
 }
+
+const TIMEOUT = 30_000;
+const LABELS = [
+  { name: LABEL, color: '1D76DB', description: 'A pinned input has a newer release' },
+  { name: 'dependencies', color: '0366D6', description: 'A dependency to update' },
+];
+
+/**
+ * Compares each lock's pins with the newest releases at least COOLDOWN_DAYS old and keeps one issue per lock on
+ * GitHub: opens, rewrites or closes it. Returns the lines it reports. A dry run reads and writes nothing.
+ */
+export async function runPinWatch({
+  root,
+  repo,
+  token = '',
+  now = new Date(),
+  fetch = globalThis.fetch,
+  dryRun = false,
+}) {
+  const request = async (method, url, body) => {
+    const headers = {
+      Accept: 'application/vnd.github+json',
+      'X-GitHub-Api-Version': '2022-11-28',
+      'User-Agent': 'ncode-brand-pin-watch',
+    };
+    if (token) headers.Authorization = `Bearer ${token}`;
+    const init = { method, headers, signal: AbortSignal.timeout(TIMEOUT) };
+    if (body !== undefined) {
+      headers['Content-Type'] = 'application/json';
+      init.body = JSON.stringify(body);
+    }
+    const response = await fetch(url, init);
+    if (!response.ok) {
+      const error = new Error(`${method} ${url} answered ${response.status}`);
+      error.status = response.status;
+      throw error;
+    }
+    return response;
+  };
+  const api = `https://api.github.com/repos/${repo}`;
+
+  const plans = [];
+  for (const watch of readWatches(root)) {
+    const behind = [];
+    for (const input of watch.inputs) {
+      const url =
+        input.kind === 'github-release'
+          ? `https://api.github.com/repos/${input.repo}/releases?per_page=100`
+          : `https://registry.npmjs.org/${input.package}`;
+      const json = await (await request('GET', url)).json();
+      const candidates = input.kind === 'github-release' ? lucideCandidates(json) : npmCandidates(json);
+      const release = newestEligible(candidates, input.pinned, now);
+      if (release) behind.push({ input, release });
+    }
+    plans.push({ watch, behind });
+  }
+  const issues = await (await request('GET', `${api}/issues?labels=${LABEL}&state=open&per_page=100`)).json();
+
+  const lines = [];
+  for (const { watch, behind } of plans) {
+    const text = behind.length ? issueText(watch, behind) : null;
+    const action = chooseAction(issues, watch, text);
+    if (action.kind === 'create') {
+      if (dryRun) {
+        lines.push(`Would open: ${text.title}`);
+        continue;
+      }
+      for (const label of LABELS) {
+        try {
+          await request('GET', `${api}/labels/${encodeURIComponent(label.name)}`);
+        } catch (error) {
+          if (error.status !== 404) throw error;
+          await request('POST', `${api}/labels`, label);
+        }
+      }
+      const body = { title: text.title, body: text.body, labels: LABELS.map((label) => label.name) };
+      const created = await (await request('POST', `${api}/issues`, body)).json();
+      lines.push(`Opened #${created.number}: ${text.title}`);
+    } else if (action.kind === 'edit') {
+      if (dryRun) {
+        lines.push(`Would update #${action.number}: ${text.title}`);
+        continue;
+      }
+      await request('PATCH', `${api}/issues/${action.number}`, { title: text.title, body: text.body });
+      lines.push(`Updated #${action.number}: ${text.title}`);
+    } else if (action.kind === 'close') {
+      const done = `\`${watch.lock}\` pins the newest release at least ${COOLDOWN_DAYS} days old.`;
+      if (dryRun) {
+        lines.push(`Would close #${action.number}: ${done}`);
+        continue;
+      }
+      await request('POST', `${api}/issues/${action.number}/comments`, {
+        body:
+          `\`${watch.lock}\` pins the newest release at least ${COOLDOWN_DAYS} days old, so this issue is done. ` +
+          'The pin-watch workflow opens a new one when a newer release is out.',
+      });
+      await request('PATCH', `${api}/issues/${action.number}`, { state: 'closed', state_reason: 'completed' });
+      lines.push(`Closed #${action.number}: ${done}`);
+    } else {
+      lines.push(
+        action.number
+          ? `#${action.number} already says: ${text.title}`
+          : `\`${watch.lock}\` pins the newest release at least ${COOLDOWN_DAYS} days old.`,
+      );
+    }
+  }
+  return lines;
+}

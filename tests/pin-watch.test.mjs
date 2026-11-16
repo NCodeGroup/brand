@@ -1,6 +1,9 @@
 // tools/pin-watch.mjs reads the versions the locks pin and the releases upstream publishes, and names the newest
 // release at least three days old. The tests never touch the network.
 import assert from 'node:assert/strict';
+import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 import { test } from 'node:test';
 import {
   chooseAction,
@@ -11,6 +14,7 @@ import {
   npmCandidates,
   parseVersion,
   readWatches,
+  runPinWatch,
 } from '../tools/pin-watch.mjs';
 import { ROOT, readJson } from './helpers.mjs';
 
@@ -166,4 +170,105 @@ test('chooseAction keeps the lowest number and ignores another marker and a pull
   ];
   assert.deepEqual(chooseAction(issues, watch, text), { kind: 'edit', number: 4 });
   assert.deepEqual(chooseAction(issues.slice(2), watch, null), { kind: 'none' });
+});
+
+const FONT_PACKAGES = {
+  'Instrument Sans': '@fontsource-variable/instrument-sans',
+  'Martian Mono': '@fontsource-variable/martian-mono',
+};
+
+/** A fixture repository root whose locks pin Lucide 1.72.0 and both font families at 5.3.0. */
+function fixtureRoot() {
+  const root = mkdtempSync(join(tmpdir(), 'ncode-brand-pin-watch-'));
+  mkdirSync(join(root, 'src/icons'), { recursive: true });
+  mkdirSync(join(root, 'src/fonts'), { recursive: true });
+  writeFileSync(join(root, 'src/icons/lucide.lock.json'), JSON.stringify({ version: '1.72.0' }));
+  const families = {};
+  for (const [name, pkg] of Object.entries(FONT_PACKAGES)) families[name] = { package: pkg, version: '5.3.0' };
+  writeFileSync(join(root, 'src/fonts/fonts.lock.json'), JSON.stringify({ families }));
+  return root;
+}
+
+const FONTS_ISSUE = { number: 7, title: 'Update Instrument Sans to 5.4.0', body: '<!-- pin-watch: fonts -->\nold\n' };
+
+/** A fake fetch that answers by URL and records [method, url, parsed body]; registryStatus answers the npm reads. */
+function fakeFetch(calls, registryStatus = 200) {
+  const answer = (status, json) => ({ ok: status >= 200 && status < 300, status, json: async () => json });
+  return async (url, init) => {
+    calls.push([init.method, url, init.body ? JSON.parse(init.body) : undefined]);
+    if (url.startsWith('https://registry.npmjs.org/')) {
+      const time = { '5.3.0': '2026-09-01T00:00:00.000Z' };
+      return answer(registryStatus, { versions: { '5.3.0': {} }, time });
+    }
+    if (url.startsWith('https://api.github.com/repos/lucide-icons/lucide/releases')) {
+      const release = { tag_name: '1.73.0', published_at: '2026-11-10T00:00:00Z', draft: false, prerelease: false };
+      return answer(200, [release]);
+    }
+    if (url.includes('/issues?labels=pin-update')) return answer(200, [FONTS_ISSUE]);
+    if (url.endsWith('/labels/pin-update')) return answer(200, {});
+    if (url.endsWith('/labels/dependencies')) return answer(404, {});
+    if (init.method === 'POST' && url.endsWith('/issues')) return answer(201, { number: 12 });
+    return answer(200, {});
+  };
+}
+
+test('runPinWatch opens the Lucide issue, creates the missing label and closes the fonts issue', async () => {
+  const root = fixtureRoot();
+  try {
+    const calls = [];
+    const lines = await runPinWatch({ root, repo: 'NCodeGroup/brand', token: 't', now: NOW, fetch: fakeFetch(calls) });
+    const api = 'https://api.github.com/repos/NCodeGroup/brand';
+    const written = calls.filter(([method]) => method !== 'GET').map(([method, url]) => `${method} ${url}`);
+    assert.deepEqual(written, [
+      `POST ${api}/labels`,
+      `POST ${api}/issues`,
+      `POST ${api}/issues/7/comments`,
+      `PATCH ${api}/issues/7`,
+    ]);
+    const label = calls.find(([method, url]) => method === 'POST' && url === `${api}/labels`)[2];
+    assert.deepEqual(label, { name: 'dependencies', color: '0366D6', description: 'A dependency to update' });
+    const created = calls.find(([method, url]) => method === 'POST' && url === `${api}/issues`)[2];
+    assert.equal(created.title, 'Update Lucide to 1.73.0');
+    assert.deepEqual(created.labels, ['pin-update', 'dependencies']);
+    assert.ok(created.body.startsWith('<!-- pin-watch: lucide -->\n'));
+    const closed = calls.find(([method, url]) => method === 'PATCH' && url === `${api}/issues/7`)[2];
+    assert.deepEqual(closed, { state: 'closed', state_reason: 'completed' });
+    assert.deepEqual(lines, [
+      'Opened #12: Update Lucide to 1.73.0',
+      'Closed #7: `src/fonts/fonts.lock.json` pins the newest release at least 3 days old.',
+    ]);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test('runPinWatch in a dry run reads and reports but sends no write', async () => {
+  const root = fixtureRoot();
+  try {
+    const calls = [];
+    const fetch = fakeFetch(calls);
+    const lines = await runPinWatch({ root, repo: 'NCodeGroup/brand', now: NOW, fetch, dryRun: true });
+    assert.ok(calls.length > 0);
+    assert.ok(calls.every(([method]) => method === 'GET'));
+    assert.deepEqual(lines, [
+      'Would open: Update Lucide to 1.73.0',
+      'Would close #7: `src/fonts/fonts.lock.json` pins the newest release at least 3 days old.',
+    ]);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test('runPinWatch rejects when the registry answers 500 and writes nothing', async () => {
+  const root = fixtureRoot();
+  try {
+    const calls = [];
+    await assert.rejects(
+      runPinWatch({ root, repo: 'NCodeGroup/brand', token: 't', now: NOW, fetch: fakeFetch(calls, 500) }),
+      /GET https:\/\/registry\.npmjs\.org\/\S+ answered 500/,
+    );
+    assert.ok(calls.every(([method]) => method === 'GET'));
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
 });
