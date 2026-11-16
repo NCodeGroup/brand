@@ -1,0 +1,38 @@
+name: Pin watch
+
+# Every Monday, compares the releases src/icons/lucide.lock.json and src/fonts/fonts.lock.json pin with the newest
+# Lucide and Fontsource releases at least three days old (ADR-0009). For each lock that is behind, it keeps one open
+# issue labeled pin-update with the newer releases, and closes it once the lock pins them. tools/pin-watch.mjs does the
+# work; node tools/pin-watch.mjs --dry-run shows what it would do.
+on:
+  schedule:
+    - cron: '30 7 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pin-watch
+  cancel-in-progress: false
+
+jobs:
+  watch:
+    name: Pin watch
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    # Opens, edits and closes the pin-update issues; the only write the workflow needs.
+    permissions:
+      contents: read
+      issues: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .node-version
+      - name: Open, update or close the pin-update issues
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: node tools/pin-watch.mjs
