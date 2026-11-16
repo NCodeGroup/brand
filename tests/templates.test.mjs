@@ -1,13 +1,17 @@
-// lib/templates.mjs, which fills the sources of email/instrument.html and slides/instrument.css: each placeholder
-// kind against the model's resolved values, inline and not, and a placeholder it can't fill fails the build.
+// lib/templates.mjs, which fills the sources of email/instrument.html and slides/instrument.css, and the two files it
+// writes: each placeholder kind against the model's resolved values, a placeholder it can't fill failing the build, and
+// each file's colors, sizes, slots and embedded fonts against the tokens and fonts/.
 import assert from 'node:assert/strict';
+import { readdirSync, readFileSync } from 'node:fs';
+import { join } from 'node:path';
 import { describe, test } from 'node:test';
 import { resolveColors } from '../lib/model.mjs';
 import { embedFonts, fillTokens } from '../lib/templates.mjs';
-import { model, read, readJson } from './helpers.mjs';
+import { model, read, readJson, ROOT } from './helpers.mjs';
 
 const m = model();
 const light = resolveColors(m, 'light');
+const dark = resolveColors(m, 'dark');
 const version = readJson('package.json').version;
 
 describe('lib/templates.mjs', () => {
@@ -99,5 +103,46 @@ describe('email/instrument.html', () => {
 
   test('names the release it comes from', () => {
     assert.ok(html.includes(`NCode Brand ${version}: email/instrument.html`));
+  });
+});
+
+describe('slides/instrument.css', () => {
+  const css = read('slides/instrument.css');
+  const text = css.replace(/url\("data:[^"]+"\)/g, '');
+  const colors = new Set([...Object.values(light), ...Object.values(dark)]);
+
+  test('is the Marp theme instrument, a slide of 1280 by 720 pixels', () => {
+    assert.match(css, /^\/\*\n \* @theme instrument\n \* @auto-scaling true\n/);
+    assert.match(text, /section \{[^}]*width: 1280px;[^}]*height: 720px;/);
+  });
+
+  test('has no placeholder, custom property, font address or import', () => {
+    assert.doesNotMatch(css, /\[\[|var\(|url\("\.\.\/|@import/);
+  });
+
+  test('embeds each woff2 file of fonts/', () => {
+    const embedded = [...css.matchAll(/url\("data:font\/woff2;base64,([A-Za-z0-9+/=]+)"\)/g)].map((match) => Buffer.from(match[1], 'base64'));
+    assert.equal(embedded.length, 4);
+    const files = readdirSync(join(ROOT, 'fonts')).filter((name) => name.endsWith('.woff2'));
+    assert.equal(files.length, 4);
+    for (const name of files) {
+      const bytes = readFileSync(join(ROOT, 'fonts', name));
+      assert.ok(embedded.some((data) => data.equals(bytes)), `fonts/${name} is not embedded`);
+    }
+  });
+
+  test('writes only colors of the two themes, the light one on a slide and the dark one under invert', () => {
+    for (const hex of text.match(/#[0-9A-Fa-f]{6}\b/g)) assert.ok(colors.has(hex), `${hex} is not a color of either theme`);
+    assert.match(text, new RegExp(`section \\{[^}]*background: ${light.surface};`));
+    assert.ok(text.includes(`section.invert { background: ${dark.surface}; color: ${dark.text}; }`));
+  });
+
+  test('sets a code block on the screen and colors no syntax', () => {
+    assert.match(text, new RegExp(`pre \\{[^}]*background: ${light.screen};[^}]*color: ${light['on-screen-secondary']};`));
+    assert.doesNotMatch(css, /hljs|shiki/i);
+  });
+
+  test('names the release it comes from', () => {
+    assert.ok(css.includes(`NCode Brand ${version}: slides/instrument.css`));
   });
 });
