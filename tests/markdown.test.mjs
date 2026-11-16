@@ -1,7 +1,7 @@
 // The Markdown renderer of lib/markdown.mjs: the inline rules, the block rules and GitHub's heading ids.
 import assert from 'node:assert/strict';
 import { describe, test } from 'node:test';
-import { renderInline, renderMarkdown, slugify } from '../lib/markdown.mjs';
+import { plainText, renderInline, renderMarkdown, slugify } from '../lib/markdown.mjs';
 
 describe('renderInline', () => {
   test('a code span escapes its content and the text around it', () => {
@@ -72,11 +72,28 @@ describe('renderMarkdown', () => {
     );
   });
 
+  test('an ordered list that starts at another number keeps it', () => {
+    assert.equal(renderMarkdown('3. a\n4. b').html, '<ol start="3">\n<li>a</li>\n<li>b</li>\n</ol>');
+  });
+
+  test('a comment on a line of its own is dropped, and one that spans lines or shares its line fails', () => {
+    assert.equal(renderMarkdown('a\n<!-- x -->\nb').html, '<p>a</p>\n<p>b</p>');
+    assert.throws(() => renderMarkdown('<!-- open\nclose -->'), /HTML comment/);
+    assert.throws(() => renderMarkdown('<!-- a --> b <!-- c -->'), /HTML comment/);
+    assert.throws(() => renderMarkdown('text\n<!-- open'), /HTML comment/);
+  });
+
   test('a construct outside the guide\'s Markdown throws', () => {
     assert.throws(() => renderMarkdown('> quote'), /blockquote/);
     assert.throws(() => renderMarkdown('---'), /thematic break/);
     assert.throws(() => renderMarkdown('    code'), /indented code block/);
     assert.throws(() => renderMarkdown('```\nx'), /unclosed code fence/);
+  });
+});
+
+describe('plainText', () => {
+  test('removes nested tags until none is left, then decodes the escapes', () => {
+    assert.equal(plainText('<scr<b>ipt>x</b> &lt;a&gt; &amp;lt;'), 'x <a> &lt;');
   });
 });
 
