@@ -32,7 +32,7 @@
   </a>
 
   <div class="sitebar__tools">
-    <span class="readout" title="Version"><span class="vh">Version </span>v0.6.0</span>
+    <span class="readout" title="Version"><span class="vh">Version </span>v0.7.0</span>
     <a class="key sitebar__github" href="https://github.com/NCodeGroup/brand">
       GitHub
       <svg class="icon" aria-hidden="true"><use href="../icons/sprite.svg#i-arrow-up-right"/></svg>
@@ -195,7 +195,7 @@ packages, and adds nothing to your lockfile.</li>
 release. Take every file a stylesheet loads, here the four fonts <code>css/fonts.css</code> names, and each font family's
 license with its fonts:</p>
 <div class="screen wide"><pre><code><span class="line">{</span>
-<span class="line">  "version": "0.6.0",</span>
+<span class="line">  "version": "0.7.0",</span>
 <span class="line">  "files": {</span>
 <span class="line">    "src/brand/tokens/tokens.css": { "source": "tokens/tokens.css", "sha256": "" },</span>
 <span class="line">    "src/brand/css/fonts.css": { "source": "css/fonts.css", "sha256": "" },</span>
@@ -207,10 +207,10 @@ license with its fonts:</p>
 <span class="line">    "src/brand/fonts/OFL-Martian-Mono.txt": { "source": "fonts/OFL-Martian-Mono.txt", "sha256": "" }</span>
 <span class="line">  }</span>
 <span class="line">}</span></code></pre></div></li>
-<li>Run <code>node vendor-brand.mjs --update 0.6.0</code>. It needs the <a class="link" href="https://cli.github.com">GitHub CLI</a>, <code>gh</code>, signed in
-with <code>gh auth login</code>, or with <code>GH_TOKEN</code> in CI. It downloads the release's archive, <code>brand-0.6.0.tar.gz</code>, from
-the GitHub release <code>v0.6.0</code>, and has <code>gh attestation verify</code> prove its build provenance: signed by
-<a class="link" href="https://github.com/NCodeGroup/brand/blob/main/.github/workflows/publish.yml">publish.yml</a> for the tag <code>v0.6.0</code> on a GitHub-hosted runner. It refuses the
+<li>Run <code>node vendor-brand.mjs --update 0.7.0</code>. It needs the <a class="link" href="https://cli.github.com">GitHub CLI</a>, <code>gh</code>, signed in
+with <code>gh auth login</code>, or with <code>GH_TOKEN</code> in CI. It downloads the release's archive, <code>brand-0.7.0.tar.gz</code>, from
+the GitHub release <code>v0.7.0</code>, and has <code>gh attestation verify</code> prove its build provenance: signed by
+<a class="link" href="https://github.com/NCodeGroup/brand/blob/main/.github/workflows/publish.yml">publish.yml</a> for the tag <code>v0.7.0</code> on a GitHub-hosted runner. It refuses the
 archive unless the attestation names its SHA-256, its <code>manifest.json</code> is that version, and it holds every file
 the manifest lists, at the manifest's size and SHA-256, and nothing else. Only then does it write the files and
 pin each hash in the lock. A release never changes, so once the lock pins a version, it refuses a file of that
@@ -223,7 +223,7 @@ naming the file, when a vendored file is missing or differs from the lock.</li>
 request: a value change shows there, line by line. <a class="link" href="14-versions-and-license.html">Versions and license</a> says what each
 kind of version number means.</p>
 <p>To check an archive yourself, run
-<code>gh attestation verify brand-0.6.0.tar.gz --repo NCodeGroup/brand --signer-workflow NCodeGroup/brand/.github/workflows/publish.yml</code>.</p>
+<code>gh attestation verify brand-0.7.0.tar.gz --repo NCodeGroup/brand --signer-workflow NCodeGroup/brand/.github/workflows/publish.yml</code>.</p>
     </article>
     <nav class="pagenav" aria-label="Previous and next page">
       <a class="key pagenav__key pagenav__key--prev" href="11-products-and-tenants.html">

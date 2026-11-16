@@ -14,6 +14,11 @@ Until the first stable release, the [Unreleased] section describes the product a
   on paper, and a static palette for a browser without 2024 CSS; `tokens/tokens.static.css`, every color resolved for
   NCode's own brand; `tokens/tokens.json` in the Design Tokens Community Group format 2025.10; and
   `tokens/tokens.mjs` with `tokens.d.mts`, the public tokens as a typed ES module.
+- `tokens/tokens.resolver.json`: the same tokens as one document of the Design Tokens Resolver Module 2025.10 that
+  references no other file. Its set `instrument` holds the tokens both themes share, and its modifier `theme`, `light`
+  by default or `dark`, puts that theme's semantic colors and shadows under the group `theme`, such as
+  `theme.color.text` ([#6](https://github.com/NCodeGroup/brand/issues/6),
+  [ADR-1011](docs/decisions/1011-the-design-tokens-resolver-file-is-one-self-contained-document-with-a-theme-modifier.md)).
 - Two tiers: the semantic tokens are public, and the color ramps and the steps of the type scale are private
   primitives. Each type role carries its width and letter spacing as `--nc-type-<role>-stretch` and `-tracking`, and
   the label role its case as `--nc-type-label-case`.
@@ -24,8 +29,16 @@ Until the first stable release, the [Unreleased] section describes the product a
 - `css/base.css`, the element and component styles: keys, wells, lamps, screens, the brace, the boundary plate, the
   display, alerts, tables, dialogs and the page layouts of the console, the sign-in pages, documentation and product
   pages. `css/fonts.css`, the `@font-face` rules. `css/starlight.css`, Starlight's custom properties from the tokens.
+- `syntax/instrument-screen.json`: the syntax theme of a code block on a screen, a VS Code color theme for Expressive
+  Code. It colors keywords `--nc-color-screen-lit`, types and members `--nc-color-on-screen`, comments
+  `--nc-color-on-screen-muted`, literals `--nc-color-screen-hot` and the rest `--nc-color-on-screen-secondary`, each as
+  the `var()` of the token, so `tokens/tokens.css` resolves it for the brand in force. One theme serves both page
+  themes ([#6](https://github.com/NCodeGroup/brand/issues/6),
+  [ADR-1012](docs/decisions/1012-the-syntax-theme-names-the-screens-tokens-rather-than-their-colors.md)).
 - Instrument Sans and Martian Mono, variable, in their Latin and Latin Extended subsets, with their SIL Open Font
-  License 1.1 texts, pinned by SHA-256 in `src/fonts/fonts.lock.json`.
+  License 1.1 texts, pinned by SHA-256 in `src/fonts/fonts.lock.json`. `tools/refresh-fonts.mjs` copies each file from
+  the npm tarball the lock pins, once the tarball matches the lock's integrity and the file its SHA-256. With `--pin`,
+  it pins the files of a release the lock moves to ([#6](https://github.com/NCodeGroup/brand/issues/6)).
 - The brace, drawn from the mark's construction: `brace/brace-mark.svg`, the stretching `brace-sm.svg`, `brace-md.svg`
   and `brace-lg.svg`, and `brace/brace.json`, the same pieces as path data.
 - The icon set in `icons/`: NCode's own 41 drawings and 24 icons of Lucide 1.72.0, restyled onto the same 16-unit
