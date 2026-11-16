@@ -57,6 +57,10 @@ describe('restyleLucide', () => {
     const rotated = lucide('<path d="M1 1h2" transform="rotate(5)" />');
     assert.throws(() => restyleLucide(rotated, 'test'), /attribute transform/);
   });
+
+  test('removes a comment cut in two by another, so none is left', () => {
+    assert.deepEqual(restyleLucide(lucide('<!<!-- -->-- <path d="M1 1h2" /> -->'), 'test'), []);
+  });
 });
 
 describe('parseNcode', () => {
@@ -72,6 +76,11 @@ describe('parseNcode', () => {
 
   test('throws for a name drawn twice', () => {
     assert.throws(() => parseNcode(file(symbol('eye', 'M1 1h2'), symbol('eye', 'M2 2h3'))), /eye twice/);
+  });
+
+  test('removes a comment cut in two by another, so none is left', () => {
+    const icons = parseNcode(file('<!<!-- -->-- note -->', symbol('eye', 'M2 2h3')));
+    assert.deepEqual([...icons.keys()], ['eye']);
   });
 });
 
