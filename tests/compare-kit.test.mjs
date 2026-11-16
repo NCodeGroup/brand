@@ -39,11 +39,14 @@ test('equal kits have no difference, and a top-level file is not compared', () =
 
 test('a sample that differs by 1 is a difference at tolerance 0 and none at tolerance 1', () => {
   raiseOneSample();
-  const strict = compareKits(a, b);
-  assert.equal(strict.differences.length, 1);
-  assert.ok(strict.differences[0].startsWith(`${TILE}: `));
-  assert.deepEqual(compareKits(a, b, { tolerance: 1 }), { compared: 5, differences: [] });
-  copyFileSync(join(ROOT, 'logo/ncode', TILE), join(b, TILE));
+  try {
+    const strict = compareKits(a, b);
+    assert.equal(strict.differences.length, 1);
+    assert.ok(strict.differences[0].startsWith(`${TILE}: `));
+    assert.deepEqual(compareKits(a, b, { tolerance: 1 }), { compared: 5, differences: [] });
+  } finally {
+    copyFileSync(join(ROOT, 'logo/ncode', TILE), join(b, TILE));
+  }
 });
 
 test('a file only one folder holds is a difference', () => {
