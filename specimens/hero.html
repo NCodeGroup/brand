@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>NCode.Buffers: secrets that clean up after themselves</title>
+<meta name="description" content="Pinned, pooled .NET buffers that zero their memory on dispose.">
+<link rel="icon" href="../logo/ncode/favicon/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../css/fonts.css">
+<link rel="stylesheet" href="../tokens/tokens.css">
+<link rel="stylesheet" href="../css/base.css">
+<script src="params.js"></script>
+</head>
+<body class="landing">
+<svg class="sprite" aria-hidden="true" focusable="false" width="0" height="0">
+  <symbol id="i-arrow-right" viewBox="0 0 16 16"><path d="M2.5 8H13M9 3.5 13.5 8 9 12.5"/></symbol>
+  <symbol id="i-arrow-up-right" viewBox="0 0 16 16"><path d="M4.5 11.5 11.5 4.5M5.5 4.5h6v6"/></symbol>
+  <symbol id="i-check" viewBox="0 0 16 16"><path d="M3 8.5 6.5 12 13 4.5"/></symbol>
+  <symbol id="i-copy" viewBox="0 0 16 16"><rect x="5.75" y="5.75" width="7.5" height="7.5" rx="1"/><path d="M10.25 5.75v-2a1 1 0 0 0-1-1h-5.5a1 1 0 0 0-1 1v5.5a1 1 0 0 0 1 1h2"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 16 16"><circle cx="8" cy="8" r="2.75"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.05 3.05l1.4 1.4M11.55 11.55l1.4 1.4M3.05 12.95l1.4-1.4M11.55 4.45l1.4-1.4"/></symbol>
+  <symbol id="i-moon" viewBox="0 0 16 16"><path d="M13.5 9.75A5.75 5.75 0 1 1 6.25 2.5a4.75 4.75 0 0 0 7.25 7.25Z"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 16 16"><path d="M5.25 2.25h5.5M6.25 2.25V6.5L4.5 9.75h7L9.75 6.5V2.25M8 9.75v4.5"/></symbol>
+  <symbol id="i-recycle" viewBox="0 0 16 16"><path d="M13.25 6.5A5.5 5.5 0 0 0 3.6 4.7M13.25 2.75V6.5H9.5M2.75 9.5a5.5 5.5 0 0 0 9.65 1.8M2.75 13.25V9.5H6.5"/></symbol>
+  <symbol id="i-zero" viewBox="0 0 16 16"><rect x="4.75" y="2.25" width="6.5" height="11.5" rx="3.25"/><path d="M6.5 10.5 9.5 5.5"/></symbol>
+  <symbol id="logo-ncode" viewBox="0 0 212 64"><path d="M16 12H15A3 3 0 0 0 12 15V27A8 8 0 0 1 10.245 32A8 8 0 0 1 12 37V49A3 3 0 0 0 15 52H16V56H15A7 7 0 0 1 8 49V37A4 4 0 0 0 4 33V31A4 4 0 0 0 8 27V15A7 7 0 0 1 15 8H16ZM20 16H25.5L39 39.351V16H44V48H38.5L25 24.649V48H20ZM48 8H49A7 7 0 0 1 56 15V27A4 4 0 0 0 60 31V33A4 4 0 0 0 56 37V49A7 7 0 0 1 49 56H48V52H49A3 3 0 0 0 52 49V37A8 8 0 0 1 53.755 32A8 8 0 0 1 52 27V15A3 3 0 0 0 49 12H48ZM74.92 48H79.69V30.69C79.69 29.27 79.67 26.5 79.52 22.74C81.64 26.39 83.38 29.29 84.28 30.71L95.22 48H100.54V16H95.75V35.05C95.75 36.21 95.8 38.94 95.88 41.26C94.59 38.98 93.18 36.55 92.42 35.35L80.2 16H74.92ZM120.11 48.52C127.09 48.52 132.5 44.2 133.59 37.39H128.76C127.75 41.73 124.49 44.16 120.15 44.16C113.84 44.16 109.97 39.26 109.97 32.02C109.97 24.74 113.84 19.84 120.15 19.84C124.51 19.84 127.8 22.29 128.74 26.65H133.59C132.48 19.82 127.09 15.48 120.11 15.48C111.26 15.48 105.18 22.16 105.18 32.02C105.18 41.81 111.28 48.52 120.11 48.52ZM147.58 48.52C154.06 48.52 158.42 43.68 158.42 36.7C158.42 29.68 154.06 24.81 147.58 24.81C141.09 24.81 136.71 29.68 136.71 36.7C136.71 43.68 141.09 48.52 147.58 48.52ZM147.58 44.61C143.69 44.61 141.3 41.54 141.3 36.7C141.3 31.83 143.71 28.71 147.58 28.71C151.44 28.71 153.85 31.83 153.85 36.7C153.85 41.51 151.46 44.61 147.58 44.61ZM171.16 48.45C174.12 48.45 176.66 47.18 178.18 44.54H178.22V48H182.67V16H178.14V28.61H178.09C176.63 26.09 174.08 24.87 171.14 24.87C165.27 24.87 161.32 29.66 161.32 36.66C161.32 43.68 165.25 48.45 171.16 48.45ZM172.08 44.54C168.43 44.54 165.92 41.77 165.92 36.66C165.92 31.53 168.43 28.76 172.08 28.76C175.95 28.76 178.44 31.89 178.44 36.66C178.44 41.43 175.95 44.54 172.08 44.54ZM197.47 48.52C202.6 48.52 206.64 45.49 207.47 41.11H203.11C202.47 43.25 200.49 44.74 197.53 44.74C193.56 44.74 191.28 41.97 191.13 37.88H207.82V36.66C207.82 29.66 203.65 24.81 197.23 24.81C191.04 24.81 186.66 29.79 186.66 36.7C186.66 43.55 190.74 48.52 197.47 48.52ZM191.17 34.45C191.56 30.84 193.86 28.59 197.27 28.59C200.71 28.59 203.03 30.84 203.39 34.45Z"/></symbol>
+</svg>
+
+<header class="sitebar landing__bar">
+  <a class="sitebar__brand" href="hero.html">
+    <svg class="logo logo--ncode" viewBox="0 0 212 64" role="img" aria-label="NCode"><use href="#logo-ncode"/></svg>
+    <span class="sitebar__product">Buffers</span>
+  </a>
+  <div class="sitebar__tools">
+    <span class="readout" title="Version"><span class="vh">Version </span>v5</span>
+    <span class="keyset themeswitch" role="group" aria-label="Theme">
+      <a class="key key--icon themeswitch__light" href="?theme=light" aria-label="Light theme"><svg class="icon" aria-hidden="true"><use href="#i-sun"/></svg></a>
+      <a class="key key--icon themeswitch__dark" href="?theme=dark" aria-label="Dark theme"><svg class="icon" aria-hidden="true"><use href="#i-moon"/></svg></a>
+    </span>
+  </div>
+</header>
+
+<main class="landing__main">
+
+  <section class="pitch" aria-labelledby="pitch-title">
+    <div class="pitch__copy">
+      <ul class="pitch__eyebrow" aria-label="About the project">
+        <li class="tag">Open source</li>
+        <li class="tag">Apache-2.0</li>
+        <li class="tag">.NET</li>
+      </ul>
+      <h1 class="headline" id="pitch-title">Secrets that clean up after themselves.</h1>
+      <p class="pitch__sub">Pinned, pooled .NET buffers that zero their memory on dispose. For keys, passwords and anything else you don't want left behind on the heap.</p>
+      <div class="pitch__actions">
+        <a class="key key--primary key--lg" href="docs.html">
+          Get started
+          <svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg>
+        </a>
+        <a class="key key--lg" href="https://github.com/NCodeGroup/Buffers">
+          View on GitHub
+          <svg class="icon" aria-hidden="true"><use href="#i-arrow-up-right"/></svg>
+        </a>
+      </div>
+      <div class="screen command pitch__install">
+        <code><span class="command__prompt" aria-hidden="true">$ </span>dotnet add package NCode.Buffers</code>
+        <button class="key key--sm key--icon key--screen" type="button" aria-label="Copy the install command"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button>
+      </div>
+    </div>
+
+    <!-- The signature visual: the sample's 32-byte key in memory, being zeroed as keyOwner is disposed. -->
+    <figure class="plate plate--raised monitor" aria-label="A 32-byte key in memory. As its owner is disposed, every byte becomes 00.">
+      <figcaption class="monitor__lamps" aria-hidden="true">
+        <span class="status"><span class="lamp"></span><span class="label">Pinned</span></span>
+        <span class="status"><span class="lamp"></span><span class="label">Zeroed</span></span>
+        <span class="status"><span class="lamp"></span><span class="label">Pooled</span></span>
+        <span class="monitor__size"><span class="label">Key</span><span class="readout">32 bytes</span></span>
+      </figcaption>
+
+      <div class="screen monitor__screen">
+        <pre><code><span class="line"><span class="tk-c">// A pinned, pooled 32-byte key, zeroed when keyOwner is disposed.</span></span>
+<span class="line"><span class="tk-k">using var</span> keyOwner = <span class="tk-t">BufferFactory</span>.Rent(<span class="tk-n">32</span>, isSensitive: <span class="tk-n">true</span>, <span class="tk-k">out</span> <span class="tk-t">Span</span>&lt;<span class="tk-k">byte</span>&gt; key);</span>
+<span class="line"><span class="tk-t">RandomNumberGenerator</span>.Fill(key);</span></code></pre>
+
+        <div class="memory memory--live" aria-hidden="true">
+          <div class="memory__offsets">
+            <span class="memory__offset">00</span><span class="memory__offset">08</span><span class="memory__offset">10</span><span class="memory__offset">18</span>
+          </div>
+          <!-- The braces hold the key the way the mark holds its letter: what is between them is in scope. -->
+          <div class="memory__cells brace brace--lit">
+            <div class="memory__row"><span class="cell cell--zero"><b>4B</b><i>00</i></span><span class="cell cell--zero"><b>A7</b><i>00</i></span><span class="cell cell--zero"><b>1C</b><i>00</i></span><span class="cell cell--zero"><b>E9</b><i>00</i></span><span class="cell cell--zero"><b>30</b><i>00</i></span><span class="cell cell--zero"><b>D5</b><i>00</i></span><span class="cell cell--zero"><b>82</b><i>00</i></span><span class="cell cell--zero"><b>6F</b><i>00</i></span></div>
+            <div class="memory__row"><span class="cell cell--zero"><b>F1</b><i>00</i></span><span class="cell cell--zero"><b>08</b><i>00</i></span><span class="cell cell--zero"><b>BD</b><i>00</i></span><span class="cell cell--zero"><b>5A</b><i>00</i></span><span class="cell cell--zero"><b>C3</b><i>00</i></span><span class="cell cell--zero"><b>97</b><i>00</i></span><span class="cell cell--zero"><b>2E</b><i>00</i></span><span class="cell cell--zero"><b>64</b><i>00</i></span></div>
+            <div class="memory__row"><span class="cell cell--zero"><b>9F</b><i>00</i></span><span class="cell cell--zero"><b>3A</b><i>00</i></span><span class="cell cell--zero"><b>C4</b><i>00</i></span><span class="cell cell--cursor"><b>71</b><i>00</i></span><span class="cell"><b>0B</b><i>00</i></span><span class="cell"><b>E2</b><i>00</i></span><span class="cell"><b>5D</b><i>00</i></span><span class="cell"><b>86</b><i>00</i></span></div>
+            <div class="memory__row"><span class="cell"><b>D0</b><i>00</i></span><span class="cell"><b>17</b><i>00</i></span><span class="cell"><b>6B</b><i>00</i></span><span class="cell"><b>F4</b><i>00</i></span><span class="cell"><b>28</b><i>00</i></span><span class="cell"><b>A9</b><i>00</i></span><span class="cell"><b>4E</b><i>00</i></span><span class="cell"><b>73</b><i>00</i></span></div>
+          </div>
+        </div>
+      </div>
+    </figure>
+  </section>
+
+  <section class="claims" aria-label="What the library guarantees">
+    <article class="plate claim">
+      <p class="claim__index"><span class="lamp" aria-hidden="true"></span><span class="label">01</span></p>
+      <h2 class="claim__title">Pinned.</h2>
+      <p class="claim__text">The garbage collector never moves a sensitive buffer, so it never leaves a stale copy of a key behind.</p>
+      <svg class="icon claim__icon" aria-hidden="true"><use href="#i-pin"/></svg>
+    </article>
+    <article class="plate claim">
+      <p class="claim__index"><span class="lamp" aria-hidden="true"></span><span class="label">02</span></p>
+      <h2 class="claim__title">Zeroed.</h2>
+      <p class="claim__text">Disposing a buffer overwrites all of it, in a way the JIT cannot optimize away.</p>
+      <svg class="icon claim__icon" aria-hidden="true"><use href="#i-zero"/></svg>
+    </article>
+    <article class="plate claim">
+      <p class="claim__index"><span class="lamp" aria-hidden="true"></span><span class="label">03</span></p>
+      <h2 class="claim__title">Pooled.</h2>
+      <p class="claim__text">Buffers are reused, and each one is zeroed before another caller can rent it.</p>
+      <svg class="icon claim__icon" aria-hidden="true"><use href="#i-recycle"/></svg>
+    </article>
+  </section>
+
+  <ul class="trust" aria-label="Engineering practice">
+    <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg><span class="label">98% test coverage</span></li>
+    <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg><span class="label">Property-tested</span></li>
+    <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg><span class="label">Signed build provenance</span></li>
+    <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg><span class="label">No unsafe code</span></li>
+    <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg><span class="label">One dependency</span></li>
+  </ul>
+
+</main>
+
+</body>
+</html>
