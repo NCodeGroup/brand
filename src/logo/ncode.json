@@ -4,6 +4,7 @@
   "$names": "name: the product the mark stands for, the title of every SVG and the web manifest's name. shortName: the web manifest's short_name. prefix: how every file's name starts. letters: what lib/logo.mjs draws between the braces, N or id. outlinesDescription: the $description of outlines.json.",
   "shortName": "NCode",
   "prefix": "ncode",
+  "letters": "N",
   "$fields": "size: the square canvas. stroke: the braces' stroke. stem: the N's two stems. diagonal: the N's diagonal, measured along the horizontal. brace: x of the left brace's beak tip and of its hook ends. beakRadius: center-line radius of the two arcs into the beak. hookRadius: center-line radius of the two hooks. braceY: top and bottom of the braces. nX, nY: left and right, top and bottom of the N. taper: how much thinner than the stroke the beak's tip is. beakY: the beak's center, when it isn't the middle of the brace. staircase: the diagonal as steps (columns, rows per step).",
 
   "$master": "Braces: a stroke of 4, 48 high. N: stems of 5, 24 wide and 32 tall. 4 units clear left and right, 8 above and below.",
