@@ -1,7 +1,7 @@
-// The Markdown renderer of lib/markdown.mjs: the inline rules and GitHub's heading ids.
+// The Markdown renderer of lib/markdown.mjs: the inline rules, the block rules and GitHub's heading ids.
 import assert from 'node:assert/strict';
 import { describe, test } from 'node:test';
-import { renderInline, slugify } from '../lib/markdown.mjs';
+import { renderInline, renderMarkdown, slugify } from '../lib/markdown.mjs';
 
 describe('renderInline', () => {
   test('a code span escapes its content and the text around it', () => {
@@ -28,6 +28,55 @@ describe('renderInline', () => {
   test('an image becomes an img element, and a backslash escapes a character', () => {
     assert.equal(renderInline('![NuGet](x.svg)'), '<img src="x.svg" alt="NuGet">');
     assert.equal(renderInline('\\| \\*'), '| *');
+  });
+});
+
+describe('renderMarkdown', () => {
+  test('headings get GitHub ids, made unique, and the first level-1 heading is the title', () => {
+    const page = renderMarkdown('# 1. Marks\n\n## Badges\n\n## Badges\n');
+    assert.equal(page.html, '<h1 id="1-marks">1. Marks</h1>\n<h2 id="badges">Badges</h2>\n<h2 id="badges-1">Badges</h2>');
+    assert.equal(page.title, '1. Marks');
+    assert.equal(page.headings.length, 3);
+  });
+
+  test('a paragraph runs to a blank line', () => {
+    assert.equal(renderMarkdown('a\nb\n\nc').html, '<p>a\nb</p>\n<p>c</p>');
+  });
+
+  test('a table with a right-aligned column renders, and comment lines are dropped', () => {
+    assert.equal(
+      renderMarkdown('<!-- generated:x -->\n| A | B |\n|---|---:|\n| `a` | 1 |\n<!-- /generated:x -->').html,
+      '<div class="tableframe wide"><table class="table">\n<thead><tr><th scope="col">A</th><th scope="col" class="num">B</th></tr></thead>\n<tbody>\n<tr><td><code>a</code></td><td class="num">1</td></tr>\n</tbody>\n</table></div>',
+    );
+  });
+
+  test('an escaped pipe stays inside its cell', () => {
+    assert.ok(renderMarkdown('| A |\n|---|\n| a \\| b |').html.includes('<td>a | b</td>'));
+  });
+
+  test('a fenced block keeps its blank lines and escapes its content', () => {
+    assert.equal(
+      renderMarkdown('```html\n<a>\n\n```').html,
+      '<div class="screen wide"><pre><code><span class="line">&lt;a&gt;</span>\n<span class="line"></span></code></pre></div>',
+    );
+  });
+
+  test('a list item with one paragraph loses the paragraph element', () => {
+    assert.equal(renderMarkdown('- one\n  two\n- three').html, '<ul>\n<li>one\ntwo</li>\n<li>three</li>\n</ul>');
+  });
+
+  test('a list item with a fence keeps its blocks', () => {
+    assert.equal(
+      renderMarkdown('1. Copy it.\n2. Write:\n\n   ```json\n   {}\n   ```\n\n3. Run it.').html,
+      '<ol>\n<li>Copy it.</li>\n<li><p>Write:</p>\n<div class="screen wide"><pre><code><span class="line">{}</span></code></pre></div></li>\n<li>Run it.</li>\n</ol>',
+    );
+  });
+
+  test('a construct outside the guide\'s Markdown throws', () => {
+    assert.throws(() => renderMarkdown('> quote'), /blockquote/);
+    assert.throws(() => renderMarkdown('---'), /thematic break/);
+    assert.throws(() => renderMarkdown('    code'), /indented code block/);
+    assert.throws(() => renderMarkdown('```\nx'), /unclosed code fence/);
   });
 });
 
