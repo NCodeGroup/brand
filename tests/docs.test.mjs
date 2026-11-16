@@ -66,6 +66,11 @@ describe('names in the guide', () => {
     for (const file of [...markdown, 'package.json']) assert.doesNotMatch(read(file), /@ncode\//, file);
     assert.equal(readJson('package.json').name, '@ncodegroup/brand');
   });
+
+  test('the vendoring example names the version package.json holds', () => {
+    const named = [...read('guidelines/12-applying.md').matchAll(/\d+\.\d+\.\d+/g)].map((m) => m[0]);
+    assert.deepEqual([...new Set(named)], [readJson('package.json').version]);
+  });
 });
 
 describe('specimens', () => {
