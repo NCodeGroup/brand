@@ -10,7 +10,7 @@
 // and sets each file's sha256 in the lock to the hash of the file in the tarball.
 // Exits 0 when done, 1 on a refusal, a failed request or a --check difference, 2 on a usage error.
 import { createHash } from 'node:crypto';
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parseArgs } from 'node:util';
@@ -98,13 +98,18 @@ export async function refreshFonts({ root, from, fetch = globalThis.fetch, check
   for (const { name, bytes, sha256, entry } of all) {
     const file = path.join(root, 'src/fonts', name);
     const label = `src/fonts/${name}`;
-    const exists = existsSync(file);
-    if (exists && readFileSync(file).equals(bytes)) {
+    let current = null;
+    try {
+      current = readFileSync(file);
+    } catch (error) {
+      if (error.code !== 'ENOENT') throw error;
+    }
+    if (current !== null && current.equals(bytes)) {
       lines.push(`${label}  unchanged`);
     } else {
       changed++;
       if (check) {
-        lines.push(`${label}  ${exists ? 'differs from its tarball' : 'missing'}`);
+        lines.push(`${label}  ${current !== null ? 'differs from its tarball' : 'missing'}`);
       } else {
         mkdirSync(path.dirname(file), { recursive: true });
         writeFileSync(file, bytes);
