@@ -5,7 +5,8 @@ import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'nod
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { test } from 'node:test';
-import { tarGz } from '../lib/archive.mjs';
+import { gunzipSync, gzipSync } from 'node:zlib';
+import { tarGz, untarGz } from '../lib/archive.mjs';
 
 const entries = [
   ['manifest.json', Buffer.from('{}\n')],
@@ -46,4 +47,19 @@ test('a path longer than 100 bytes is refused', () => {
     () => tarGz([['a'.repeat(101), Buffer.alloc(0)]]),
     /a path in the release archive is at most 100 bytes/,
   );
+});
+
+test('untarGz returns exactly the entries tarGz packed, in order', () => {
+  assert.deepEqual([...untarGz(tarGz(entries))], entries);
+});
+
+test('untarGz refuses an archive that unpacks to more than its limit', () => {
+  assert.throws(() => untarGz(tarGz(entries), { limit: 512 }), /unpacks to more than 512 bytes/);
+});
+
+test('untarGz skips a folder and refuses a path that occurs twice', () => {
+  const tar = gunzipSync(tarGz([['dir', Buffer.alloc(0)], ...entries]));
+  tar.write('5', 156, 'latin1'); // a folder
+  assert.deepEqual([...untarGz(gzipSync(tar)).keys()], entries.map(([path]) => path));
+  assert.throws(() => untarGz(tarGz([entries[0], entries[0]])), /holds manifest\.json twice/);
 });
