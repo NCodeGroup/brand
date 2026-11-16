@@ -16,7 +16,7 @@ import {
   readWatches,
   runPinWatch,
 } from '../tools/pin-watch.mjs';
-import { ROOT, readJson } from './helpers.mjs';
+import { ROOT, readJson, runNode } from './helpers.mjs';
 
 const NOW = new Date('2026-11-20T00:00:00Z');
 const daysAgo = (days) => new Date(NOW.getTime() - days * 86_400_000);
@@ -271,4 +271,18 @@ test('runPinWatch rejects when the registry answers 500 and writes nothing', asy
   } finally {
     rmSync(root, { recursive: true, force: true });
   }
+});
+
+const NO_ENV = { GITHUB_REPOSITORY: '', GITHUB_TOKEN: '', GH_TOKEN: '' };
+
+test('the command line exits 2 before any request when no repository is given', () => {
+  const { code, output } = runNode(ROOT, ['tools/pin-watch.mjs', '--dry-run'], NO_ENV);
+  assert.equal(code, 2);
+  assert.match(output, /usage:/);
+});
+
+test('the command line exits 2 before any request when there is a repository but no token and no --dry-run', () => {
+  const { code, output } = runNode(ROOT, ['tools/pin-watch.mjs', '--repo=NCodeGroup/brand'], NO_ENV);
+  assert.equal(code, 2);
+  assert.match(output, /usage:/);
 });

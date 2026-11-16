@@ -3,8 +3,15 @@
 // A lock pins one release of each input: src/icons/lucide.lock.json a Lucide tag, src/fonts/fonts.lock.json one npm
 // version of each Fontsource package. A release counts once it is COOLDOWN_DAYS old, and only a version shaped
 // <digits>.<digits>.<digits> is a release. Nothing here moves a lock.
+//   node tools/pin-watch.mjs [--dry-run] [--repo=<owner/name>]
+// Keeps one open issue per lock that is behind on the repository, from GITHUB_REPOSITORY or --repo, with the token
+// in GITHUB_TOKEN or GH_TOKEN, and closes it once the lock is current. It prints one line per lock: what it opened,
+// updated, closed or left. --dry-run reads everything, writes nothing, needs no token and prints "Would ..." lines.
+// Exits 0 when it finishes, 1 when a request fails, 2 on a usage error.
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { parseArgs } from 'node:util';
 
 /** The days a release must be published before the watch names it. */
 export const COOLDOWN_DAYS = 3;
@@ -246,4 +253,32 @@ export async function runPinWatch({
     }
   }
   return lines;
+}
+
+if (process.argv[1] === fileURLToPath(import.meta.url)) {
+  const usage = 'usage: node tools/pin-watch.mjs [--dry-run] [--repo=<owner/name>]';
+  let parsed;
+  try {
+    parsed = parseArgs({
+      options: { 'dry-run': { type: 'boolean', default: false }, repo: { type: 'string' } },
+    });
+  } catch (error) {
+    console.error(`${error.message}\n${usage}`);
+    process.exit(2);
+  }
+  const dryRun = parsed.values['dry-run'];
+  const repo = parsed.values.repo ?? process.env.GITHUB_REPOSITORY ?? '';
+  const token = process.env.GITHUB_TOKEN || process.env.GH_TOKEN || '';
+  if (!/^[\w.-]+\/[\w.-]+$/.test(repo) || (!token && !dryRun)) {
+    console.error(usage);
+    process.exit(2);
+  }
+  try {
+    const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
+    for (const line of await runPinWatch({ root, repo, token, dryRun })) console.log(line);
+    process.exit(0);
+  } catch (error) {
+    console.error(error.message);
+    process.exit(1);
+  }
 }
