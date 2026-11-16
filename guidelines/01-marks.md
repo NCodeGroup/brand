@@ -20,8 +20,8 @@ product's name.
 
 ## Which File for What
 
-Every path is under `logo/ncode/`. The `{id}` kit's are under `logo/identity/`. Where a row names a folder's blue tile, the folder also holds the other
-[variants](#variants).
+Every path is under `logo/ncode/`. The `{id}` kit's are under `logo/identity/`. Where a row names a folder's blue
+tile, the folder also holds the other [variants](#variants).
 
 | Use | File | What it is |
 |---|---|---|
@@ -75,7 +75,8 @@ The three colors are the anchors of the blue ramp, `blue.600`, `blue.300` and `b
 Contrast, as WCAG measures it: NCode Blue on white, and white on NCode Blue, 9.0 to 1; NCode Blue Light on GitHub's
 dark page (`#0D1117`) 7.5 to 1, on Visual Studio's dark theme (`#1E1E1E`) 6.6 to 1 and on NCode Navy 6.1 to 1. NCode
 Blue on a dark page is 2.1 to 1, too low to read: use the light mark or a tile there. Under a tenant's colors NCode's
-marks go one color, the text color, and never take the tenant's hue ([Products and tenants](11-products-and-tenants.md)).
+marks go one color, the text color, and never take the tenant's hue
+([Products and tenants](11-products-and-tenants.md)).
 
 ## The Drawing
 
@@ -151,9 +152,9 @@ has `ncode-`, such as `nuget/ncode-identity-nuget-tile-blue.png` and `windows/nc
 
 - **A stacked lockup**: `lockup/ncode-identity-lockup-stacked-<color>.svg`, and as PNG 384 and 1536 high. It sets the
   mark at twice its size above the wordmark, for a space nearer a square. Keep it at least 72 pixels high.
-- **The descriptor**: the link previews, `social/ncode-identity-og-*.png`, and `github/ncode-identity-github-social-*.png`
-  carry "OpenID Connect and OAuth 2.x for .NET" under the lockup, in Inter Display Regular. The banners carry the
-  lockup alone.
+- **The descriptor**: the link previews, `social/ncode-identity-og-*.png`, and
+  `github/ncode-identity-github-social-*.png` carry "OpenID Connect and OAuth 2.x for .NET" under the lockup, in
+  Inter Display Regular. The banners carry the lockup alone.
 - **The drawing**: the braces are point for point the `{N}` mark's. The letters have a stroke of 4: the d is 16 wide and
   32 high, with a ring 16 across as its bowl, and the i is as high as the bowl, under a dot 5 across. Up to 24 pixels
   the bowl is three bars around a hole, and up to 32 the dot is a square. Below 16 pixels the letters can't be told
