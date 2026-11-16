@@ -58,7 +58,16 @@ Until the first stable release, the [Unreleased] section describes the product a
 - The guide in `guidelines/`: marks, color, typography, shape and the brace, layout, components, icons, motion, voice,
   accessibility, products and tenants, applying it, the token reference, and versions and license.
 - Nine specimen pages in `specimens/`, built on the generated files alone: the foundations, documentation, a landing
-  page, a product page, sign-in, consent, the console, settings, and the states between screens.
+  page, a product page, sign-in, consent, the console, settings, and the states between screens. Each lays out for a
+  phone 390 pixels wide without scrolling sideways, `foundations.html` included
+  ([#4](https://github.com/NCodeGroup/brand/issues/4)).
+- The guide and the specimens as a website at <https://ncodegroup.github.io/brand/>: `build.mjs` renders each page of
+  `guidelines/` into `guide/<name>.html`, and `README.md` into `guide/index.html`, in the documentation scene of
+  `css/base.css` with `guide/guide.css`, and writes `index.html`, which opens the guide.
+  `.github/workflows/pages.yml` runs `npm run check` and publishes `index.html`, `guide/`, `specimens/` and the
+  folders their pages load to GitHub Pages on each push to `main`, building nothing. A release's archive carries none
+  of the site's own files ([#4](https://github.com/NCodeGroup/brand/issues/4),
+  [ADR-1010](docs/decisions/1010-the-guide-and-the-specimens-are-published-on-github-pages-from-committed-files.md)).
 - `npm run build`, which writes every generated file; `npm run check`, which fails when a committed file differs from
   what the sources give; and a contrast gate that fails the build when a pairing is below WCAG 2.2 AA.
 - `TRADEMARKS.md`: how to use NCode's names and marks.
@@ -77,10 +86,16 @@ Until the first stable release, the [Unreleased] section describes the product a
   a lock path that leaves its folder, by its name or through a symbolic link
   ([#5](https://github.com/NCodeGroup/brand/issues/5),
   [ADR-1009](docs/decisions/1009-a-release-carries-an-attested-archive-and-vendor-brand-verifies-it-before-writing.md)).
-- Every specimen page runs under `Content-Security-Policy: default-src 'self'`: no inline style, no `data:` address and
-  no request to another origin.
+- Every specimen page and every page of the guide runs under `Content-Security-Policy: default-src 'self'`: no inline
+  style, no `data:` address and no request to another origin. Each states the policy,
+  `default-src 'self'; base-uri 'none'; form-action 'self'`, in a `<meta>` element, so it holds on GitHub Pages, which
+  sends no such header ([#4](https://github.com/NCodeGroup/brand/issues/4)).
 - `.github/workflows/pin-watch.yml` runs `tools/pin-watch.mjs` every Monday: for a Lucide or Fontsource release newer
   than `src/icons/lucide.lock.json` or `src/fonts/fonts.lock.json` pins and at least three days old, it keeps one open
   issue per lock, labeled `pin-update`, until the lock pins that release
   ([#13](https://github.com/NCodeGroup/brand/issues/13)).
+- `.github/workflows/pages.yml` pins every action by its commit SHA. Its job that assembles the site reads the
+  repository with `contents: read` alone, and only its deploy job holds `pages: write` and `id-token: write`
+  ([#4](https://github.com/NCodeGroup/brand/issues/4),
+  [ADR-1010](docs/decisions/1010-the-guide-and-the-specimens-are-published-on-github-pages-from-committed-files.md)).
 
