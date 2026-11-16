@@ -1,5 +1,5 @@
 // Watches the pinned Lucide and font releases for newer ones. Node.js built-ins only.
-//   import { newestEligible, readWatches } from './pin-watch.mjs';
+//   import { chooseAction, issueText, newestEligible, readWatches } from './pin-watch.mjs';
 // A lock pins one release of each input: src/icons/lucide.lock.json a Lucide tag, src/fonts/fonts.lock.json one npm
 // version of each Fontsource package. A release counts once it is COOLDOWN_DAYS old, and only a version shaped
 // <digits>.<digits>.<digits> is a release. Nothing here moves a lock.
@@ -81,4 +81,61 @@ export function readWatches(root) {
       })),
     },
   ];
+}
+
+const HOW_TO = {
+  lucide:
+    "To take it, copy each icon the lock names from the new tag's `icons/` folder into `src/icons/lucide/`, " +
+    "and its `LICENSE` file into `src/icons/LICENSE-Lucide.txt`, then set the lock's version, addresses and " +
+    "SHA-256 hashes to match, as its `$description` says. Run `npm run build` and compare each icon that changes " +
+    'with the grid in `guidelines/07-icons.md`.',
+  fonts:
+    "To take it, copy each file the lock names from the new package's tarball into `src/fonts/`, and set the " +
+    "family's version, tarball, integrity and SHA-256 hashes to match, as the lock's `$description` says. Run " +
+    '`npm run build`, then compare the specimens before and after with `node tools/shoot.mjs`.',
+};
+
+const FOOTER =
+  'The pin-watch workflow, `.github/workflows/pin-watch.yml`, checks every Monday: it rewrites this issue when a ' +
+  'newer release is old enough, and closes it once the lock pins the newest one. A release counts once it is 3 ' +
+  'days old, as ADR-0009 in `docs/decisions/project-template/` says.';
+
+/** The title and body of the issue for a watch whose lock is behind: behind is [{ input, release }], never empty. */
+export function issueText(watch, behind) {
+  const parts = behind.map(({ input, release }) => `${input.name} to ${release.version}`);
+  const joined = parts.length > 1 ? `${parts.slice(0, -1).join(', ')} and ${parts[parts.length - 1]}` : parts[0];
+  const lines = behind.map(({ input, release }) => {
+    const date = release.published.toISOString().slice(0, 10);
+    if (input.kind === 'github-release') {
+      const repo = `https://github.com/${input.repo}`;
+      return (
+        `- ${input.name} ${input.pinned} is pinned, and ${release.version} was published on ${date}: ` +
+        `[release notes](${repo}/releases/tag/${release.version}), ` +
+        `[changes since ${input.pinned}](${repo}/compare/${input.pinned}...${release.version}).`
+      );
+    }
+    return (
+      `- ${input.name} (\`${input.package}\`) ${input.pinned} is pinned, and ${release.version} was published ` +
+      `on ${date}: [${input.package}@${release.version} on npm]` +
+      `(https://www.npmjs.com/package/${input.package}/v/${release.version}).`
+    );
+  });
+  const intro =
+    `<!-- pin-watch: ${watch.id} -->\n` +
+    `\`${watch.lock}\` pins a release older than the newest one at least ${COOLDOWN_DAYS} days old:`;
+  const body = [intro, lines.join('\n'), HOW_TO[watch.id], FOOTER].join('\n\n') + '\n';
+  return { title: `Update ${joined}`, body };
+}
+
+/** What to do with a watch's issue: create, edit or close it, or leave it (none); issues are GitHub issue objects. */
+export function chooseAction(issues, watch, text) {
+  const marker = `<!-- pin-watch: ${watch.id} -->`;
+  const issue = issues
+    .filter((i) => !i.pull_request && typeof i.body === 'string' && i.body.includes(marker))
+    .sort((a, b) => a.number - b.number)[0];
+  if (!text) return issue ? { kind: 'close', number: issue.number } : { kind: 'none' };
+  if (!issue) return { kind: 'create' };
+  const normal = (value) => String(value ?? '').replace(/\r\n/g, '\n').trimEnd();
+  const same = normal(issue.title) === normal(text.title) && normal(issue.body) === normal(text.body);
+  return { kind: same ? 'none' : 'edit', number: issue.number };
 }

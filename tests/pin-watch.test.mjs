@@ -3,7 +3,9 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import {
+  chooseAction,
   compareVersions,
+  issueText,
   lucideCandidates,
   newestEligible,
   npmCandidates,
@@ -78,4 +80,90 @@ test('readWatches reads the versions and packages the two locks pin', () => {
     Object.entries(fonts.families).map(([name, f]) => ({ name, kind: 'npm', package: f.package, pinned: f.version })),
   );
   assert.ok(fontsWatch.inputs.length > 0);
+});
+
+test('issueText writes the Lucide issue: marker first, both links and the publish date', () => {
+  const watch = {
+    id: 'lucide',
+    lock: 'src/icons/lucide.lock.json',
+    inputs: [{ name: 'Lucide', kind: 'github-release', repo: 'lucide-icons/lucide', pinned: '1.72.0' }],
+  };
+  const release = { version: '1.74.0', published: new Date('2026-11-10T08:30:00Z') };
+  const { title, body } = issueText(watch, [{ input: watch.inputs[0], release }]);
+  assert.equal(title, 'Update Lucide to 1.74.0');
+  const blocks = body.split('\n\n');
+  assert.equal(
+    blocks[0],
+    '<!-- pin-watch: lucide -->\n' +
+      '`src/icons/lucide.lock.json` pins a release older than the newest one at least 3 days old:',
+  );
+  assert.equal(
+    blocks[1],
+    '- Lucide 1.72.0 is pinned, and 1.74.0 was published on 2026-11-10: ' +
+      '[release notes](https://github.com/lucide-icons/lucide/releases/tag/1.74.0), ' +
+      '[changes since 1.72.0](https://github.com/lucide-icons/lucide/compare/1.72.0...1.74.0).',
+  );
+  assert.ok(blocks[2].startsWith('To take it, copy each icon the lock names'));
+  assert.ok(blocks[3].startsWith('The pin-watch workflow, `.github/workflows/pin-watch.yml`, checks every Monday'));
+  assert.ok(body.endsWith('says.\n'));
+});
+
+test('issueText names two font families in the title and links each package on npm', () => {
+  const watch = { id: 'fonts', lock: 'src/fonts/fonts.lock.json' };
+  const behind = [
+    {
+      input: { name: 'Instrument Sans', kind: 'npm', package: '@fontsource/instrument-sans', pinned: '5.3.0' },
+      release: { version: '5.4.0', published: new Date('2026-11-01T00:00:00Z') },
+    },
+    {
+      input: { name: 'Martian Mono', kind: 'npm', package: '@fontsource/martian-mono', pinned: '5.3.0' },
+      release: { version: '5.4.0', published: new Date('2026-11-02T00:00:00Z') },
+    },
+  ];
+  const { title, body } = issueText(watch, behind);
+  assert.equal(title, 'Update Instrument Sans to 5.4.0 and Martian Mono to 5.4.0');
+  assert.ok(body.startsWith('<!-- pin-watch: fonts -->\n'));
+  assert.ok(
+    body.includes(
+      '- Instrument Sans (`@fontsource/instrument-sans`) 5.3.0 is pinned, and 5.4.0 was published on 2026-11-01: ' +
+        '[@fontsource/instrument-sans@5.4.0 on npm]' +
+        '(https://www.npmjs.com/package/@fontsource/instrument-sans/v/5.4.0).\n' +
+        '- Martian Mono',
+    ),
+  );
+  assert.ok(body.includes('node tools/shoot.mjs'));
+  const three = behind.concat(behind[0]);
+  assert.match(issueText(watch, three).title, /^Update Instrument Sans to 5\.4\.0, Martian Mono to 5\.4\.0 and /);
+});
+
+test("chooseAction creates, edits, leaves or closes the lock's issue", () => {
+  const watch = { id: 'lucide' };
+  const text = { title: 'Update Lucide to 1.74.0', body: '<!-- pin-watch: lucide -->\nbody\n' };
+  const issue = (number, extra) => ({ number, title: text.title, body: text.body, ...extra });
+  assert.deepEqual(chooseAction([], watch, text), { kind: 'create' });
+  assert.deepEqual(chooseAction([issue(7, { title: 'Old title' })], watch, text), { kind: 'edit', number: 7 });
+  assert.deepEqual(chooseAction([issue(7, { body: '<!-- pin-watch: lucide -->\nold\n' })], watch, text), {
+    kind: 'edit',
+    number: 7,
+  });
+  assert.deepEqual(chooseAction([issue(7)], watch, text), { kind: 'none', number: 7 });
+  assert.deepEqual(chooseAction([issue(7, { body: text.body.replace(/\n/g, '\r\n') })], watch, text), {
+    kind: 'none',
+    number: 7,
+  });
+  assert.deepEqual(chooseAction([issue(7)], watch, null), { kind: 'close', number: 7 });
+  assert.deepEqual(chooseAction([], watch, null), { kind: 'none' });
+});
+
+test('chooseAction keeps the lowest number and ignores another marker and a pull request', () => {
+  const watch = { id: 'lucide' };
+  const text = { title: 'T', body: '<!-- pin-watch: lucide -->\nbody\n' };
+  const issues = [
+    { number: 9, title: 'T', body: text.body },
+    { number: 4, title: 'Old', body: text.body },
+    { number: 2, title: 'T', body: '<!-- pin-watch: fonts -->\nbody\n' },
+    { number: 1, title: 'T', body: text.body, pull_request: {} },
+  ];
+  assert.deepEqual(chooseAction(issues, watch, text), { kind: 'edit', number: 4 });
+  assert.deepEqual(chooseAction(issues.slice(2), watch, null), { kind: 'none' });
 });
