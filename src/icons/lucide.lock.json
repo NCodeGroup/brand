@@ -1,0 +1,38 @@
+{
+  "$description": "Where each file in src/icons/lucide came from, and the SHA-256 it must have. Each file is byte for byte the file of its name in the icons/ folder of the Lucide repository at the tag \"version\", and LICENSE-Lucide.txt is that tag's LICENSE file. build.mjs refuses to write icons/ when a file in src/icons/lucide is missing, is not named here or hashes to anything else, so a Lucide icon changes only with this lock, in a pull request that says why.",
+  "version": "1.72.0",
+  "source": "https://github.com/lucide-icons/lucide/tree/1.72.0/icons",
+  "download": "https://raw.githubusercontent.com/lucide-icons/lucide/1.72.0/icons/<name>.svg",
+  "license": {
+    "name": "ISC, and MIT for the icons Lucide derives from Feather",
+    "file": "LICENSE-Lucide.txt",
+    "from": "https://raw.githubusercontent.com/lucide-icons/lucide/1.72.0/LICENSE",
+    "sha256": "b495047bd93a9b06913511076f504daba17d5bbeb3e0650f3bb53a4220329c57"
+  },
+  "icons": {
+    "activity": "050fbcda05e13c2051cf857683645e19c6b180861ef4d0cc28a6f09ba1ea1666",
+    "bell": "394889e9631fe3a9a63be9a479a95b451b708e432d895978d21d9130b5ee5dbe",
+    "calendar": "312ac8e715ac2b71bcc942dec2e8de9c1929085474f08885af35b563f6aa7a0b",
+    "circle-question-mark": "8cfdf0cbb7a743e2fa0efe5d7f90c31729dc071057d7f95f2363bfb773997f7e",
+    "clock": "e9d3e3acf4d1c280fcf8092293439dc0a4756a908ceb859de144b12451cd1cb9",
+    "code": "83235d4a0352d74234f949c9fc23f89c65ff165f1b6d54a90e5f0ea5bfc2c3d7",
+    "database": "471eb14bc8d144896a82dfc4aa9daf350f769f0896f4bef33e50aabdbb51130d",
+    "download": "3daeee13ded5a3afa2198b1bb4e2262d163922f97d96ac6ff9953e8ed4fe039d",
+    "ellipsis": "4f495cc72013ffdfec677f03b33a150f7b4dd741979283fd6853a09024bca112",
+    "ellipsis-vertical": "655ee2104d9540cc9377c83f3b9fea628d78d9f4e1cdca7c1b36e952599944d7",
+    "fingerprint-pattern": "26a4e5756ca8fb809c7cf488a1b6b44f6921d4a34a37ca9be8facf53d362ad9b",
+    "funnel": "288f869330602e29a640099ffc5d6ac01caadad2ef6f8aac1138b8bf91ccd752",
+    "git-branch": "041f04acc8f92657b849540f0440e2e85d0df0b8da2365611e81b9bebfafc4eb",
+    "link": "4f3237183dcaabfac92f4e94c776a9a9e45c3c5e77a921061a6b34b61eb5413f",
+    "log-in": "80c1d2a429824e86166775e3f81e84bd9e5630ed5da85d209eb87d91ccd3e936",
+    "mail": "3236a51d5b8ce9b0528cf2e6ad07e527bd636dded6f5a9d656072052b99caea8",
+    "minus": "a0c743ab6dbf545d8a6e19ef3874f48ede686ce68d25e231bd81f540d97b1f19",
+    "package": "69d6bc7650d26c4d24dd55eb22791607b982ce7637073944c256f1f61575509d",
+    "qr-code": "920cb79ab4b2fd23c36a16de3ca533c4896cb989adb823eb7dec97fd840d30f5",
+    "refresh-cw": "2e10dd403c85a24f163d59fc6151aa21147fe9402e1305dfc8979208caee8944",
+    "rotate-ccw-clock": "a98ff758157910b9fc9d42d5d5dc80c2f4e037afa5f8ea4dee5f5649f03d438d",
+    "settings": "0ae27fd0f81999229e3127ac96c5b32edfea448e291d509e76212b917551d66b",
+    "terminal": "4f9b6488b237757d5cb615ccd07502fa99774826839e2a99017784bdb2596f1a",
+    "upload": "42816ee1fa0e9d3b82272a97615c1e562b0e9de64780ebf21963bc1db0ceffd1"
+  }
+}
