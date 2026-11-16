@@ -59,6 +59,16 @@ describe('the typography', () => {
     }
   });
 
+  test('the variants an application uses most take the role that names their use', () => {
+    // The roles' own uses: title is a page's title, heading a section, subheading a group within one; ui is the
+    // interface's text; field the name above a part of a form.
+    const roles = Object.fromEntries(Object.entries(variants).map(([name, v]) => [name, v.role]));
+    assert.deepEqual(
+      { h1: roles.h1, h2: roles.h2, h3: roles.h3, body1: roles.body1, body2: roles.body2, subtitle2: roles.subtitle2 },
+      { h1: 'title', h2: 'heading', h3: 'subheading', body1: 'ui', body2: 'ui', subtitle2: 'field' },
+    );
+  });
+
   test('the headings run from the page title down, and none is larger than the one above it', () => {
     assert.equal(variants.h1.role, 'title');
     const sizes = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].map((h) => px(variants[h].fontSize));
@@ -107,6 +117,8 @@ describe('the palette', () => {
       assert.equal(palette.mode, scheme);
       assert.deepEqual(palette.instrument, c);
       assert.deepEqual(palette.primary, { main: c.primary, dark: c['primary-hover'], contrastText: c['on-primary'] });
+      // The secondary color is what a tenant's secondary color drives: the screen, with its ink.
+      assert.deepEqual(palette.secondary, { main: c.screen, contrastText: c['on-screen'] });
       assert.deepEqual(palette.error, { main: c.danger, dark: c['danger-hover'], contrastText: c['on-danger'] });
       for (const status of ['warning', 'info', 'success']) assert.deepEqual(palette[status], { main: c[status], contrastText: c[`on-${status}`] });
       assert.deepEqual(palette.background, { default: c.page, paper: c.surface });

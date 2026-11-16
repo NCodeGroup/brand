@@ -38,7 +38,8 @@ jobs.push({ scene: 'signin', theme: 'light', size: desktop, query: 'primary=C241
 jobs.push({ scene: 'console', theme: 'dark', size: desktop, query: 'primary=0F766E', suffix: '0F766E' });
 // Each state of states.html alone, as the page it is.
 for (const state of ['loading', 'empty', 'error', 'notfound']) jobs.push({ scene: 'states', theme: 'light', size: desktop, query: `state=${state}`, suffix: state });
-// Pages that are not designed for a phone are still checked there for sideways scrolling.
+// Pages that are not designed for a phone are still checked there for sideways scrolling. foundations.html is not: it is
+// the kit's catalog, laid out for a desktop window.
 for (const scene of ['hero', 'product', 'states']) jobs.push({ scene, theme: 'light', size: phone, full: true, onlyFull: true });
 
 const args = process.argv.slice(2);

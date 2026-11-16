@@ -40,9 +40,10 @@ Take `mui/instrument.json`, `tokens/tokens.mjs` with `tokens.d.mts`, `tokens/der
 stays in the application, under its own type check and tests.
 
 - `mui/instrument.json` holds the palette of each scheme for NCode's own brand, with every color role under
-  `instrument`; the typography variants, each set in a type role; the radius, the space scale and Material UI's spacing
-  unit of 8; the 25 elevations as no shadow and four of Instrument's depths: flush, raised, floating and overlay; the
-  durations, the easings and the breakpoints.
+  `instrument` and `secondary` set to the screen, as a tenant's secondary color drives it; the typography variants,
+  each set in the type role that names its use, while one it does not name, such as `caption`, keeps Material UI's
+  size; the radius, the space scale and Material UI's spacing unit of 8; the 25 elevations as no shadow and four of
+  Instrument's depths: flush, raised, floating and overlay; the durations, the easings and the breakpoints.
 - For a tenant, call `deriveBrand(primaryColor, secondaryColor)` from `tokens/derive.mjs` and take its `light` and
   `dark` colors for the primary, screen and scope roles. It never throws: a primary it cannot read falls back to NCode
   Blue and a secondary to the primary, and `adjusted` names any color it moved to reach its contrast floor.
