@@ -76,8 +76,8 @@ semantic colors and shadows under `light` and `dark`. A token a tenant's colors 
 
 ## A README, a Favicon, a Package Icon
 
-[Marks](01-marks.md) says which file of `logo/ncode/` each place takes, and how to name a file by its address at a
-release's tag in a README.
+[Marks](01-marks.md) says which file of `logo/ncode/` or `logo/identity/` each place takes, and how to name a file by
+its address at a release's tag in a README.
 
 ## Vendor a Release
 
