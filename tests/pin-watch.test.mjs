@@ -191,11 +191,11 @@ function fixtureRoot() {
 
 const FONTS_ISSUE = { number: 7, title: 'Update Instrument Sans to 5.4.0', body: '<!-- pin-watch: fonts -->\nold\n' };
 
-/** A fake fetch that answers by URL and records [method, url, parsed body]; registryStatus answers the npm reads. */
+/** A fake fetch that answers by URL and records [method, url, parsed body, headers]; registryStatus answers the npm reads. */
 function fakeFetch(calls, registryStatus = 200) {
   const answer = (status, json) => ({ ok: status >= 200 && status < 300, status, json: async () => json });
   return async (url, init) => {
-    calls.push([init.method, url, init.body ? JSON.parse(init.body) : undefined]);
+    calls.push([init.method, url, init.body ? JSON.parse(init.body) : undefined, init.headers ?? {}]);
     if (url.startsWith('https://registry.npmjs.org/')) {
       const time = { '5.3.0': '2026-09-01T00:00:00.000Z' };
       return answer(registryStatus, { versions: { '5.3.0': {} }, time });
@@ -268,6 +268,25 @@ test('runPinWatch rejects when the registry answers 500 and writes nothing', asy
       /GET https:\/\/registry\.npmjs\.org\/\S+ answered 500/,
     );
     assert.ok(calls.every(([method]) => method === 'GET'));
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test('runPinWatch sends the token to api.github.com and never to the npm registry', async () => {
+  const root = fixtureRoot();
+  try {
+    const calls = [];
+    await runPinWatch({ root, repo: 'NCodeGroup/brand', token: 't', now: NOW, fetch: fakeFetch(calls) });
+    const registry = calls.filter(([, url]) => url.startsWith('https://registry.npmjs.org/'));
+    assert.ok(registry.length > 0);
+    for (const [, , , headers] of registry) {
+      assert.equal(headers.Authorization, undefined);
+      assert.equal(headers['X-GitHub-Api-Version'], undefined);
+    }
+    const github = calls.filter(([, url]) => url.startsWith('https://api.github.com/'));
+    assert.ok(github.length > 0);
+    for (const [, , , headers] of github) assert.equal(headers.Authorization, 'Bearer t');
   } finally {
     rmSync(root, { recursive: true, force: true });
   }

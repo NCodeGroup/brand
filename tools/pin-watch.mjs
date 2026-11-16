@@ -166,12 +166,15 @@ export async function runPinWatch({
   dryRun = false,
 }) {
   const request = async (method, url, body) => {
-    const headers = {
-      Accept: 'application/vnd.github+json',
-      'X-GitHub-Api-Version': '2022-11-28',
-      'User-Agent': 'ncode-brand-pin-watch',
-    };
-    if (token) headers.Authorization = `Bearer ${token}`;
+    const github = new URL(url).origin === 'https://api.github.com';
+    const headers = { 'User-Agent': 'ncode-brand-pin-watch' };
+    if (github) {
+      headers.Accept = 'application/vnd.github+json';
+      headers['X-GitHub-Api-Version'] = '2022-11-28';
+    } else {
+      headers.Accept = 'application/json';
+    }
+    if (token && github) headers.Authorization = `Bearer ${token}`;
     const init = { method, headers, signal: AbortSignal.timeout(TIMEOUT) };
     if (body !== undefined) {
       headers['Content-Type'] = 'application/json';
