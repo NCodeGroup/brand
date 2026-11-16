@@ -14,7 +14,8 @@ tagged release's archive, once the GitHub CLI has verified its build provenance,
 `manifest.json`.
 
 [The guide](guidelines/README.md) says what Instrument is made of, when to use each part and which file to take, and
-the [specimens](specimens/foundations.html) show every part at work.
+the [specimens](specimens/foundations.html) show every part at work. Both are published at
+https://ncodegroup.github.io/brand/, from `main`, by [.github/workflows/pages.yml](.github/workflows/pages.yml).
 
 ## What It Holds
 
@@ -29,11 +30,12 @@ the [specimens](specimens/foundations.html) show every part at work.
 | [mui/](mui/) | The values a Material UI theme takes, as data |
 | [vendoring/](vendoring/vendor-brand.mjs) | The script a consumer copies to verify, vendor and check a release's files |
 | [guidelines/](guidelines/README.md) | The guide |
+| [guide/](guide/index.html) | The guide as web pages, which build.mjs renders from guidelines/ for the site |
 | [specimens/](specimens/) | Nine pages built on the generated files alone |
 | [src/](src/) | The sources: the tokens, the stylesheets, the fonts and the Lucide icons with their locks, NCode's icons, the marks' geometry |
 
-Every file in `tokens/`, `css/`, `fonts/`, `brace/`, `icons/`, `logo/` and `mui/`, and `manifest.json`, is generated:
-change its source in `src/` and run `npm run build`.
+Every file in `tokens/`, `css/`, `fonts/`, `brace/`, `icons/`, `logo/`, `mui/` and `guide/`, and `manifest.json` and
+`index.html`, is generated: change its source in `src/` or `guidelines/` and run `npm run build`.
 
 ## Development
 
@@ -47,7 +49,7 @@ Run from the repository root in PowerShell 7. The scripts need only the Node.js 
 
 `npm run check` writes nothing and fails when a committed generated file is not what the sources give, or when a
 contrast pairing is below its floor; it is the gate before a push, and CI runs it. `tools/shoot.mjs` and
-`tools/browser-check.mjs` check the specimens and the colors in a browser, by hand, with Playwright.
+`tools/browser-check.mjs` check the specimens, the guide's pages and the colors in a browser, by hand, with Playwright.
 
 The weekly `pin-watch` workflow opens an issue, labeled `pin-update`, when Lucide or Fontsource publishes a release
 newer than `src/icons/lucide.lock.json` or `src/fonts/fonts.lock.json` pins that is at least three days old, and

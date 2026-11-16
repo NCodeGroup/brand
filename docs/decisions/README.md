@@ -65,7 +65,7 @@ records are indexed in [project-template/](project-template/README.md).
 
 | ADR | Decision | Status |
 | --- | --- | --- |
-| [1000](1000-one-token-source-and-one-generator-write-every-committed-file.md) | One token source, and one generator writes every committed file | Accepted |
+| [1000](1000-one-token-source-and-one-generator-write-every-committed-file.md) | One token source, and one generator writes every committed file | Accepted (amended by 1010) |
 | [1001](1001-consumers-vendor-files-from-a-tagged-release-and-check-their-hashes.md) | Consumers vendor files from a tagged release and check their hashes | Accepted (amended by 1009) |
 | [1002](1002-custom-properties-take-the-nc-prefix-and-only-semantic-tokens-are-public.md) | Custom properties take the --nc- prefix, and only semantic tokens are public | Accepted |
 | [1003](1003-code-and-tokens-are-apache-2-0-and-the-names-and-marks-are-reserved.md) | Code and tokens are Apache-2.0, and the names and marks are reserved | Accepted (amended by 1008) |
@@ -75,3 +75,4 @@ records are indexed in [project-template/](project-template/README.md).
 | [1007](1007-every-ncode-marks-kit-is-drawn-here-by-one-kit-writer.md) | Every NCode mark's kit is drawn here, by one kit writer | Accepted |
 | [1008](1008-the-icon-set-is-ncodes-own-drawings-and-a-pinned-lucide-subset-restyled-to-one-grid.md) | The icon set is NCode's own drawings and a pinned Lucide subset, restyled to one grid (amends 1003) | Accepted |
 | [1009](1009-a-release-carries-an-attested-archive-and-vendor-brand-verifies-it-before-writing.md) | A release carries an attested archive, and vendor-brand.mjs verifies it before writing (amends 1001) | Accepted |
+| [1010](1010-the-guide-and-the-specimens-are-published-on-github-pages-from-committed-files.md) | The guide and the specimens are published on GitHub Pages from committed files (amends 1000) | Accepted |

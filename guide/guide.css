@@ -1,0 +1,17 @@
+/* NCode Brand 0.6.0: guide/guide.css, copied by build.mjs from src/guide/guide.css; edit that file. Apache-2.0. */
+/*
+ * The guide's own rules, after css/base.css: what a page of guide/ needs beyond the documentation scene. Lists,
+ * tables and code listings in long-form text, and the page keys at its foot. No release carries this file.
+ */
+.prose ul, .prose ol { padding-inline-start: 1.375rem; }
+.prose ul { list-style: square; }
+.prose ol { list-style: decimal; }
+.prose li::marker { color: var(--nc-color-text-secondary); }
+.prose li + li { margin-top: 0.5rem; }
+.prose li > * + * { margin-top: 1rem; }
+/* A long path or command wraps instead of pushing the page sideways on a phone. */
+.prose :not(pre) > code { white-space: normal; overflow-wrap: anywhere; }
+/* A table wider than the sheet scrolls inside its frame. */
+.prose .tableframe { overflow-x: auto; }
+.prose .table th, .prose .table td { height: auto; padding-block: 0.5rem; line-height: 1.5; vertical-align: top; }
+.pagenav__key--next { grid-column: 2; }

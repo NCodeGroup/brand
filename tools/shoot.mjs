@@ -1,4 +1,4 @@
-// Takes screenshots of the specimens in specimens/, served over HTTP under a strict Content-Security-Policy,
+// Takes screenshots of the specimens in specimens/ and the guide's pages in guide/, served over HTTP under a strict Content-Security-Policy,
 // default-src 'self'. It waits for the fonts, and fails when a page logs an error or a warning, a request fails, no
 // web font loads, or a page scrolls sideways. Run it by hand: it needs Playwright (tools/browser.mjs), and nothing
 // else runs it.
@@ -6,15 +6,15 @@
 //   node tools/shoot.mjs --out=<folder> console docs    only the shots of those scenes
 // A name is <scene>-<theme>-<width>[-<suffix>]. "-full" is the whole page, taken by making the window as tall as the
 // page so sticky parts sit where they belong. shots.json lists what was taken and every problem.
-import { existsSync, mkdirSync, unlinkSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readdirSync, unlinkSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { chromium } from './browser.mjs';
-import { serve } from './serve.mjs';
+import { ROOT, serve } from './serve.mjs';
 
 const desktop = { width: 1440, height: 900 };
 const phone = { width: 390, height: 844 };
 const SCENES = ['foundations', 'docs', 'hero', 'product', 'signin', 'consent', 'console', 'settings', 'states'];
-const onPhone = ['docs', 'signin', 'consent', 'console', 'settings'];
+const onPhone = ['foundations', 'docs', 'signin', 'consent', 'console', 'settings'];
 
 const jobs = [];
 for (const scene of SCENES) {
@@ -38,9 +38,15 @@ jobs.push({ scene: 'signin', theme: 'light', size: desktop, query: 'primary=C241
 jobs.push({ scene: 'console', theme: 'dark', size: desktop, query: 'primary=0F766E', suffix: '0F766E' });
 // Each state of states.html alone, as the page it is.
 for (const state of ['loading', 'empty', 'error', 'notfound']) jobs.push({ scene: 'states', theme: 'light', size: desktop, query: `state=${state}`, suffix: state });
-// Pages that are not designed for a phone are still checked there for sideways scrolling. foundations.html is not: it is
-// the kit's catalog, laid out for a desktop window.
+// Pages that are not designed for a phone are still checked there for sideways scrolling.
 for (const scene of ['hero', 'product', 'states']) jobs.push({ scene, theme: 'light', size: phone, full: true, onlyFull: true });
+// The guide's pages: each is checked on a phone, and three are shot in both themes on a desktop.
+const GUIDE = readdirSync(path.join(ROOT, 'guide')).filter((n) => n.endsWith('.html')).map((n) => n.slice(0, -5));
+for (const name of GUIDE) jobs.push({ scene: `guide-${name}`, page: `guide/${name}.html`, theme: 'light', size: phone, full: true, onlyFull: true });
+for (const name of ['index', '01-marks', '13-token-reference']) {
+  for (const theme of ['light', 'dark']) jobs.push({ scene: `guide-${name}`, page: `guide/${name}.html`, theme, size: desktop, full: true });
+}
+jobs.push({ scene: 'guide-index', page: 'guide/index.html', theme: 'light', size: phone, query: 'nav=1', suffix: 'nav' });
 
 const args = process.argv.slice(2);
 const out = args.find((a) => a.startsWith('--out='))?.slice(6);
@@ -67,7 +73,7 @@ for (const job of selected) {
   page.on('requestfailed', (r) => problems.push(`${name}: failed ${r.url()}`));
   page.on('response', (r) => { if (r.status() >= 400) problems.push(`${name}: ${r.status()} ${r.url()}`); });
   const query = [`theme=${job.theme}`, job.query].filter(Boolean).join('&');
-  await page.goto(`${url}/specimens/${job.scene}.html?${query}`, { waitUntil: 'load' });
+  await page.goto(`${url}/${job.page ?? `specimens/${job.scene}.html`}?${query}`, { waitUntil: 'load' });
   await page.evaluate(() => document.fonts.ready);
   const fonts = await page.evaluate(() => [...document.fonts].filter((f) => f.status === 'loaded').map((f) => f.family));
   if (!fonts.length) problems.push(`${name}: no web font loaded`);

@@ -1,7 +1,7 @@
 // A static file server for the tools in this folder: it serves the repository on a free port chosen by the operating
 // system, under a strict Content-Security-Policy, default-src 'self'. Node.js built-ins only.
 //   import { serve } from './serve.mjs';  const { url, close } = await serve();
-//   node tools/serve.mjs                  serves until interrupted, and prints the address of the specimens
+//   node tools/serve.mjs                  serves until interrupted, and prints the address of the site
 import { readFile } from 'node:fs/promises';
 import { createServer } from 'node:http';
 import path from 'node:path';
@@ -28,7 +28,7 @@ export function serve({ root = ROOT, pages = {}, rewrite = null } = {}) {
       let file;
       try {
         ({ pathname } = new URL(request.url, 'http://localhost'));
-        file = path.normalize(path.join(root, decodeURIComponent(pathname === '/' ? '/specimens/foundations.html' : pathname)));
+        file = path.normalize(path.join(root, decodeURIComponent(pathname === '/' ? '/index.html' : pathname)));
       } catch {
         // A request target that is no address, such as "//", or that holds a malformed percent-escape, such as
         // "/%E0%A4%A", names no file: it is answered, so the server keeps serving.
@@ -62,5 +62,5 @@ export function serve({ root = ROOT, pages = {}, rewrite = null } = {}) {
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const { url } = await serve();
-  console.log(`Serving ${ROOT} at ${url}/specimens/foundations.html (Ctrl+C stops it)`);
+  console.log(`Serving ${ROOT} at ${url}/ (Ctrl+C stops it)`);
 }
