@@ -2,19 +2,50 @@
 
 NCode's look and feel: tokens, logos, themes and guidelines.
 
-[//]: # "Badges: to show the CI status, add this line below, with the repository's owner and name:"
-[//]: # "[![CI](https://github.com/OWNER/REPO/actions/workflows/ci.yml/badge.svg)](https://github.com/OWNER/REPO/actions/workflows/ci.yml)"
-[//]: # "Badges: to show the OpenSSF Scorecard, add this line below, with the repository's owner and name:"
-[//]: # "[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/OWNER/REPO/badge)](https://scorecard.dev/viewer/?uri=github.com/OWNER/REPO)"
+[![CI](https://github.com/NCodeGroup/brand/actions/workflows/ci.yml/badge.svg)](https://github.com/NCodeGroup/brand/actions/workflows/ci.yml)
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/NCodeGroup/brand/badge)](https://scorecard.dev/viewer/?uri=github.com/NCodeGroup/brand)
+
+The look is called Instrument: a neutral, precisely made case of engraved labels, keys and wells that holds live
+values, with the brace of the `{N}` mark drawn around what one boundary holds. Every token is written once, in
+[src/tokens.source.json](src/tokens.source.json), and one Node.js script with no packages, [build.mjs](build.mjs),
+writes everything a consumer takes: the tokens as CSS, Design Tokens JSON and a typed module, the stylesheets, the
+fonts, the braces, the logo kit and data for a Material UI theme. Consumers copy the files they need from a tagged
+release and check them against its `manifest.json`.
+
+[The guide](guidelines/README.md) says what Instrument is made of, when to use each part and which file to take, and
+the [specimens](specimens/foundations.html) show every part at work.
+
+## What It Holds
+
+| Folder | What it is |
+|---|---|
+| [tokens/](tokens/) | `tokens.css`, `tokens.static.css`, `tokens.json` (Design Tokens 2025.10), `tokens.mjs` and the tenant derivation, `derive.mjs` |
+| [css/](css/) | `base.css`, the element and component styles; `fonts.css`; `starlight.css`, for a Starlight site |
+| [fonts/](fonts/) | Instrument Sans and Martian Mono, with their licenses |
+| [brace/](brace/) | The brace as SVG masks and as path data |
+| [logo/](logo/README.md) | The `{N}` logo kit, for every place the mark appears |
+| [mui/](mui/) | The values a Material UI theme takes, as data |
+| [vendoring/](vendoring/vendor-brand.mjs) | The script a consumer copies to vendor and check a release's files |
+| [guidelines/](guidelines/README.md) | The guide |
+| [specimens/](specimens/) | Nine pages built on the generated files alone |
+| [src/](src/) | The sources: the tokens, the stylesheets, the fonts and their lock, the mark's geometry |
+
+Every file in `tokens/`, `css/`, `fonts/`, `brace/`, `logo/` and `mui/`, and `manifest.json`, is generated: change its
+source in `src/` and run `npm run build`.
 
 ## Development
 
-Run from the repository root in PowerShell 7:
+Run from the repository root in PowerShell 7. The scripts need only the Node.js release `.node-version` names.
 
 | Task | Command |
 |---|---|
 | Build | `npm run build` |
+| Check | `npm run check` |
 | Test | `npm run test` |
+
+`npm run check` writes nothing and fails when a committed generated file is not what the sources give, or when a
+contrast pairing is below its floor; it is the gate before a push, and CI runs it. `tools/shoot.mjs` and
+`tools/browser-check.mjs` check the specimens and the colors in a browser, by hand, with Playwright.
 
 ## AI-Assisted Workflow
 
@@ -39,9 +70,21 @@ The workflow files come from a Copier template, which owns them: never edit `.te
 - [CONTRIBUTING.md](CONTRIBUTING.md): how to set up, build, test and propose a change.
 - [SECURITY.md](SECURITY.md): how to report a vulnerability privately.
 - [docs/decisions/](docs/decisions/README.md): the decisions behind the design, the project's and the template's.
-- `CHANGELOG.md`: in the Keep a Changelog format, what the product does until its first stable release, while `AGENTS.md`'s Landing section says `pre-release: untracked`, and what changed in each release from then on. The first plan creates it.
+- [CHANGELOG.md](CHANGELOG.md): in the Keep a Changelog format, what the product does until its first stable release, while `AGENTS.md`'s Landing section says `pre-release: untracked`, and what changed in each release from then on.
+- [TRADEMARKS.md](TRADEMARKS.md): how to use NCode's names and marks.
 - [LICENSE.txt](LICENSE.txt): the license.
 
 ## License
 
-NCode Brand is licensed under the [Apache License 2.0](LICENSE.txt).
+Which license covers what:
+
+- The code, the tokens, the stylesheets, the derivation, the Material UI data, the vendoring script and the guide are
+  licensed under the [Apache License 2.0](LICENSE.txt).
+- The names NCode, NCode Group and NCode Identity, and the marks in [logo/](logo/README.md), are copyright NCode Group,
+  all rights reserved: [TRADEMARKS.md](TRADEMARKS.md) says how you may use them. You may use the unmodified marks to
+  refer to an NCode project without asking.
+- Instrument Sans and Martian Mono, in [fonts/](fonts/), are licensed under the SIL Open Font License 1.1, whose texts
+  are beside them.
+
+Copies of the logo kit published earlier in NCodeGroup/project-template, in its `brand/` folder from v0.93.0 on, were
+released under that repository's MIT License, and those copies stay under it.

@@ -11,6 +11,9 @@ offers. Every document in `docs/` has a line here.
   [designs/_template.md](designs/_template.md). Each keeps its status current, and its decisions become records in
   `decisions/` as its phases land.
 
+The guide a consumer reads is part of the product, so it lives outside `docs/`: [guidelines/](../guidelines/README.md),
+with the pages that show it at work in [specimens/](../specimens/foundations.html). The same rules hold for it.
+
 ## Rules
 
 - A document changes in the same pull request as the code it describes. A pull request that changes a documented
