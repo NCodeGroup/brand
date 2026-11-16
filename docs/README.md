@@ -12,7 +12,8 @@ offers. Every document in `docs/` has a line here.
   `decisions/` as its phases land.
 
 The guide a consumer reads is part of the product, so it lives outside `docs/`: [guidelines/](../guidelines/README.md),
-with the pages that show it at work in [specimens/](../specimens/foundations.html). The same rules hold for it.
+with the pages that show it at work in [specimens/](../specimens/foundations.html). Both are published at
+https://ncodegroup.github.io/brand/. The same rules hold for it.
 
 ## Rules
 
