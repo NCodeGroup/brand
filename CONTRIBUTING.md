@@ -24,9 +24,9 @@ Once in each clone, run `git config core.hooksPath .githooks`. It turns on `.git
 CI runs the same commands on every pull request, the check first, and fails when the build or the tests change a file. The tests also parse every PowerShell step of `.github/workflows/` with `pwsh`, because a step of `publish.yml` runs only when a release is published.
 
 The sources are `src/`, `lib/`, `build.mjs`, `guidelines/` and `specimens/`. Every file in `tokens/`, `css/`, `fonts/`,
-`brace/`, `icons/`, `logo/`, `mui/` and `guide/`, `manifest.json`, `index.html`, and each block between `generated:`
-markers in `guidelines/` and `specimens/`, is written by `npm run build`: change its source, run the build and commit
-what it writes.
+`brace/`, `icons/`, `logo/`, `mui/`, `syntax/` and `guide/`, `manifest.json`, `index.html`, and each block between
+`generated:` markers in `guidelines/` and `specimens/`, is written by `npm run build`: change its source, run the
+build and commit what it writes.
 `npm run check` fails on a generated file edited by hand.
 
 For a change to the stylesheets, the tokens, a specimen or the guide's pages, also run
@@ -46,6 +46,14 @@ The pins in `src/icons/lucide.lock.json` and `src/fonts/fonts.lock.json` move on
 newest release at least three days old, and closes it once the lock catches up. Run
 `node tools/pin-watch.mjs --dry-run --repo=NCodeGroup/brand` to see what it would do;
 it needs no Playwright and no token.
+
+`node tools/refresh-fonts.mjs` copies each font file `src/fonts/fonts.lock.json` names from the npm tarball the lock
+pins. It first checks every tarball against the lock's `integrity` and every file against its `sha256`, and writes
+nothing when one differs. `--check` writes nothing, and exits 1 when a file in `src/fonts/` is missing or differs from
+its tarball's. To take a newer release, set the family's `version`, `tarball` and `integrity` to that release's, as
+`npm view <package>@<version> dist.tarball dist.integrity` prints them, and run the tool with `--pin`, which also pins
+each file's `sha256`. `--from=<folder>` reads the tarballs from a folder instead of downloading them, under the file
+names of their addresses, as `npm pack <package>@<version>` writes them. It needs no Playwright.
 
 ## Make a Change
 
