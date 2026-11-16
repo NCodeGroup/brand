@@ -29,9 +29,11 @@ colors of both themes, the two families, the type sizes, the headings of a long-
 layout's widths. Starlight's inverted text on the accent, its primary link button and its search field's focus border
 are pairings the contrast gate measures for any tenant's color. It holds no rule for Starlight's markup. The rules that
 make the sidebar's current page a latched key, a code block a screen and a callout an alert depend on the markup of
-one Starlight version, so they live in the documentation toolchain, beside the version they were written for. So does
-the reading voice: Starlight reads no property for the size of running text or its measure, so the toolchain sets the
-`reading` role, 17 pixels, on the 41 rem `--nc-measure`.
+one Starlight version, so they live in the documentation toolchain, beside the version they were written for. Set the
+reading voice there too. Starlight sets no size on running text, which keeps the browser's 16 pixels. Its
+`--sl-content-width`, 50 rem in `css/starlight.css`, bounds the content panel, listings and tables included, not the
+measure of running text. In the toolchain's own rules, set running text in the `reading` role, 17 pixels, on the 41 rem
+`--nc-measure`, as `.prose` does in `css/base.css`.
 
 ## A Material UI Application
 
