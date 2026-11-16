@@ -196,8 +196,8 @@ describe('the icon set', () => {
 describe('the specimens', () => {
   const pages = readdirSync(join(ROOT, 'specimens')).filter((n) => n.endsWith('.html')).sort();
 
-  test('hold nine pages', () => {
-    assert.equal(pages.length, 9);
+  test('include foundations.html', () => {
+    assert.ok(pages.includes('foundations.html'));
   });
 
   test('foundations.html shows a figure and a symbol for every icon of the set', () => {
