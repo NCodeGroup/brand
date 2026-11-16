@@ -442,5 +442,8 @@ describe('.github/workflows/publish.yml', () => {
     assert.ok(existsSync(join(ROOT, '.github/workflows/publish.yml')));
     assert.match(read('vendoring/vendor-brand.mjs'), /\$\{REPO\}\/\.github\/workflows\/publish\.yml/);
     assert.match(read('.github/workflows/publish.yml'), /^ {2}workflow_dispatch:\n {4}inputs:\n {6}tag:\n/m);
+    const publishRelease = read('.template/Publish-Release.ps1');
+    assert.match(publishRelease, /'\.github\/workflows\/publish\.yml'/);
+    assert.match(publishRelease, /workflow_dispatch/);
   });
 });
