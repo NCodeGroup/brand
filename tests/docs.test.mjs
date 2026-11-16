@@ -4,6 +4,7 @@ import assert from 'node:assert/strict';
 import { existsSync, readdirSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { describe, test } from 'node:test';
+import { META_CSP } from '../lib/guide.mjs';
 import { ROOT, read, readJson } from './helpers.mjs';
 
 const markdown = [
@@ -91,6 +92,7 @@ describe('specimens', () => {
       assert.deepEqual(loads.filter((t) => /^[a-z]+:/i.test(t) || t.startsWith('//')), [], 'a request to another origin');
       assert.deepEqual(loads.filter((t) => !existsSync(join(ROOT, 'specimens', t.split('?')[0]))), []);
       assert.doesNotMatch(html, /\sstyle="/, 'an inline style, which the Content-Security-Policy refuses');
+      assert.ok(html.includes(`<meta http-equiv="Content-Security-Policy" content="${META_CSP}">`), 'the policy, stated for a host that sends no header');
     });
   }
 
