@@ -1,6 +1,6 @@
 // The specimen server the by-hand tools in tools/ use. It needs no Playwright, so the tests run it: it serves the files
 // inside the repository under the strict Content-Security-Policy, and answers a request it cannot serve with an error
-// instead of stopping.
+// and keeps serving.
 import assert from 'node:assert/strict';
 import { basename } from 'node:path';
 import { after, before, test } from 'node:test';

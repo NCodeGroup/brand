@@ -1,21 +1,45 @@
 // build.mjs and its check, run on a copy of the repository: the committed output is what the sources give, and the
 // check catches an edited, missing or extra file, an edited or lost generated block and a font the lock does not pin,
 // writes nothing, and a build repairs it. Nothing the build writes or removes leaves the repository. Each test that
-// breaks something in the copy restores it, so the tests do not depend on their order.
+// breaks something in the copy restores it, and after each test the copy must hold the repository's files and nothing
+// else, so the tests do not depend on their order.
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
-import { cpSync, existsSync, mkdirSync, readFileSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
+import { cpSync, existsSync, lstatSync, mkdirSync, readFileSync, readdirSync, readlinkSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
 import { basename, dirname, join } from 'node:path';
-import { after, before, describe, test } from 'node:test';
+import { after, afterEach, before, describe, test } from 'node:test';
 import { crc32, decodePng, truecolorPng } from '../lib/png.mjs';
 import { ROOT, copyRepository, runNode } from './helpers.mjs';
 
+/** Every folder and file below a root, but .git and node_modules, with each file's SHA-256 and each link's target. */
+function snapshot(root) {
+  const out = {};
+  const visit = (path) => {
+    const full = join(root, path);
+    const stat = lstatSync(full);
+    if (stat.isSymbolicLink()) out[path] = `a link to ${readlinkSync(full)}`;
+    else if (stat.isFile()) out[path] = createHash('sha256').update(readFileSync(full)).digest('hex');
+    else if (stat.isDirectory()) {
+      if (path) out[`${path}/`] = 'a folder';
+      for (const name of readdirSync(full).sort()) {
+        if (!path && (name === '.git' || name === 'node_modules')) continue;
+        visit(path ? `${path}/${name}` : name);
+      }
+    }
+  };
+  visit('');
+  return out;
+}
+
 describe('build.mjs', () => {
   let repo;
+  let pristine;
   before(() => {
     repo = copyRepository();
+    pristine = snapshot(ROOT);
   });
   after(() => repo.remove());
+  afterEach(() => assert.deepEqual(snapshot(repo.dir), pristine, 'the copy holds the repository\'s files and nothing else'));
 
   const check = () => runNode(repo.dir, ['build.mjs', '--check']);
   const build = () => runNode(repo.dir, ['build.mjs']);
@@ -32,38 +56,68 @@ describe('build.mjs', () => {
     assert.match(result.output, /No file would change\./);
   });
 
-  test('the check fails on edited, missing and extra files and on an edited block, names each, and writes nothing', () => {
-    const edited = 'tokens/tokens.css';
-    const editedText = readFileSync(path(edited), 'utf8').replace('--nc-color-page: light-dark(', '--nc-color-page: light-dark( ');
-    writeFileSync(path(edited), editedText);
-    const removed = 'logo/ncode/tile/ncode-tile-dark-256.png';
+  // What a person could do to the generated files: edit one and a generated block, remove one and add one.
+  const edited = 'tokens/tokens.css';
+  const removed = 'logo/ncode/tile/ncode-tile-dark-256.png';
+  const extra = 'css/extra.css';
+  const guide = 'guidelines/02-color.md';
+  /** Does all of it to the copy, and returns the two edited texts. */
+  const spoil = () => {
+    const change = (name, from, to) => {
+      const text = readFileSync(path(name), 'utf8');
+      const next = text.replace(from, to);
+      assert.notEqual(next, text, `${name} holds ${from}`);
+      writeFileSync(path(name), next);
+      return next;
+    };
+    const editedText = change(edited, '--nc-color-page: light-dark(', '--nc-color-page: light-dark( ');
     rmSync(path(removed));
-    const extra = 'css/extra.css';
     writeFileSync(path(extra), '/* not generated */\n');
-    const guide = 'guidelines/02-color.md';
-    const guideText = readFileSync(path(guide), 'utf8').replace('| Blue | Brand |', '| Blue | Brand, edited |');
-    writeFileSync(path(guide), guideText);
+    const guideText = change(guide, '| Blue | Brand |', '| Blue | Brand, edited |');
+    return { editedText, guideText };
+  };
+  /**
+   * Undoes spoil(), and what a build that repairs it writes: it draws the removed tile with its own encoder, so the
+   * tile and manifest.json can differ in bytes from the committed ones.
+   */
+  const unspoil = () => {
+    for (const name of [edited, removed, guide, 'manifest.json']) restore(name);
+    rmSync(path(extra), { force: true });
+  };
 
-    const result = check();
-    assert.equal(result.code, 1, result.output);
-    assert.match(result.output, /^tokens\/tokens\.css {2}would change$/m);
-    assert.match(result.output, /^logo\/ncode\/tile\/ncode-tile-dark-256\.png {2}missing$/m);
-    assert.match(result.output, /^css\/extra\.css {2}would be removed/m);
-    assert.match(result.output, /^guidelines\/02-color\.md {2}would change$/m);
-    assert.match(result.output, /^manifest\.json {2}would change$/m);
-    assert.equal(readFileSync(path(edited), 'utf8'), editedText);
-    assert.equal(readFileSync(path(guide), 'utf8'), guideText);
-    assert.ok(!existsSync(path(removed)));
-    assert.ok(existsSync(path(extra)));
+  test('the check fails on edited, missing and extra files and on an edited block, names each, and writes nothing', () => {
+    try {
+      const { editedText, guideText } = spoil();
+      const result = check();
+      assert.equal(result.code, 1, result.output);
+      assert.match(result.output, /^tokens\/tokens\.css {2}would change$/m);
+      assert.match(result.output, /^logo\/ncode\/tile\/ncode-tile-dark-256\.png {2}missing$/m);
+      assert.match(result.output, /^css\/extra\.css {2}would be removed/m);
+      assert.match(result.output, /^guidelines\/02-color\.md {2}would change$/m);
+      assert.match(result.output, /^manifest\.json {2}would change$/m);
+      assert.equal(readFileSync(path(edited), 'utf8'), editedText);
+      assert.equal(readFileSync(path(guide), 'utf8'), guideText);
+      assert.ok(!existsSync(path(removed)));
+      assert.ok(existsSync(path(extra)));
+    } finally {
+      unspoil();
+    }
   });
 
   test('a build repairs all of it, and the check passes again', () => {
-    const result = build();
-    assert.equal(result.code, 0, result.output);
-    assert.ok(existsSync(path('logo/ncode/tile/ncode-tile-dark-256.png')));
-    assert.ok(!existsSync(path('css/extra.css')));
-    const again = check();
-    assert.equal(again.code, 0, again.output);
+    try {
+      spoil();
+      const result = build();
+      assert.equal(result.code, 0, result.output);
+      assert.match(result.output, /^tokens\/tokens\.css {2}written$/m);
+      assert.match(result.output, /^guidelines\/02-color\.md {2}written$/m);
+      assert.ok(existsSync(path(removed)));
+      assert.ok(!existsSync(path(extra)));
+      const again = check();
+      assert.equal(again.code, 0, again.output);
+    } finally {
+      unspoil();
+    }
   });
 
   test('a block build.mjs writes that is in no file, or twice in one, stops the check, naming the block', () => {
