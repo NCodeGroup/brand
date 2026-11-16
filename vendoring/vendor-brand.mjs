@@ -4,14 +4,17 @@
 //
 //   node vendor-brand.mjs --check
 //       Offline: every vendored file has the SHA-256 the lock pins. Exits 1, naming each file, when one is missing or
-//       differs. Run it in the gate and in CI.
-//   node vendor-brand.mjs --update <version> [--from <folder or https address>]
-//       Reads that release's manifest.json, refuses it unless it is that version, takes each file the lock names,
-//       refuses a file whose SHA-256 is not the manifest's, then writes the files and the lock. --from defaults to
-//       https://raw.githubusercontent.com/NCodeGroup/brand/v<version>, the release's tag. An address is read over
-//       https alone: a redirect, an answer larger than the manifest gives the file (manifest.json itself at most
-//       1 MiB) and one slower than a minute are refused. A release never changes, so when the lock already pins that
-//       version, a file whose SHA-256 is not the pinned one is refused too.
+//       differs. Run it in the gate and in CI. It needs nothing but Node.js.
+//   node vendor-brand.mjs --update <version> [--from <archive file>]
+//       Downloads the release's archive, brand-<version>.tar.gz, from the GitHub release v<version> with the GitHub
+//       CLI, and has gh attestation verify prove its build provenance: signed by NCodeGroup/brand's
+//       .github/workflows/publish.yml for the tag v<version> on a GitHub-hosted runner, for the archive's SHA-256.
+//       It refuses the archive unless its manifest.json is that version and it holds every file the manifest lists,
+//       at the manifest's size and SHA-256, and nothing else; only then does it write the files the lock names, and
+//       the lock. The archive is at most 64 MiB and unpacks to at most 256 MiB. A release never changes, so when the
+//       lock already pins that version, a file whose SHA-256 is not the pinned one is refused too. gh must be
+//       signed in: gh auth login, or GH_TOKEN in CI. --from reads the archive from a file instead of downloading
+//       it, and verifies it the same way.
 //   --lock <file>  the lock to use, brand.lock.json by default. Vendored paths are relative to its folder, and nothing
 //       is written outside it, by a path or through a symbolic link.
 //
@@ -26,7 +29,7 @@ import process from 'node:process';
 import { parseArgs } from 'node:util';
 import { gunzipSync } from 'node:zlib';
 
-const USAGE = 'Usage: node vendor-brand.mjs --check | --update <version> [--from <folder or https address>] [--lock <file>]';
+const USAGE = 'Usage: node vendor-brand.mjs --check | --update <version> [--from <archive file>] [--lock <file>]';
 const sha256 = (bytes) => createHash('sha256').update(bytes).digest('hex');
 /** The repository that publishes the brand, and the workflow that must have signed a release's archive. */
 const REPO = 'NCodeGroup/brand';
@@ -35,9 +38,6 @@ const SIGNER = `${REPO}/.github/workflows/publish.yml`;
 const ARCHIVE_LIMIT = 64 * 1024 * 1024;
 const UNPACKED_LIMIT = 256 * 1024 * 1024;
 const GH_TIMEOUT = 300_000;
-/** The most a manifest.json may hold, and the longest one request may take. */
-const MANIFEST_LIMIT = 1024 * 1024;
-const TIMEOUT = 60_000;
 
 /** A relative path that stays inside its folder, or an error naming what it is. */
 function inside(path, what) {
@@ -123,34 +123,6 @@ function unpack(packed, name) {
   return files;
 }
 
-/** An answer's body, refused once it is larger than `limit` bytes. */
-async function body(response, name, limit, what) {
-  const chunks = [];
-  let size = 0;
-  for await (const chunk of response.body ?? []) {
-    size += chunk.length;
-    if (size > limit) throw new Error(`${name}: the answer is larger than ${what}`);
-    chunks.push(chunk);
-  }
-  return Buffer.concat(chunks);
-}
-
-/** One file of the release, from a folder or from an https address, at most `limit` bytes. */
-async function read(base, name, limit, what) {
-  inside(name, 'The release path');
-  if (/^https:\/\//.test(base)) {
-    const response = await fetch(`${base.replace(/\/$/, '')}/${name}`, { redirect: 'manual', signal: AbortSignal.timeout(TIMEOUT) });
-    if (response.status >= 300 && response.status < 400) {
-      const to = response.headers.get('location');
-      throw new Error(`${name}: the address answered with a redirect${to ? ` to ${to}` : ''}, which vendor-brand.mjs does not follow; give --from the address the release is at`);
-    }
-    if (!response.ok) throw new Error(`${name}: HTTP ${response.status}`);
-    return body(response, name, limit, what);
-  }
-  if (/^[a-z]+:\/\//i.test(base)) throw new Error(`--from takes a folder or an https:// address, not ${base}`);
-  return readFileSync(join(base, name));
-}
-
 async function main() {
   const { values } = parseArgs({
     options: { check: { type: 'boolean' }, update: { type: 'string' }, from: { type: 'string' }, lock: { type: 'string', default: 'brand.lock.json' } },
@@ -179,20 +151,54 @@ async function main() {
 
   if (values.update) {
     if (!/^\d+\.\d+\.\d+$/.test(values.update)) throw new Error(`${values.update} is not a version such as 1.2.3`);
-    const from = values.from ?? `https://raw.githubusercontent.com/NCodeGroup/brand/v${values.update}`;
-    const manifest = JSON.parse((await read(from, 'manifest.json', MANIFEST_LIMIT, `${MANIFEST_LIMIT} bytes`)).toString('utf8'));
+    if (values.from && /^[a-z][a-z0-9+.-]*:\/\//i.test(values.from)) {
+      throw new Error(`--from takes the path of an archive file, not ${values.from}`);
+    }
+    const tag = `v${values.update}`;
+    const name = `brand-${values.update}.tar.gz`;
+    const scratch = mkdtempSync(join(tmpdir(), 'vendor-brand-'));
+    let files;
+    try {
+      const archive = values.from ? resolve(values.from) : join(scratch, name);
+      if (!values.from) gh(['release', 'download', tag, '--repo', REPO, '--pattern', name, '--output', archive]);
+      if (statSync(archive).size > ARCHIVE_LIMIT) throw new Error(`${name}: the archive is larger than ${ARCHIVE_LIMIT} bytes`);
+      const packed = readFileSync(archive);
+      const digest = sha256(packed);
+      const verified = JSON.parse(gh([
+        'attestation', 'verify', archive, '--repo', REPO, '--signer-workflow', SIGNER, '--source-ref', `refs/tags/${tag}`,
+        '--deny-self-hosted-runners', '--format', 'json',
+      ]));
+      if (!verified.some((r) => r.verificationResult?.statement?.subject?.some((s) => s.digest?.sha256 === digest))) {
+        throw new Error(`${name}: gh verified an attestation, but none names the archive's SHA-256 ${digest}`);
+      }
+      files = unpack(packed, name);
+    } finally {
+      rmSync(scratch, { recursive: true, force: true });
+    }
+    const manifestBytes = files.get('manifest.json');
+    if (!manifestBytes) throw new Error(`${name} holds no manifest.json`);
+    const manifest = JSON.parse(manifestBytes.toString('utf8'));
     if (manifest.version !== values.update) throw new Error(`The release is ${manifest.version}, not ${values.update}.`);
+    const released = manifest.files ?? {};
+    for (const [path, bytes] of files) {
+      if (path === 'manifest.json') continue;
+      if (!Object.hasOwn(released, path)) throw new Error(`${name} holds ${path}, which the release's manifest does not list`);
+      if (bytes.length !== released[path].bytes || sha256(bytes) !== released[path].sha256) {
+        throw new Error(`${path}: the archive does not match the release's manifest`);
+      }
+    }
+    for (const path of Object.keys(released)) {
+      if (!files.has(path)) throw new Error(`${path}: the release's manifest lists it, but ${name} does not hold it`);
+    }
     const fetched = [];
     for (const [path, entry] of Object.entries(lock.files)) {
       const file = destination(root, path);
-      const released = manifest.files?.[entry.source];
-      if (!released) throw new Error(`brand ${manifest.version} has no ${entry.source}`);
-      if (lock.version === manifest.version && entry.sha256 && entry.sha256 !== released.sha256) {
+      if (!Object.hasOwn(released, entry.source)) throw new Error(`brand ${manifest.version} has no ${entry.source}`);
+      const listed = released[entry.source];
+      if (lock.version === manifest.version && entry.sha256 && entry.sha256 !== listed.sha256) {
         throw new Error(`${path}: brand ${manifest.version} has another SHA-256 for ${entry.source} than the lock pins. A release never changes, so this is not that release; if you changed the entry's source, empty its sha256 and run --update again.`);
       }
-      const bytes = await read(from, entry.source, released.bytes, `the ${released.bytes} bytes the release's manifest gives it`);
-      if (sha256(bytes) !== released.sha256) throw new Error(`${entry.source}: the download does not match the release's manifest`);
-      fetched.push({ path, entry, file, bytes, hash: released.sha256 });
+      fetched.push({ path, entry, file, bytes: files.get(entry.source), hash: listed.sha256 });
     }
     // Every file is verified and every destination checked before any is written. Each is written beside its
     // destination and renamed into place once all are written, so a refused release or a failed write leaves the
