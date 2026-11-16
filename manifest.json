@@ -36,16 +36,16 @@
       "sha256": "b9bc887f783792a41089cac0a49b5cb314c2f9969aa8dd92c91accd225d5ea3e"
     },
     "css/base.css": {
-      "bytes": 95109,
-      "sha256": "69a936ca3c1ce27cc95dbbc93deedbb2e1e2559a70072da14c4d9cce75ff278e"
+      "bytes": 95462,
+      "sha256": "e81856b99a22956fb27a15396ef1f1d1b27d1dbb5df38d7e8da04926126c8c24"
     },
     "css/fonts.css": {
       "bytes": 2615,
       "sha256": "9116f8ea707f686b80d1b0fb7578c4dc137beea3da5204c1096503ee205c6be3"
     },
     "css/starlight.css": {
-      "bytes": 5128,
-      "sha256": "7677a822292e57a175cdea731a247799fb289416a97d31eeb84813fa94275607"
+      "bytes": 6221,
+      "sha256": "6d6e53e30c8110fa5ecb2600d7dbeba90083e5b171a941315ac6d3ef86a6f905"
     },
     "fonts/OFL-Instrument-Sans.txt": {
       "bytes": 4538,
@@ -444,40 +444,40 @@
       "sha256": "99f914c24f711d74ec06ae5da3884f0e6ae2ebdcd8a0d071d06274cde13aee6a"
     },
     "mui/instrument.json": {
-      "bytes": 18058,
-      "sha256": "9102e30a9a948336f8d0f421973eec2dc8b4f9d58b724684a4db636b09897a2a"
+      "bytes": 18146,
+      "sha256": "52b9418ae6fadcdb83b3d4c076fd866d654d82379f881cbf34d72ab7b7176489"
     },
     "tokens/derive.d.mts": {
       "bytes": 3880,
       "sha256": "17a92727bc9dd00c6b4a302ae8df64e770f941ef91203f277b1dc6e8aaf8f8e4"
     },
     "tokens/derive.mjs": {
-      "bytes": 36421,
-      "sha256": "9414167b893842dc39ce19af7ca9a16ed38108c3db92b275a99712b4dca1bc97"
+      "bytes": 36509,
+      "sha256": "46cd7f11306725229b6b13308c501bf82324f5d0821ff1b20108b9bd26772837"
     },
     "tokens/derive.vectors.json": {
       "bytes": 38816,
       "sha256": "24f642c01ce152cb3fee1e8925437820b414d70659e586ba1a00e8d4aa3f6c19"
     },
     "tokens/tokens.css": {
-      "bytes": 33725,
-      "sha256": "37985df970ac0df6d1175f89162e4f653b608f395677b95b4491c3ab2a7c8023"
+      "bytes": 34302,
+      "sha256": "af2b84f1ea8b54320d03816b83cefb1c46ffa4edbcd5b220ca07214c37faa38f"
     },
     "tokens/tokens.d.mts": {
-      "bytes": 25341,
-      "sha256": "1055a3758abf25a2bbf5d475622657b6065c20b339c5fd26a18e4476c1646f08"
+      "bytes": 25648,
+      "sha256": "bc077cc60f56d2f0dee3f0276ec40f8119930cf25ededc615a7ac645ed78527c"
     },
     "tokens/tokens.json": {
-      "bytes": 98911,
-      "sha256": "2d2ad93b47fd7f514ee5f29038577589bb8fc672c47bf8cc2d7373595281fe21"
+      "bytes": 99807,
+      "sha256": "3d15f9d5f41235a510c8c50dd4bc3ac90221b156895e20fc77d2dc91070be6dc"
     },
     "tokens/tokens.mjs": {
-      "bytes": 22100,
-      "sha256": "c0b02951122ce3ecfa1d46b5ec5e841f4e0551e6da244f465243f2ae8a1a4b65"
+      "bytes": 22282,
+      "sha256": "9fe36d6dff38a02fbfeb0f944e87b1627a56773e6e826bbf134ef6bf83769e56"
     },
     "tokens/tokens.static.css": {
-      "bytes": 21998,
-      "sha256": "85165038eb8a918613346dd71cd69a839e30bbbdda2dfed01a6b391e3b7aed98"
+      "bytes": 22453,
+      "sha256": "8061b531584c44dfbea316cacace83d47d2a38c9479cce83cd0a0fb446a87216"
     },
     "vendoring/vendor-brand.mjs": {
       "bytes": 9071,

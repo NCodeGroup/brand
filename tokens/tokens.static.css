@@ -167,7 +167,7 @@
   --nc-brace-md: 17px; /* a card, the memory panel */
   --nc-brace-lg: 23px; /* the frame of a console workspace */
 
-  /* ---- type roles: a font shorthand each, with its width and tracking beside it as --nc-type-<role>-stretch and -tracking */
+  /* ---- type roles: a font shorthand each, with its width and tracking beside it as --nc-type-<role>-stretch and -tracking, and its case as -case where it sets one */
   --nc-type-headline: var(--nc-weight-semibold) var(--nc-text-6xl)/var(--nc-leading-flat) var(--nc-font-sans); /* the one headline of a landing page */
   --nc-type-headline-stretch: var(--nc-width-display);
   --nc-type-headline-tracking: -0.028em;
@@ -207,6 +207,7 @@
   --nc-type-label: var(--nc-weight-semibold) var(--nc-text-2xs)/1.2 var(--nc-font-sans); /* uppercase: engraved: the name of a fixed part. Column heads, group heads, tags, the boundary's kind */
   --nc-type-label-stretch: var(--nc-width-label);
   --nc-type-label-tracking: var(--nc-tracking-label);
+  --nc-type-label-case: uppercase;
   --nc-type-value: var(--nc-weight-medium) var(--nc-text-sm)/1.4 var(--nc-font-mono); /* displayed: anything read off the system */
   --nc-type-value-stretch: var(--nc-width-code);
   --nc-type-value-tracking: -0.01em;
@@ -232,6 +233,11 @@
 
 :root[data-theme="light"] { color-scheme: light; }
 :root[data-theme="dark"] { color-scheme: dark; }
+
+/* On paper every page takes the light theme, whatever data-theme or the system says. */
+@media print {
+  :root, :root[data-theme] { color-scheme: light; }
+}
 
 :root {
   /* The case and its parts. */
@@ -301,6 +307,7 @@
   /* Depth is drawn with hard edges, never with blur: a lip below means raised, a shade above means recessed. */
   --nc-color-lip: #BEBEB8;
   --nc-color-shade: rgb(23 23 20 / 0.08);
+  --nc-color-screen-shade: rgb(0 0 0 / 0.3);
   --nc-color-glint: #FFFFFF;
   --nc-color-shadow: rgb(23 23 20 / 0.2);
   --nc-color-scrim: rgb(23 23 20 / 0.5);
@@ -334,7 +341,7 @@
   --nc-color-scope-platform: #F4AD1D;
 }
 
-@media (prefers-color-scheme: dark) {
+@media screen and (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     /* The case and its parts. */
     --nc-color-page: #0A0A08;
@@ -423,91 +430,93 @@
   }
 }
 
-:root[data-theme="dark"] {
-  /* The case and its parts. */
-  --nc-color-page: #0A0A08;
-  --nc-color-page-sunken: #050504;
-  --nc-color-surface: #171714;
-  --nc-color-surface-raised: #282824;
-  --nc-color-surface-sunken: #11110F;
-  --nc-color-well: #0A0A08;
+@media screen {
+  :root[data-theme="dark"] {
+    /* The case and its parts. */
+    --nc-color-page: #0A0A08;
+    --nc-color-page-sunken: #050504;
+    --nc-color-surface: #171714;
+    --nc-color-surface-raised: #282824;
+    --nc-color-surface-sunken: #11110F;
+    --nc-color-well: #0A0A08;
 
-  /* A neutral key. */
-  --nc-color-control: #282824;
-  --nc-color-control-hover: #343430;
-  --nc-color-control-pressed: #11110F;
-  --nc-color-ghost-hover: rgb(240 240 237 / 0.1);
-  --nc-color-ghost-pressed: rgb(240 240 237 / 0.18);
+    /* A neutral key. */
+    --nc-color-control: #282824;
+    --nc-color-control-hover: #343430;
+    --nc-color-control-pressed: #11110F;
+    --nc-color-ghost-hover: rgb(240 240 237 / 0.1);
+    --nc-color-ghost-pressed: rgb(240 240 237 / 0.18);
 
-  /* Lines. */
-  --nc-color-border: #343430;
-  --nc-color-lamp-unlit: #4B4B45;
+    /* Lines. */
+    --nc-color-border: #343430;
+    --nc-color-lamp-unlit: #4B4B45;
 
-  /* Type. */
-  --nc-color-text: #F0F0ED;
-  --nc-color-text-secondary: #BEBEB8;
-  --nc-color-text-muted: #93938C;
-  --nc-color-text-disabled: #5E5E58;
+    /* Type. */
+    --nc-color-text: #F0F0ED;
+    --nc-color-text-secondary: #BEBEB8;
+    --nc-color-text-muted: #93938C;
+    --nc-color-text-disabled: #5E5E58;
 
-  /* Status. -mark is the lamp, icon or line (3 to 1 on every surface); -text is running text (4.5 to 1). */
-  --nc-color-success: #7ADE95;
-  --nc-color-on-success: #092210;
-  --nc-color-success-mark: #7ADE95;
-  --nc-color-success-text: #7ADE95;
-  --nc-color-success-subtle: #092210;
-  --nc-color-success-border: #0D4A22;
+    /* Status. -mark is the lamp, icon or line (3 to 1 on every surface); -text is running text (4.5 to 1). */
+    --nc-color-success: #7ADE95;
+    --nc-color-on-success: #092210;
+    --nc-color-success-mark: #7ADE95;
+    --nc-color-success-text: #7ADE95;
+    --nc-color-success-subtle: #092210;
+    --nc-color-success-border: #0D4A22;
 
-  --nc-color-warning-mark: #FAC13B;
-  --nc-color-warning-text: #FAC13B;
-  --nc-color-warning-subtle: #2A1907;
-  --nc-color-warning-border: #623606;
+    --nc-color-warning-mark: #FAC13B;
+    --nc-color-warning-text: #FAC13B;
+    --nc-color-warning-subtle: #2A1907;
+    --nc-color-warning-border: #623606;
 
-  --nc-color-danger: #FF958D;
-  --nc-color-on-danger: #31100D;
-  --nc-color-danger-mark: #FF958D;
-  --nc-color-danger-text: #FF958D;
-  --nc-color-danger-subtle: #31100D;
-  --nc-color-danger-border: #711612;
-  --nc-color-danger-hover: #FFADA6;
-  --nc-color-danger-lip: #9C1B18;
+    --nc-color-danger: #FF958D;
+    --nc-color-on-danger: #31100D;
+    --nc-color-danger-mark: #FF958D;
+    --nc-color-danger-text: #FF958D;
+    --nc-color-danger-subtle: #31100D;
+    --nc-color-danger-border: #711612;
+    --nc-color-danger-hover: #FFADA6;
+    --nc-color-danger-lip: #9C1B18;
 
-  --nc-color-info: #809FFF;
-  --nc-color-on-info: #071339;
-  --nc-color-info-mark: #809FFF;
-  --nc-color-info-text: #809FFF;
-  --nc-color-info-subtle: #071339;
-  --nc-color-info-border: #08257F;
+    --nc-color-info: #809FFF;
+    --nc-color-on-info: #071339;
+    --nc-color-info-mark: #809FFF;
+    --nc-color-info-text: #809FFF;
+    --nc-color-info-subtle: #071339;
+    --nc-color-info-border: #08257F;
 
-  /* Hazard tape: the same in both themes, as tape is. */
+    /* Hazard tape: the same in both themes, as tape is. */
 
-  /* NCode's own marks: blue, or light blue on dark. Under a tenant's color they go one color (the text color), as the logo kit allows; they never take the tenant's hue. */
-  --nc-color-logo: #809FFF;
+    /* NCode's own marks: blue, or light blue on dark. Under a tenant's color they go one color (the text color), as the logo kit allows; they never take the tenant's hue. */
+    --nc-color-logo: #809FFF;
 
-  /* Depth is drawn with hard edges, never with blur: a lip below means raised, a shade above means recessed. */
-  --nc-color-lip: #000000;
-  --nc-color-shade: rgb(0 0 0 / 0.55);
-  --nc-color-glint: rgb(255 255 255 / 0.06);
-  --nc-color-shadow: rgb(0 0 0 / 0.7);
-  --nc-color-scrim: rgb(0 0 0 / 0.68);
+    /* Depth is drawn with hard edges, never with blur: a lip below means raised, a shade above means recessed. */
+    --nc-color-lip: #000000;
+    --nc-color-shade: rgb(0 0 0 / 0.55);
+    --nc-color-glint: rgb(255 255 255 / 0.06);
+    --nc-color-shadow: rgb(0 0 0 / 0.7);
+    --nc-color-scrim: rgb(0 0 0 / 0.68);
 
-  /* Primary, derived from --nc-brand: what you press. */
-  --nc-color-primary: #809FFF;
-  --nc-color-on-primary: #071339;
-  --nc-color-primary-shade: #FFFFFF;
-  --nc-color-primary-hover: #9BB5FF;
-  --nc-color-primary-pressed: #6E8ADE;
-  --nc-color-primary-edge: #6E8ADE;
-  --nc-color-primary-lip: #313E69;
-  --nc-color-primary-text: #809FFF;
-  --nc-color-primary-subtle: #262A34;
-  --nc-color-primary-subtle-border: #404C6D;
-  --nc-color-focus: #809FFF;
+    /* Primary, derived from --nc-brand: what you press. */
+    --nc-color-primary: #809FFF;
+    --nc-color-on-primary: #071339;
+    --nc-color-primary-shade: #FFFFFF;
+    --nc-color-primary-hover: #9BB5FF;
+    --nc-color-primary-pressed: #6E8ADE;
+    --nc-color-primary-edge: #6E8ADE;
+    --nc-color-primary-lip: #313E69;
+    --nc-color-primary-text: #809FFF;
+    --nc-color-primary-subtle: #262A34;
+    --nc-color-primary-subtle-border: #404C6D;
+    --nc-color-focus: #809FFF;
 
-  /* The screen, derived from --nc-brand-secondary: what you are shown. A screen is the same in both themes: a deep field of the hue with lit values on it. NCode Blue yields exactly NCode Navy and NCode Blue Light. */
+    /* The screen, derived from --nc-brand-secondary: what you are shown. A screen is the same in both themes: a deep field of the hue with lit values on it. NCode Blue yields exactly NCode Navy and NCode Blue Light. */
 
-  /* The ink of a scope brace on the case, one per kind of security boundary. */
-  --nc-color-scope-tenant: #809FFF;
-  --nc-color-scope-team: #F0F0ED;
+    /* The ink of a scope brace on the case, one per kind of security boundary. */
+    --nc-color-scope-tenant: #809FFF;
+    --nc-color-scope-team: #F0F0ED;
+  }
 }
 
 /* Under a tenant's color NCode's marks go one color, as the logo kit allows: they never take the tenant's hue. */

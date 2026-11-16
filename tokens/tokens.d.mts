@@ -69,6 +69,8 @@ export declare const color: {
     readonly lip: string;
     /** the shadow inside a recess */
     readonly shade: string;
+    /** the shadow inside a screen's top edge, the same in both themes */
+    readonly "screen-shade": string;
     /** light on a top edge */
     readonly glint: string;
     /** the only soft shadow, under overlays */
@@ -174,6 +176,8 @@ export declare const color: {
     readonly lip: string;
     /** the shadow inside a recess */
     readonly shade: string;
+    /** the shadow inside a screen's top edge, the same in both themes */
+    readonly "screen-shade": string;
     /** light on a top edge */
     readonly glint: string;
     /** the only soft shadow, under overlays */
@@ -597,6 +601,7 @@ export declare const property: {
   readonly "nc-type-label": string;
   readonly "nc-type-label-stretch": string;
   readonly "nc-type-label-tracking": string;
+  readonly "nc-type-label-case": string;
   readonly "nc-type-value": string;
   readonly "nc-type-value-stretch": string;
   readonly "nc-type-value-tracking": string;
@@ -657,6 +662,7 @@ export declare const property: {
   readonly "nc-color-logo": string;
   readonly "nc-color-lip": string;
   readonly "nc-color-shade": string;
+  readonly "nc-color-screen-shade": string;
   readonly "nc-color-glint": string;
   readonly "nc-color-shadow": string;
   readonly "nc-color-scrim": string;

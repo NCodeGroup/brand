@@ -9,8 +9,8 @@ Tokens format, and `tokens/tokens.mjs` the public ones as an ES module.
 - Every custom property starts with `--nc-`, so it cannot meet a host page's own properties, Starlight's (`--sl-`) or
   Material UI's (`--mui-`).
 - A color role is `--nc-color-<role>`, written once: as `light-dark(<light>, <dark>)` where the themes differ, and as
-  one value where they don't. A type role is `--nc-type-<role>`,
-  with `-stretch` and `-tracking` beside it. Elevation is `--nc-elevation-<depth>`.
+  one value where they don't. A type role is `--nc-type-<role>`, with `-stretch` and `-tracking` beside it, and
+  `-case` where it sets one. Elevation is `--nc-elevation-<depth>`.
 - A scale is numbered where its steps are a ramp, such as `--nc-space-3`, and named where its parts are few and fixed,
   such as `--nc-radius-control` and `--nc-dur-press`.
 
@@ -87,6 +87,7 @@ Public.
 | `--nc-color-logo` | `#0033CC` | `#809FFF` |  |
 | `--nc-color-lip` | `#BEBEB8` | `#000000` | the side of a raised part |
 | `--nc-color-shade` | `rgb(23 23 20 / 0.08)` | `rgb(0 0 0 / 0.55)` | the shadow inside a recess |
+| `--nc-color-screen-shade` | `rgb(0 0 0 / 0.3)` | `rgb(0 0 0 / 0.3)` | the shadow inside a screen's top edge, the same in both themes |
 | `--nc-color-glint` | `#FFFFFF` | `rgb(255 255 255 / 0.06)` | light on a top edge |
 | `--nc-color-shadow` | `rgb(23 23 20 / 0.2)` | `rgb(0 0 0 / 0.7)` | the only soft shadow, under overlays |
 | `--nc-color-scrim` | `rgb(23 23 20 / 0.5)` | `rgb(0 0 0 / 0.68)` |  |
@@ -158,6 +159,7 @@ Public.
 | `--nc-type-label` | `600 0.6875rem/1.2 Instrument Sans Variable` | engraved: the name of a fixed part. Column heads, group heads, tags, the boundary's kind |
 | `--nc-type-label-stretch` | `82%` | the width of label |
 | `--nc-type-label-tracking` | `0.08em` | the letter spacing of label |
+| `--nc-type-label-case` | `uppercase` | the case of label |
 | `--nc-type-value` | `500 0.8125rem/1.4 Martian Mono Variable` | displayed: anything read off the system |
 | `--nc-type-value-stretch` | `75%` | the width of value |
 | `--nc-type-value-tracking` | `-0.01em` | the letter spacing of value |

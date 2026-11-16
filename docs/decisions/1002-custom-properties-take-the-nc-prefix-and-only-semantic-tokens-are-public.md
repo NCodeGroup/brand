@@ -27,8 +27,9 @@ and `base.css` styles pages built on it, not a foreign stylesheet.
   the measures no role stands in front of: space, radii, borders, the control and layout sizes, breakpoints, motion
   and the braces. Renaming or removing one, or changing what it is for, is a major version.
 
-So a type role is complete in the public tier, the generator writes its width and letter spacing beside its font
-shorthand: `--nc-type-label-stretch` and `--nc-type-label-tracking`. This repository's own stylesheets may read
+So a type role is complete in the public tier, the generator writes its width, its letter spacing and, where it sets
+one, its case beside its font shorthand: `--nc-type-label-stretch`, `--nc-type-label-tracking` and
+`--nc-type-label-case`. This repository's own stylesheets may read
 primitives, because they release with them; `tokens/tokens.mjs` exports the public tier only, and `tokens/tokens.json`
 marks the tier of each group that sets one, which the groups inside it inherit.
 

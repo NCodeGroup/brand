@@ -138,11 +138,13 @@ describe('the public and the private tier', () => {
     assert.ok(list.every((t) => t.tier === 'primitive' || t.tier === 'semantic'));
   });
 
-  test('every type role is complete in the public tier: a shorthand, a width and a tracking', () => {
-    const props = new Set(list.filter((t) => t.tier === 'semantic').map((t) => t.property));
-    for (const role of Object.keys(m.source.semantic.type).filter((k) => !k.startsWith('$'))) {
+  test('every type role is complete in the public tier: a shorthand, a width, a tracking, and a case where it sets one', () => {
+    const props = new Map(list.filter((t) => t.tier === 'semantic').map((t) => [t.property, t]));
+    for (const [role, spec] of Object.entries(m.source.semantic.type).filter(([k]) => !k.startsWith('$'))) {
       for (const suffix of ['', '-stretch', '-tracking']) assert.ok(props.has(`--nc-type-${role}${suffix}`), `${role}${suffix}`);
+      assert.equal(props.get(`--nc-type-${role}-case`)?.light, spec.case, `${role}-case`);
     }
+    assert.match(read('css/base.css'), /\.label \{[^}]*text-transform: var\(--nc-type-label-case\);/);
   });
 
   test('tokens.mjs exports the public tier only', () => {

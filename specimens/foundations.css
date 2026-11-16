@@ -18,8 +18,8 @@
 .fd-intro__concept { display: grid; gap: var(--nc-space-5); padding-bottom: var(--nc-space-2); }
 .fd-intro__concept .lead { color: var(--nc-color-text); }
 .fd-intro__concept .lead + .lead { color: var(--nc-color-text-secondary); }
-.fd-principles { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: var(--nc-space-4); margin-top: var(--nc-space-5); }
-.fd-principles li { padding: var(--nc-space-5) var(--nc-space-5) 1.125rem; }
+.fd-principles { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: var(--nc-space-4); margin-top: var(--nc-space-5); }
+.fd-principles li { padding: var(--nc-space-5) var(--nc-space-4) 1.125rem; }
 .fd-principles .h4 { margin-top: var(--nc-space-3); text-wrap: balance; }
 .fd-principles p { margin-top: var(--nc-space-3); font-size: var(--nc-text-sm); line-height: 1.5; color: var(--nc-color-text-secondary); }
 
@@ -46,7 +46,7 @@
 .ramp { display: grid; grid-template-columns: 7.5rem minmax(0, 1fr); gap: var(--nc-space-4); align-items: stretch; }
 .ramp__name { display: grid; align-content: center; gap: var(--nc-space-2); }
 .ramp__cells { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 0.1875rem; }
-.sw { position: relative; display: grid; align-content: space-between; gap: var(--nc-space-4); min-height: 5.25rem; padding: 0.4375rem 0.5rem; border-radius: var(--nc-radius-cell); color: var(--nc-stone-925); overflow: hidden; }
+.sw { position: relative; display: grid; align-content: space-between; gap: var(--nc-space-4); min-height: 5.25rem; padding: 0.4375rem 0.5rem; border-radius: var(--nc-radius-cell); color: var(--nc-stone-975); overflow: hidden; }
 .sw--dark { color: var(--nc-stone-0); }
 .sw .label { color: inherit; }
 .sw__hex, .sw__ratio { display: block; font-family: var(--nc-font-mono); font-stretch: var(--nc-width-code); font-size: 0.625rem; line-height: 1.5; white-space: nowrap; }
@@ -165,8 +165,6 @@
 .fd-type__lead { color: var(--nc-color-text-secondary); }
 
 /* the brace */
-.fd-principles { grid-template-columns: repeat(7, minmax(0, 1fr)); }
-.fd-principles li { padding: var(--nc-space-5) var(--nc-space-4) 1.125rem; }
 .fd-rule { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: var(--nc-space-6); padding: 1.75rem 2rem; }
 .fd-rule__mark { display: flex; align-items: stretch; gap: 0.5rem; height: 4.5rem; color: var(--nc-color-primary-text); }
 .fd-rule__text { font: var(--nc-type-heading); font-stretch: var(--nc-width-display); letter-spacing: var(--nc-tracking-heading); max-width: 54rem; text-wrap: balance; }
@@ -317,6 +315,7 @@
 .rolesw-scope-platform { background: var(--nc-color-scope-platform); }
 .rolesw-lip { background: var(--nc-color-lip); }
 .rolesw-shade { background: var(--nc-color-shade); }
+.rolesw-screen-shade { background: var(--nc-color-screen-shade); }
 .rolesw-glint { background: var(--nc-color-glint); }
 .rolesw-shadow { background: var(--nc-color-shadow); }
 .rolesw-scrim { background: var(--nc-color-scrim); }
@@ -361,7 +360,7 @@
 .ty-reading { font: var(--nc-type-reading); font-stretch: var(--nc-type-reading-stretch); letter-spacing: var(--nc-type-reading-tracking); }
 .ty-ui { font: var(--nc-type-ui); font-stretch: var(--nc-type-ui-stretch); letter-spacing: var(--nc-type-ui-tracking); }
 .ty-field { font: var(--nc-type-field); font-stretch: var(--nc-type-field-stretch); letter-spacing: var(--nc-type-field-tracking); }
-.ty-label { font: var(--nc-type-label); font-stretch: var(--nc-type-label-stretch); letter-spacing: var(--nc-type-label-tracking); text-transform: uppercase; }
+.ty-label { font: var(--nc-type-label); font-stretch: var(--nc-type-label-stretch); letter-spacing: var(--nc-type-label-tracking); text-transform: var(--nc-type-label-case); }
 .ty-value { font: var(--nc-type-value); font-stretch: var(--nc-type-value-stretch); letter-spacing: var(--nc-type-value-tracking); font-feature-settings: "zero" 1; }
 .ty-code { font: var(--nc-type-code); font-stretch: var(--nc-type-code-stretch); letter-spacing: var(--nc-type-code-tracking); font-feature-settings: "zero" 1; }
 .ty-readout { font: var(--nc-type-readout); font-stretch: var(--nc-type-readout-stretch); letter-spacing: var(--nc-type-readout-tracking); font-feature-settings: "zero" 1; }

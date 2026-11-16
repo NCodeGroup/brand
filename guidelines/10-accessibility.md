@@ -12,7 +12,7 @@ The floor, stated once. Every surface built on Instrument meets it, and the buil
   its requirement.
 - **Meaning is never carried by color alone.** A status has a lamp shape and a word. A boundary has an icon, a word and
   a fill. A switch shows an I or an O. An error has an icon and a message.
-- **Keyboard focus is visible** on every control, with one ring.
+- **Keyboard focus is visible** on every control, with one ring, lit on a screen, where it reaches 3 to 1 too.
 - **`prefers-reduced-motion` stops all motion**, and each animated part rests in a designed still state.
 - **A table that becomes a list on a phone** keeps its table roles in the markup, and its head stays available to
   assistive technology.

@@ -25,10 +25,13 @@ color.
 
 Take `tokens/tokens.css`, `css/fonts.css` with `fonts/`, and `css/starlight.css`, and name them in Starlight's
 `customCss`, in that order. `css/starlight.css` sets Starlight's own custom properties (`--sl-*`) from the tokens: the
-colors of both themes, the two families, the type sizes, the shadows and the layout's widths. It holds no rule for
-Starlight's markup. The rules that make the sidebar's current page a latched key, a code block a screen and a callout
-an alert depend on the markup of one Starlight version, so they live in the documentation toolchain, beside the version
-they were written for.
+colors of both themes, the two families, the type sizes, the headings of a long-form page, the shadows and the
+layout's widths. Every pair of colors Starlight paints on one another, such as its inverted text on the accent, is a
+pairing the contrast gate measures for any tenant's color. It holds no rule for Starlight's markup. The rules that
+make the sidebar's current page a latched key, a code block a screen and a callout an alert depend on the markup of
+one Starlight version, so they live in the documentation toolchain, beside the version they were written for. So does
+the reading voice: Starlight reads no property for the size of running text or its measure, so the toolchain sets the
+`reading` role, 17 pixels, on the 41 rem `--nc-measure`.
 
 ## A Material UI Application
 

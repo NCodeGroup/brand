@@ -43,7 +43,7 @@ Components read roles, never ramp steps. Each role is one custom property, `--nc
 | Scope | `scope-tenant`, `scope-team`, `scope-platform` | The ink of a brace, one per kind of boundary |
 | Status | `success`, `warning`, `danger`, `info`, each with `on-`, `-mark`, `-text`, `-subtle`, `-border`; and `danger-hover`, `danger-lip` | `-mark` is a lamp, icon or line (3 to 1). `-text` is running text (4.5 to 1). A danger key has a hover and a lip of its own |
 | Hazard | `hazard`, `on-hazard` | Tape, the same in both themes |
-| Depth | `lip`, `shade`, `glint`, `shadow`, `scrim` | The side of a raised part, the shadow in a recess, light on an edge |
+| Depth | `lip`, `shade`, `screen-shade`, `glint`, `shadow`, `scrim` | The side of a raised part, the shadow in a recess or under a screen's top edge, light on an edge |
 | Marks | `logo` | NCode's marks: Blue, or Blue Light on dark |
 
 Reach for the role that names what the part is, not the one whose value looks right: `primary-text` for the brand as
@@ -57,7 +57,8 @@ or a sensitive value. Nothing else is amber. A highlight, a badge or a new featu
 ## A Theme
 
 A theme is nothing but the root's `color-scheme`: the page follows the reader's system setting until `data-theme`
-pins it to `light` or `dark`. A screen is the same in both themes, as hazard tape is.
+pins it to `light` or `dark`. On paper a page takes the light theme. A screen is the same in both themes, as hazard
+tape is.
 
 ## Computed Contrast
 
@@ -93,6 +94,7 @@ requirement; [Accessibility](10-accessibility.md) says what is measured and why.
 | Lit row: code | 1 | 4.5 | 8.25 / 8.25 | 7.93 / 7.93 | 7.70 / 7.70 |
 | Lit row: keywords | 1 | 4.5 | 4.92 / 4.92 | 4.80 / 4.80 | 4.80 / 4.80 |
 | Lit row and memory cells: literals | 1 | 4.5 | 7.54 / 7.54 | 7.13 / 7.13 | 6.85 / 6.85 |
+| Focus ring on a screen | 2 | 3 | 4.92 / 4.92 | 4.80 / 4.80 | 4.80 / 4.80 |
 | Boundary plate: tenant | 1 | 4.5 | 6.10 / 6.10 | 5.95 / 5.95 | 5.95 / 5.95 |
 | Boundary plate: team | 1 | 4.5 | 15.40 / 15.40 | 14.79 / 14.79 | 14.52 / 14.52 |
 | Boundary plate: platform; hazard band | 1 | 4.5 | 9.27 / 9.27 |  |  |
@@ -120,5 +122,5 @@ requirement; [Accessibility](10-accessibility.md) says what is measured and why.
 | Info: alert text | 1 | 4.5 | 16.49 / 15.83 |  |  |
 | Danger: key, hover | 1 | 4.5 | 8.12 / 9.73 |  |  |
 
-992 measurements of 124 pairings: 0 below the requirement.
+1036 measurements of 126 pairings: 0 below the requirement.
 <!-- /generated:contrast -->

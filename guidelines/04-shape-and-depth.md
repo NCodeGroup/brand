@@ -13,7 +13,8 @@ what keeps the instrument metaphor from turning into a picture of one.
   Flush: a 1-pixel lip, `--nc-elevation-flush`. Raised: a 2-pixel lip, `--nc-elevation-raised`.
 - **One soft shadow** exists, under menus, dialogs and sheets: `--nc-elevation-floating` and `--nc-elevation-overlay`.
 - **Raise only what can be pressed.** A raised part says "press me"; a plate that cannot be pressed is flush.
-- **Focus is one ring.** 2 pixels of `--nc-color-focus`, 2 pixels clear of the part, on everything.
+- **Focus is one ring.** 2 pixels of `--nc-color-focus`, 2 pixels clear of the part, on everything. On a screen the
+  ring is lit, `--nc-color-screen-lit`, and a listing that scrolls draws it just inside its own edge.
 
 ## Hazard Tape
 

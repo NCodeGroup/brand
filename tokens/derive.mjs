@@ -574,6 +574,7 @@ const DATA = {
         "logo": "#0033CC",
         "lip": "#BEBEB8",
         "shade": "rgb(23 23 20 / 0.08)",
+        "screen-shade": "rgb(0 0 0 / 0.3)",
         "glint": "#FFFFFF",
         "shadow": "rgb(23 23 20 / 0.2)",
         "scrim": "rgb(23 23 20 / 0.5)"
@@ -730,6 +731,7 @@ const DATA = {
         "logo": "#809FFF",
         "lip": "#000000",
         "shade": "rgb(0 0 0 / 0.55)",
+        "screen-shade": "rgb(0 0 0 / 0.3)",
         "glint": "rgb(255 255 255 / 0.06)",
         "shadow": "rgb(0 0 0 / 0.7)",
         "scrim": "rgb(0 0 0 / 0.68)"

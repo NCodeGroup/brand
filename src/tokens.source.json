@@ -312,6 +312,7 @@
         "$note": "Depth is drawn with hard edges, never with blur: a lip below means raised, a shade above means recessed.",
         "lip": { "value": { "light": "{stone.400}", "dark": "#000000" }, "note": "the side of a raised part" },
         "shade": { "value": { "light": { "alpha": ["{stone.925}", 0.08] }, "dark": { "alpha": ["#000000", 0.55] } }, "note": "the shadow inside a recess" },
+        "screen-shade": { "value": { "alpha": ["#000000", 0.3] }, "note": "the shadow inside a screen's top edge, the same in both themes" },
         "glint": { "value": { "light": "{stone.0}", "dark": { "alpha": ["#FFFFFF", 0.06] } }, "note": "light on a top edge" },
         "shadow": { "value": { "light": { "alpha": ["{stone.925}", 0.2] }, "dark": { "alpha": ["#000000", 0.7] } }, "note": "the only soft shadow, under overlays" },
         "scrim": { "light": { "alpha": ["{stone.925}", 0.5] }, "dark": { "alpha": ["#000000", 0.68] } }

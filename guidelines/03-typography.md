@@ -30,15 +30,16 @@ pixels. On a readout it is set at 100%.
 ## Roles
 
 A role is a font shorthand, `--nc-type-<role>`, with its width and its letter spacing beside it as
-`--nc-type-<role>-stretch` and `--nc-type-<role>-tracking`. Set all three together. The `label` role is the one
-uppercase role; a mono role also turns on the slashed zero, `font-feature-settings: "zero" 1`.
+`--nc-type-<role>-stretch` and `--nc-type-<role>-tracking`. Set them together. The `label` role is the one
+uppercase role, and it carries its case as `--nc-type-label-case`; a mono role also turns on the slashed zero,
+`font-feature-settings: "zero" 1`.
 
 ```css
 .column-head {
   font: var(--nc-type-label);
   font-stretch: var(--nc-type-label-stretch);
   letter-spacing: var(--nc-type-label-tracking);
-  text-transform: uppercase;
+  text-transform: var(--nc-type-label-case);
 }
 ```
 

@@ -10,12 +10,13 @@ Until the first stable release, the [Unreleased] section describes the product a
 
 - Instrument, NCode's look and feel, as design tokens from one source, `src/tokens.source.json`:
   `tokens/tokens.css` with every custom property prefixed `--nc-`, each color written once, as `light-dark()` where
-  the themes differ, a tenant's colors derived in CSS from `--nc-brand` and `--nc-brand-secondary`, and a static
-  palette for a browser without 2024 CSS; `tokens/tokens.static.css`, every color resolved for NCode's own brand;
+  the themes differ, a tenant's colors derived in CSS from `--nc-brand` and `--nc-brand-secondary`, the light theme
+  on paper, and a static palette for a browser without 2024 CSS; `tokens/tokens.static.css`, every color resolved for NCode's own brand;
   `tokens/tokens.json` in the Design Tokens Community Group format 2025.10; and `tokens/tokens.mjs` with
   `tokens.d.mts`, the public tokens as a typed ES module.
 - Two tiers: the semantic tokens are public, and the color ramps and the steps of the type scale are private
-  primitives. Each type role carries its width and letter spacing as `--nc-type-<role>-stretch` and `-tracking`.
+  primitives. Each type role carries its width and letter spacing as `--nc-type-<role>-stretch` and `-tracking`, and
+  the label role its case as `--nc-type-label-case`.
 - `tokens/derive.mjs` with `derive.d.mts` and `derive.vectors.json`: a tenant's primary and secondary color derive every
   color they touch, light and dark, with every pairing it guards held at its contrast floor for any color, in one
   module that imports nothing. A key's face lighter than about OKLCH lightness 0.75 stays faint on a light plate, as
