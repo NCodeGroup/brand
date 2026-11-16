@@ -14,3 +14,5 @@
 *.pdf binary
 *.zip binary
 *.snk binary
+# The fonts: fonts.lock.json and manifest.json pin their bytes.
+*.woff2 binary
