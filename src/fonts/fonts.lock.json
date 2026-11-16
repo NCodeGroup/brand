@@ -1,5 +1,5 @@
 {
-  "$description": "Where each file in src/fonts came from, and the SHA-256 it must have. build.mjs refuses to write fonts/ when a file in src/fonts is missing or hashes to anything else, so a font changes only with this lock, in a pull request that says why. Each file is byte for byte the one its package ships; the package's integrity is the npm registry's, from a package-lock.json that installed it.",
+  "$description": "Where each file in src/fonts came from, and the SHA-256 it must have. build.mjs refuses to write fonts/ when a file in src/fonts is missing or hashes to anything else, so a font changes only with this lock, in a pull request that says why. Each file is byte for byte the one its package's tarball holds at from, and integrity is the npm registry's for that tarball. node tools/refresh-fonts.mjs copies each file from the tarball after checking the tarball against integrity and the file against sha256; with --pin, after a family's version, tarball and integrity move to another release, it also pins each file's sha256.",
   "families": {
     "Instrument Sans": {
       "role": "names, headings and reading",

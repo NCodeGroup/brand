@@ -76,3 +76,5 @@ records are indexed in [project-template/](project-template/README.md).
 | [1008](1008-the-icon-set-is-ncodes-own-drawings-and-a-pinned-lucide-subset-restyled-to-one-grid.md) | The icon set is NCode's own drawings and a pinned Lucide subset, restyled to one grid (amends 1003) | Accepted |
 | [1009](1009-a-release-carries-an-attested-archive-and-vendor-brand-verifies-it-before-writing.md) | A release carries an attested archive, and vendor-brand.mjs verifies it before writing (amends 1001) | Accepted |
 | [1010](1010-the-guide-and-the-specimens-are-published-on-github-pages-from-committed-files.md) | The guide and the specimens are published on GitHub Pages from committed files (amends 1000) | Accepted |
+| [1011](1011-the-design-tokens-resolver-file-is-one-self-contained-document-with-a-theme-modifier.md) | The Design Tokens resolver file is one self-contained document with a theme modifier | Accepted |
+| [1012](1012-the-syntax-theme-names-the-screens-tokens-rather-than-their-colors.md) | The syntax theme names the screen's tokens rather than their colors | Accepted |

@@ -49,8 +49,9 @@ Every path is from the root of a release. Keep the release's folders side by sid
 |---|---|
 | A page in plain HTML and CSS | `tokens/tokens.css`, `css/fonts.css` with `fonts/`, `css/base.css` with `brace/` |
 | A documentation site on Starlight | `tokens/tokens.css`, `css/fonts.css` with `fonts/`, `css/starlight.css` |
+| Code blocks highlighted by Expressive Code | `syntax/instrument-screen.json`, on a page that loads `tokens/tokens.css` |
 | A Material UI application | `mui/instrument.json`, `tokens/tokens.mjs`, `tokens/derive.mjs`, `css/fonts.css` with `fonts/` |
-| A tool or a format with its own theme | `tokens/tokens.json`, in the Design Tokens format 2025.10 |
+| A tool or a format with its own theme | `tokens/tokens.json`, in the Design Tokens format 2025.10, or `tokens/tokens.resolver.json`, with the two themes as a modifier |
 | An email, or a page without 2024 CSS | `tokens/tokens.static.css`, every color written out |
 | A logo in a README, a favicon, a package icon | The files in `logo/ncode/`, or `logo/identity/` for NCode Identity, as [Marks](01-marks.md) says |
 | An icon | `icons/sprite.svg` with `css/base.css`, or one `icons/<name>.svg`; `icons/LICENSE-Lucide.txt` with any Lucide icon, as [Icons](07-icons.md) says |

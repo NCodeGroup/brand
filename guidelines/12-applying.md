@@ -35,6 +35,30 @@ reading voice there too. Starlight sets no size on running text, which keeps the
 measure of running text. In the toolchain's own rules, set running text in the `reading` role, 17 pixels, on the 41 rem
 `--nc-measure`, as `.prose` does in `css/base.css`.
 
+Take `syntax/instrument-screen.json` for the code blocks. It is Expressive Code's syntax theme, which colors code as a
+screen does: keywords lit, literals amber and comments dimmed. Each color is the custom property of its role, so
+`tokens/tokens.css` decides it, a tenant's color included. One theme serves both page themes, because a screen is the
+same in both. Name it in the toolchain's `ec.config.mjs`:
+
+```js
+import { readFileSync } from 'node:fs';
+import { defineEcConfig } from '@astrojs/starlight/expressive-code';
+
+const screen = JSON.parse(readFileSync(new URL('./src/brand/syntax/instrument-screen.json', import.meta.url), 'utf8'));
+
+export default defineEcConfig({
+  themes: [screen],
+  useStarlightDarkModeSwitch: false,
+  useStarlightUiThemeColors: false,
+  minSyntaxHighlightingColorContrast: 0,
+});
+```
+
+Keep `minSyntaxHighlightingColorContrast` at 0: Expressive Code's correction can't compute with a custom property, and
+the contrast gate holds each role at 4.5 to 1 on the screen. The frame around a code block, Expressive Code's
+`styleOverrides`, stays in the toolchain with its other rules
+([the decision](../docs/decisions/1012-the-syntax-theme-names-the-screens-tokens-rather-than-their-colors.md)).
+
 ## A Material UI Application
 
 Take `mui/instrument.json`, `tokens/tokens.mjs` with `tokens.d.mts`, `tokens/derive.mjs` with `derive.d.mts` and
@@ -74,6 +98,11 @@ Take `tokens/tokens.json`, in the Design Tokens Community Group format 2025.10. 
 semantic colors and shadows under `light` and `dark`. A token a tenant's colors change carries its CSS rule in
 `$extensions["org.ncode.instrument"]`. A group that sets a tier names it there, and the groups inside it inherit it.
 
+Take `tokens/tokens.resolver.json` for a tool that reads the Design Tokens Resolver Module 2025.10. It is one document
+that references no other file. Its set `instrument` holds the tokens both themes share. Its modifier `theme`, `light` by
+default or `dark`, puts that theme's semantic colors and shadows under the group `theme`, such as `theme.color.text`
+([the decision](../docs/decisions/1011-the-design-tokens-resolver-file-is-one-self-contained-document-with-a-theme-modifier.md)).
+
 ## Icons
 
 Take `icons/sprite.svg` beside `css/base.css`, and use an icon by its symbol, `i-<name>`:
@@ -104,7 +133,7 @@ Take files from one tagged release, and prove in your own gate that they did not
 
    ```json
    {
-     "version": "0.6.0",
+     "version": "0.7.0",
      "files": {
        "src/brand/tokens/tokens.css": { "source": "tokens/tokens.css", "sha256": "" },
        "src/brand/css/fonts.css": { "source": "css/fonts.css", "sha256": "" },
@@ -118,10 +147,10 @@ Take files from one tagged release, and prove in your own gate that they did not
    }
    ```
 
-3. Run `node vendor-brand.mjs --update 0.6.0`. It needs the [GitHub CLI](https://cli.github.com), `gh`, signed in
-   with `gh auth login`, or with `GH_TOKEN` in CI. It downloads the release's archive, `brand-0.6.0.tar.gz`, from
-   the GitHub release `v0.6.0`, and has `gh attestation verify` prove its build provenance: signed by
-   [publish.yml](../.github/workflows/publish.yml) for the tag `v0.6.0` on a GitHub-hosted runner. It refuses the
+3. Run `node vendor-brand.mjs --update 0.7.0`. It needs the [GitHub CLI](https://cli.github.com), `gh`, signed in
+   with `gh auth login`, or with `GH_TOKEN` in CI. It downloads the release's archive, `brand-0.7.0.tar.gz`, from
+   the GitHub release `v0.7.0`, and has `gh attestation verify` prove its build provenance: signed by
+   [publish.yml](../.github/workflows/publish.yml) for the tag `v0.7.0` on a GitHub-hosted runner. It refuses the
    archive unless the attestation names its SHA-256, its `manifest.json` is that version, and it holds every file
    the manifest lists, at the manifest's size and SHA-256, and nothing else. Only then does it write the files and
    pin each hash in the lock. A release never changes, so once the lock pins a version, it refuses a file of that
@@ -135,4 +164,4 @@ request: a value change shows there, line by line. [Versions and license](14-ver
 kind of version number means.
 
 To check an archive yourself, run
-`gh attestation verify brand-0.6.0.tar.gz --repo NCodeGroup/brand --signer-workflow NCodeGroup/brand/.github/workflows/publish.yml`.
+`gh attestation verify brand-0.7.0.tar.gz --repo NCodeGroup/brand --signer-workflow NCodeGroup/brand/.github/workflows/publish.yml`.

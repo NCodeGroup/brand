@@ -8,10 +8,10 @@ NCode's look and feel: tokens, logos, themes and guidelines.
 The look is called Instrument: a neutral, precisely made case of engraved labels, keys and wells that holds live
 values, with the brace of the `{N}` mark drawn around what one boundary holds. Every token is written once, in
 [src/tokens.source.json](src/tokens.source.json), and one Node.js script with no packages, [build.mjs](build.mjs),
-writes everything a consumer takes: the tokens as CSS, Design Tokens JSON and a typed module, the stylesheets, the
-fonts, the braces, the icons, the logo kit and data for a Material UI theme. Consumers copy the files they need from a
-tagged release's archive, once the GitHub CLI has verified its build provenance, and check them against its
-`manifest.json`.
+writes everything a consumer takes: the tokens as CSS, Design Tokens JSON, a Design Tokens resolver document and a
+typed module, the stylesheets, the fonts, the braces, the icons, the logo kit, data for a Material UI theme and a
+syntax theme for Expressive Code. Consumers copy the files they need from a tagged release's archive, once the GitHub
+CLI has verified its build provenance, and check them against its `manifest.json`.
 
 [The guide](guidelines/README.md) says what Instrument is made of, when to use each part and which file to take, and
 the [specimens](specimens/foundations.html) show every part at work. Both are published at
@@ -21,21 +21,22 @@ https://ncodegroup.github.io/brand/, from `main`, by [.github/workflows/pages.ym
 
 | Folder | What it is |
 |---|---|
-| [tokens/](tokens/) | `tokens.css`, `tokens.static.css`, `tokens.json` (Design Tokens 2025.10), `tokens.mjs` and the tenant derivation, `derive.mjs` |
+| [tokens/](tokens/) | `tokens.css`, `tokens.static.css`, `tokens.json` (Design Tokens 2025.10) with `tokens.resolver.json`, its themes as a resolver modifier, `tokens.mjs` and the tenant derivation, `derive.mjs` |
 | [css/](css/) | `base.css`, the element and component styles; `fonts.css`; `starlight.css`, for a Starlight site |
 | [fonts/](fonts/) | Instrument Sans and Martian Mono, with their licenses |
 | [brace/](brace/) | The brace as SVG masks and as path data |
 | [icons/](icons/) | NCode's icons and a restyled Lucide subset: one SVG each, a sprite, path data and Lucide's license |
 | [logo/](logo/README.md) | The `{N}` and `{id}` logo kits, for every place a mark appears |
 | [mui/](mui/) | The values a Material UI theme takes, as data |
+| [syntax/](syntax/) | `instrument-screen.json`, the syntax theme of a code block, for Expressive Code |
 | [vendoring/](vendoring/vendor-brand.mjs) | The script a consumer copies to verify, vendor and check a release's files |
 | [guidelines/](guidelines/README.md) | The guide |
 | [guide/](guide/index.html) | The guide as web pages, which build.mjs renders from guidelines/ for the site |
 | [specimens/](specimens/) | Nine pages built on the generated files alone |
 | [src/](src/) | The sources: the tokens, the stylesheets, the fonts and the Lucide icons with their locks, NCode's icons, the marks' geometry |
 
-Every file in `tokens/`, `css/`, `fonts/`, `brace/`, `icons/`, `logo/`, `mui/` and `guide/`, and `manifest.json` and
-`index.html`, is generated: change its source in `src/` or `guidelines/` and run `npm run build`.
+Every file in `tokens/`, `css/`, `fonts/`, `brace/`, `icons/`, `logo/`, `mui/`, `syntax/` and `guide/`, and `manifest.json`
+and `index.html`, is generated: change its source in `src/` or `guidelines/` and run `npm run build`.
 
 ## Development
 
@@ -54,7 +55,8 @@ contrast pairing is below its floor; it is the gate before a push, and CI runs i
 The weekly `pin-watch` workflow opens an issue, labeled `pin-update`, when Lucide or Fontsource publishes a release
 newer than `src/icons/lucide.lock.json` or `src/fonts/fonts.lock.json` pins that is at least three days old, and
 closes it once the lock pins it; `/plan-issue` plans it. `node tools/pin-watch.mjs --dry-run --repo=NCodeGroup/brand`
-prints what it would do, and needs no token.
+prints what it would do, and needs no token. `node tools/refresh-fonts.mjs` copies the fonts from the npm tarballs
+`src/fonts/fonts.lock.json` pins, once each tarball and each file match their hashes.
 
 ## AI-Assisted Workflow
 
@@ -88,7 +90,7 @@ The workflow files come from a Copier template, which owns them: never edit `.te
 Which license covers what:
 
 - The code, the tokens, the stylesheets, the braces in [brace/](brace/), NCode's own icons in [icons/](icons/), the
-  derivation, the Material UI data, the vendoring script and the guide are licensed under the
+  derivation, the Material UI data, the syntax theme, the vendoring script and the guide are licensed under the
   [Apache License 2.0](LICENSE.txt).
 - The names NCode, NCode Group and NCode Identity and the marks are trademarks of NCode Group, and the marks' artwork,
   every file in [logo/](logo/README.md), is copyright NCode Group, all rights reserved: [TRADEMARKS.md](TRADEMARKS.md)

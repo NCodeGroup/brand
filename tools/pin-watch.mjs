@@ -97,9 +97,11 @@ const HOW_TO = {
     "SHA-256 hashes to match, as its `$description` says. Run `npm run build` and compare each icon that changes " +
     'with the grid in `guidelines/07-icons.md`.',
   fonts:
-    "To take it, copy each file the lock names from the new package's tarball into `src/fonts/`, and set the " +
-    "family's version, tarball, integrity and SHA-256 hashes to match, as the lock's `$description` says. Run " +
-    '`npm run build`, then compare the specimens before and after with `node tools/shoot.mjs`.',
+    "To take it, set the family's `version`, `tarball` and `integrity` in the lock to the new release's, as " +
+    '`npm view <package>@<version> dist.tarball dist.integrity` prints them, then run ' +
+    '`node tools/refresh-fonts.mjs --pin`: it checks the tarball against that integrity, copies each file the ' +
+    'lock names into `src/fonts/` and pins its SHA-256. Run `npm run build`, then compare the specimens before ' +
+    'and after with `node tools/shoot.mjs`.',
 };
 
 const FOOTER =

@@ -32,7 +32,7 @@
   </a>
 
   <div class="sitebar__tools">
-    <span class="readout" title="Version"><span class="vh">Version </span>v0.6.0</span>
+    <span class="readout" title="Version"><span class="vh">Version </span>v0.7.0</span>
     <a class="key sitebar__github" href="https://github.com/NCodeGroup/brand">
       GitHub
       <svg class="icon" aria-hidden="true"><use href="../icons/sprite.svg#i-arrow-up-right"/></svg>
@@ -119,6 +119,25 @@ reading voice there too. Starlight sets no size on running text, which keeps the
 <code>--sl-content-width</code>, 50 rem in <code>css/starlight.css</code>, bounds the content panel, listings and tables included, not the
 measure of running text. In the toolchain's own rules, set running text in the <code>reading</code> role, 17 pixels, on the 41 rem
 <code>--nc-measure</code>, as <code>.prose</code> does in <code>css/base.css</code>.</p>
+<p>Take <code>syntax/instrument-screen.json</code> for the code blocks. It is Expressive Code's syntax theme, which colors code as a
+screen does: keywords lit, literals amber and comments dimmed. Each color is the custom property of its role, so
+<code>tokens/tokens.css</code> decides it, a tenant's color included. One theme serves both page themes, because a screen is the
+same in both. Name it in the toolchain's <code>ec.config.mjs</code>:</p>
+<div class="screen wide"><pre><code><span class="line">import { readFileSync } from 'node:fs';</span>
+<span class="line">import { defineEcConfig } from '@astrojs/starlight/expressive-code';</span>
+<span class="line"></span>
+<span class="line">const screen = JSON.parse(readFileSync(new URL('./src/brand/syntax/instrument-screen.json', import.meta.url), 'utf8'));</span>
+<span class="line"></span>
+<span class="line">export default defineEcConfig({</span>
+<span class="line">  themes: [screen],</span>
+<span class="line">  useStarlightDarkModeSwitch: false,</span>
+<span class="line">  useStarlightUiThemeColors: false,</span>
+<span class="line">  minSyntaxHighlightingColorContrast: 0,</span>
+<span class="line">});</span></code></pre></div>
+<p>Keep <code>minSyntaxHighlightingColorContrast</code> at 0: Expressive Code's correction can't compute with a custom property, and
+the contrast gate holds each role at 4.5 to 1 on the screen. The frame around a code block, Expressive Code's
+<code>styleOverrides</code>, stays in the toolchain with its other rules
+(<a class="link" href="https://github.com/NCodeGroup/brand/blob/main/docs/decisions/1012-the-syntax-theme-names-the-screens-tokens-rather-than-their-colors.md">the decision</a>).</p>
 <h2 id="a-material-ui-application">A Material UI Application</h2>
 <p>Take <code>mui/instrument.json</code>, <code>tokens/tokens.mjs</code> with <code>tokens.d.mts</code>, <code>tokens/derive.mjs</code> with <code>derive.d.mts</code> and
 <code>derive.vectors.json</code>, and <code>css/fonts.css</code> with <code>fonts/</code>. The theme, its <code>createTheme</code> call and its component overrides,
@@ -153,6 +172,10 @@ inline from <code>tokens/tokens.mjs</code> instead.</p>
 <p>Take <code>tokens/tokens.json</code>, in the Design Tokens Community Group format 2025.10. Primitives are at the top level, and the
 semantic colors and shadows under <code>light</code> and <code>dark</code>. A token a tenant's colors change carries its CSS rule in
 <code>$extensions["org.ncode.instrument"]</code>. A group that sets a tier names it there, and the groups inside it inherit it.</p>
+<p>Take <code>tokens/tokens.resolver.json</code> for a tool that reads the Design Tokens Resolver Module 2025.10. It is one document
+that references no other file. Its set <code>instrument</code> holds the tokens both themes share. Its modifier <code>theme</code>, <code>light</code> by
+default or <code>dark</code>, puts that theme's semantic colors and shadows under the group <code>theme</code>, such as <code>theme.color.text</code>
+(<a class="link" href="https://github.com/NCodeGroup/brand/blob/main/docs/decisions/1011-the-design-tokens-resolver-file-is-one-self-contained-document-with-a-theme-modifier.md">the decision</a>).</p>
 <h2 id="icons">Icons</h2>
 <p>Take <code>icons/sprite.svg</code> beside <code>css/base.css</code>, and use an icon by its symbol, <code>i-&lt;name&gt;</code>:</p>
 <div class="screen wide"><pre><code><span class="line">&lt;svg class="icon" aria-hidden="true"&gt;&lt;use href="brand/icons/sprite.svg#i-search"/&gt;&lt;/svg&gt;</span></code></pre></div>
@@ -172,7 +195,7 @@ packages, and adds nothing to your lockfile.</li>
 release. Take every file a stylesheet loads, here the four fonts <code>css/fonts.css</code> names, and each font family's
 license with its fonts:</p>
 <div class="screen wide"><pre><code><span class="line">{</span>
-<span class="line">  "version": "0.6.0",</span>
+<span class="line">  "version": "0.7.0",</span>
 <span class="line">  "files": {</span>
 <span class="line">    "src/brand/tokens/tokens.css": { "source": "tokens/tokens.css", "sha256": "" },</span>
 <span class="line">    "src/brand/css/fonts.css": { "source": "css/fonts.css", "sha256": "" },</span>
@@ -184,10 +207,10 @@ license with its fonts:</p>
 <span class="line">    "src/brand/fonts/OFL-Martian-Mono.txt": { "source": "fonts/OFL-Martian-Mono.txt", "sha256": "" }</span>
 <span class="line">  }</span>
 <span class="line">}</span></code></pre></div></li>
-<li>Run <code>node vendor-brand.mjs --update 0.6.0</code>. It needs the <a class="link" href="https://cli.github.com">GitHub CLI</a>, <code>gh</code>, signed in
-with <code>gh auth login</code>, or with <code>GH_TOKEN</code> in CI. It downloads the release's archive, <code>brand-0.6.0.tar.gz</code>, from
-the GitHub release <code>v0.6.0</code>, and has <code>gh attestation verify</code> prove its build provenance: signed by
-<a class="link" href="https://github.com/NCodeGroup/brand/blob/main/.github/workflows/publish.yml">publish.yml</a> for the tag <code>v0.6.0</code> on a GitHub-hosted runner. It refuses the
+<li>Run <code>node vendor-brand.mjs --update 0.7.0</code>. It needs the <a class="link" href="https://cli.github.com">GitHub CLI</a>, <code>gh</code>, signed in
+with <code>gh auth login</code>, or with <code>GH_TOKEN</code> in CI. It downloads the release's archive, <code>brand-0.7.0.tar.gz</code>, from
+the GitHub release <code>v0.7.0</code>, and has <code>gh attestation verify</code> prove its build provenance: signed by
+<a class="link" href="https://github.com/NCodeGroup/brand/blob/main/.github/workflows/publish.yml">publish.yml</a> for the tag <code>v0.7.0</code> on a GitHub-hosted runner. It refuses the
 archive unless the attestation names its SHA-256, its <code>manifest.json</code> is that version, and it holds every file
 the manifest lists, at the manifest's size and SHA-256, and nothing else. Only then does it write the files and
 pin each hash in the lock. A release never changes, so once the lock pins a version, it refuses a file of that
@@ -200,7 +223,7 @@ naming the file, when a vendored file is missing or differs from the lock.</li>
 request: a value change shows there, line by line. <a class="link" href="14-versions-and-license.html">Versions and license</a> says what each
 kind of version number means.</p>
 <p>To check an archive yourself, run
-<code>gh attestation verify brand-0.6.0.tar.gz --repo NCodeGroup/brand --signer-workflow NCodeGroup/brand/.github/workflows/publish.yml</code>.</p>
+<code>gh attestation verify brand-0.7.0.tar.gz --repo NCodeGroup/brand --signer-workflow NCodeGroup/brand/.github/workflows/publish.yml</code>.</p>
     </article>
     <nav class="pagenav" aria-label="Previous and next page">
       <a class="key pagenav__key pagenav__key--prev" href="11-products-and-tenants.html">
