@@ -2,7 +2,9 @@
 // restyled only when it is drawn the way lib/icons.mjs reads, and NCode's symbols parse into elements.
 import assert from 'node:assert/strict';
 import { describe, test } from 'node:test';
-import { parseNcode, restyleLucide, scalePath } from '../lib/icons.mjs';
+import {
+  iconBlock, iconFiles, iconList, iconSet, parseNcode, restyleLucide, scalePath, symbol,
+} from '../lib/icons.mjs';
 
 const lucide = (body, viewBox = '0 0 24 24') =>
   `<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="24"\n  viewBox="${viewBox}"\n>\n${body}\n</svg>\n`;
@@ -67,5 +69,94 @@ describe('parseNcode', () => {
 
   test('throws for a name drawn twice', () => {
     assert.throws(() => parseNcode(file(symbol('eye', 'M1 1h2'), symbol('eye', 'M2 2h3'))), /eye twice/);
+  });
+});
+
+describe('the icon set', () => {
+  const sym = (id, body) => `  <symbol id="i-${id}" viewBox="0 0 16 16">${body}</symbol>`;
+  const ncode = [
+    '<svg xmlns="http://www.w3.org/2000/svg">',
+    '<!-- icons -->',
+    sym('eye', '<path d="M1 1h2"/><circle cx="8" cy="8" r="1" stroke="none"/>'),
+    sym('arrow-left', '<path d="M2 2h3"/>'),
+    '</svg>',
+    '',
+  ].join('\n');
+  const clock = lucide('  <circle cx="12" cy="12" r="10" />\n  <path d="M12 6v6l4 2" />');
+  const license = {
+    version: '1.72.0',
+    license: 'ISC, and MIT for the icons Lucide derives from Feather',
+    text: 'LICENSE\n',
+  };
+  const set = iconSet({ ncode, lucide: { clock } });
+  const files = iconFiles(set, { version: '0.3.0', lucide: license });
+
+  test('sorts by name and records each source and line cap', () => {
+    assert.deepEqual(set.map((i) => [i.name, i.source, i.linecap]), [
+      ['arrow-left', 'ncode', 'butt'],
+      ['clock', 'lucide', 'square'],
+      ['eye', 'ncode', 'butt'],
+    ]);
+  });
+
+  test('throws for a name in both sources and for the name sprite', () => {
+    assert.throws(() => iconSet({ ncode, lucide: { eye: clock } }), /the icon "eye" is drawn in src\/icons\/ncode/);
+    assert.throws(() => iconSet({ ncode, lucide: { sprite: clock } }), /cannot be named "sprite"/);
+  });
+
+  test('gives a stroked shape a non-scaling stroke and a shape with stroke none none', () => {
+    const eye = set.find((i) => i.name === 'eye');
+    assert.equal(
+      symbol(eye),
+      '<symbol id="i-eye" viewBox="0 0 16 16"><path d="M1 1h2" vector-effect="non-scaling-stroke"/>' +
+        '<circle cx="8" cy="8" r="1" stroke="none"/></symbol>',
+    );
+  });
+
+  test('writes a file for each icon, the sprite, the data and the license', () => {
+    assert.deepEqual(
+      Object.keys(files).sort(),
+      ['LICENSE-Lucide.txt', 'arrow-left.svg', 'clock.svg', 'eye.svg', 'icons.json', 'sprite.svg'],
+    );
+    assert.equal(files['LICENSE-Lucide.txt'], 'LICENSE\n');
+  });
+
+  test('marks a Lucide file with its comment and square caps', () => {
+    assert.ok(files['clock.svg'].startsWith('<!-- Lucide 1.72.0 "'));
+    assert.match(files['clock.svg'], /stroke-linecap="square"/);
+    assert.match(files['arrow-left.svg'], /stroke-linecap="butt"/);
+    assert.doesNotMatch(files['arrow-left.svg'], /Lucide/);
+  });
+
+  test('puts a symbol of each icon in the sprite', () => {
+    assert.match(files['sprite.svg'], /<symbol id="i-clock" viewBox="0 0 16 16" stroke-linecap="square">/);
+    assert.match(files['sprite.svg'], /<symbol id="i-eye" viewBox="0 0 16 16">/);
+    assert.ok(files['sprite.svg'].endsWith('</svg>\n'));
+  });
+
+  test('writes icons.json as data', () => {
+    const data = JSON.parse(files['icons.json']);
+    assert.equal(data.grid, 16);
+    assert.equal(data.lucide.file, 'LICENSE-Lucide.txt');
+    assert.deepEqual(data.icons.eye.elements[0], { tag: 'path', d: 'M1 1h2' });
+    assert.equal(data.icons.clock.source, 'lucide');
+  });
+
+  test('iconBlock lists each used icon once, sorted, and throws for an unknown one', () => {
+    const page = '<use href="#i-eye"/><use href="#i-arrow-left"/><use href="#i-eye"/>';
+    const lines = iconBlock(set, page, 'specimens/a.html').split('\n');
+    assert.equal(lines.length, 2);
+    assert.match(lines[0], /^ {2}<symbol id="i-arrow-left"/);
+    assert.match(lines[1], /^ {2}<symbol id="i-eye"/);
+    assert.throws(
+      () => iconBlock(set, '<use href="#i-nope"/>', 'specimens/a.html'),
+      /specimens\/a\.html uses the icon "nope"/,
+    );
+  });
+
+  test('iconList holds a row for each source', () => {
+    const list = iconList(set, license);
+    assert.match(list, /\| NCode, in `src\/icons\/ncode\.svg` \| Butt caps \| `arrow-left`, `eye` \|/);
+    assert.match(list, /\| Lucide 1\.72\.0, restyled \| Square caps \| `clock` \|/);
   });
 });
