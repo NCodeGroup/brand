@@ -63,7 +63,7 @@ describe('custom properties', () => {
         else descriptions(value, file);
       }
     };
-    for (const file of ['tokens/tokens.json', 'tokens/tokens.resolver.json', 'mui/instrument.json', 'brace/brace.json', 'tokens/derive.vectors.json']) descriptions(readJson(file), file);
+    for (const file of ['tokens/tokens.json', 'tokens/tokens.resolver.json', 'mui/instrument.json', 'syntax/instrument-screen.json', 'brace/brace.json', 'tokens/derive.vectors.json']) descriptions(readJson(file), file);
     const wrong = [];
     for (const [file, text] of texts) {
       for (const [name] of text.matchAll(/(?<![\w-])--[a-z][\w-]*/g)) {

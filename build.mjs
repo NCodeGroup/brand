@@ -11,7 +11,7 @@
  *                               <folder>/brand-<version>.tar.gz: manifest.json
  *                               and every file it lists, the archive .github/workflows/publish.yml attaches to a release
  *
- * Generated and committed: tokens/, css/, fonts/, brace/, icons/, logo/, mui/ and manifest.json. It removes a file in
+ * Generated and committed: tokens/, css/, fonts/, brace/, icons/, logo/, mui/, syntax/ and manifest.json. It removes a file in
  * those folders that it does not write. A PNG or ICO that already holds the pixels it draws is kept, so an image
  * another encoder wrote doesn't change while its picture stays the same, and manifest.json hashes the bytes that stay.
  * It also writes the site's pages, guide/ and index.html, from guidelines/ and src/guide/; a release does not carry them.
@@ -38,11 +38,12 @@ import { createLogo, holds, logoKit } from './lib/logo.mjs';
 import { buildModel, resolveColors } from './lib/model.mjs';
 import { tokensModule, tokensTypes } from './lib/module.mjs';
 import { muiData } from './lib/mui.mjs';
+import { syntaxTheme } from './lib/syntax.mjs';
 import { tokensCss, tokensStaticCss } from './lib/tokens-css.mjs';
 
 const ROOT = dirname(fileURLToPath(import.meta.url));
 /** The folders build.mjs owns: every file in them is generated. */
-const GENERATED = ['tokens', 'css', 'fonts', 'brace', 'icons', 'logo', 'mui'];
+const GENERATED = ['tokens', 'css', 'fonts', 'brace', 'icons', 'logo', 'mui', 'syntax'];
 /** The folders whose files hold generated blocks. */
 const WITH_BLOCKS = ['guidelines', 'specimens'];
 /** The folder of the guide's pages, which build.mjs owns too, but a release doesn't carry. */
@@ -144,6 +145,7 @@ function generate(model, version, icons) {
   for (const [name, file] of logoKit(createLogo(model, JSON.parse(read('src/logo/identity.json'))))) files.set(`logo/identity/${name}`, file);
 
   text('mui/instrument.json', json(muiData(model, version)));
+  text('syntax/instrument-screen.json', json(syntaxTheme(model, version)));
   return files;
 }
 

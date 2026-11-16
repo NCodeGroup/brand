@@ -1139,6 +1139,10 @@
       "bytes": 19272,
       "sha256": "4a89a640d6a0617c921c17c87e70c74c8ba661d25a3d81121daf663efb3d3bc4"
     },
+    "syntax/instrument-screen.json": {
+      "bytes": 2685,
+      "sha256": "1317f2009d29af975e9dbee8c28f031ba9724442235a1de77d33f91f3455bee4"
+    },
     "tokens/derive.d.mts": {
       "bytes": 3880,
       "sha256": "47e63fff9c05d4ac002d44a336a49acdc8816d31e8e273fd4173e62d2cbe6c1d"
