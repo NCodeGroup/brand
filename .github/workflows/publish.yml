@@ -7,8 +7,9 @@
 # Two jobs, so the job that runs the repository's code holds no write permission:
 #   - pack checks the tag is a version (v1.2.3) and names a commit the default branch holds, so a tag on an unreviewed
 #     commit publishes nothing; then node build.mjs --archive checks every generated file and packs the archive;
-#   - attach attests the archive pack uploaded, verifies the attestation as vendor-brand.mjs does, and attaches the
-#     archive and the bundle to the release.
+#   - attach runs in the release environment, which admits only tags v* and waits for a maintainer's approval, then
+#     attests the archive pack uploaded, verifies the attestation as vendor-brand.mjs does, and attaches the archive
+#     and the bundle to the release.
 #
 # A release made with a workflow's GITHUB_TOKEN, as tag-release.yml makes it, starts no workflow, so
 # .template/Publish-Release.ps1 starts this one through workflow_dispatch, on the tag and with the tag as input. To
@@ -92,6 +93,8 @@ jobs:
     needs: pack
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    # Settings > Environments > release requires a maintainer's approval and admits only tags v*.
+    environment: release
     permissions:
       # To store the attestation with the repository.
       attestations: write

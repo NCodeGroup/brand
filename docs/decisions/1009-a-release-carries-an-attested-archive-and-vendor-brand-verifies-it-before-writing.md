@@ -19,6 +19,9 @@ Each release carries one archive, `brand-<version>.tar.gz`, that holds `manifest
 build provenance attestation. `.github/workflows/publish.yml` packs it from the tagged commit with
 `node build.mjs --archive`, attests it with `actions/attest-build-provenance`, verifies the attestation, and attaches
 the archive and the attestation's bundle, `v<version>.intoto.jsonl`, to the GitHub release.
+The job that attests and attaches runs in the `release` environment, which admits only tags `v*` and waits for a
+maintainer's approval, so no archive is attested without one; the job that packs refuses a tag whose commit `main`
+doesn't hold.
 `.template/Publish-Release.ps1` starts the workflow once it publishes the release.
 
 `vendoring/vendor-brand.mjs --update <version>` downloads the archive with the GitHub CLI and runs
@@ -50,6 +53,8 @@ for the same trust. An npm package with provenance stays rejected for the reason
 - The bundle on the release lets anyone check the archive with `gh attestation verify --bundle`, and OpenSSF Scorecard
   counts the release as signed.
 - A rerun of the workflow packs the archive again and replaces the release's assets.
+- Every release, also the one `.github/workflows/tag-release.yml` publishes as a pull request merges, waits for a
+  maintainer to approve the `release` environment before its archive is attested and attached.
 
 ## References
 
