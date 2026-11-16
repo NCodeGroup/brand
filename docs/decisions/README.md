@@ -72,3 +72,4 @@ records are indexed in [project-template/](project-template/README.md).
 | [1004](1004-a-rename-is-a-major-version-and-a-value-change-is-never-a-patch.md) | A rename is a major version, and a value change is never a patch | Accepted |
 | [1005](1005-this-repository-ships-data-and-stylesheets-never-a-frameworks-theme-code.md) | This repository ships data and stylesheets, never a framework's theme code | Accepted |
 | [1006](1006-contrast-is-computed-in-node-and-the-tenant-derivation-guards-it.md) | Contrast is computed in Node, and the tenant derivation guards it | Accepted |
+| [1007](1007-every-ncode-marks-kit-is-drawn-here-by-one-kit-writer.md) | Every NCode mark's kit is drawn here, by one kit writer | Accepted |
