@@ -1,7 +1,7 @@
 // The release: manifest.json lists every released file and nothing else, the logo files keep within their platforms'
-// limits, and vendoring/vendor-brand.mjs copies and checks a consumer's files, and refuses a release that does not match,
-// an address it should not trust, an answer too large or too slow and a path that would take a write outside the
-// consumer. A write that fails partway leaves the consumer's files as they were.
+// limits, and vendoring/vendor-brand.mjs copies and checks a consumer's files from the release's archive. It refuses an
+// archive gh does not verify, one that does not match its manifest or is too large, and a path that would take a
+// write outside the consumer. A write that fails partway leaves the consumer's files as they were.
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import { cpSync, existsSync, lstatSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, statSync, symlinkSync, writeFileSync } from 'node:fs';
@@ -9,6 +9,7 @@ import { tmpdir } from 'node:os';
 import { join, relative, sep } from 'node:path';
 import { after, before, describe, test } from 'node:test';
 import { pathToFileURL } from 'node:url';
+import { tarGz } from '../lib/archive.mjs';
 import { LIMITS } from '../lib/logo.mjs';
 import { ROOT, readJson, runNode } from './helpers.mjs';
 
@@ -18,6 +19,12 @@ const filesUnder = (folder) =>
   readdirSync(join(ROOT, folder), { recursive: true, withFileTypes: true })
     .filter((e) => e.isFile())
     .map((e) => relative(ROOT, join(e.parentPath, e.name)).split(sep).join('/'));
+/**
+ * manifest.json and every file it lists, as the release's archive holds them, with the bytes `changes` gives a path
+ * instead.
+ */
+const releaseEntries = (changes = {}) =>
+  ['manifest.json', ...Object.keys(manifest.files)].map((path) => [path, changes[path] ?? readFileSync(join(ROOT, path))]);
 
 describe('manifest.json', () => {
   test('lists every file of the generated folders and the released sources, and nothing else', () => {
@@ -58,45 +65,38 @@ describe('the logo kit', () => {
 });
 
 /**
- * Stands in for fetch in the vendoring script's process, loaded with --import, so an https address needs no network:
- * it serves the release folder at any address, as BRAND_FETCH_STUB says. It answers only a request that follows no
- * redirect and has a timeout, except in "redirect" mode, where it answers as a server that redirects to another host
- * does: a fetch that follows the redirect gets what that host serves. In "large" mode each file but manifest.json comes
- * with four bytes more than the manifest gives it, and in "large-manifest" mode manifest.json is padded with spaces to
- * one byte over 1 MiB. In "stall" mode it names the time each AbortSignal.timeout asks for and gives it 100 ms, and an
- * answer sends its first byte and then nothing: like an open connection, it keeps the process waiting until the
- * request's signal ends it.
+ * Stands in for the GitHub CLI in the vendoring script's process, loaded with --import, as BRAND_GH_STUB says. It
+ * replaces spawnSync for the command gh alone and appends each call's arguments to "log" as a line of JSON. "release
+ * download" copies "archive" to the file after --output. "attestation verify" answers as gh does in "mode": "verified"
+ * names the SHA-256 of the file it is given, "other-digest" names another, "unverified" fails as gh does for an archive
+ * with no attestation, and "missing" answers every call as a system without gh.
  */
-const FETCH_STUB = `import { readFileSync } from 'node:fs';
-import { join } from 'node:path';
-const { release, other, mode } = JSON.parse(process.env.BRAND_FETCH_STUB);
-if (mode === 'stall') {
-  const timeout = AbortSignal.timeout.bind(AbortSignal);
-  AbortSignal.timeout = (ms) => {
-    process.stderr.write('stub: AbortSignal.timeout(' + ms + ') asked for, 100 given\\n');
-    return timeout(100);
-  };
-}
-globalThis.fetch = async (url, init = {}) => {
-  const name = decodeURIComponent(new URL(url).pathname.slice(1));
-  if (mode === 'redirect') {
-    if (init.redirect === 'manual') return new Response(null, { status: 302, headers: { location: 'http://mirror.example/' + name } });
-    return new Response(readFileSync(join(other, name)));
+const GH_STUB = `import childProcess from 'node:child_process';
+import { createHash } from 'node:crypto';
+import { appendFileSync, copyFileSync, readFileSync } from 'node:fs';
+import { syncBuiltinESMExports } from 'node:module';
+const { archive, mode, log } = JSON.parse(process.env.BRAND_GH_STUB);
+const spawnSync = childProcess.spawnSync;
+childProcess.spawnSync = (command, args, options) => {
+  if (command !== 'gh') return spawnSync(command, args, options);
+  appendFileSync(log, JSON.stringify(args) + '\\n');
+  if (mode === 'missing') {
+    return { status: null, stdout: '', stderr: '', error: Object.assign(new Error('spawnSync gh ENOENT'), { code: 'ENOENT' }) };
   }
-  if (init.redirect !== 'manual' || !(init.signal instanceof AbortSignal)) throw new TypeError('a request that follows redirects or has no timeout');
-  const bytes = readFileSync(join(release, name));
-  if (mode === 'stall') {
-    const open = setInterval(() => {}, 60_000);
-    return new Response(new ReadableStream({
-      start(controller) {
-        controller.enqueue(bytes.subarray(0, 1));
-        init.signal.addEventListener('abort', () => { clearInterval(open); controller.error(init.signal.reason); }, { once: true });
-      },
-    }));
+  if (args[0] === 'release' && args[1] === 'download') {
+    copyFileSync(archive, args[args.indexOf('--output') + 1]);
+    return { status: 0, stdout: '', stderr: '' };
   }
-  if (mode === 'large-manifest' && name === 'manifest.json') return new Response(Buffer.concat([bytes, Buffer.alloc(1024 * 1024 + 1 - bytes.length, ' ')]));
-  return new Response(mode === 'large' && name !== 'manifest.json' ? Buffer.concat([bytes, Buffer.from('more')]) : bytes);
+  if (args[0] === 'attestation' && args[1] === 'verify') {
+    if (mode === 'unverified') return { status: 1, stdout: '', stderr: 'Error: failed to fetch attestations for subject\\n' };
+    const sha256 = mode === 'other-digest' ? '0'.repeat(64) : createHash('sha256').update(readFileSync(args[2])).digest('hex');
+    const verified = [{ verificationResult: { statement: { subject: [{ name: 'brand.tar.gz', digest: { sha256 } }] } } }];
+    return { status: 0, stdout: JSON.stringify(verified), stderr: '' };
+  }
+  return { status: 1, stdout: '', stderr: 'stub: unexpected gh ' + args.join(' ') };
 };
+// The script imports spawnSync by name: this hands it the stand-in.
+syncBuiltinESMExports();
 `;
 
 /**
@@ -122,20 +122,28 @@ syncBuiltinESMExports();
 
 describe('vendoring/vendor-brand.mjs', () => {
   let consumer;
-  let release;
   let other;
-  let stub;
+  let release;
+  let forged;
+  let ghStub;
   let fsStub;
   const script = () => join(consumer, 'vendor-brand.mjs');
   const lockPath = () => join(consumer, 'brand.lock.json');
   const lock = (files, at = '0.0.0') => writeFileSync(lockPath(), `${JSON.stringify({ version: at, files }, null, 2)}\n`);
   const vendor = (...args) => runNode(consumer, [script(), ...args]);
-  /** The script with fetch stood in for, reading a release at an https address; stopped if it runs 20 seconds. */
-  const vendorOverHttps = (mode, ...args) =>
-    runNode(consumer, ['--import', pathToFileURL(stub).href, script(), ...args], { BRAND_FETCH_STUB: JSON.stringify({ release, other, mode }) }, 20_000);
-  /** The script with writeFileSync stood in for, as FS_STUB says. */
+  const ghLog = () => join(other, 'gh.log');
+  /** The script with gh stood in for, as GH_STUB says; stopped if it runs 20 seconds. */
+  const vendorWithGh = (mode, archive, ...args) =>
+    runNode(consumer, ['--import', pathToFileURL(ghStub).href, script(), ...args], { BRAND_GH_STUB: JSON.stringify({ archive, mode, log: ghLog() }) }, 20_000);
+  const update = (...args) => vendorWithGh('verified', release, ...args);
+  const calls = () => readFileSync(ghLog(), 'utf8').trim().split('\n').map((line) => JSON.parse(line));
+  /** The script with gh and writeFileSync stood in for, as GH_STUB and FS_STUB say. */
   const vendorWithFs = (stubbed, ...args) =>
-    runNode(consumer, ['--import', pathToFileURL(fsStub).href, script(), ...args], { BRAND_FS_STUB: JSON.stringify(stubbed) });
+    runNode(
+      consumer,
+      ['--import', pathToFileURL(ghStub).href, '--import', pathToFileURL(fsStub).href, script(), ...args],
+      { BRAND_GH_STUB: JSON.stringify({ archive: release, mode: 'verified', log: ghLog() }), BRAND_FS_STUB: JSON.stringify(stubbed) },
+    );
   const version = manifest.version;
   const write = (path, text) => {
     mkdirSync(join(consumer, path, '..'), { recursive: true });
@@ -144,34 +152,33 @@ describe('vendoring/vendor-brand.mjs', () => {
 
   before(() => {
     consumer = mkdtempSync(join(tmpdir(), 'ncode-brand-consumer-'));
-    release = mkdtempSync(join(tmpdir(), 'ncode-brand-release-'));
     other = mkdtempSync(join(tmpdir(), 'ncode-brand-other-'));
-    stub = join(other, 'fetch-stub.mjs');
-    writeFileSync(stub, FETCH_STUB);
+    ghStub = join(other, 'gh-stub.mjs');
+    writeFileSync(ghStub, GH_STUB);
     fsStub = join(other, 'fs-stub.mjs');
     writeFileSync(fsStub, FS_STUB);
     cpSync(join(ROOT, 'vendoring/vendor-brand.mjs'), script());
-    for (const path of ['manifest.json', ...Object.keys(manifest.files)]) cpSync(join(ROOT, path), join(release, path));
+    release = join(other, `brand-${version}.tar.gz`);
+    writeFileSync(release, tarGz(releaseEntries()));
     // Another release of the same version, whose manifest matches its own altered tokens.css: what a host that answers
     // in the release's place could serve.
-    for (const path of ['manifest.json', 'tokens/tokens.css']) cpSync(join(ROOT, path), join(other, path));
     const altered = Buffer.from('/* not the release */\n');
-    writeFileSync(join(other, 'tokens/tokens.css'), altered);
     const otherManifest = structuredClone(manifest);
     otherManifest.files['tokens/tokens.css'] = { bytes: altered.length, sha256: sha256(altered) };
-    writeFileSync(join(other, 'manifest.json'), JSON.stringify(otherManifest));
+    forged = join(other, 'forged.tar.gz');
+    writeFileSync(forged, tarGz(releaseEntries({ 'manifest.json': Buffer.from(JSON.stringify(otherManifest)), 'tokens/tokens.css': altered })));
   });
   after(() => {
-    for (const folder of [consumer, release, other]) rmSync(folder, { recursive: true, force: true });
+    for (const folder of [consumer, other]) rmSync(folder, { recursive: true, force: true });
   });
 
-  test('an update copies the files the lock names from a release folder and pins their hashes', () => {
+  test("an update copies the files the lock names from the release's archive and pins their hashes", () => {
     lock({
       'src/brand/tokens.css': { source: 'tokens/tokens.css', sha256: '' },
       'src/brand/fonts/instrument-sans-latin-wdth-normal.woff2': { source: 'fonts/instrument-sans-latin-wdth-normal.woff2', sha256: '' },
       'src/brand/derive.mjs': { source: 'tokens/derive.mjs', sha256: '' },
     });
-    const result = vendor('--update', version, '--from', release);
+    const result = update('--update', version, '--from', release);
     assert.equal(result.code, 0, result.output);
     const pinned = JSON.parse(readFileSync(join(consumer, 'brand.lock.json'), 'utf8'));
     assert.equal(pinned.version, version);
@@ -189,19 +196,16 @@ describe('vendoring/vendor-brand.mjs', () => {
 
   test('an update refuses a release whose file does not match its manifest, and writes nothing', () => {
     const kept = readFileSync(join(consumer, 'src/brand/tokens.css'));
-    writeFileSync(join(release, 'tokens/derive.mjs'), '/* tampered */\n');
-    try {
-      const result = vendor('--update', version, '--from', release);
-      assert.equal(result.code, 1);
-      assert.match(result.output, /tokens\/derive\.mjs: the download does not match the release's manifest/);
-      assert.deepEqual(readFileSync(join(consumer, 'src/brand/tokens.css')), kept);
-    } finally {
-      cpSync(join(ROOT, 'tokens/derive.mjs'), join(release, 'tokens/derive.mjs'));
-    }
+    const tampered = join(other, 'tampered.tar.gz');
+    writeFileSync(tampered, tarGz(releaseEntries({ 'tokens/derive.mjs': Buffer.from('/* tampered */\n') })));
+    const result = update('--update', version, '--from', tampered);
+    assert.equal(result.code, 1);
+    assert.match(result.output, /tokens\/derive\.mjs: the archive does not match the release's manifest/);
+    assert.deepEqual(readFileSync(join(consumer, 'src/brand/tokens.css')), kept);
   });
 
   test('an update refuses a release of another version', () => {
-    const result = vendor('--update', '9.9.9', '--from', release);
+    const result = update('--update', '9.9.9', '--from', release);
     assert.equal(result.code, 1);
     assert.match(result.output, new RegExp(`The release is ${version.replaceAll('.', '\\.')}, not 9\\.9\\.9\\.`));
   });
@@ -219,64 +223,24 @@ describe('vendoring/vendor-brand.mjs', () => {
 
   test('an update refuses a lock entry whose source the release does not have', () => {
     lock({ 'src/brand/none.css': { source: 'tokens/none.css', sha256: '' } });
-    const result = vendor('--update', version, '--from', release);
+    const result = update('--update', version, '--from', release);
     assert.equal(result.code, 1);
     assert.match(result.output, /has no tokens\/none\.css/);
   });
 
-  test('an update reads a folder or an https address, and refuses any other address', () => {
+  test('an update takes --from as the path of an archive file, and refuses an address', () => {
     lock({ 'src/brand/tokens.css': { source: 'tokens/tokens.css', sha256: '' } });
-    const result = vendor('--update', version, '--from', 'http://127.0.0.1:9/');
+    const result = update('--update', version, '--from', 'https://release.example/');
     assert.equal(result.code, 1);
-    assert.match(result.output, /--from takes a folder or an https:\/\/ address, not http:\/\/127\.0\.0\.1:9\//);
-  });
-
-  test('an update over https asks for no redirect and a timeout, and refuses a redirect and an answer too large', () => {
-    lock({ 'src/brand/https/tokens.css': { source: 'tokens/tokens.css', sha256: '' } });
-    const from = ['--update', version, '--from', 'https://release.example/'];
-    let result = vendorOverHttps('serve', ...from);
-    assert.equal(result.code, 0, result.output);
-    assert.deepEqual(readFileSync(join(consumer, 'src/brand/https/tokens.css')), readFileSync(join(ROOT, 'tokens/tokens.css')));
-
-    lock({ 'src/brand/redirected/tokens.css': { source: 'tokens/tokens.css', sha256: '' } });
-    result = vendorOverHttps('redirect', ...from);
-    assert.equal(result.code, 1, result.output);
-    assert.match(result.output, /manifest\.json: the address answered with a redirect to http:\/\/mirror\.example\/manifest\.json, which vendor-brand\.mjs does not follow/);
-    assert.ok(!existsSync(join(consumer, 'src/brand/redirected')));
-
-    lock({ 'src/brand/large/tokens.css': { source: 'tokens/tokens.css', sha256: '' } });
-    result = vendorOverHttps('large', ...from);
-    assert.equal(result.code, 1, result.output);
-    assert.match(result.output, new RegExp(`tokens/tokens\\.css: the answer is larger than the ${manifest.files['tokens/tokens.css'].bytes} bytes the release's manifest gives it`));
-    assert.ok(!existsSync(join(consumer, 'src/brand/large')));
-  });
-
-  test('an update over https refuses a manifest.json larger than 1 MiB', () => {
-    lock({ 'src/brand/large-manifest/tokens.css': { source: 'tokens/tokens.css', sha256: '' } });
-    // The padding is spaces, so the manifest still parses: only the bound refuses it.
-    const result = vendorOverHttps('large-manifest', '--update', version, '--from', 'https://release.example/');
-    assert.equal(result.code, 1, result.output);
-    assert.match(result.output, /manifest\.json: the answer is larger than 1048576 bytes/);
-    assert.ok(!existsSync(join(consumer, 'src/brand/large-manifest')));
-  });
-
-  test('an update over https gives each answer a minute, and stops one that stalls once its time is up', () => {
-    lock({ 'src/brand/stalled/tokens.css': { source: 'tokens/tokens.css', sha256: '' } });
-    const lockText = readFileSync(lockPath(), 'utf8');
-    const result = vendorOverHttps('stall', '--update', version, '--from', 'https://release.example/');
-    assert.equal(result.code, 1, result.output);
-    assert.match(result.output, /^stub: AbortSignal\.timeout\(60000\) asked for/m);
-    assert.match(result.output, /^vendor-brand\.mjs: The operation was aborted due to timeout$/m);
-    assert.ok(!existsSync(join(consumer, 'src/brand/stalled')));
-    assert.equal(readFileSync(lockPath(), 'utf8'), lockText);
+    assert.match(result.output, /--from takes the path of an archive file, not https:\/\/release\.example\//);
   });
 
   test('an update refuses to pin another SHA-256 for a file of the version the lock already pins', () => {
     lock({ 'src/brand/pinned/tokens.css': { source: 'tokens/tokens.css', sha256: '' } });
-    assert.equal(vendor('--update', version, '--from', release).code, 0);
+    assert.equal(update('--update', version, '--from', release).code, 0);
     const pinned = readFileSync(lockPath(), 'utf8');
     const vendored = readFileSync(join(consumer, 'src/brand/pinned/tokens.css'));
-    const result = vendor('--update', version, '--from', other);
+    const result = update('--update', version, '--from', forged);
     assert.equal(result.code, 1, result.output);
     assert.match(result.output, new RegExp(`src/brand/pinned/tokens\\.css: brand ${version.replaceAll('.', '\\.')} has another SHA-256 for tokens/tokens\\.css than the lock pins`));
     assert.equal(readFileSync(lockPath(), 'utf8'), pinned);
@@ -291,7 +255,7 @@ describe('vendoring/vendor-brand.mjs', () => {
       'src/brand/second.css': { source: 'css/base.css', sha256: '' },
     });
     const lockText = readFileSync(lockPath(), 'utf8');
-    const result = vendor('--update', version, '--from', release);
+    const result = update('--update', version, '--from', release);
     assert.equal(result.code, 1, result.output);
     assert.match(result.output, /The vendored path "src\/brand\/second\.css" is not a file/);
     assert.equal(readFileSync(join(consumer, 'src/brand/first.css'), 'utf8'), '/* before */\n');
@@ -341,7 +305,7 @@ describe('vendoring/vendor-brand.mjs', () => {
 
   test('a lock path that leaves its folder is refused, by its name or through a symbolic link', (t) => {
     lock({ '../outside.css': { source: 'tokens/tokens.css', sha256: '' } });
-    let result = vendor('--update', version, '--from', release);
+    let result = update('--update', version, '--from', release);
     assert.equal(result.code, 1);
     assert.match(result.output, /leaves its folder/);
 
@@ -355,7 +319,7 @@ describe('vendoring/vendor-brand.mjs', () => {
         throw error;
       }
       lock({ 'linked/tokens.css': { source: 'tokens/tokens.css', sha256: '' } });
-      result = vendor('--update', version, '--from', release);
+      result = update('--update', version, '--from', release);
       assert.equal(result.code, 1, result.output);
       assert.match(result.output, /The vendored path "linked\/tokens\.css" leaves its folder through a symbolic link/);
       assert.ok(!existsSync(join(outside, 'tokens.css')));
@@ -368,7 +332,7 @@ describe('vendoring/vendor-brand.mjs', () => {
         throw error;
       }
       lock({ 'vendor/derive.mjs': { source: 'tokens/derive.mjs', sha256: '' } });
-      result = vendor('--update', version, '--from', release);
+      result = update('--update', version, '--from', release);
       assert.equal(result.code, 1, result.output);
       assert.match(result.output, /The vendored path "vendor\/derive\.mjs" leaves its folder through a symbolic link/);
       assert.equal(readFileSync(join(outside, 'profile'), 'utf8'), 'keep\n');
