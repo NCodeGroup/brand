@@ -68,4 +68,8 @@ Until the first stable release, the [Unreleased] section describes the product a
   refuses a lock path that leaves its folder, by its name or through a symbolic link.
 - Every specimen page runs under `Content-Security-Policy: default-src 'self'`: no inline style, no `data:` address and
   no request to another origin.
+- `.github/workflows/pin-watch.yml` runs `tools/pin-watch.mjs` every Monday: for a Lucide or Fontsource release newer
+  than `src/icons/lucide.lock.json` or `src/fonts/fonts.lock.json` pins and at least three days old, it keeps one open
+  issue per lock, labeled `pin-update`, until the lock pins that release
+  ([#13](https://github.com/NCodeGroup/brand/issues/13)).
 
