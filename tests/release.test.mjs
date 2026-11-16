@@ -12,7 +12,7 @@ import { pathToFileURL } from 'node:url';
 import { gunzipSync, gzipSync } from 'node:zlib';
 import { tarGz } from '../lib/archive.mjs';
 import { LIMITS } from '../lib/logo.mjs';
-import { ROOT, readJson, runNode } from './helpers.mjs';
+import { ROOT, read, readJson, runNode } from './helpers.mjs';
 
 const manifest = readJson('manifest.json');
 const sha256 = (bytes) => createHash('sha256').update(bytes).digest('hex');
@@ -434,5 +434,13 @@ describe('vendoring/vendor-brand.mjs', () => {
       assert.match(result.output, message);
       assertUntouched('entries', lockText);
     }
+  });
+});
+
+describe('.github/workflows/publish.yml', () => {
+  test('is the workflow vendor-brand.mjs requires to have signed the archive, and Publish-Release.ps1 can start it for a tag', () => {
+    assert.ok(existsSync(join(ROOT, '.github/workflows/publish.yml')));
+    assert.match(read('vendoring/vendor-brand.mjs'), /\$\{REPO\}\/\.github\/workflows\/publish\.yml/);
+    assert.match(read('.github/workflows/publish.yml'), /^ {2}workflow_dispatch:\n {4}inputs:\n {6}tag:\n/m);
   });
 });
