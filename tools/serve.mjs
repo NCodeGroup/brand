@@ -30,7 +30,8 @@ export function serve({ root = ROOT, pages = {}, rewrite = null } = {}) {
         return response.end(pages[pathname]);
       }
       const file = path.normalize(path.join(root, decodeURIComponent(pathname === '/' ? '/specimens/foundations.html' : pathname)));
-      if (!file.startsWith(root)) {
+      // Inside the served folder only: a sibling whose name starts with the folder's is outside it.
+      if (!file.startsWith(path.join(root, path.sep))) {
         response.writeHead(403, headers);
         return response.end();
       }
