@@ -31,7 +31,7 @@ import { braceFiles } from './lib/brace.mjs';
 import { contrastReport } from './lib/contrast.mjs';
 import { createDerive } from './lib/derive-core.mjs';
 import { deriveData, deriveModule, deriveTypes, heldPairings, vectors } from './lib/derive.mjs';
-import { toDtcg } from './lib/dtcg.mjs';
+import { toDtcg, toResolver } from './lib/dtcg.mjs';
 import { guideFiles } from './lib/guide.mjs';
 import { iconBlock, iconFiles, iconGrid, iconList, iconSet } from './lib/icons.mjs';
 import { createLogo, holds, logoKit } from './lib/logo.mjs';
@@ -109,6 +109,7 @@ function generate(model, version, icons) {
   text('tokens/tokens.css', tokensCss(model, version));
   text('tokens/tokens.static.css', tokensStaticCss(model, version));
   text('tokens/tokens.json', json(toDtcg(model, version)));
+  text('tokens/tokens.resolver.json', json(toResolver(model, version)));
   text('tokens/tokens.mjs', tokensModule(model, version));
   text('tokens/tokens.d.mts', tokensTypes(model, version));
   text('tokens/derive.mjs', deriveModule(model, version));

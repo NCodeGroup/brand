@@ -63,7 +63,7 @@ describe('custom properties', () => {
         else descriptions(value, file);
       }
     };
-    for (const file of ['tokens/tokens.json', 'mui/instrument.json', 'brace/brace.json', 'tokens/derive.vectors.json']) descriptions(readJson(file), file);
+    for (const file of ['tokens/tokens.json', 'tokens/tokens.resolver.json', 'mui/instrument.json', 'brace/brace.json', 'tokens/derive.vectors.json']) descriptions(readJson(file), file);
     const wrong = [];
     for (const [file, text] of texts) {
       for (const [name] of text.matchAll(/(?<![\w-])--[a-z][\w-]*/g)) {
@@ -166,6 +166,10 @@ describe('the resolver file', () => {
     assert.deepEqual(Object.keys(doc.modifiers.theme.contexts), ['light', 'dark']);
     assert.equal(doc.modifiers.theme.default, 'light');
     assert.ok(doc.sets.instrument.$extensions['org.ncode.instrument'].tenantInputs);
+  });
+
+  test('tokens/tokens.resolver.json is the document toResolver writes', () => {
+    assert.deepEqual(readJson('tokens/tokens.resolver.json'), doc);
   });
 
   test('each theme resolves to the groups of tokens/tokens.json, with its semantic tokens under theme', () => {
