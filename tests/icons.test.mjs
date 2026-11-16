@@ -64,22 +64,22 @@ describe('restyleLucide', () => {
 });
 
 describe('parseNcode', () => {
-  const symbol = (id, d) => `  <symbol id="i-${id}" viewBox="0 0 16 16"><path d="${d}"/></symbol>`;
+  const ncodeSymbol = (id, d) => `  <symbol id="i-${id}" viewBox="0 0 16 16"><path d="${d}"/></symbol>`;
   const file = (...symbols) =>
     `<svg xmlns="http://www.w3.org/2000/svg">\n<!-- icons -->\n${symbols.join('\n')}\n</svg>\n`;
 
   test('reads each symbol by its name', () => {
-    const icons = parseNcode(file(symbol('arrow-left', 'M1 1h2'), symbol('eye', 'M2 2h3')));
+    const icons = parseNcode(file(ncodeSymbol('arrow-left', 'M1 1h2'), ncodeSymbol('eye', 'M2 2h3')));
     assert.deepEqual([...icons.keys()], ['arrow-left', 'eye']);
     assert.deepEqual(icons.get('eye'), [{ tag: 'path', attrs: [['d', 'M2 2h3']] }]);
   });
 
   test('throws for a name drawn twice', () => {
-    assert.throws(() => parseNcode(file(symbol('eye', 'M1 1h2'), symbol('eye', 'M2 2h3'))), /eye twice/);
+    assert.throws(() => parseNcode(file(ncodeSymbol('eye', 'M1 1h2'), ncodeSymbol('eye', 'M2 2h3'))), /eye twice/);
   });
 
   test('removes a comment cut in two by another, so none is left', () => {
-    const icons = parseNcode(file('<!<!-- -->-- note -->', symbol('eye', 'M2 2h3')));
+    const icons = parseNcode(file('<!<!-- -->-- note -->', ncodeSymbol('eye', 'M2 2h3')));
     assert.deepEqual([...icons.keys()], ['eye']);
   });
 });
