@@ -6,8 +6,8 @@
 
 ## Context
 
-The design's custom properties had bare names, `--color-primary`, `--text-md`, `--space-3`, `--brand`. Those are the
-namespaces Tailwind's theme uses, a tenant's page or a host application may define `--brand`, and Material UI and
+A custom property with a bare name, such as `--color-primary`, `--text-md` or `--space-3`, sits in a namespace
+Tailwind's theme uses, and a tenant's page or a host application may define one such as `--brand`. Material UI and
 Starlight both prefix their own properties, `--mui-` and `--sl-`. A token set also needs a stated line between what a
 consumer may depend on and what is raw material: without one, every ramp step becomes a promise. Both are cheap to
 settle before 1.0.0 and the most expensive breaking changes after it.
@@ -30,13 +30,13 @@ and `base.css` styles pages built on it, not a foreign stylesheet.
 So a type role is complete in the public tier, the generator writes its width and letter spacing beside its font
 shorthand: `--nc-type-label-stretch` and `--nc-type-label-tracking`. This repository's own stylesheets may read
 primitives, because they release with them; `tokens/tokens.mjs` exports the public tier only, and `tokens/tokens.json`
-marks each group's tier.
+marks the tier of each group that sets one, which the groups inside it inherit.
 
 ## Options considered
 
 - **A prefix on every property** (chosen). One rule, no collision with Tailwind, Starlight or a host page. It costs
   four characters a name.
-- **No prefix.** Shorter, and the design's names; but `--brand` and `--color-*` collide with names a host page uses.
+- **No prefix.** Shorter; but a name such as `--brand` or `--color-*` collides with names a host page uses.
 - **A prefix on classes too.** It would let `base.css` sit in a foreign page, which no consumer asks for; a later
   change can still add it before 1.0.0.
 - **Every token public.** Simple to state, but a ramp step becomes a promise, and the neutral's hue could never move in

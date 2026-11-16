@@ -28,8 +28,9 @@ amber are stepped by lightness the same way. The ramps are primitives: component
 
 ## Roles
 
-Components read roles, never ramp steps. Each role is one custom property, `--nc-color-<role>`, written once as
-`light-dark(<light>, <dark>)`. [The token reference](13-token-reference.md#color-roles) has every value.
+Components read roles, never ramp steps. Each role is one custom property, `--nc-color-<role>`, written once: as
+`light-dark(<light>, <dark>)` where the themes differ, and as one value where they don't.
+[The token reference](13-token-reference.md#color-roles) has every value.
 
 | Group | Roles | What they are |
 |---|---|---|
@@ -40,7 +41,7 @@ Components read roles, never ramp steps. Each role is one custom property, `--nc
 | Primary | `primary`, `on-primary`, `primary-shade`, `primary-hover`, `primary-pressed`, `primary-edge`, `primary-lip`, `primary-text`, `primary-subtle`, `primary-subtle-border`, `focus` | What you press, derived from `--nc-brand` |
 | Screen | `screen`, `screen-raised`, `screen-border`, `screen-lit`, `on-screen`, `on-screen-secondary`, `on-screen-muted`, `screen-hot` | What you are shown, derived from `--nc-brand-secondary` |
 | Scope | `scope-tenant`, `scope-team`, `scope-platform` | The ink of a brace, one per kind of boundary |
-| Status | `success`, `warning`, `danger`, `info`, each with `on-`, `-mark`, `-text`, `-subtle`, `-border` | `-mark` is a lamp, icon or line (3 to 1). `-text` is running text (4.5 to 1) |
+| Status | `success`, `warning`, `danger`, `info`, each with `on-`, `-mark`, `-text`, `-subtle`, `-border`; and `danger-hover`, `danger-lip` | `-mark` is a lamp, icon or line (3 to 1). `-text` is running text (4.5 to 1). A danger key has a hover and a lip of its own |
 | Hazard | `hazard`, `on-hazard` | Tape, the same in both themes |
 | Depth | `lip`, `shade`, `glint`, `shadow`, `scrim` | The side of a raised part, the shadow in a recess, light on an edge |
 | Marks | `logo` | NCode's marks: Blue, or Blue Light on dark |

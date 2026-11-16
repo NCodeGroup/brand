@@ -20,7 +20,7 @@ Run from the repository root in PowerShell 7. Node.js alone: there are no packag
 - Build: `npm run build` writes every generated file and block from `src/`; commit what it writes
 - Check: `npm run check` writes nothing, names each generated file or block that is missing, stale or extra, and fails then, or when a contrast pairing is below its floor; it is the Landing gate and a CI step
 - Test: `npm run test` runs `tests/*.test.mjs` with `node --test`
-- By hand, with Playwright installed where Node.js finds it: `node tools/shoot.mjs --out=<folder>` screenshots the specimens and fails on a console error, a failed request, a CSP violation or sideways scrolling; `node tools/browser-check.mjs` compares the build's color math, the static palette and the brace fallback with a browser
+- By hand, with Playwright installed where Node.js finds it, as `CONTRIBUTING.md` says: `node tools/shoot.mjs --out=<folder>` screenshots the specimens and fails on a console error, a failed request, a CSP violation or sideways scrolling; `node tools/browser-check.mjs` compares the build's color math, the static palette and the brace fallback with a browser
 
 ## Landing
 

@@ -75,7 +75,7 @@ has its rule.
 | Part | Classes | Use it for |
 |---|---|---|
 | Plate | `.plate`, `.plate--raised` | A flush panel on the case; raised, it stands as proud as a key: a sign-in card |
-| Alert | `.alert`, `.alert--success`, `--warning`, `--danger`, `--info` | A message with a signal bar, an icon and a word; a caution wears tape |
+| Alert | `.alert`, the info alert; `.alert--success`, `--warning` and `--danger` | A message with a signal bar, an icon and a word; a caution wears tape |
 | Chip and tag | `.chip`, `.tag` | A status as a lamp and a word; an engraved name with an edge |
 | Table | `.table` | Rows of values: an engraved head on a sunken ground, values in the value voice |
 | Selector | `.navkey` | A column of names with one latched, its lamp lit |

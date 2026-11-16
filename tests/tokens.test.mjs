@@ -45,6 +45,34 @@ describe('custom properties', () => {
     assert.ok(declared(css).has('--sl-color-accent'));
   });
 
+  test('every custom property a generated comment or description names is a declared --nc- property', () => {
+    // A name that ends in a hyphen is a family, such as --nc-color- in "--nc-color-*" or "--nc-type-<role>".
+    const known = new Set([...tokenProps, ...declared(read('css/base.css'))]);
+    const texts = [];
+    for (const file of ['tokens/tokens.css', 'tokens/tokens.static.css', 'css/base.css', 'css/fonts.css', 'css/starlight.css']) {
+      texts.push(...(read(file).match(/\/\*[\s\S]*?\*\//g) ?? []).map((comment) => [file, comment]));
+    }
+    for (const file of ['tokens/tokens.mjs', 'tokens/tokens.d.mts', 'tokens/derive.mjs', 'tokens/derive.d.mts']) {
+      texts.push(...(read(file).match(/\/\*[\s\S]*?\*\/|\/\/[^\n]*/g) ?? []).map((comment) => [file, comment]));
+    }
+    const descriptions = (node, file) => {
+      if (!node || typeof node !== 'object') return;
+      for (const [key, value] of Object.entries(node)) {
+        if (key === '$description' && typeof value === 'string') texts.push([file, value]);
+        else descriptions(value, file);
+      }
+    };
+    for (const file of ['tokens/tokens.json', 'mui/instrument.json', 'brace/brace.json', 'tokens/derive.vectors.json']) descriptions(readJson(file), file);
+    const wrong = [];
+    for (const [file, text] of texts) {
+      for (const [name] of text.matchAll(/(?<![\w-])--[a-z][\w-]*/g)) {
+        if (!name.startsWith('--nc-') || (!name.endsWith('-') && !known.has(name))) wrong.push(`${file}: ${name}`);
+      }
+    }
+    assert.ok(texts.length > 50);
+    assert.deepEqual(wrong, []);
+  });
+
   test('a stylesheet in css/ is its source in src/css/ with the release header', () => {
     for (const name of readdirSync(new URL('../src/css/', import.meta.url))) {
       const released = read(`css/${name}`);

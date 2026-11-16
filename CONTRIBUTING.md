@@ -6,7 +6,7 @@ Issues and pull requests are welcome. [README.md](README.md) explains the projec
 
 - Git, and PowerShell 7 (`pwsh`): every command here runs from the repository root in PowerShell 7.
 - Node.js, the release `.node-version` names, and npm. There are no packages to install: every script uses Node.js built-ins.
-- For a change to the stylesheets, the tokens or a specimen: Playwright with its Chromium, installed where Node.js finds it, such as `npm install --global playwright` and then `npx playwright install chromium`. Only the by-hand tools in `tools/` use it.
+- For a change to the stylesheets, the tokens or a specimen: Playwright with its Chromium. Run `npm install --global playwright` and `npx playwright install chromium`, then point `NODE_PATH` at the folder `npm root -g` prints, because Node.js does not look in npm's global folder: `$env:NODE_PATH = (npm root -g)` in PowerShell. Only the by-hand tools in `tools/` use it.
 - On Windows, `git config --global core.longpaths true`, once: a plan's worktree under `.claude/worktrees/` can pass Windows' 260-character path limit.
 
 ## Set Up

@@ -66,8 +66,8 @@ uppercase role; a mono role also turns on the slashed zero, `font-feature-settin
 ## The Scale
 
 Sizes in pixels at the default root size: 11, 12, 13, 14, 16, 17, 19, 22, 28, 36, 44, 56, 76. The interface is set at
-14, dense interface and code at 13, long-form documentation at 17. On a phone every field is 16, so the browser does
-not zoom into it. The scale's steps are primitives: a component reads a role, not a step.
+14, dense interface and code at 13, long-form documentation at 17. On a phone a field of the console, a dialog, the
+sign-in pages and the site bar is 16, so the browser does not zoom into it; a small field, `.well--sm`, stays at 13. The scale's steps are primitives: a component reads a role, not a step.
 
 ## Do and Don't
 

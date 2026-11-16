@@ -3,8 +3,9 @@
  *
  * Load it after tokens/tokens.css and css/fonts.css, through Starlight's customCss. Unlayered CSS wins over
  * Starlight's own "starlight" cascade layers, so these declarations need no specificity of their own. Every value is
- * a token: a token swap needs no change here. Each token is written once as light-dark(), so one set of declarations
- * serves both themes: Starlight puts data-theme on the root, and tokens.css turns that into the root's color-scheme.
+ * a token: a token swap needs no change here. Each color token follows the root's color-scheme, so one set of
+ * declarations serves both themes: Starlight puts data-theme on the root, and tokens.css turns that into the root's
+ * color-scheme.
  *
  * It maps the semantic tokens, and the steps of the type scale where Starlight asks for a size rather than a role;
  * it releases with the tokens, so it may read a primitive. It holds no rule for Starlight's markup: restyling the

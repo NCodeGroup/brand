@@ -305,7 +305,7 @@
   --nc-color-shadow: rgb(23 23 20 / 0.2);
   --nc-color-scrim: rgb(23 23 20 / 0.5);
 
-  /* Primary, derived from --brand: what you press. */
+  /* Primary, derived from --nc-brand: what you press. */
   --nc-color-primary: #0033CC;
   --nc-color-on-primary: #FFFFFF;
   --nc-color-primary-shade: #000000;
@@ -318,7 +318,7 @@
   --nc-color-primary-subtle-border: #AFC7F5;
   --nc-color-focus: #0033CC;
 
-  /* The screen, derived from --brand-secondary: what you are shown. A screen is the same in both themes: a deep field of the hue with lit values on it. NCode Blue yields exactly NCode Navy and NCode Blue Light. */
+  /* The screen, derived from --nc-brand-secondary: what you are shown. A screen is the same in both themes: a deep field of the hue with lit values on it. NCode Blue yields exactly NCode Navy and NCode Blue Light. */
   --nc-color-screen: #0A1F5C;
   --nc-color-screen-raised: #0E2C80;
   --nc-color-screen-border: #1E4192;
@@ -402,7 +402,7 @@
     --nc-color-shadow: rgb(0 0 0 / 0.7);
     --nc-color-scrim: rgb(0 0 0 / 0.68);
 
-    /* Primary, derived from --brand: what you press. */
+    /* Primary, derived from --nc-brand: what you press. */
     --nc-color-primary: #809FFF;
     --nc-color-on-primary: #071339;
     --nc-color-primary-shade: #FFFFFF;
@@ -415,7 +415,7 @@
     --nc-color-primary-subtle-border: #404C6D;
     --nc-color-focus: #809FFF;
 
-    /* The screen, derived from --brand-secondary: what you are shown. A screen is the same in both themes: a deep field of the hue with lit values on it. NCode Blue yields exactly NCode Navy and NCode Blue Light. */
+    /* The screen, derived from --nc-brand-secondary: what you are shown. A screen is the same in both themes: a deep field of the hue with lit values on it. NCode Blue yields exactly NCode Navy and NCode Blue Light. */
 
     /* The ink of a scope brace on the case, one per kind of security boundary. */
     --nc-color-scope-tenant: #809FFF;
@@ -490,7 +490,7 @@
   --nc-color-shadow: rgb(0 0 0 / 0.7);
   --nc-color-scrim: rgb(0 0 0 / 0.68);
 
-  /* Primary, derived from --brand: what you press. */
+  /* Primary, derived from --nc-brand: what you press. */
   --nc-color-primary: #809FFF;
   --nc-color-on-primary: #071339;
   --nc-color-primary-shade: #FFFFFF;
@@ -503,7 +503,7 @@
   --nc-color-primary-subtle-border: #404C6D;
   --nc-color-focus: #809FFF;
 
-  /* The screen, derived from --brand-secondary: what you are shown. A screen is the same in both themes: a deep field of the hue with lit values on it. NCode Blue yields exactly NCode Navy and NCode Blue Light. */
+  /* The screen, derived from --nc-brand-secondary: what you are shown. A screen is the same in both themes: a deep field of the hue with lit values on it. NCode Blue yields exactly NCode Navy and NCode Blue Light. */
 
   /* The ink of a scope brace on the case, one per kind of security boundary. */
   --nc-color-scope-tenant: #809FFF;

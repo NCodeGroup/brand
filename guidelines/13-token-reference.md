@@ -8,7 +8,8 @@ Tokens format, and `tokens/tokens.mjs` the public ones as an ES module.
 
 - Every custom property starts with `--nc-`, so it cannot meet a host page's own properties, Starlight's (`--sl-`) or
   Material UI's (`--mui-`).
-- A color role is `--nc-color-<role>`, written once as `light-dark(<light>, <dark>)`. A type role is `--nc-type-<role>`,
+- A color role is `--nc-color-<role>`, written once: as `light-dark(<light>, <dark>)` where the themes differ, and as
+  one value where they don't. A type role is `--nc-type-<role>`,
   with `-stretch` and `-tracking` beside it. Elevation is `--nc-elevation-<depth>`.
 - A scale is numbered where its steps are a ramp, such as `--nc-space-3`, and named where its parts are few and fixed,
   such as `--nc-radius-control` and `--nc-dur-press`.

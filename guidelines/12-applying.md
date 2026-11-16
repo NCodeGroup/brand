@@ -38,14 +38,16 @@ stays in the application, under its own type check and tests.
 
 - `mui/instrument.json` holds the palette of each scheme for NCode's own brand, with every color role under
   `instrument`; the typography variants, each set in a type role; the radius, the space scale and Material UI's spacing
-  unit of 8; the 25 elevations as Instrument's five depths; the durations, the easings and the breakpoints.
+  unit of 8; the 25 elevations as no shadow and four of Instrument's depths: flush, raised, floating and overlay; the
+  durations, the easings and the breakpoints.
 - For a tenant, call `deriveBrand(primaryColor, secondaryColor)` from `tokens/derive.mjs` and take its `light` and
-  `dark` colors for the primary, screen and scope roles. It never throws: a color it cannot read falls back to NCode
-  Blue, and `adjusted` names any color it moved to reach its contrast floor.
+  `dark` colors for the primary, screen and scope roles. It never throws: a primary it cannot read falls back to NCode
+  Blue and a secondary to the primary, and `adjusted` names any color it moved to reach its contrast floor.
 - Assert `tokens/derive.vectors.json` in the application's tests, so a vendored copy is proven to derive what this
   release derives.
 - Import `css/fonts.css` once in the application's entry: a bundler emits the four font files beside it, and a page
-  served under `font-src 'self'` loads them.
+  served under `font-src 'self'` loads them. Vendor each family's license, `fonts/OFL-Instrument-Sans.txt` and
+  `fonts/OFL-Martian-Mono.txt`, with its font files: the SIL Open Font License asks every copy of a font to carry it.
 
 ## An Email, or a Page Without 2024 CSS
 
@@ -58,7 +60,7 @@ inline from `tokens/tokens.mjs` instead.
 
 Take `tokens/tokens.json`, in the Design Tokens Community Group format 2025.10. Primitives are at the top level, and the
 semantic colors and shadows under `light` and `dark`. A token a tenant's colors change carries its CSS rule in
-`$extensions["org.ncode.instrument"]`, and every group names its tier there.
+`$extensions["org.ncode.instrument"]`. A group that sets a tier names it there, and the groups inside it inherit it.
 
 ## A README, a Favicon, a Package Icon
 
@@ -72,7 +74,8 @@ Take files from one tagged release, and prove in your own gate that they did not
 1. Copy [vendoring/vendor-brand.mjs](../vendoring/vendor-brand.mjs) into your repository. It is Node.js alone, with no
    packages, and adds nothing to your lockfile.
 2. Beside it, write a `brand.lock.json` that names each file you take, where it goes and where it comes from in the
-   release:
+   release. Take every file a stylesheet loads, here the four fonts `css/fonts.css` names, and each font family's
+   license with its fonts:
 
    ```json
    {
@@ -80,7 +83,12 @@ Take files from one tagged release, and prove in your own gate that they did not
      "files": {
        "src/brand/tokens/tokens.css": { "source": "tokens/tokens.css", "sha256": "" },
        "src/brand/css/fonts.css": { "source": "css/fonts.css", "sha256": "" },
-       "src/brand/fonts/instrument-sans-latin-wdth-normal.woff2": { "source": "fonts/instrument-sans-latin-wdth-normal.woff2", "sha256": "" }
+       "src/brand/fonts/instrument-sans-latin-wdth-normal.woff2": { "source": "fonts/instrument-sans-latin-wdth-normal.woff2", "sha256": "" },
+       "src/brand/fonts/instrument-sans-latin-ext-wdth-normal.woff2": { "source": "fonts/instrument-sans-latin-ext-wdth-normal.woff2", "sha256": "" },
+       "src/brand/fonts/martian-mono-latin-wdth-normal.woff2": { "source": "fonts/martian-mono-latin-wdth-normal.woff2", "sha256": "" },
+       "src/brand/fonts/martian-mono-latin-ext-wdth-normal.woff2": { "source": "fonts/martian-mono-latin-ext-wdth-normal.woff2", "sha256": "" },
+       "src/brand/fonts/OFL-Instrument-Sans.txt": { "source": "fonts/OFL-Instrument-Sans.txt", "sha256": "" },
+       "src/brand/fonts/OFL-Martian-Mono.txt": { "source": "fonts/OFL-Martian-Mono.txt", "sha256": "" }
      }
    }
    ```

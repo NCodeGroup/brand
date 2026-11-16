@@ -318,7 +318,7 @@
       },
       "primary": {
         "$brand": true,
-        "$note": "Primary, derived from --brand: what you press.",
+        "$note": "Primary, derived from --nc-brand: what you press.",
         "primary": { "value": { "light": "{brand}", "dark": { "from": "{brand}", "l": "0.7206", "c": "min(c, 0.1444)", "h": "h + 5.3" } }, "note": "NCode Blue becomes exactly NCode Blue Light in the dark theme" },
         "on-primary": { "value": { "light": { "from": "{brand}", "space": "lch", "l": "clamp(0, (49.4 - l) * 9999, 100)", "c": "0", "h": "0" }, "dark": { "from": "{brand}", "l": "0.205", "c": "min(c * 0.32, 0.076)", "h": "h + 2.4" } }, "note": "white, or black when the tenant's color is lighter than CIE lightness 49.4, near where the label with the higher contrast changes. A color at the flip itself can fall short in CSS; tokens/derive.mjs chooses by measured contrast" },
         "primary-shade": { "value": { "light": { "from": "{brand}", "space": "lch", "l": "clamp(0, (l - 49.4) * 9999, 100)", "c": "0", "h": "0" }, "dark": "#FFFFFF" }, "note": "what a primary key's face moves toward when it is touched: away from its label, so the label gains contrast" },
@@ -333,7 +333,7 @@
       },
       "screen": {
         "$brand": true,
-        "$note": "The screen, derived from --brand-secondary: what you are shown. A screen is the same in both themes: a deep field of the hue with lit values on it. NCode Blue yields exactly NCode Navy and NCode Blue Light.",
+        "$note": "The screen, derived from --nc-brand-secondary: what you are shown. A screen is the same in both themes: a deep field of the hue with lit values on it. NCode Blue yields exactly NCode Navy and NCode Blue Light.",
         "screen": { "from": "{brand-secondary}", "l": "0.2697", "c": "c * 0.478", "h": "h + 1.2" },
         "screen-raised": { "value": { "from": "{brand-secondary}", "l": "0.335", "c": "c * 0.62", "h": "h + 0.8" }, "note": "a lit row, a memory cell" },
         "screen-border": { "from": "{brand-secondary}", "l": "0.4", "c": "c * 0.6", "h": "h" },
@@ -354,7 +354,7 @@
 
     "type": {
       "$tier": "semantic",
-      "$note": "Type roles. Each names a family, a size, a line height, a weight, a width and a tracking from the primitives (or gives a number). tokens.css carries each as a font shorthand, --type-<role>; width and tracking are set beside it.",
+      "$note": "Type roles. Each names a family, a size, a line height, a weight, a width and a tracking from the primitives (or gives a number). tokens.css carries each as a font shorthand, --nc-type-<role>; width and tracking are set beside it.",
       "headline": { "family": "sans", "size": "6xl", "leading": "flat", "weight": "semibold", "width": "display", "tracking": -0.028, "note": "the one headline of a landing page" },
       "title": { "family": "sans", "size": "4xl", "leading": "tight", "weight": "semibold", "width": "display", "tracking": "display", "note": "the title of a page" },
       "title-long": { "family": "sans", "size": "5xl", "leading": 1.04, "weight": "semibold", "width": "display", "tracking": -0.026, "note": "the title of a long-form page" },

@@ -43,9 +43,20 @@ describe('names in the guide', () => {
     assert.deepEqual([...named].filter((name) => !declared.has(name)), []);
   });
 
-  test('every class the guide names is a class of css/base.css', () => {
+  test('every class the guide names is a class of css/base.css, a modifier written short included', () => {
     const named = new Set();
-    for (const file of markdown.filter((f) => f.startsWith('guidelines/'))) for (const m of read(file).matchAll(/`\.([a-z][\w-]*)`/g)) named.add(m[1]);
+    for (const file of markdown.filter((f) => f.startsWith('guidelines/'))) {
+      for (const line of read(file).split('\n')) {
+        // "`.alert--success`, `--warning`" names .alert--warning: a modifier alone takes the block of the class before it.
+        let block = null;
+        for (const [, name] of line.matchAll(/`(\.[a-z][\w-]*|--(?!nc-)[a-z][\w-]*)`/g)) {
+          if (name.startsWith('.')) {
+            named.add(name.slice(1));
+            block = name.slice(1).split('--')[0];
+          } else if (block) named.add(`${block}${name}`);
+        }
+      }
+    }
     for (const name of named) if (existsSync(join(ROOT, `.${name}`))) named.delete(name); // a dotfile, such as .node-version
     assert.ok(named.size > 15);
     assert.deepEqual([...named].filter((name) => !new RegExp(`\\.${name}(?![\\w-])`).test(base)), []);

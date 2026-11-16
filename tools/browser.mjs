@@ -10,6 +10,10 @@ export function chromium() {
   try {
     return require('playwright').chromium;
   } catch {
-    throw new Error('These tools need Playwright: install it where Node.js finds it (npm install --global playwright, then npx playwright install chromium).');
+    throw new Error(
+      'These tools need Playwright: run "npm install --global playwright" and "npx playwright install chromium", then set ' +
+        'NODE_PATH to the folder "npm root -g" prints, because Node.js does not look in npm\'s global folder ' +
+        '(in PowerShell: $env:NODE_PATH = (npm root -g)).',
+    );
   }
 }

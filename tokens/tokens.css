@@ -247,7 +247,8 @@
 [data-brand-scope] { --nc-brand-secondary: var(--nc-brand); }
 
 /*
- * Semantic colors. Each is written once, as light-dark(<light>, <dark>).
+ * Semantic colors. Each is written once: as light-dark(<light>, <dark>) where the themes differ, as one value where
+ * they do not.
  */
 @supports (color: light-dark(#000, #fff)) and (color: oklch(from #000 l c h)) and (color: lch(from #000 l c h)) and (color: color-mix(in oklab, #000, #fff)) {
   :root {
@@ -329,7 +330,7 @@
    */
   :root,
   [data-brand-scope] {
-    /* Primary, derived from --brand: what you press. */
+    /* Primary, derived from --nc-brand: what you press. */
     --nc-color-primary: light-dark(var(--nc-brand), oklch(from var(--nc-brand) 0.7206 min(c, 0.1444) calc(h + 5.3))); /* NCode Blue becomes exactly NCode Blue Light in the dark theme */
     --nc-color-on-primary: light-dark(lch(from var(--nc-brand) clamp(0, (49.4 - l) * 9999, 100) 0 0), oklch(from var(--nc-brand) 0.205 min(c * 0.32, 0.076) calc(h + 2.4))); /* white, or black when the tenant's color is lighter than CIE lightness 49.4, near where the label with the higher contrast changes. A color at the flip itself can fall short in CSS; tokens/derive.mjs chooses by measured contrast */
     --nc-color-primary-shade: light-dark(lch(from var(--nc-brand) clamp(0, (l - 49.4) * 9999, 100) 0 0), #FFFFFF); /* what a primary key's face moves toward when it is touched: away from its label, so the label gains contrast */
@@ -342,7 +343,7 @@
     --nc-color-primary-subtle-border: light-dark(color-mix(in oklab, var(--nc-stone-0), var(--nc-color-primary) 30%), color-mix(in oklab, var(--nc-stone-925), var(--nc-color-primary) 42%));
     --nc-color-focus: var(--nc-color-primary-text); /* the focus ring */
 
-    /* The screen, derived from --brand-secondary: what you are shown. A screen is the same in both themes: a deep field of the hue with lit values on it. NCode Blue yields exactly NCode Navy and NCode Blue Light. */
+    /* The screen, derived from --nc-brand-secondary: what you are shown. A screen is the same in both themes: a deep field of the hue with lit values on it. NCode Blue yields exactly NCode Navy and NCode Blue Light. */
     --nc-color-screen: oklch(from var(--nc-brand-secondary) 0.2697 calc(c * 0.478) calc(h + 1.2));
     --nc-color-screen-raised: oklch(from var(--nc-brand-secondary) 0.335 calc(c * 0.62) calc(h + 0.8)); /* a lit row, a memory cell */
     --nc-color-screen-border: oklch(from var(--nc-brand-secondary) 0.4 calc(c * 0.6) h);
@@ -437,7 +438,7 @@
     --nc-color-shadow: rgb(23 23 20 / 0.2);
     --nc-color-scrim: rgb(23 23 20 / 0.5);
 
-    /* Primary, derived from --brand: what you press. */
+    /* Primary, derived from --nc-brand: what you press. */
     --nc-color-primary: #0033CC;
     --nc-color-on-primary: #FFFFFF;
     --nc-color-primary-shade: #000000;
@@ -450,7 +451,7 @@
     --nc-color-primary-subtle-border: #AFC7F5;
     --nc-color-focus: #0033CC;
 
-    /* The screen, derived from --brand-secondary: what you are shown. A screen is the same in both themes: a deep field of the hue with lit values on it. NCode Blue yields exactly NCode Navy and NCode Blue Light. */
+    /* The screen, derived from --nc-brand-secondary: what you are shown. A screen is the same in both themes: a deep field of the hue with lit values on it. NCode Blue yields exactly NCode Navy and NCode Blue Light. */
     --nc-color-screen: #0A1F5C;
     --nc-color-screen-raised: #0E2C80;
     --nc-color-screen-border: #1E4192;
@@ -534,7 +535,7 @@
       --nc-color-shadow: rgb(0 0 0 / 0.7);
       --nc-color-scrim: rgb(0 0 0 / 0.68);
 
-      /* Primary, derived from --brand: what you press. */
+      /* Primary, derived from --nc-brand: what you press. */
       --nc-color-primary: #809FFF;
       --nc-color-on-primary: #071339;
       --nc-color-primary-shade: #FFFFFF;
@@ -547,7 +548,7 @@
       --nc-color-primary-subtle-border: #404C6D;
       --nc-color-focus: #809FFF;
 
-      /* The screen, derived from --brand-secondary: what you are shown. A screen is the same in both themes: a deep field of the hue with lit values on it. NCode Blue yields exactly NCode Navy and NCode Blue Light. */
+      /* The screen, derived from --nc-brand-secondary: what you are shown. A screen is the same in both themes: a deep field of the hue with lit values on it. NCode Blue yields exactly NCode Navy and NCode Blue Light. */
 
       /* The ink of a scope brace on the case, one per kind of security boundary. */
       --nc-color-scope-tenant: #809FFF;
@@ -622,7 +623,7 @@
     --nc-color-shadow: rgb(0 0 0 / 0.7);
     --nc-color-scrim: rgb(0 0 0 / 0.68);
 
-    /* Primary, derived from --brand: what you press. */
+    /* Primary, derived from --nc-brand: what you press. */
     --nc-color-primary: #809FFF;
     --nc-color-on-primary: #071339;
     --nc-color-primary-shade: #FFFFFF;
@@ -635,7 +636,7 @@
     --nc-color-primary-subtle-border: #404C6D;
     --nc-color-focus: #809FFF;
 
-    /* The screen, derived from --brand-secondary: what you are shown. A screen is the same in both themes: a deep field of the hue with lit values on it. NCode Blue yields exactly NCode Navy and NCode Blue Light. */
+    /* The screen, derived from --nc-brand-secondary: what you are shown. A screen is the same in both themes: a deep field of the hue with lit values on it. NCode Blue yields exactly NCode Navy and NCode Blue Light. */
 
     /* The ink of a scope brace on the case, one per kind of security boundary. */
     --nc-color-scope-tenant: #809FFF;
