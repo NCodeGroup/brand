@@ -6,8 +6,8 @@ real surface: documentation, a landing page, a product page, sign-in, consent, t
 the states between screens.
 
 Serve the repository to open them, because a browser loads no CSS mask from a `file:` address: `node tools/serve.mjs`
-prints the address, under the same `Content-Security-Policy` NCode Identity serves its pages under. `params.js` reads
-these parameters:
+prints the address, and serves every file under a strict `Content-Security-Policy`, `default-src 'self'`. `params.js`
+reads these parameters:
 
 | Parameter | What it does |
 |---|---|

@@ -1,6 +1,7 @@
-// Takes screenshots of the specimens in specimens/, served over HTTP under the strict Content-Security-Policy NCode
-// Identity uses. It waits for the fonts, and fails when a page logs an error or a warning, a request fails, no web font
-// loads, or a page scrolls sideways. Run it by hand: it needs Playwright (tools/browser.mjs), and nothing else runs it.
+// Takes screenshots of the specimens in specimens/, served over HTTP under a strict Content-Security-Policy,
+// default-src 'self'. It waits for the fonts, and fails when a page logs an error or a warning, a request fails, no
+// web font loads, or a page scrolls sideways. Run it by hand: it needs Playwright (tools/browser.mjs), and nothing
+// else runs it.
 //   node tools/shoot.mjs --out=<folder>                 every shot
 //   node tools/shoot.mjs --out=<folder> console docs    only the shots of those scenes
 // A name is <scene>-<theme>-<width>[-<suffix>]. "-full" is the whole page, taken by making the window as tall as the

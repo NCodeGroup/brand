@@ -1,5 +1,5 @@
 // A static file server for the tools in this folder: it serves the repository on a free port chosen by the operating
-// system, under the strict Content-Security-Policy NCode Identity serves its pages under. Node.js built-ins only.
+// system, under a strict Content-Security-Policy, default-src 'self'. Node.js built-ins only.
 //   import { serve } from './serve.mjs';  const { url, close } = await serve();
 //   node tools/serve.mjs                  serves until interrupted, and prints the address of the specimens
 import { readFile } from 'node:fs/promises';
@@ -23,13 +23,22 @@ const TYPES = {
 export function serve({ root = ROOT, pages = {}, rewrite = null } = {}) {
   return new Promise((resolve) => {
     const server = createServer(async (request, response) => {
-      const { pathname } = new URL(request.url, 'http://localhost');
       const headers = { 'Content-Security-Policy': CSP, 'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff' };
+      let pathname;
+      let file;
+      try {
+        ({ pathname } = new URL(request.url, 'http://localhost'));
+        file = path.normalize(path.join(root, decodeURIComponent(pathname === '/' ? '/specimens/foundations.html' : pathname)));
+      } catch {
+        // A request target that is no address, such as "//", or that holds a malformed percent-escape, such as
+        // "/%E0%A4%A", names no file: it is answered, so the server keeps serving.
+        response.writeHead(400, { ...headers, 'Content-Type': 'text/plain; charset=utf-8' });
+        return response.end('bad request');
+      }
       if (pathname in pages) {
         response.writeHead(200, { ...headers, 'Content-Type': TYPES['.html'] });
         return response.end(pages[pathname]);
       }
-      const file = path.normalize(path.join(root, decodeURIComponent(pathname === '/' ? '/specimens/foundations.html' : pathname)));
       // Inside the served folder only: a sibling whose name starts with the folder's is outside it.
       if (!file.startsWith(path.join(root, path.sep))) {
         response.writeHead(403, headers);
