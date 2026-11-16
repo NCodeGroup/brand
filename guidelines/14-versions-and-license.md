@@ -41,9 +41,9 @@ touches.
 
 | What | License |
 |---|---|
-| The code, the tokens, the stylesheets, the braces in `brace/`, NCode's icons in `icons/`, the derivation, the Material UI data, the syntax theme, the vendoring script, the guide | Apache License 2.0, [LICENSE.txt](../LICENSE.txt). A brace alone is a part of the system, not a mark |
+| The code, the tokens, the stylesheets, the braces in `brace/`, NCode's icons in `icons/`, the derivation, the Material UI data, the syntax theme, the email template, the slide theme, the vendoring script, the guide | Apache License 2.0, [LICENSE.txt](../LICENSE.txt). A brace alone is a part of the system, not a mark |
 | The names NCode, NCode Group and NCode Identity, and the marks, every file in `logo/` | Trademarks of NCode Group; the marks' artwork is copyright NCode Group, all rights reserved. [TRADEMARKS.md](../TRADEMARKS.md) says how you may use them |
-| Instrument Sans and Martian Mono, the files in `fonts/` | Copyright their authors, under the SIL Open Font License 1.1, in `fonts/OFL-Instrument-Sans.txt` and `fonts/OFL-Martian-Mono.txt` |
+| Instrument Sans and Martian Mono, the files in `fonts/` and the copies embedded in `slides/instrument.css` | Copyright their authors, under the SIL Open Font License 1.1, in `fonts/OFL-Instrument-Sans.txt` and `fonts/OFL-Martian-Mono.txt` |
 | The icons in `icons/` taken from Lucide, those `icons/icons.json` gives the source `lucide` | Copyright Lucide Icons and Contributors under the ISC License, and those Lucide derives from Feather also copyright Cole Bemis under the MIT License, both in `icons/LICENSE-Lucide.txt` |
 | The wordmark's outlines, inside the logo files | Part of the marks, as the row above says. They were drawn from Inter Display, copyright The Inter Project Authors and licensed under the SIL Open Font License 1.1, which is credited here as a courtesy: no file needs or carries the font |
 
