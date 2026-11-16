@@ -3,11 +3,12 @@
 import assert from 'node:assert/strict';
 import { describe, test } from 'node:test';
 import {
-  compileExpression, contrast, expressionToCss, hexToOklch, hexToRgb, mixOklab, oklchToHexClipped, oklchToHexMapped,
+  compileExpression, contrast, hexToOklch, hexToRgb, mixOklab, oklchToHexClipped, oklchToHexMapped,
   parseHex, relativeLch, relativeOklch, rgbToHex, withOklchLightness,
 } from '../lib/color.mjs';
 import { decodeIco, icoBytes } from '../lib/ico.mjs';
 import { holds } from '../lib/logo.mjs';
+import { expressionToCss } from '../lib/model.mjs';
 import { num, roundHalfEven, toFixedHalfEven } from '../lib/numbers.mjs';
 import { crc32, decodePng, pngBytes, sameImage } from '../lib/png.mjs';
 

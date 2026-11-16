@@ -452,8 +452,8 @@
       "sha256": "17a92727bc9dd00c6b4a302ae8df64e770f941ef91203f277b1dc6e8aaf8f8e4"
     },
     "tokens/derive.mjs": {
-      "bytes": 36876,
-      "sha256": "f53fe5a49f240decdf9ecc9f58f6b0f797b769f3b7a3787b91a4afee267e84cc"
+      "bytes": 36421,
+      "sha256": "9414167b893842dc39ce19af7ca9a16ed38108c3db92b275a99712b4dca1bc97"
     },
     "tokens/derive.vectors.json": {
       "bytes": 38816,

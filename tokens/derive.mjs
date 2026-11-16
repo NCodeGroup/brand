@@ -17,7 +17,8 @@
 // Color math shared by the token build, the tenant derivation and the contrast gate.
 // sRGB <-> OKLab/OKLCH as CSS Color 4 defines them, WCAG 2.x contrast, and the CSS functions the tokens use
 // (relative oklch() and lch(), and color-mix() in OKLab), evaluated the way a browser evaluates them.
-// It imports nothing: build.mjs copies it into tokens/derive.mjs, so the released derivation runs this math.
+// It imports nothing: build.mjs copies all of it into tokens/derive.mjs, so the released derivation runs this math.
+// A helper only the build uses, such as one that writes CSS, belongs in lib/model.mjs instead.
 
 const toLinear = (c) => (c <= 0.04045 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4));
 const toGamma = (c) => (c <= 0.0031308 ? 12.92 * c : 1.055 * Math.pow(c, 1 / 2.4) - 0.055);
@@ -177,23 +178,6 @@ function compileExpression(text) {
   const result = sum();
   if (at !== tokens.length) throw new Error(`cannot read the end of "${text}"`);
   return result;
-}
-
-/** The same expression as CSS: bare values stay bare, a math function stays as it is, anything else goes in calc(). */
-function expressionToCss(text) {
-  const t = String(text).trim();
-  if (/^[0-9.]+$/.test(t) || /^[lch]$/.test(t)) return t;
-  if (/^(min|max|clamp)\(.*\)$/.test(t) && balancedOuter(t)) return t;
-  return `calc(${t})`;
-}
-
-function balancedOuter(t) {
-  let depth = 0;
-  for (let i = t.indexOf('('); i < t.length; i++) {
-    if (t[i] === '(') depth++;
-    if (t[i] === ')' && --depth === 0) return i === t.length - 1;
-  }
-  return false;
 }
 
 // ---------------------------------------------------------------------------------------------------------

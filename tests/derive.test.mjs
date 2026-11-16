@@ -33,6 +33,13 @@ describe('tokens/derive.mjs, as released', () => {
     assert.doesNotMatch(read('tokens/derive.mjs'), /^\s*import[\s{*]/m);
   });
 
+  test('holds no function or constant that nothing in it uses', () => {
+    const text = read('tokens/derive.mjs');
+    const names = [...text.matchAll(/^(?:function|const|let|class) (\w+)/gm)].map((m) => m[1]);
+    assert.ok(names.length > 20);
+    assert.deepEqual(names.filter((name) => text.match(new RegExp(`\\b${name}\\b`, 'g')).length < 2), []);
+  });
+
   test('reproduces every vector in derive.vectors.json', () => {
     assert.equal(vectors.version, readJson('package.json').version);
     for (const v of vectors.vectors) assert.deepEqual(released.deriveBrand(v.primary, v.secondary), v.expected, v.name);
