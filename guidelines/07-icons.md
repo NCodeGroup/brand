@@ -46,7 +46,8 @@ Take an icon from the sprite on the page's own origin, and `css/base.css` gives 
 ```
 
 The specimens in [specimens/](../specimens/) take the icons each page uses from the set, in a generated block of the
-sprite at the top of the page.
+sprite at the top of the page, and [the foundations page](../specimens/foundations.html) shows every icon of the set
+at 16 and 20 pixels.
 
 ## License
 

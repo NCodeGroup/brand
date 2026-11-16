@@ -160,6 +160,14 @@
 .fd-dialogstage { display: grid; place-items: center; padding: var(--nc-space-6) var(--nc-space-5) var(--nc-space-7); border-radius: var(--nc-radius-panel); background: var(--nc-color-scrim); }
 .fd-dialogstage .dialog { width: min(26rem, 100%); }
 
+/* icons */
+.fd-icons { display: grid; grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr)); gap: var(--nc-space-5) var(--nc-space-4); }
+.fd-icon { display: grid; gap: var(--nc-space-2); justify-items: start; min-width: 0; }
+.fd-icon__draw { display: flex; align-items: center; gap: var(--nc-space-3); color: var(--nc-color-text); }
+.fd-icon figcaption { display: grid; gap: var(--nc-space-1); min-width: 0; }
+.fd-icon code { padding: 0; border: 0; background: none; font-size: var(--nc-text-xs); color: var(--nc-color-text); overflow-wrap: anywhere; }
+.fd-icon .label { color: var(--nc-color-text-muted); }
+
 /* A number set like a value: the order of a section. */
 .step { position: absolute; font-family: var(--nc-font-mono); font-stretch: var(--nc-width-code); font-size: var(--nc-text-xs); font-weight: var(--nc-weight-medium); line-height: 1; color: var(--nc-color-text-muted); }
 .fd-type__lead { color: var(--nc-color-text-secondary); }

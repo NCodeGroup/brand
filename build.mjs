@@ -26,7 +26,7 @@ import { contrastReport } from './lib/contrast.mjs';
 import { createDerive } from './lib/derive-core.mjs';
 import { deriveData, deriveModule, deriveTypes, heldPairings, vectors } from './lib/derive.mjs';
 import { toDtcg } from './lib/dtcg.mjs';
-import { iconBlock, iconFiles, iconList, iconSet } from './lib/icons.mjs';
+import { iconBlock, iconFiles, iconGrid, iconList, iconSet } from './lib/icons.mjs';
 import { createLogo, holds, logoKit } from './lib/logo.mjs';
 import { buildModel, resolveColors } from './lib/model.mjs';
 import { tokensModule, tokensTypes } from './lib/module.mjs';
@@ -155,7 +155,12 @@ function blocks(model, report, icons) {
       readdirSync(join(ROOT, 'guidelines')).filter((n) => n.endsWith('.md')).sort().map((n) => `guidelines/${n}`),
       false,
     ],
-    [foundations.html, 'specimens/foundations.html', ['specimens/foundations.html'], false],
+    [
+      { ...foundations.html, 'icon-grid': iconGrid(icons.set) },
+      'specimens/foundations.html',
+      ['specimens/foundations.html'],
+      false,
+    ],
     [foundations.css, 'specimens/foundations.css', ['specimens/foundations.css'], true],
     [
       {},
@@ -173,7 +178,8 @@ function blocks(model, report, icons) {
       const current = read(path);
       let next = current;
       const names = blockNames(current);
-      // A specimen page's icons block is filled from the set, whichever page it is in.
+      // A specimen page's icons block is filled from the set, whichever page it is in, and last, so the sprite
+      // holds the symbols the other filled blocks use.
       const page = path.startsWith('specimens/') && path.endsWith('.html');
       for (const name of names) {
         const iconsBlock = page && name === 'icons';
@@ -182,9 +188,10 @@ function blocks(model, report, icons) {
         }
         // fill() fills the first copy of a block, so a second copy would keep its old numbers.
         if (names.indexOf(name) !== names.lastIndexOf(name)) throw new Error(`${path} holds the generated block "${name}" twice`);
-        next = fill(next, name, iconsBlock ? iconBlock(icons.set, current, path) : bodies[name], { css });
+        if (!iconsBlock) next = fill(next, name, bodies[name], { css });
         filled.add(name);
       }
+      if (page && names.includes('icons')) next = fill(next, 'icons', iconBlock(icons.set, next, path), { css });
       out.set(path, { data: Buffer.from(next, 'utf8') });
     }
     for (const name of Object.keys(bodies)) {

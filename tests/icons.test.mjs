@@ -6,7 +6,7 @@ import { join } from 'node:path';
 import { describe, test } from 'node:test';
 import { ROOT, read } from './helpers.mjs';
 import {
-  iconBlock, iconFiles, iconList, iconSet, parseNcode, restyleLucide, scalePath, symbol,
+  iconBlock, iconFiles, iconGrid, iconList, iconSet, parseNcode, restyleLucide, scalePath, symbol,
 } from '../lib/icons.mjs';
 
 const lucide = (body, viewBox = '0 0 24 24') =>
@@ -162,6 +162,26 @@ describe('the icon set', () => {
     assert.match(list, /\| NCode, in `src\/icons\/ncode\.svg` \| Butt caps \| `arrow-left`, `eye` \|/);
     assert.match(list, /\| Lucide 1\.72\.0, restyled \| Square caps \| `clock` \|/);
   });
+
+  test('iconGrid holds a figure for each icon with its name twice in a use and its label', () => {
+    const small = iconSet({
+      ncode: [
+        '<svg xmlns="http://www.w3.org/2000/svg">',
+        '<!-- icons -->',
+        sym('eye', '<path d="M1 1h2"/>'),
+        '</svg>',
+        '',
+      ].join('\n'),
+      lucide: { clock },
+    });
+    const lines = iconGrid(small).split('\n');
+    assert.equal(lines.length, 2);
+    for (const [line, name, label] of [[lines[0], 'clock', 'Lucide'], [lines[1], 'eye', 'NCode']]) {
+      assert.ok(line.startsWith('        <figure class="fd-icon">'));
+      assert.equal(line.split(`<use href="#i-${name}"/>`).length - 1, 2);
+      assert.ok(line.includes(`<code>${name}</code><span class="label">${label}</span>`));
+    }
+  });
 });
 
 describe('the specimens', () => {
@@ -169,6 +189,19 @@ describe('the specimens', () => {
 
   test('hold nine pages', () => {
     assert.equal(pages.length, 9);
+  });
+
+  test('foundations.html shows a figure and a symbol for every icon of the set', () => {
+    const html = read('specimens/foundations.html');
+    const grid = html.match(/<!-- generated:icon-grid -->\n([\s\S]*?)<!-- \/generated:icon-grid -->/);
+    const symbols = html.match(/<!-- generated:icons -->\n([\s\S]*?)<!-- \/generated:icons -->/);
+    assert.ok(grid, 'specimens/foundations.html holds no icon-grid block');
+    assert.ok(symbols, 'specimens/foundations.html holds no icons block');
+    const names = Object.keys(JSON.parse(read('icons/icons.json')).icons);
+    for (const name of names) {
+      assert.ok(grid[1].includes(`<code>${name}</code>`), `the icon-grid block has no figure for ${name}`);
+      assert.ok(symbols[1].includes(`<symbol id="i-${name}"`), `the icons block has no symbol for ${name}`);
+    }
   });
 
   for (const page of pages) {

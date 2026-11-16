@@ -32,7 +32,8 @@ Until the first stable release, the [Unreleased] section describes the product a
   grid with a stroke of 1.5, square caps and miter joins. Each icon is `icons/<name>.svg`, a symbol `i-<name>` in
   `icons/sprite.svg` and its shapes in `icons/icons.json`, with a line that stays 1.5 pixels at every size.
   `build.mjs` draws them from `src/icons/`, where `src/icons/lucide.lock.json` pins each Lucide file by SHA-256, and
-  each specimen page takes its icons from the set. `icons/LICENSE-Lucide.txt` holds Lucide's ISC and MIT notices
+  each specimen page takes its icons from the set, and `specimens/foundations.html` shows every icon at 16 and
+  20 pixels. `icons/LICENSE-Lucide.txt` holds Lucide's ISC and MIT notices
   ([#3](https://github.com/NCodeGroup/brand/issues/3),
   [ADR-1008](docs/decisions/1008-the-icon-set-is-ncodes-own-drawings-and-a-pinned-lucide-subset-restyled-to-one-grid.md)).
 - The `{N}` logo kit in `logo/ncode/`: the mark, the lockup and the tiles as SVG and PNG, the favicon set, and the files
