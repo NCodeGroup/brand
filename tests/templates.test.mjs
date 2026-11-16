@@ -4,9 +4,11 @@ import assert from 'node:assert/strict';
 import { describe, test } from 'node:test';
 import { resolveColors } from '../lib/model.mjs';
 import { embedFonts, fillTokens } from '../lib/templates.mjs';
-import { model } from './helpers.mjs';
+import { model, read, readJson } from './helpers.mjs';
 
 const m = model();
+const light = resolveColors(m, 'light');
+const version = readJson('package.json').version;
 
 describe('lib/templates.mjs', () => {
   test('fills a color role with its light value, and a dark one with its dark value', () => {
@@ -60,5 +62,42 @@ describe('lib/templates.mjs', () => {
     assert.ok(data[1].equals(b));
     assert.doesNotMatch(embedded, /\.x/);
     assert.throws(() => embedFonts(css, { 'a.woff2': a }), /no font file b\.woff2 to embed/);
+  });
+});
+
+describe('email/instrument.html', () => {
+  const html = read('email/instrument.html');
+  const colors = new Set(Object.values(light));
+
+  test('has no placeholder, custom property, style element, stylesheet or script', () => {
+    assert.doesNotMatch(html, /\[\[|var\(|--nc-|<style|<link|<script/);
+  });
+
+  test('has the slots the guide names, and no other double brace', () => {
+    const slots = [...new Set([...html.matchAll(/\{\{ ([a-z_]+) \}\}/g)].map((match) => match[1]))].sort();
+    assert.deepEqual(slots, ['action_label', 'action_url', 'code', 'footer', 'heading', 'logo_url', 'logo_width', 'message', 'preheader', 'product', 'subject']);
+    const rest = html.replace(/\{\{ [a-z_]+ \}\}/g, '');
+    assert.ok(!rest.includes('{{') && !rest.includes('}}'));
+  });
+
+  test('writes only colors of the light theme', () => {
+    const hexes = [...html.matchAll(/#[0-9A-Fa-f]{6}\b/g)].map((match) => match[0]);
+    assert.ok(hexes.length >= 8, `${hexes.length} colors`);
+    for (const hex of hexes) assert.ok(colors.has(hex), `${hex} is not a color of the light theme`);
+  });
+
+  test('colors the page, the key with its lip and the screen with their roles', () => {
+    assert.ok(html.includes(`<body style="margin:0;padding:0;background-color:${light.page};">`));
+    assert.ok(html.includes(`background-color:${light.primary};border-bottom:2px solid ${light['primary-lip']};`));
+    assert.ok(html.includes(`color:${light['on-primary']};text-decoration:none;">{{ action_label }}</a>`));
+    assert.ok(html.includes(`background-color:${light.screen};`));
+  });
+
+  test('writes sizes in pixels', () => {
+    assert.doesNotMatch(html, /\d(?:\.\d+)?rem\b/);
+  });
+
+  test('names the release it comes from', () => {
+    assert.ok(html.includes(`NCode Brand ${version}: email/instrument.html`));
   });
 });
