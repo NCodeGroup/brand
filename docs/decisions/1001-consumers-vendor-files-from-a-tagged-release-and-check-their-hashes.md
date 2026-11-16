@@ -1,6 +1,6 @@
 # 1001. Consumers vendor files from a tagged release and check their hashes
 
-- **Status:** Accepted
+- **Status:** Accepted (amended by 1009)
 - **Date:** 2026-11-16
 - **Deciders:** NCode Group
 
