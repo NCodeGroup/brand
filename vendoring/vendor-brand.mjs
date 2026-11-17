@@ -1,4 +1,7 @@
 #!/usr/bin/env node
+// Copyright © NCode Group
+// SPDX-License-Identifier: Apache-2.0
+
 // Copies the files brand.lock.json names from one release of NCodeGroup/brand, and checks them. Copy this file into
 // the repository that vendors the brand, next to its brand.lock.json. Node.js alone: no packages. Apache-2.0.
 //

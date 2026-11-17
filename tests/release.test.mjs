@@ -175,6 +175,11 @@ describe('vendoring/vendor-brand.mjs', () => {
     for (const folder of [consumer, other]) rmSync(folder, { recursive: true, force: true });
   });
 
+  test("starts with its #! line, then the copyright and SPDX license lines a consumer's header check reads", () => {
+    const lines = read('vendoring/vendor-brand.mjs').split('\n').slice(0, 4);
+    assert.deepEqual(lines, ['#!/usr/bin/env node', '// Copyright © NCode Group', '// SPDX-License-Identifier: Apache-2.0', '']);
+  });
+
   test("an update copies the files the lock names from the release's archive and pins their hashes", () => {
     lock({
       'src/brand/tokens.css': { source: 'tokens/tokens.css', sha256: '' },
@@ -462,6 +467,17 @@ describe('vendoring/vendor-brand.mjs', () => {
       rmSync(staged, { recursive: true, force: true });
       rmSync(join(consumer, 'src/brand/tar'), { recursive: true, force: true });
     }
+  });
+
+  test('an update rewrites the script itself when the lock names it, and the check then holds it', () => {
+    writeFileSync(script(), `${read('vendoring/vendor-brand.mjs')}// an older copy\n`);
+    lock({ 'vendor-brand.mjs': { source: 'vendoring/vendor-brand.mjs', sha256: '' } });
+    const result = update('--update', version, '--from', release);
+    assert.equal(result.code, 0, result.output);
+    assert.deepEqual(readFileSync(script()), readFileSync(join(ROOT, 'vendoring/vendor-brand.mjs')));
+    const pinned = JSON.parse(readFileSync(lockPath(), 'utf8'));
+    assert.equal(pinned.files['vendor-brand.mjs'].sha256, manifest.files['vendoring/vendor-brand.mjs'].sha256);
+    assert.equal(vendor('--check').code, 0);
   });
 });
 

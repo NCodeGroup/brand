@@ -184,15 +184,19 @@ its address at a release's tag in a README.
 Take files from one tagged release, and prove in your own gate that they did not drift.
 
 1. Copy [vendoring/vendor-brand.mjs](../vendoring/vendor-brand.mjs) into your repository. It is Node.js alone, with no
-   packages, and adds nothing to your lockfile.
+   packages, and adds nothing to your lockfile. Copy it unchanged: it starts with `// Copyright © NCode Group` and
+   `// SPDX-License-Identifier: Apache-2.0`, so a header check takes it as it is, and it keeps the SHA-256 the
+   release's `manifest.json` lists for it.
 2. Beside it, write a `brand.lock.json` that names each file you take, where it goes and where it comes from in the
-   release. Take every file a stylesheet loads, here the four fonts `css/fonts.css` names, and each font family's
+   release. Name the script itself too, so `--update` keeps it at the release's SHA-256 and `--check` holds it
+   there. Take every file a stylesheet loads, here the four fonts `css/fonts.css` names, and each font family's
    license with its fonts:
 
    ```json
    {
-     "version": "0.9.0",
+     "version": "0.10.0",
      "files": {
+       "vendor-brand.mjs": { "source": "vendoring/vendor-brand.mjs", "sha256": "" },
        "src/brand/tokens/tokens.css": { "source": "tokens/tokens.css", "sha256": "" },
        "src/brand/css/fonts.css": { "source": "css/fonts.css", "sha256": "" },
        "src/brand/fonts/instrument-sans-latin-wdth-normal.woff2": { "source": "fonts/instrument-sans-latin-wdth-normal.woff2", "sha256": "" },
@@ -205,10 +209,10 @@ Take files from one tagged release, and prove in your own gate that they did not
    }
    ```
 
-3. Run `node vendor-brand.mjs --update 0.9.0`. It needs the [GitHub CLI](https://cli.github.com), `gh`, signed in
-   with `gh auth login`, or with `GH_TOKEN` in CI. It downloads the release's archive, `brand-0.9.0.tar.gz`, from
-   the GitHub release `v0.9.0`, and has `gh attestation verify` prove its build provenance: signed by
-   [publish.yml](../.github/workflows/publish.yml) for the tag `v0.9.0` on a GitHub-hosted runner. It refuses the
+3. Run `node vendor-brand.mjs --update 0.10.0`. It needs the [GitHub CLI](https://cli.github.com), `gh`, signed in
+   with `gh auth login`, or with `GH_TOKEN` in CI. It downloads the release's archive, `brand-0.10.0.tar.gz`, from
+   the GitHub release `v0.10.0`, and has `gh attestation verify` prove its build provenance: signed by
+   [publish.yml](../.github/workflows/publish.yml) for the tag `v0.10.0` on a GitHub-hosted runner. It refuses the
    archive unless the attestation names its SHA-256, its `manifest.json` is that version, and it holds every file
    the manifest lists, at the manifest's size and SHA-256, and nothing else. Only then does it write the files and
    pin each hash in the lock. A release never changes, so once the lock pins a version, it refuses a file of that
@@ -222,4 +226,4 @@ request: a value change shows there, line by line. [Versions and license](14-ver
 kind of version number means.
 
 To check an archive yourself, run
-`gh attestation verify brand-0.9.0.tar.gz --repo NCodeGroup/brand --signer-workflow NCodeGroup/brand/.github/workflows/publish.yml`.
+`gh attestation verify brand-0.10.0.tar.gz --repo NCodeGroup/brand --signer-workflow NCodeGroup/brand/.github/workflows/publish.yml`.
