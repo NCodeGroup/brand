@@ -48,6 +48,12 @@ describe('lib/templates.mjs', () => {
     assert.equal(fillTokens('[[version]]', m, { version: '9.9.9' }), '9.9.9');
   });
 
+  test('writes a face as its type role without the size', () => {
+    const type = fillTokens('[[type:value]]', m, { inline: true });
+    assert.ok(type.includes('font-size:13px;'));
+    assert.equal(fillTokens('[[face:value]]', m, { inline: true }), type.replace('font-size:13px;', ''));
+  });
+
   test('throws on a placeholder it cannot fill', () => {
     assert.throws(() => fillTokens('[[color:nope]]', m), /no value for \[\[color:nope\]\]/);
     assert.throws(() => fillTokens('[[color:constructor]]', m), /no value for \[\[color:constructor\]\]/);
@@ -105,6 +111,13 @@ describe('email/instrument.html', () => {
 
   test('writes sizes in pixels', () => {
     assert.doesNotMatch(html, /\d(?:\.\d+)?rem\b/);
+  });
+
+  test('declares each property once in a style attribute', () => {
+    for (const [, style] of html.matchAll(/style="([^"]*)"/g)) {
+      const properties = style.split(';').filter(Boolean).map((declaration) => declaration.slice(0, declaration.indexOf(':')));
+      assert.equal(new Set(properties).size, properties.length, style);
+    }
   });
 
   test('names the release it comes from', () => {
