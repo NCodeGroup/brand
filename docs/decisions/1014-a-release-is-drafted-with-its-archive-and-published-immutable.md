@@ -9,9 +9,9 @@
 
 The template's ADR-0028 makes GitHub releases immutable: once a release is published, its assets and its tag can't
 change, and GitHub signs a release attestation. An immutable release takes no asset after publication, so the archive
-and its attestation bundle have to be attached before the release is published. `tag-release.yml`, through
-`.template/Publish-Release.ps1`, publishes the release as soon as it tags it, and `publish.yml` attached the assets
-after that, which an immutable release refuses.
+and its attestation bundle have to be attached before the release is published. With `release: tag+release`,
+`tag-release.yml` through `.template/Publish-Release.ps1` publishes the release as soon as it tags it, so a workflow
+that attaches the assets afterwards is refused by an immutable release.
 
 ## Decision
 
