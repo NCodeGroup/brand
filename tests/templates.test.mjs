@@ -57,6 +57,9 @@ describe('lib/templates.mjs', () => {
   test('throws on a placeholder it cannot fill', () => {
     assert.throws(() => fillTokens('[[color:nope]]', m), /no value for \[\[color:nope\]\]/);
     assert.throws(() => fillTokens('[[color:constructor]]', m), /no value for \[\[color:constructor\]\]/);
+    for (const kind of ['dark', 'space', 'text', 'radius', 'border', 'type', 'face']) {
+      assert.throws(() => fillTokens(`[[${kind}:nope]]`, m), new RegExp(`no value for \\[\\[${kind}:nope\\]\\]`));
+    }
     assert.throws(() => fillTokens('[[nope:x]]', m), /no value for \[\[nope:x\]\]/);
     assert.throws(() => fillTokens('[[fonts]]', m), /no value for \[\[fonts\]\]/);
     assert.throws(() => fillTokens('[[color:text', m), /a placeholder is left/);
