@@ -164,11 +164,12 @@ served under <code>font-src 'self'</code> loads them. Vendor each family's licen
 <code>fonts/OFL-Martian-Mono.txt</code>, with its font files: the SIL Open Font License asks every copy of a font to carry it.</li>
 </ul>
 <h2 id="an-email">An Email</h2>
-<p>Take <code>email/instrument.html</code>: an HTML email with every value written inline, for NCode's own brand in the light
-theme. It has no <code>&lt;style&gt;</code> element, no custom property and no web font, because most email clients drop all three: its
-type falls back from Instrument Sans and Martian Mono to the reader's system faces. It lays out one column, 600 pixels
-wide, in tables, which Outlook on Windows needs. It asks the client for the light scheme alone, and a client that
-forces a dark scheme still inverts it. A tenant's colors are not in it (<a class="link" href="https://github.com/NCodeGroup/brand/blob/main/docs/decisions/1013-slides-are-a-marp-theme-and-the-email-and-the-theme-carry-every-value-written-out.md">the decision</a>).</p>
+<p>Take <code>email/instrument.html</code>: an HTML email in the light theme with every value written inline, its key and its
+screen in NCode's colors or a tenant's. It has no <code>&lt;style&gt;</code> element, no custom property and no web font, because most
+email clients drop all three: its type falls back from Instrument Sans and Martian Mono to the reader's system faces.
+It lays out one column, 600 pixels wide, in tables, which Outlook on Windows needs. It asks the client for the light
+scheme alone, and a client that forces a dark scheme still inverts it
+(<a class="link" href="https://github.com/NCodeGroup/brand/blob/main/docs/decisions/1013-slides-are-a-marp-theme-and-the-email-and-the-theme-carry-every-value-written-out.md">the decision</a>).</p>
 <p>Fill each slot, a name in double braces such as <code>{{ heading }}</code>, with your template engine, and escape each value as
 HTML. Mustache, Handlebars, Liquid, Scriban and Fluid read the slots as variables: Mustache and Handlebars escape a
 value, and the others need their escape filter.</p>
@@ -178,15 +179,18 @@ value, and the others need their escape filter.</p>
 <tr><td><code>subject</code></td><td>The subject line, which is also the page's title</td></tr>
 <tr><td><code>preheader</code></td><td>The line an inbox shows after the subject; the message hides it</td></tr>
 <tr><td><code>product</code></td><td>The product's name, the logo's alternative text</td></tr>
-<tr><td><code>logo_url</code></td><td>The <code>https</code> address where you host the lockup at 128 pixels high: <code>logo/ncode/lockup/ncode-lockup-blue-h128.png</code>, or <code>logo/identity/lockup/ncode-identity-lockup-blue-h128.png</code> for NCode Identity</td></tr>
+<tr><td><code>logo_url</code></td><td>The <code>https</code> address where you host the lockup at 128 pixels high: <code>logo/ncode/lockup/ncode-lockup-blue-h128.png</code>, or <code>logo/identity/lockup/ncode-identity-lockup-blue-h128.png</code> for NCode Identity. Under a tenant's colors, take the <code>black</code> lockup, because NCode's marks then go one color (<a class="link" href="01-marks.html">Marks</a>)</td></tr>
 <tr><td><code>logo_width</code></td><td>The lockup's width at 32 pixels high: 106 for the <code>{N}</code> lockup, 186 for the <code>{id}</code> lockup</td></tr>
 <tr><td><code>heading</code></td><td>What the message is about, in the <code>heading</code> role</td></tr>
 <tr><td><code>message</code></td><td>One paragraph, in the <code>body</code> role</td></tr>
 <tr><td><code>action_label</code>, <code>action_url</code></td><td>The key: what it does, such as "Verify email address", and the <code>https</code> address it opens</td></tr>
 <tr><td><code>code</code></td><td>A value read off the system, such as a one-time code, on a screen</td></tr>
 <tr><td><code>footer</code></td><td>Why the reader got the message, in the <code>ui</code> role, muted</td></tr>
+<tr><td><code>primary</code>, <code>primary_lip</code>, <code>on_primary</code>, <code>screen</code>, <code>on_screen</code></td><td>The key's and the screen's colors: the same names, with <code>-</code> for <code>_</code>, in <code>deriveBrand(primary, secondary).light</code> of <code>tokens/derive.mjs</code>, which gives NCode's own colors without a tenant's</td></tr>
 </tbody>
 </table></div>
+<p>Fill the color slots only from <code>deriveBrand()</code>, never from a tenant's color as it was typed: it writes each color as
+<code>#RRGGBB</code>, and its guards keep the key's label and the code readable on their colors.</p>
 <p>Delete the key's table or the code's table when the message has neither: a comment above each marks it.</p>
 <h2 id="a-page-without-2024-css">A Page Without 2024 CSS</h2>
 <p>Take <code>tokens/tokens.static.css</code>: every token with its color written out, light at the root and dark by the theme, and

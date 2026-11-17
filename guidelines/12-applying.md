@@ -87,11 +87,12 @@ stays in the application, under its own type check and tests.
 
 ## An Email
 
-Take `email/instrument.html`: an HTML email with every value written inline, for NCode's own brand in the light
-theme. It has no `<style>` element, no custom property and no web font, because most email clients drop all three: its
-type falls back from Instrument Sans and Martian Mono to the reader's system faces. It lays out one column, 600 pixels
-wide, in tables, which Outlook on Windows needs. It asks the client for the light scheme alone, and a client that
-forces a dark scheme still inverts it. A tenant's colors are not in it ([the decision](../docs/decisions/1013-slides-are-a-marp-theme-and-the-email-and-the-theme-carry-every-value-written-out.md)).
+Take `email/instrument.html`: an HTML email in the light theme with every value written inline, its key and its
+screen in NCode's colors or a tenant's. It has no `<style>` element, no custom property and no web font, because most
+email clients drop all three: its type falls back from Instrument Sans and Martian Mono to the reader's system faces.
+It lays out one column, 600 pixels wide, in tables, which Outlook on Windows needs. It asks the client for the light
+scheme alone, and a client that forces a dark scheme still inverts it
+([the decision](../docs/decisions/1013-slides-are-a-marp-theme-and-the-email-and-the-theme-carry-every-value-written-out.md)).
 
 Fill each slot, a name in double braces such as `{{ heading }}`, with your template engine, and escape each value as
 HTML. Mustache, Handlebars, Liquid, Scriban and Fluid read the slots as variables: Mustache and Handlebars escape a
@@ -102,13 +103,17 @@ value, and the others need their escape filter.
 | `subject` | The subject line, which is also the page's title |
 | `preheader` | The line an inbox shows after the subject; the message hides it |
 | `product` | The product's name, the logo's alternative text |
-| `logo_url` | The `https` address where you host the lockup at 128 pixels high: `logo/ncode/lockup/ncode-lockup-blue-h128.png`, or `logo/identity/lockup/ncode-identity-lockup-blue-h128.png` for NCode Identity |
+| `logo_url` | The `https` address where you host the lockup at 128 pixels high: `logo/ncode/lockup/ncode-lockup-blue-h128.png`, or `logo/identity/lockup/ncode-identity-lockup-blue-h128.png` for NCode Identity. Under a tenant's colors, take the `black` lockup, because NCode's marks then go one color ([Marks](01-marks.md)) |
 | `logo_width` | The lockup's width at 32 pixels high: 106 for the `{N}` lockup, 186 for the `{id}` lockup |
 | `heading` | What the message is about, in the `heading` role |
 | `message` | One paragraph, in the `body` role |
 | `action_label`, `action_url` | The key: what it does, such as "Verify email address", and the `https` address it opens |
 | `code` | A value read off the system, such as a one-time code, on a screen |
 | `footer` | Why the reader got the message, in the `ui` role, muted |
+| `primary`, `primary_lip`, `on_primary`, `screen`, `on_screen` | The key's and the screen's colors: the same names, with `-` for `_`, in `deriveBrand(primary, secondary).light` of `tokens/derive.mjs`, which gives NCode's own colors without a tenant's |
+
+Fill the color slots only from `deriveBrand()`, never from a tenant's color as it was typed: it writes each color as
+`#RRGGBB`, and its guards keep the key's label and the code readable on their colors.
 
 Delete the key's table or the code's table when the message has neither: a comment above each marks it.
 

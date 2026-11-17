@@ -35,10 +35,11 @@ Until the first stable release, the [Unreleased] section describes the product a
   the `var()` of the token, so `tokens/tokens.css` resolves it for the brand in force. One theme serves both page
   themes ([#6](https://github.com/NCodeGroup/brand/issues/6),
   [ADR-1012](docs/decisions/1012-the-syntax-theme-names-the-screens-tokens-rather-than-their-colors.md)).
-- `email/instrument.html`: an HTML email for NCode's own brand with every value of the light theme written inline, in
-  one column 600 pixels wide laid out in tables: the lockup, a heading, a paragraph, a primary key, a code on a screen
-  and a muted footer. It has no `<style>` element, custom property or web font. The sending application's template
-  engine fills each slot in double braces, such as `{{ action_url }}`
+- `email/instrument.html`: an HTML email in the light theme with every value written inline but
+  the key's and the screen's colors, in one column 600 pixels wide laid out in tables: the lockup, a heading, a
+  paragraph, a primary key, a code on a screen and a muted footer. It has no `<style>` element, custom property or web
+  font. The sending application's template engine fills each slot in double braces, such as `{{ action_url }}`, and
+  fills the key's and the screen's colors from `deriveBrand()` in `tokens/derive.mjs`, NCode's own colors or a tenant's
   ([#21](https://github.com/NCodeGroup/brand/issues/21),
   [ADR-1013](docs/decisions/1013-slides-are-a-marp-theme-and-the-email-and-the-theme-carry-every-value-written-out.md)).
 - `slides/instrument.css`: the Marp theme `instrument`, a slide of 1280 by 720 pixels with every value written out, the
