@@ -468,6 +468,17 @@ describe('vendoring/vendor-brand.mjs', () => {
       rmSync(join(consumer, 'src/brand/tar'), { recursive: true, force: true });
     }
   });
+
+  test('an update rewrites the script itself when the lock names it, and the check then holds it', () => {
+    writeFileSync(script(), `${read('vendoring/vendor-brand.mjs')}// an older copy\n`);
+    lock({ 'vendor-brand.mjs': { source: 'vendoring/vendor-brand.mjs', sha256: '' } });
+    const result = update('--update', version, '--from', release);
+    assert.equal(result.code, 0, result.output);
+    assert.deepEqual(readFileSync(script()), readFileSync(join(ROOT, 'vendoring/vendor-brand.mjs')));
+    const pinned = JSON.parse(readFileSync(lockPath(), 'utf8'));
+    assert.equal(pinned.files['vendor-brand.mjs'].sha256, manifest.files['vendoring/vendor-brand.mjs'].sha256);
+    assert.equal(vendor('--check').code, 0);
+  });
 });
 
 describe('.github/workflows/publish.yml', () => {

@@ -76,7 +76,8 @@ stands. Until the first stable release, the [Unreleased] section describes the p
 - `manifest.json`, the size and SHA-256 of every released file, and `vendoring/vendor-brand.mjs`, which copies the
   files a consumer's `brand.lock.json` names from a release's archive and checks them offline. The script starts
   with `// Copyright © NCode Group` and `// SPDX-License-Identifier: Apache-2.0`, so a consumer's header check takes
-  it as it is ([#28](https://github.com/NCodeGroup/brand/issues/28)).
+  it as it is, and a lock can name the script itself, so `--update` keeps it at the release's SHA-256
+  ([#28](https://github.com/NCodeGroup/brand/issues/28)).
 - Each release's archive, `brand-<version>.tar.gz`: `manifest.json` and every file it lists, packed by
   `node build.mjs --archive <folder>` from the tagged commit, with its build provenance attestation and that
   attestation's bundle, `v<version>.intoto.jsonl`, and attached by `.github/workflows/publish.yml` to a draft release

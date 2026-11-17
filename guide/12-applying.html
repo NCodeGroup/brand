@@ -243,11 +243,13 @@ packages, and adds nothing to your lockfile. Copy it unchanged: it starts with <
 <code>// SPDX-License-Identifier: Apache-2.0</code>, so a header check takes it as it is, and it keeps the SHA-256 the
 release's <code>manifest.json</code> lists for it.</li>
 <li><p>Beside it, write a <code>brand.lock.json</code> that names each file you take, where it goes and where it comes from in the
-release. Take every file a stylesheet loads, here the four fonts <code>css/fonts.css</code> names, and each font family's
+release. Name the script itself too, so <code>--update</code> keeps it at the release's SHA-256 and <code>--check</code> holds it
+there. Take every file a stylesheet loads, here the four fonts <code>css/fonts.css</code> names, and each font family's
 license with its fonts:</p>
 <div class="screen wide"><pre><code><span class="line">{</span>
 <span class="line">  "version": "0.10.0",</span>
 <span class="line">  "files": {</span>
+<span class="line">    "vendor-brand.mjs": { "source": "vendoring/vendor-brand.mjs", "sha256": "" },</span>
 <span class="line">    "src/brand/tokens/tokens.css": { "source": "tokens/tokens.css", "sha256": "" },</span>
 <span class="line">    "src/brand/css/fonts.css": { "source": "css/fonts.css", "sha256": "" },</span>
 <span class="line">    "src/brand/fonts/instrument-sans-latin-wdth-normal.woff2": { "source": "fonts/instrument-sans-latin-wdth-normal.woff2", "sha256": "" },</span>

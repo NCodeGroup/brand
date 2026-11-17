@@ -188,13 +188,15 @@ Take files from one tagged release, and prove in your own gate that they did not
    `// SPDX-License-Identifier: Apache-2.0`, so a header check takes it as it is, and it keeps the SHA-256 the
    release's `manifest.json` lists for it.
 2. Beside it, write a `brand.lock.json` that names each file you take, where it goes and where it comes from in the
-   release. Take every file a stylesheet loads, here the four fonts `css/fonts.css` names, and each font family's
+   release. Name the script itself too, so `--update` keeps it at the release's SHA-256 and `--check` holds it
+   there. Take every file a stylesheet loads, here the four fonts `css/fonts.css` names, and each font family's
    license with its fonts:
 
    ```json
    {
      "version": "0.10.0",
      "files": {
+       "vendor-brand.mjs": { "source": "vendoring/vendor-brand.mjs", "sha256": "" },
        "src/brand/tokens/tokens.css": { "source": "tokens/tokens.css", "sha256": "" },
        "src/brand/css/fonts.css": { "source": "css/fonts.css", "sha256": "" },
        "src/brand/fonts/instrument-sans-latin-wdth-normal.woff2": { "source": "fonts/instrument-sans-latin-wdth-normal.woff2", "sha256": "" },
