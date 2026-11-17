@@ -466,13 +466,24 @@ describe('vendoring/vendor-brand.mjs', () => {
 });
 
 describe('.github/workflows/publish.yml', () => {
-  test('is the workflow vendor-brand.mjs requires to have signed the archive, and Publish-Release.ps1 can start it for a tag', () => {
+  test('is the workflow vendor-brand.mjs requires to have signed the archive, started by workflow_dispatch with a tag and not by a release', () => {
     assert.ok(existsSync(join(ROOT, '.github/workflows/publish.yml')));
     assert.match(read('vendoring/vendor-brand.mjs'), /\$\{REPO\}\/\.github\/workflows\/publish\.yml/);
-    assert.match(read('.github/workflows/publish.yml'), /^ {2}workflow_dispatch:\n {4}inputs:\n {6}tag:\n/m);
-    const publishRelease = read('.template/Publish-Release.ps1');
-    assert.match(publishRelease, /'\.github\/workflows\/publish\.yml'/);
-    assert.match(publishRelease, /workflow_dispatch/);
+    const publish = read('.github/workflows/publish.yml');
+    assert.match(publish, /^ {2}workflow_dispatch:\n {4}inputs:\n {6}tag:\n/m);
+    assert.doesNotMatch(publish, /^ {2}release:/m);
+  });
+
+  test('creates a draft release, uploads the assets, and only then publishes it', () => {
+    const publish = read('.github/workflows/publish.yml');
+    const draft = publish.indexOf('--draft ');
+    const upload = publish.indexOf('gh release upload');
+    const publishAt = publish.indexOf('--draft=false');
+    assert.ok(draft >= 0 && draft < upload && upload < publishAt, `${draft} ${upload} ${publishAt}`);
+  });
+
+  test('writes the release notes with tools/release-notes.mjs', () => {
+    assert.match(read('.github/workflows/publish.yml'), /tools\/release-notes\.mjs/);
   });
 });
 

@@ -1,26 +1,22 @@
-# Publish release archive: when a GitHub release is published, or when the Tag and publish release workflow
-# (tag-release.yml) starts it for the release it published, packs the tagged commit's released files into
-# brand-<version>.tar.gz, signs a build provenance attestation for it, and attaches the archive and the attestation's
-# bundle, <tag>.intoto.jsonl, to the release. vendoring/vendor-brand.mjs verifies that attestation before it writes a
-# file; docs/decisions/1009-a-release-carries-an-attested-archive-and-vendor-brand-verifies-it-before-writing.md says why.
+# Publish release archive: when the dispatcher (publish-dispatch.yml) or a maintainer starts it for a release tag, packs
+# the tagged commit's released files into brand-<version>.tar.gz, signs a build provenance attestation for it, creates
+# the release as a draft, attaches the archive and the attestation's bundle, <tag>.intoto.jsonl, and publishes it,
+# because an immutable release takes no asset after publication. vendoring/vendor-brand.mjs verifies that attestation
+# before it writes a file; docs/decisions/1009-a-release-carries-an-attested-archive-and-vendor-brand-verifies-it-before-writing.md says why.
 #
 # Two jobs, so the job that runs the repository's code holds no write permission:
 #   - pack checks the tag is a version (v1.2.3) and names a commit the default branch holds, so a tag on an unreviewed
 #     commit publishes nothing; then node build.mjs --archive checks every generated file and packs the archive;
 #   - attach runs in the release environment, which admits only tags v* and waits for a maintainer's approval, then
 #     attests the archive pack uploaded, verifies the attestation as vendor-brand.mjs does, and attaches the archive
-#     and the bundle to the release.
+#     and the bundle to the release before it publishes it.
 #
-# A release made with a workflow's GITHUB_TOKEN, as tag-release.yml makes it, starts no workflow, so
-# .template/Publish-Release.ps1 starts this one through workflow_dispatch, on the tag and with the tag as input. To
-# attach a release's archive by hand: Actions > Publish release archive > Run workflow, choosing the tag under Use
+# To publish a release's archive by hand: Actions > Publish release archive > Run workflow, choosing the tag under Use
 # workflow from and entering it as the input: a run from a branch is refused by the release environment.
-# A rerun packs the archive again and replaces the assets. The project owns this file: template updates never change it.
+# The project owns this file: template updates never change it.
 name: Publish release archive
 
 on:
-  release:
-    types: [published]
   workflow_dispatch:
     inputs:
       tag:
@@ -50,7 +46,7 @@ jobs:
         id: version
         shell: pwsh
         env:
-          TAG: ${{ github.event.release.tag_name || inputs.tag }}
+          TAG: ${{ inputs.tag }}
         run: |
           if ($env:TAG -notmatch '^v(\d+\.\d+\.\d+)$') { throw "The release tag '$env:TAG' isn't a version such as v1.2.3." }
           "version=$($Matches[1])" >> $env:GITHUB_OUTPUT
@@ -82,10 +78,19 @@ jobs:
           node build.mjs --archive dist
           if ($LASTEXITCODE) { throw "node build.mjs --archive failed with exit code ${LASTEXITCODE}: a generated file is stale." }
           if (-not (Test-Path -LiteralPath "dist/brand-$env:VERSION.tar.gz")) { throw "package.json's version at the tag isn't $env:VERSION, the tag's." }
+      - name: Write the release notes
+        shell: pwsh
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          node tools/release-notes.mjs $env:VERSION dist/release-notes.md
+          if ($LASTEXITCODE) { throw "tools/release-notes.mjs failed with exit code $LASTEXITCODE." }
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: archive
-          path: dist/brand-${{ steps.version.outputs.version }}.tar.gz
+          path: |
+            dist/brand-${{ steps.version.outputs.version }}.tar.gz
+            dist/release-notes.md
           if-no-files-found: error
           retention-days: 14
 
@@ -123,7 +128,7 @@ jobs:
         run: |
           gh attestation verify "dist/brand-$env:VERSION.tar.gz" --repo $env:GH_REPO --signer-workflow "$env:GH_REPO/.github/workflows/publish.yml" --source-ref "refs/tags/$env:TAG" --deny-self-hosted-runners
           if ($LASTEXITCODE) { throw "gh attestation verify failed with exit code $LASTEXITCODE." }
-      - name: Attach the archive and its attestation to the release
+      - name: Create the draft release, attach the archive and its attestation, and publish it
         shell: pwsh
         env:
           GH_TOKEN: ${{ github.token }}
@@ -133,5 +138,15 @@ jobs:
           BUNDLE: ${{ steps.attest.outputs.bundle-path }}
         run: |
           Copy-Item -LiteralPath $env:BUNDLE -Destination "$env:TAG.intoto.jsonl"
+          $releases = gh release list --limit 1000 --json tagName,isDraft | ConvertFrom-Json
+          if ($LASTEXITCODE) { throw "gh release list failed with exit code $LASTEXITCODE." }
+          $existing = $releases | Where-Object tagName -eq $env:TAG
+          if ($existing -and -not $existing.isDraft) { throw "The release $env:TAG is published, and an immutable release takes no asset: tag a new version." }
+          if (-not $existing) {
+            gh release create $env:TAG --draft --verify-tag --title $env:TAG --notes-file dist/release-notes.md
+            if ($LASTEXITCODE) { throw "gh release create failed with exit code $LASTEXITCODE." }
+          }
           gh release upload $env:TAG "dist/brand-$env:VERSION.tar.gz" "$env:TAG.intoto.jsonl" --clobber
           if ($LASTEXITCODE) { throw "gh release upload failed with exit code $LASTEXITCODE." }
+          gh release edit $env:TAG --draft=false
+          if ($LASTEXITCODE) { throw "gh release edit failed with exit code $LASTEXITCODE." }
