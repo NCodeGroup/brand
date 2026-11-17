@@ -239,7 +239,9 @@ its address at a release's tag in a README.</p>
 <p>Take files from one tagged release, and prove in your own gate that they did not drift.</p>
 <ol>
 <li>Copy <a class="link" href="https://github.com/NCodeGroup/brand/blob/main/vendoring/vendor-brand.mjs">vendoring/vendor-brand.mjs</a> into your repository. It is Node.js alone, with no
-packages, and adds nothing to your lockfile.</li>
+packages, and adds nothing to your lockfile. Copy it unchanged: it starts with <code>// Copyright © NCode Group</code> and
+<code>// SPDX-License-Identifier: Apache-2.0</code>, so a header check takes it as it is, and it keeps the SHA-256 the
+release's <code>manifest.json</code> lists for it.</li>
 <li><p>Beside it, write a <code>brand.lock.json</code> that names each file you take, where it goes and where it comes from in the
 release. Take every file a stylesheet loads, here the four fonts <code>css/fonts.css</code> names, and each font family's
 license with its fonts:</p>

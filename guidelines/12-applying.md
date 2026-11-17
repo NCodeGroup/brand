@@ -184,7 +184,9 @@ its address at a release's tag in a README.
 Take files from one tagged release, and prove in your own gate that they did not drift.
 
 1. Copy [vendoring/vendor-brand.mjs](../vendoring/vendor-brand.mjs) into your repository. It is Node.js alone, with no
-   packages, and adds nothing to your lockfile.
+   packages, and adds nothing to your lockfile. Copy it unchanged: it starts with `// Copyright © NCode Group` and
+   `// SPDX-License-Identifier: Apache-2.0`, so a header check takes it as it is, and it keeps the SHA-256 the
+   release's `manifest.json` lists for it.
 2. Beside it, write a `brand.lock.json` that names each file you take, where it goes and where it comes from in the
    release. Take every file a stylesheet loads, here the four fonts `css/fonts.css` names, and each font family's
    license with its fonts:
