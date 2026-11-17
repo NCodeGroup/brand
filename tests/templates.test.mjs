@@ -73,7 +73,7 @@ describe('lib/templates.mjs', () => {
 describe('email/instrument.html', () => {
   const html = read('email/instrument.html');
   const colors = new Set(Object.values(light));
-  const colorSlots = ['on_primary', 'on_screen', 'primary', 'primary_lip', 'screen'];
+  const colorSlots = ['on_primary', 'on_screen', 'primary', 'primary_edge', 'primary_lip', 'screen'];
 
   test('has no placeholder, custom property, style element, stylesheet or script', () => {
     assert.doesNotMatch(html, /\[\[|var\(|--nc-|<style|<link|<script/);
@@ -98,7 +98,7 @@ describe('email/instrument.html', () => {
 
   test('colors the page with its role, and the key with its lip and the screen with their slots', () => {
     assert.ok(html.includes(`<body style="margin:0;padding:0;background-color:${light.page};">`));
-    assert.ok(html.includes('background-color:{{ primary }};border-bottom:2px solid {{ primary_lip }};'));
+    assert.ok(html.includes('background-color:{{ primary }};border:1px solid {{ primary_edge }};border-bottom:2px solid {{ primary_lip }};'));
     assert.ok(html.includes('color:{{ on_primary }};text-decoration:none;">{{ action_label }}</a>'));
     assert.ok(html.includes('background-color:{{ screen }};'));
   });
