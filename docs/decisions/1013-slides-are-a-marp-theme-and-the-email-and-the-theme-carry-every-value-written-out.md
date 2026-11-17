@@ -29,10 +29,12 @@ writes each from a hand-written source, `src/email/instrument.html` and `src/sli
   the light theme alone, one column 600 pixels wide, in tables. The sending application's template engine fills its
   slots, such as `{{ heading }}`, escaped as HTML.
 - The email's key and its screen take their colors from slots named after the colors `deriveBrand()` of
-  `tokens/derive.mjs` writes, with `_` for `-`: `{{ primary }}`, `{{ primary_lip }}`, `{{ on_primary }}`,
-  `{{ screen }}` and `{{ on_screen }}`. The application fills them from `deriveBrand()`'s light theme, which gives
-  NCode's own colors without a tenant's and whose guards hold each label on its color, so one email serves NCode and
-  every tenant. Its other colors don't change with a tenant, and stay written inline.
+  `tokens/derive.mjs` writes, with `_` for `-`: `{{ primary }}`, `{{ primary_edge }}`, `{{ primary_lip }}`,
+  `{{ on_primary }}`, `{{ screen }}` and `{{ on_screen }}`. The application fills them from `deriveBrand()`'s light
+  theme, which gives NCode's own colors without a tenant's and whose guards hold each label on its color and the key's
+  edge on the card, so one email serves NCode and every tenant. The key draws its edge, a hairline in
+  `{{ primary_edge }}`, as the page's primary key does, so it reaches 3 to 1 against the card whatever the tenant's
+  color. Its other colors don't change with a tenant, and stay written inline.
 - The theme writes every value out: the light theme on each slide, and the dark one under the class `invert`. It
   embeds Instrument Sans and Martian Mono as `data:` addresses, the `@font-face` rules of `src/css/fonts.css` with each
   file's bytes, so a deck renders in them on any machine and loads no other file. A slide is 1280 by 720 pixels at a
@@ -64,7 +66,8 @@ writes each from a hand-written source, `src/email/instrument.html` and `src/sli
   and `fonts/OFL-Martian-Mono.txt` with it.
 - A deck that wants colored code styles its highlighter in its own `<style>`, beside the Marp version it renders with.
 - An application that fills the email's color slots with anything but `deriveBrand()`'s values, such as a tenant's
-  color as it was typed, loses the contrast its guards hold.
+  color as it was typed, loses the contrast its guards hold. Such a value can also add a declaration, such as
+  `red;display:none`, to the `style` attribute it sits in, which escaping as HTML doesn't stop.
 - A client that forces a dark scheme on an email still inverts it.
 
 ## References

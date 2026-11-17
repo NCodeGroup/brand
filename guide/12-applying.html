@@ -186,11 +186,14 @@ value, and the others need their escape filter.</p>
 <tr><td><code>action_label</code>, <code>action_url</code></td><td>The key: what it does, such as "Verify email address", and the <code>https</code> address it opens</td></tr>
 <tr><td><code>code</code></td><td>A value read off the system, such as a one-time code, on a screen</td></tr>
 <tr><td><code>footer</code></td><td>Why the reader got the message, in the <code>ui</code> role, muted</td></tr>
-<tr><td><code>primary</code>, <code>primary_lip</code>, <code>on_primary</code>, <code>screen</code>, <code>on_screen</code></td><td>The key's and the screen's colors: the same names, with <code>-</code> for <code>_</code>, in <code>deriveBrand(primary, secondary).light</code> of <code>tokens/derive.mjs</code>, which gives NCode's own colors without a tenant's</td></tr>
+<tr><td><code>primary</code>, <code>primary_edge</code>, <code>primary_lip</code>, <code>on_primary</code>, <code>screen</code>, <code>on_screen</code></td><td>The key's, its edge's and the screen's colors: the same names, with <code>-</code> for <code>_</code>, in <code>deriveBrand(primary, secondary).light</code> of <code>tokens/derive.mjs</code>, which gives NCode's own colors without a tenant's</td></tr>
 </tbody>
 </table></div>
-<p>Fill the color slots only from <code>deriveBrand()</code>, never from a tenant's color as it was typed: it writes each color as
-<code>#RRGGBB</code>, and its guards keep the key's label and the code readable on their colors.</p>
+<p>Fill the color slots only from <code>deriveBrand()</code>, never from a tenant's color as it was typed. Each slot sits
+inside a <code>style</code> attribute, where escaping as HTML doesn't stop a value such as <code>red;display:none</code> from adding a
+declaration: <code>deriveBrand()</code> writes every color as <code>#RRGGBB</code>, and gives NCode Blue for any input that isn't a
+hexadecimal color. Its guards keep the key's label and the code readable on their colors, and the key's edge reaches 3
+to 1 against the card whatever the tenant's color.</p>
 <p>Delete the key's table or the code's table when the message has neither: a comment above each marks it.</p>
 <h2 id="a-page-without-2024-css">A Page Without 2024 CSS</h2>
 <p>Take <code>tokens/tokens.static.css</code>: every token with its color written out, light at the root and dark by the theme, and

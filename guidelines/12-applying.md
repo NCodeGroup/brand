@@ -110,10 +110,13 @@ value, and the others need their escape filter.
 | `action_label`, `action_url` | The key: what it does, such as "Verify email address", and the `https` address it opens |
 | `code` | A value read off the system, such as a one-time code, on a screen |
 | `footer` | Why the reader got the message, in the `ui` role, muted |
-| `primary`, `primary_lip`, `on_primary`, `screen`, `on_screen` | The key's and the screen's colors: the same names, with `-` for `_`, in `deriveBrand(primary, secondary).light` of `tokens/derive.mjs`, which gives NCode's own colors without a tenant's |
+| `primary`, `primary_edge`, `primary_lip`, `on_primary`, `screen`, `on_screen` | The key's, its edge's and the screen's colors: the same names, with `-` for `_`, in `deriveBrand(primary, secondary).light` of `tokens/derive.mjs`, which gives NCode's own colors without a tenant's |
 
-Fill the color slots only from `deriveBrand()`, never from a tenant's color as it was typed: it writes each color as
-`#RRGGBB`, and its guards keep the key's label and the code readable on their colors.
+Fill the color slots only from `deriveBrand()`, never from a tenant's color as it was typed. Each slot sits
+inside a `style` attribute, where escaping as HTML doesn't stop a value such as `red;display:none` from adding a
+declaration: `deriveBrand()` writes every color as `#RRGGBB`, and gives NCode Blue for any input that isn't a
+hexadecimal color. Its guards keep the key's label and the code readable on their colors, and the key's edge reaches 3
+to 1 against the card whatever the tenant's color.
 
 Delete the key's table or the code's table when the message has neither: a comment above each marks it.
 
