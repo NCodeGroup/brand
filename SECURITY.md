@@ -15,7 +15,7 @@ Include:
 
 ## What to Expect
 
-- An acknowledgement of the report, then whether it is confirmed.
+- An acknowledgement of the report within 14 days, then whether it is confirmed.
 - A fix developed in private and released as soon as it is ready, with an entry under `### Security` in the changelog.
 - Disclosure coordinated with you: the security advisory is published once the fix is released. Keep the details private until then.
 - Credit for the report in the advisory, unless you'd rather not be named.
@@ -23,6 +23,20 @@ Include:
 ## Supported Versions
 
 Fixes go into the default branch and the next release. Only the latest release is supported: update to it to get a fix.
+
+## Verify a Release
+
+Each release carries its archive, `brand-<version>.tar.gz`, and a build provenance attestation of it, which [vendoring/vendor-brand.mjs](vendoring/vendor-brand.mjs) verifies before it writes a file ([ADR-1009](docs/decisions/1009-a-release-carries-an-attested-archive-and-vendor-brand-verifies-it-before-writing.md)). To check a downloaded archive by hand, replacing `<version>` and `<tag>`:
+
+```shell
+gh attestation verify brand-<version>.tar.gz --repo NCodeGroup/brand --signer-workflow NCodeGroup/brand/.github/workflows/publish.yml --source-ref refs/tags/<tag> --deny-self-hosted-runners
+```
+
+While the repository is public, the Tag and publish release workflow signs each release tag with [gitsign](https://github.com/sigstore/gitsign), through Sigstore's keyless signing, so no signing key exists to leak. With gitsign installed, check a tag in a clone of the repository:
+
+```shell
+gitsign verify-tag --certificate-identity https://github.com/NCodeGroup/brand/.github/workflows/tag-release.yml@refs/heads/main --certificate-oidc-issuer https://token.actions.githubusercontent.com <tag>
+```
 
 ## Scope
 
