@@ -496,6 +496,13 @@ describe('.github/workflows/publish-dispatch.yml', () => {
     assert.ok(dispatch.includes('gh workflow run publish.yml --ref'));
     assert.match(read('AGENTS.md'), /^- release: tag$/m);
   });
+
+  test('checks out no code, keys its concurrency group on the commit and still dispatches publish.yml', () => {
+    const dispatch = read('.github/workflows/publish-dispatch.yml');
+    assert.ok(!dispatch.includes('actions/checkout'));
+    assert.match(dispatch, /^ {2}group:.*head_sha/m);
+    assert.ok(dispatch.includes('gh workflow run publish.yml --ref'));
+  });
 });
 
 describe('tools/release-notes.mjs', () => {

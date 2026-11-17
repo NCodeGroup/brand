@@ -2,6 +2,7 @@
 # (tag-release.yml) made. A tag pushed with GITHUB_TOKEN starts no workflow, and release: tag makes the template's script
 # publish nothing, so this workflow, which a workflow_run of the tagging workflow starts, dispatches publish.yml.
 # publish.yml runs on the tag, so its attestation names refs/tags/<tag>, as vendoring/vendor-brand.mjs requires.
+# It reads the tags through the API and checks out no code, so the privileged run never executes the tagged commit.
 # The project owns this file: template updates never change it.
 name: Start release archive publication
 
@@ -13,7 +14,7 @@ on:
 permissions: {}
 
 concurrency:
-  group: publish-dispatch
+  group: publish-dispatch-${{ github.event.workflow_run.head_sha }}
   cancel-in-progress: false
 
 jobs:
@@ -22,24 +23,22 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     permissions:
-      # To read the tags at the commit.
+      # To read the repository's tags.
       contents: read
       # To start publish.yml.
       actions: write
     if: github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'push' && github.event.workflow_run.head_branch == 'main'
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          ref: ${{ github.event.workflow_run.head_sha }}
-          fetch-depth: 0
-          persist-credentials: false
       - name: Start publish.yml on each release tag at the commit
         shell: pwsh
         env:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
+          HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
         run: |
-          $tags = @(git tag --points-at HEAD --list 'v*' | Where-Object { $_ -match '^v\d+\.\d+\.\d+$' })
+          $names = @(gh api --paginate "repos/$env:GH_REPO/tags?per_page=100" --jq '.[] | select(.commit.sha == env.HEAD_SHA) | .name')
+          if ($LASTEXITCODE) { throw "gh api failed with exit code $LASTEXITCODE." }
+          $tags = @($names | Where-Object { $_ -cmatch '^v[0-9]+\.[0-9]+\.[0-9]+\z' })
           if ($tags.Count -eq 0) {
             'No release tag names this commit: nothing to publish.'
             exit 0
