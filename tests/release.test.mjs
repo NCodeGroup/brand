@@ -13,6 +13,7 @@ import { pathToFileURL } from 'node:url';
 import { gunzipSync, gzipSync } from 'node:zlib';
 import { tarGz } from '../lib/archive.mjs';
 import { LIMITS } from '../lib/logo.mjs';
+import { releaseNotes } from '../tools/release-notes.mjs';
 import { ROOT, read, readJson, runNode } from './helpers.mjs';
 
 const manifest = readJson('manifest.json');
@@ -465,12 +466,84 @@ describe('vendoring/vendor-brand.mjs', () => {
 });
 
 describe('.github/workflows/publish.yml', () => {
-  test('is the workflow vendor-brand.mjs requires to have signed the archive, and Publish-Release.ps1 can start it for a tag', () => {
+  test('is the workflow vendor-brand.mjs requires to have signed the archive, started by workflow_dispatch with a tag and not by a release', () => {
     assert.ok(existsSync(join(ROOT, '.github/workflows/publish.yml')));
     assert.match(read('vendoring/vendor-brand.mjs'), /\$\{REPO\}\/\.github\/workflows\/publish\.yml/);
-    assert.match(read('.github/workflows/publish.yml'), /^ {2}workflow_dispatch:\n {4}inputs:\n {6}tag:\n/m);
-    const publishRelease = read('.template/Publish-Release.ps1');
-    assert.match(publishRelease, /'\.github\/workflows\/publish\.yml'/);
-    assert.match(publishRelease, /workflow_dispatch/);
+    const publish = read('.github/workflows/publish.yml');
+    assert.match(publish, /^ {2}workflow_dispatch:\n {4}inputs:\n {6}tag:\n/m);
+    assert.doesNotMatch(publish, /^ {2}release:/m);
+  });
+
+  test('creates a draft release, uploads the assets, and only then publishes it', () => {
+    const publish = read('.github/workflows/publish.yml');
+    const draft = publish.indexOf('--draft ');
+    const upload = publish.indexOf('gh release upload');
+    const publishAt = publish.indexOf('--draft=false');
+    assert.ok(draft >= 0 && draft < upload && upload < publishAt, `${draft} ${upload} ${publishAt}`);
+  });
+
+  test('writes the release notes with tools/release-notes.mjs', () => {
+    assert.match(read('.github/workflows/publish.yml'), /tools\/release-notes\.mjs/);
+  });
+});
+
+describe('.github/workflows/publish-dispatch.yml', () => {
+  test('starts publish.yml on the tag after the tagging workflow, and AGENTS.md sets release: tag', () => {
+    const tagging = read('.github/workflows/tag-release.yml').match(/^name:\s*(.+?)\s*$/m)[1];
+    const dispatch = read('.github/workflows/publish-dispatch.yml');
+    assert.match(dispatch, /^ {2}workflow_run:/m);
+    assert.ok(dispatch.includes(`workflows: [${tagging}]`), tagging);
+    assert.ok(dispatch.includes('gh workflow run publish.yml --ref'));
+    assert.match(read('AGENTS.md'), /^- release: tag$/m);
+  });
+
+  test('checks out no code, keys its concurrency group on the commit and still dispatches publish.yml', () => {
+    const dispatch = read('.github/workflows/publish-dispatch.yml');
+    assert.ok(!dispatch.includes('actions/checkout'));
+    assert.match(dispatch, /^ {2}group:.*head_sha/m);
+    assert.ok(dispatch.includes('gh workflow run publish.yml --ref'));
+  });
+});
+
+describe('tools/release-notes.mjs', () => {
+  const changelog = [
+    '# Changelog', '', '## [Unreleased]', '', '### Added', '', '- Unreleased thing.', '',
+    '## [0.9.0] - 2026-11-16', '', '- Nine thing.', '', '## [0.8.0] - 2026-01-01', '', '- Eight thing.', '',
+    '[Unreleased]: https://example.com/unreleased', '[0.9.0]: https://example.com/0.9.0', '',
+  ].join('\n');
+
+  test('uses the version\'s section over [Unreleased] and stops at the next heading', () => {
+    assert.equal(releaseNotes(changelog, '0.9.0'), '- Nine thing.');
+  });
+
+  test('uses [Unreleased] when the version has no section, and stops before the link reference definitions', () => {
+    const only = ['# Changelog', '', '## [Unreleased]', '', '- Only thing.', '', '[Unreleased]: https://example.com/u', ''].join('\n');
+    assert.equal(releaseNotes(only, '1.0.0'), '- Only thing.');
+    assert.equal(releaseNotes(changelog, '1.0.0'), '### Added\n\n- Unreleased thing.');
+  });
+
+  test('throws on an empty section', () => {
+    assert.throws(() => releaseNotes('## [Unreleased]\n\n## [0.1.0]\n\n- x\n', '2.0.0'), /empty/);
+  });
+
+  test('throws when the changelog has neither [Unreleased] nor the version', () => {
+    assert.throws(() => releaseNotes('# Changelog\n\n## [0.1.0]\n\n- x\n', '2.0.0'), /no section/);
+  });
+
+  test('run as a script, fails without an output path and writes the notes with one', () => {
+    const script = join(ROOT, 'tools', 'release-notes.mjs');
+    const version = readJson('package.json').version;
+    const failed = spawnSync(process.execPath, [script, version], { encoding: 'utf8' });
+    assert.notEqual(failed.status, 0);
+    assert.notEqual(failed.stderr.trim(), '');
+    const folder = mkdtempSync(join(tmpdir(), 'ncode-brand-notes-'));
+    try {
+      const out = join(folder, 'notes.md');
+      const ran = spawnSync(process.execPath, [script, version, out], { encoding: 'utf8' });
+      assert.equal(ran.status, 0, ran.stderr);
+      assert.equal(readFileSync(out, 'utf8'), `${releaseNotes(read('CHANGELOG.md'), version)}\n`);
+    } finally {
+      rmSync(folder, { recursive: true, force: true });
+    }
   });
 });

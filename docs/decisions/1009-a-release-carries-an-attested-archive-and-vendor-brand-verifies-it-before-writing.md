@@ -1,6 +1,6 @@
 # 1009. A release carries an attested archive, and vendor-brand.mjs verifies it before writing
 
-- **Status:** Accepted
+- **Status:** Accepted (amended by 1014)
 - **Date:** 2026-11-16
 - **Deciders:** NCode Group
 - **Amends:** 1001
@@ -18,11 +18,11 @@ the repository, the workflow, the ref and the runner, and a consumer can check i
 Each release carries one archive, `brand-<version>.tar.gz`, that holds `manifest.json` and every file it lists, with a
 build provenance attestation. `.github/workflows/publish.yml` packs it from the tagged commit with
 `node build.mjs --archive`, attests it with `actions/attest-build-provenance`, verifies the attestation, and attaches
-the archive and the attestation's bundle, `v<version>.intoto.jsonl`, to the GitHub release.
+the archive and the attestation's bundle, `v<version>.intoto.jsonl`, to a draft release and publishes it.
 The job that attests and attaches runs in the `release` environment, which admits only tags `v*` and waits for a
 maintainer's approval, so no archive is attested without one; the job that packs refuses a tag whose commit `main`
 doesn't hold.
-`.template/Publish-Release.ps1` starts the workflow once it publishes the release.
+`.github/workflows/publish-dispatch.yml` starts the workflow for each release tag (ADR-1014).
 
 `vendoring/vendor-brand.mjs --update <version>` downloads the archive with the GitHub CLI and runs
 `gh attestation verify` on it. It requires the signer workflow `NCodeGroup/brand/.github/workflows/publish.yml`, the
@@ -52,9 +52,9 @@ for the same trust. An npm package with provenance stays rejected for the reason
 - An update downloads the whole archive, about 1.5 MB, not only the files the lock names.
 - The bundle on the release lets anyone check the archive with `gh attestation verify --bundle`, and OpenSSF Scorecard
   counts the release as signed.
-- A rerun of the workflow packs the archive again and replaces the release's assets.
-- Every release, also the one `.github/workflows/tag-release.yml` publishes as a pull request merges, waits for a
-  maintainer to approve the `release` environment before its archive is attested and attached.
+- A rerun of the workflow completes a draft release; a published release is immutable.
+- Every release waits for a maintainer to approve the `release` environment before its archive is attested and
+  attached.
 
 ## References
 

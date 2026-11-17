@@ -17,7 +17,9 @@ Not described yet.
 ## Build and Release
 
 CI runs the project's commands on every pull request (`.github/workflows/ci.yml`). `AGENTS.md`'s Landing section sets
-`release: tag+release`, so each release is tagged and published as its pull request merges, as
+`release: tag`, so each release is tagged as its pull request merges, as
 [ADR-0016](decisions/project-template/0016-releases-are-tagged-and-published-when-their-pull-request-merges.md)
-records, and `.github/workflows/publish.yml` attaches its attested archive
-([ADR-1009](decisions/1009-a-release-carries-an-attested-archive-and-vendor-brand-verifies-it-before-writing.md)).
+records, and `.github/workflows/publish.yml` creates the release as a draft, attaches its attested archive and
+publishes it, so the release is immutable
+([ADR-1009](decisions/1009-a-release-carries-an-attested-archive-and-vendor-brand-verifies-it-before-writing.md),
+[ADR-1014](decisions/1014-a-release-is-drafted-with-its-archive-and-published-immutable.md)).

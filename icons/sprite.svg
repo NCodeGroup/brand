@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg">
-<!-- The icons of NCode Brand 0.8.1. Use one as <svg class="icon"><use href="sprite.svg#i-NAME"/></svg>, with css/base.css. A symbol with stroke-linecap="square" is an icon of Lucide 1.72.0, restyled. ISC, and MIT for the icons Lucide derives from Feather: LICENSE-Lucide.txt beside this file holds the notices. -->
+<!-- The icons of NCode Brand 0.9.0. Use one as <svg class="icon"><use href="sprite.svg#i-NAME"/></svg>, with css/base.css. A symbol with stroke-linecap="square" is an icon of Lucide 1.72.0, restyled. ISC, and MIT for the icons Lucide derives from Feather: LICENSE-Lucide.txt beside this file holds the notices. -->
   <symbol id="i-activity" viewBox="0 0 16 16" stroke-linecap="square"><path d="M14.667 8h-1.653a1.333 1.333 0 0 0 -1.287 0.973l-1.567 5.573a0.167 0.167 0 0 1 -0.32 0L6.16 1.453a0.167 0.167 0 0 0 -0.32 0l-1.567 5.573A1.333 1.333 0 0 1 2.993 8H1.333" vector-effect="non-scaling-stroke"/></symbol>
   <symbol id="i-arrow-left" viewBox="0 0 16 16"><path d="M13.5 8H3M7 3.5 2.5 8 7 12.5" vector-effect="non-scaling-stroke"/></symbol>
   <symbol id="i-arrow-right" viewBox="0 0 16 16"><path d="M2.5 8H13M9 3.5 13.5 8 9 12.5" vector-effect="non-scaling-stroke"/></symbol>

@@ -32,6 +32,13 @@ Each release carries its archive, `brand-<version>.tar.gz`, and a build provenan
 gh attestation verify brand-<version>.tar.gz --repo NCodeGroup/brand --signer-workflow NCodeGroup/brand/.github/workflows/publish.yml --source-ref refs/tags/<tag> --deny-self-hosted-runners
 ```
 
+Each release is immutable, so GitHub also signs an attestation of the release and its assets. Check the release, and the archive you downloaded, replacing `<tag>` and `<version>`:
+
+```shell
+gh release verify <tag> --repo NCodeGroup/brand
+gh release verify-asset <tag> brand-<version>.tar.gz --repo NCodeGroup/brand
+```
+
 While the repository is public, the Tag and publish release workflow signs each release tag with [gitsign](https://github.com/sigstore/gitsign), through Sigstore's keyless signing, so no signing key exists to leak. With gitsign installed, check a tag in a clone of the repository:
 
 ```shell
