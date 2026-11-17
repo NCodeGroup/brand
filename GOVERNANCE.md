@@ -11,7 +11,7 @@ what and how decisions are made.
 | --- | --- | --- |
 | Maintainer | The repository's owners | Sets direction, triages issues, reviews and merges pull requests, answers vulnerability reports, owns the repository's settings |
 | Contributor | Anyone | Opens issues and pull requests, under [CONTRIBUTING.md](CONTRIBUTING.md) and the [Code of Conduct](CODE_OF_CONDUCT.md) |
-| Automation | `ncode-review[bot]`, Dependabot, GitHub Actions | Reviews and approves a clean pull request, proposes dependency updates, runs CI, tags and publishes releases where `AGENTS.md`'s Landing section sets `release: tag+release`; never merges a pull request except the pin bump `code-review-auto-merge.yml` merges once a maintainer approves it |
+| Automation | `ncode-review[bot]`, Dependabot, GitHub Actions | Reviews and approves a clean pull request, proposes dependency updates, runs CI, tags releases where `AGENTS.md`'s Landing section sets `release: tag`, and publishes them through `publish.yml`; never merges a pull request except the pin bump `code-review-auto-merge.yml` merges once a maintainer approves it |
 
 Only a maintainer has write access. A contributor who keeps contributing reviewed, merged work can be invited to become
 a maintainer; the existing maintainers decide, and the change is recorded in this file.
@@ -28,11 +28,13 @@ a maintainer; the existing maintainers decide, and the change is recorded in thi
 
 Versions follow Semantic Versioning, as
 [ADR-1004](docs/decisions/1004-a-rename-is-a-major-version-and-a-value-change-is-never-a-patch.md) applies it to the
-tokens and files. `AGENTS.md`'s Landing section sets `release: tag+release`, so each release is tagged and published
+tokens and files. `AGENTS.md`'s Landing section sets `release: tag`, so each release is tagged
 as its pull request merges, as
 [ADR-0016](docs/decisions/project-template/0016-releases-are-tagged-and-published-when-their-pull-request-merges.md)
-records, and `.github/workflows/publish.yml` attaches its attested archive
-([ADR-1009](docs/decisions/1009-a-release-carries-an-attested-archive-and-vendor-brand-verifies-it-before-writing.md)).
+records, and `.github/workflows/publish.yml` creates the release as a draft, attaches its attested archive and
+publishes it, so the release is immutable
+([ADR-1009](docs/decisions/1009-a-release-carries-an-attested-archive-and-vendor-brand-verifies-it-before-writing.md),
+[ADR-1014](docs/decisions/1014-a-release-is-drafted-with-its-archive-and-published-immutable.md)).
 
 ## Continuity
 
