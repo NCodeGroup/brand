@@ -193,7 +193,7 @@ Take files from one tagged release, and prove in your own gate that they did not
 
    ```json
    {
-     "version": "0.9.0",
+     "version": "0.10.0",
      "files": {
        "src/brand/tokens/tokens.css": { "source": "tokens/tokens.css", "sha256": "" },
        "src/brand/css/fonts.css": { "source": "css/fonts.css", "sha256": "" },
@@ -207,10 +207,10 @@ Take files from one tagged release, and prove in your own gate that they did not
    }
    ```
 
-3. Run `node vendor-brand.mjs --update 0.9.0`. It needs the [GitHub CLI](https://cli.github.com), `gh`, signed in
-   with `gh auth login`, or with `GH_TOKEN` in CI. It downloads the release's archive, `brand-0.9.0.tar.gz`, from
-   the GitHub release `v0.9.0`, and has `gh attestation verify` prove its build provenance: signed by
-   [publish.yml](../.github/workflows/publish.yml) for the tag `v0.9.0` on a GitHub-hosted runner. It refuses the
+3. Run `node vendor-brand.mjs --update 0.10.0`. It needs the [GitHub CLI](https://cli.github.com), `gh`, signed in
+   with `gh auth login`, or with `GH_TOKEN` in CI. It downloads the release's archive, `brand-0.10.0.tar.gz`, from
+   the GitHub release `v0.10.0`, and has `gh attestation verify` prove its build provenance: signed by
+   [publish.yml](../.github/workflows/publish.yml) for the tag `v0.10.0` on a GitHub-hosted runner. It refuses the
    archive unless the attestation names its SHA-256, its `manifest.json` is that version, and it holds every file
    the manifest lists, at the manifest's size and SHA-256, and nothing else. Only then does it write the files and
    pin each hash in the lock. A release never changes, so once the lock pins a version, it refuses a file of that
@@ -224,4 +224,4 @@ request: a value change shows there, line by line. [Versions and license](14-ver
 kind of version number means.
 
 To check an archive yourself, run
-`gh attestation verify brand-0.9.0.tar.gz --repo NCodeGroup/brand --signer-workflow NCodeGroup/brand/.github/workflows/publish.yml`.
+`gh attestation verify brand-0.10.0.tar.gz --repo NCodeGroup/brand --signer-workflow NCodeGroup/brand/.github/workflows/publish.yml`.
