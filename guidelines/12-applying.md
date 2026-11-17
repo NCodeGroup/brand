@@ -85,12 +85,70 @@ stays in the application, under its own type check and tests.
   served under `font-src 'self'` loads them. Vendor each family's license, `fonts/OFL-Instrument-Sans.txt` and
   `fonts/OFL-Martian-Mono.txt`, with its font files: the SIL Open Font License asks every copy of a font to carry it.
 
-## An Email, or a Page Without 2024 CSS
+## An Email
+
+Take `email/instrument.html`: an HTML email in the light theme with every value written inline, its key and its
+screen in NCode's colors or a tenant's. It has no `<style>` element, no custom property and no web font, because most
+email clients drop all three: its type falls back from Instrument Sans and Martian Mono to the reader's system faces.
+It lays out one column, 600 pixels wide, in tables, which Outlook on Windows needs. It asks the client for the light
+scheme alone, and a client that forces a dark scheme still inverts it
+([the decision](../docs/decisions/1013-slides-are-a-marp-theme-and-the-email-and-the-theme-carry-every-value-written-out.md)).
+
+Fill each slot, a name in double braces such as `{{ heading }}`, with your template engine, and escape each value as
+HTML. Mustache, Handlebars, Liquid, Scriban and Fluid read the slots as variables: Mustache and Handlebars escape a
+value, and the others need their escape filter.
+
+| Slot | What you put in it |
+|---|---|
+| `subject` | The subject line, which is also the page's title |
+| `preheader` | The line an inbox shows after the subject; the message hides it |
+| `product` | The product's name, the logo's alternative text |
+| `logo_url` | The `https` address where you host the lockup at 128 pixels high: `logo/ncode/lockup/ncode-lockup-blue-h128.png`, or `logo/identity/lockup/ncode-identity-lockup-blue-h128.png` for NCode Identity. Under a tenant's colors, take the `black` lockup, because NCode's marks then go one color ([Marks](01-marks.md)) |
+| `logo_width` | The lockup's width at 32 pixels high: 106 for the `{N}` lockup, 186 for the `{id}` lockup |
+| `heading` | What the message is about, in the `heading` role |
+| `message` | One paragraph, in the `body` role |
+| `action_label`, `action_url` | The key: what it does, such as "Verify email address", and the `https` address it opens |
+| `code` | A value read off the system, such as a one-time code, on a screen |
+| `footer` | Why the reader got the message, in the `ui` role, muted |
+| `primary`, `primary_edge`, `primary_lip`, `on_primary`, `screen`, `on_screen` | The key's, its edge's and the screen's colors: the same names, with `-` for `_`, in `deriveBrand(primary, secondary).light` of `tokens/derive.mjs`, which gives NCode's own colors without a tenant's |
+
+Fill the color slots only from `deriveBrand()`, never from a tenant's color as it was typed. Each slot sits
+inside a `style` attribute, where escaping as HTML doesn't stop a value such as `red;display:none` from adding a
+declaration: `deriveBrand()` writes every color as `#RRGGBB`, and gives NCode Blue for any input that isn't a
+hexadecimal color. Its guards keep the key's label and the code readable on their colors, and the key's edge reaches 3
+to 1 against the card whatever the tenant's color.
+
+Delete the key's table or the code's table when the message has neither: a comment above each marks it.
+
+## A Page Without 2024 CSS
 
 Take `tokens/tokens.static.css`: every token with its color written out, light at the root and dark by the theme, and
 no `light-dark()`, relative color or `color-mix()`. It derives nothing, so a tenant's colors come from
-`tokens/derive.mjs`'s `customProperties()`. An email client reads custom properties poorly: write the resolved values
-inline from `tokens/tokens.mjs` instead.
+`tokens/derive.mjs`'s `customProperties()`.
+
+## Slides in Marp
+
+Take `slides/instrument.css`, the Marp theme `instrument`, with `fonts/OFL-Instrument-Sans.txt` and
+`fonts/OFL-Martian-Mono.txt`. It embeds both typefaces, so a deck renders in them on any machine and loads no other
+file, and the SIL Open Font License asks every copy of a font to carry its license. Name the theme in the VS Code
+extension's `markdown.marp.themes` setting, or give its path to Marp CLI's `--theme-set` option, and choose it in the
+deck's front matter:
+
+```markdown
+---
+marp: true
+theme: instrument
+paginate: true
+---
+```
+
+A slide is 1280 by 720 pixels on the light theme's surface, and every type role is 1.75 times its size on a screen:
+`#` is the `title` role, `##` `heading`, `###` `subheading`, running text `body`, the header, the footer and a table's
+head `label`, and the page number a `readout`. A code block is a screen. `<!-- _class: lead -->` makes a title slide,
+its `#` in the `headline` role, and `<!-- _class: invert -->` sets a slide on the dark theme's surface. The theme colors
+no syntax: Marp Core 4 highlights code with highlight.js and Marp Core 5 with Shiki, so a deck that wants colored code
+styles it in its own `<style>`. Put a mark on a slide as an image from `logo/`, as [Marks](01-marks.md) says
+([the decision](../docs/decisions/1013-slides-are-a-marp-theme-and-the-email-and-the-theme-carry-every-value-written-out.md)).
 
 ## A Tool That Reads Design Tokens
 
@@ -133,7 +191,7 @@ Take files from one tagged release, and prove in your own gate that they did not
 
    ```json
    {
-     "version": "0.7.0",
+     "version": "0.8.0",
      "files": {
        "src/brand/tokens/tokens.css": { "source": "tokens/tokens.css", "sha256": "" },
        "src/brand/css/fonts.css": { "source": "css/fonts.css", "sha256": "" },
@@ -147,10 +205,10 @@ Take files from one tagged release, and prove in your own gate that they did not
    }
    ```
 
-3. Run `node vendor-brand.mjs --update 0.7.0`. It needs the [GitHub CLI](https://cli.github.com), `gh`, signed in
-   with `gh auth login`, or with `GH_TOKEN` in CI. It downloads the release's archive, `brand-0.7.0.tar.gz`, from
-   the GitHub release `v0.7.0`, and has `gh attestation verify` prove its build provenance: signed by
-   [publish.yml](../.github/workflows/publish.yml) for the tag `v0.7.0` on a GitHub-hosted runner. It refuses the
+3. Run `node vendor-brand.mjs --update 0.8.0`. It needs the [GitHub CLI](https://cli.github.com), `gh`, signed in
+   with `gh auth login`, or with `GH_TOKEN` in CI. It downloads the release's archive, `brand-0.8.0.tar.gz`, from
+   the GitHub release `v0.8.0`, and has `gh attestation verify` prove its build provenance: signed by
+   [publish.yml](../.github/workflows/publish.yml) for the tag `v0.8.0` on a GitHub-hosted runner. It refuses the
    archive unless the attestation names its SHA-256, its `manifest.json` is that version, and it holds every file
    the manifest lists, at the manifest's size and SHA-256, and nothing else. Only then does it write the files and
    pin each hash in the lock. A release never changes, so once the lock pins a version, it refuses a file of that
@@ -164,4 +222,4 @@ request: a value change shows there, line by line. [Versions and license](14-ver
 kind of version number means.
 
 To check an archive yourself, run
-`gh attestation verify brand-0.7.0.tar.gz --repo NCodeGroup/brand --signer-workflow NCodeGroup/brand/.github/workflows/publish.yml`.
+`gh attestation verify brand-0.8.0.tar.gz --repo NCodeGroup/brand --signer-workflow NCodeGroup/brand/.github/workflows/publish.yml`.

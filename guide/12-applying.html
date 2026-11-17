@@ -32,7 +32,7 @@
   </a>
 
   <div class="sitebar__tools">
-    <span class="readout" title="Version"><span class="vh">Version </span>v0.7.0</span>
+    <span class="readout" title="Version"><span class="vh">Version </span>v0.8.0</span>
     <a class="key sitebar__github" href="https://github.com/NCodeGroup/brand">
       GitHub
       <svg class="icon" aria-hidden="true"><use href="../icons/sprite.svg#i-arrow-up-right"/></svg>
@@ -163,11 +163,60 @@ release derives.</li>
 served under <code>font-src 'self'</code> loads them. Vendor each family's license, <code>fonts/OFL-Instrument-Sans.txt</code> and
 <code>fonts/OFL-Martian-Mono.txt</code>, with its font files: the SIL Open Font License asks every copy of a font to carry it.</li>
 </ul>
-<h2 id="an-email-or-a-page-without-2024-css">An Email, or a Page Without 2024 CSS</h2>
+<h2 id="an-email">An Email</h2>
+<p>Take <code>email/instrument.html</code>: an HTML email in the light theme with every value written inline, its key and its
+screen in NCode's colors or a tenant's. It has no <code>&lt;style&gt;</code> element, no custom property and no web font, because most
+email clients drop all three: its type falls back from Instrument Sans and Martian Mono to the reader's system faces.
+It lays out one column, 600 pixels wide, in tables, which Outlook on Windows needs. It asks the client for the light
+scheme alone, and a client that forces a dark scheme still inverts it
+(<a class="link" href="https://github.com/NCodeGroup/brand/blob/main/docs/decisions/1013-slides-are-a-marp-theme-and-the-email-and-the-theme-carry-every-value-written-out.md">the decision</a>).</p>
+<p>Fill each slot, a name in double braces such as <code>{{ heading }}</code>, with your template engine, and escape each value as
+HTML. Mustache, Handlebars, Liquid, Scriban and Fluid read the slots as variables: Mustache and Handlebars escape a
+value, and the others need their escape filter.</p>
+<div class="tableframe wide"><table class="table">
+<thead><tr><th scope="col">Slot</th><th scope="col">What you put in it</th></tr></thead>
+<tbody>
+<tr><td><code>subject</code></td><td>The subject line, which is also the page's title</td></tr>
+<tr><td><code>preheader</code></td><td>The line an inbox shows after the subject; the message hides it</td></tr>
+<tr><td><code>product</code></td><td>The product's name, the logo's alternative text</td></tr>
+<tr><td><code>logo_url</code></td><td>The <code>https</code> address where you host the lockup at 128 pixels high: <code>logo/ncode/lockup/ncode-lockup-blue-h128.png</code>, or <code>logo/identity/lockup/ncode-identity-lockup-blue-h128.png</code> for NCode Identity. Under a tenant's colors, take the <code>black</code> lockup, because NCode's marks then go one color (<a class="link" href="01-marks.html">Marks</a>)</td></tr>
+<tr><td><code>logo_width</code></td><td>The lockup's width at 32 pixels high: 106 for the <code>{N}</code> lockup, 186 for the <code>{id}</code> lockup</td></tr>
+<tr><td><code>heading</code></td><td>What the message is about, in the <code>heading</code> role</td></tr>
+<tr><td><code>message</code></td><td>One paragraph, in the <code>body</code> role</td></tr>
+<tr><td><code>action_label</code>, <code>action_url</code></td><td>The key: what it does, such as "Verify email address", and the <code>https</code> address it opens</td></tr>
+<tr><td><code>code</code></td><td>A value read off the system, such as a one-time code, on a screen</td></tr>
+<tr><td><code>footer</code></td><td>Why the reader got the message, in the <code>ui</code> role, muted</td></tr>
+<tr><td><code>primary</code>, <code>primary_edge</code>, <code>primary_lip</code>, <code>on_primary</code>, <code>screen</code>, <code>on_screen</code></td><td>The key's, its edge's and the screen's colors: the same names, with <code>-</code> for <code>_</code>, in <code>deriveBrand(primary, secondary).light</code> of <code>tokens/derive.mjs</code>, which gives NCode's own colors without a tenant's</td></tr>
+</tbody>
+</table></div>
+<p>Fill the color slots only from <code>deriveBrand()</code>, never from a tenant's color as it was typed. Each slot sits
+inside a <code>style</code> attribute, where escaping as HTML doesn't stop a value such as <code>red;display:none</code> from adding a
+declaration: <code>deriveBrand()</code> writes every color as <code>#RRGGBB</code>, and gives NCode Blue for any input that isn't a
+hexadecimal color. Its guards keep the key's label and the code readable on their colors, and the key's edge reaches 3
+to 1 against the card whatever the tenant's color.</p>
+<p>Delete the key's table or the code's table when the message has neither: a comment above each marks it.</p>
+<h2 id="a-page-without-2024-css">A Page Without 2024 CSS</h2>
 <p>Take <code>tokens/tokens.static.css</code>: every token with its color written out, light at the root and dark by the theme, and
 no <code>light-dark()</code>, relative color or <code>color-mix()</code>. It derives nothing, so a tenant's colors come from
-<code>tokens/derive.mjs</code>'s <code>customProperties()</code>. An email client reads custom properties poorly: write the resolved values
-inline from <code>tokens/tokens.mjs</code> instead.</p>
+<code>tokens/derive.mjs</code>'s <code>customProperties()</code>.</p>
+<h2 id="slides-in-marp">Slides in Marp</h2>
+<p>Take <code>slides/instrument.css</code>, the Marp theme <code>instrument</code>, with <code>fonts/OFL-Instrument-Sans.txt</code> and
+<code>fonts/OFL-Martian-Mono.txt</code>. It embeds both typefaces, so a deck renders in them on any machine and loads no other
+file, and the SIL Open Font License asks every copy of a font to carry its license. Name the theme in the VS Code
+extension's <code>markdown.marp.themes</code> setting, or give its path to Marp CLI's <code>--theme-set</code> option, and choose it in the
+deck's front matter:</p>
+<div class="screen wide"><pre><code><span class="line">---</span>
+<span class="line">marp: true</span>
+<span class="line">theme: instrument</span>
+<span class="line">paginate: true</span>
+<span class="line">---</span></code></pre></div>
+<p>A slide is 1280 by 720 pixels on the light theme's surface, and every type role is 1.75 times its size on a screen:
+<code>#</code> is the <code>title</code> role, <code>##</code> <code>heading</code>, <code>###</code> <code>subheading</code>, running text <code>body</code>, the header, the footer and a table's
+head <code>label</code>, and the page number a <code>readout</code>. A code block is a screen. <code>&lt;!-- _class: lead --&gt;</code> makes a title slide,
+its <code>#</code> in the <code>headline</code> role, and <code>&lt;!-- _class: invert --&gt;</code> sets a slide on the dark theme's surface. The theme colors
+no syntax: Marp Core 4 highlights code with highlight.js and Marp Core 5 with Shiki, so a deck that wants colored code
+styles it in its own <code>&lt;style&gt;</code>. Put a mark on a slide as an image from <code>logo/</code>, as <a class="link" href="01-marks.html">Marks</a> says
+(<a class="link" href="https://github.com/NCodeGroup/brand/blob/main/docs/decisions/1013-slides-are-a-marp-theme-and-the-email-and-the-theme-carry-every-value-written-out.md">the decision</a>).</p>
 <h2 id="a-tool-that-reads-design-tokens">A Tool That Reads Design Tokens</h2>
 <p>Take <code>tokens/tokens.json</code>, in the Design Tokens Community Group format 2025.10. Primitives are at the top level, and the
 semantic colors and shadows under <code>light</code> and <code>dark</code>. A token a tenant's colors change carries its CSS rule in
@@ -195,7 +244,7 @@ packages, and adds nothing to your lockfile.</li>
 release. Take every file a stylesheet loads, here the four fonts <code>css/fonts.css</code> names, and each font family's
 license with its fonts:</p>
 <div class="screen wide"><pre><code><span class="line">{</span>
-<span class="line">  "version": "0.7.0",</span>
+<span class="line">  "version": "0.8.0",</span>
 <span class="line">  "files": {</span>
 <span class="line">    "src/brand/tokens/tokens.css": { "source": "tokens/tokens.css", "sha256": "" },</span>
 <span class="line">    "src/brand/css/fonts.css": { "source": "css/fonts.css", "sha256": "" },</span>
@@ -207,10 +256,10 @@ license with its fonts:</p>
 <span class="line">    "src/brand/fonts/OFL-Martian-Mono.txt": { "source": "fonts/OFL-Martian-Mono.txt", "sha256": "" }</span>
 <span class="line">  }</span>
 <span class="line">}</span></code></pre></div></li>
-<li>Run <code>node vendor-brand.mjs --update 0.7.0</code>. It needs the <a class="link" href="https://cli.github.com">GitHub CLI</a>, <code>gh</code>, signed in
-with <code>gh auth login</code>, or with <code>GH_TOKEN</code> in CI. It downloads the release's archive, <code>brand-0.7.0.tar.gz</code>, from
-the GitHub release <code>v0.7.0</code>, and has <code>gh attestation verify</code> prove its build provenance: signed by
-<a class="link" href="https://github.com/NCodeGroup/brand/blob/main/.github/workflows/publish.yml">publish.yml</a> for the tag <code>v0.7.0</code> on a GitHub-hosted runner. It refuses the
+<li>Run <code>node vendor-brand.mjs --update 0.8.0</code>. It needs the <a class="link" href="https://cli.github.com">GitHub CLI</a>, <code>gh</code>, signed in
+with <code>gh auth login</code>, or with <code>GH_TOKEN</code> in CI. It downloads the release's archive, <code>brand-0.8.0.tar.gz</code>, from
+the GitHub release <code>v0.8.0</code>, and has <code>gh attestation verify</code> prove its build provenance: signed by
+<a class="link" href="https://github.com/NCodeGroup/brand/blob/main/.github/workflows/publish.yml">publish.yml</a> for the tag <code>v0.8.0</code> on a GitHub-hosted runner. It refuses the
 archive unless the attestation names its SHA-256, its <code>manifest.json</code> is that version, and it holds every file
 the manifest lists, at the manifest's size and SHA-256, and nothing else. Only then does it write the files and
 pin each hash in the lock. A release never changes, so once the lock pins a version, it refuses a file of that
@@ -223,7 +272,7 @@ naming the file, when a vendored file is missing or differs from the lock.</li>
 request: a value change shows there, line by line. <a class="link" href="14-versions-and-license.html">Versions and license</a> says what each
 kind of version number means.</p>
 <p>To check an archive yourself, run
-<code>gh attestation verify brand-0.7.0.tar.gz --repo NCodeGroup/brand --signer-workflow NCodeGroup/brand/.github/workflows/publish.yml</code>.</p>
+<code>gh attestation verify brand-0.8.0.tar.gz --repo NCodeGroup/brand --signer-workflow NCodeGroup/brand/.github/workflows/publish.yml</code>.</p>
     </article>
     <nav class="pagenav" aria-label="Previous and next page">
       <a class="key pagenav__key pagenav__key--prev" href="11-products-and-tenants.html">
@@ -242,7 +291,9 @@ kind of version number means.</p>
       <li><a class="toc__link" href="#a-page-in-plain-html-and-css"><span class="lamp lamp--off" aria-hidden="true"></span>A Page in Plain HTML and CSS</a></li>
       <li><a class="toc__link" href="#a-documentation-site-on-starlight"><span class="lamp lamp--off" aria-hidden="true"></span>A Documentation Site on Starlight</a></li>
       <li><a class="toc__link" href="#a-material-ui-application"><span class="lamp lamp--off" aria-hidden="true"></span>A Material UI Application</a></li>
-      <li><a class="toc__link" href="#an-email-or-a-page-without-2024-css"><span class="lamp lamp--off" aria-hidden="true"></span>An Email, or a Page Without 2024 CSS</a></li>
+      <li><a class="toc__link" href="#an-email"><span class="lamp lamp--off" aria-hidden="true"></span>An Email</a></li>
+      <li><a class="toc__link" href="#a-page-without-2024-css"><span class="lamp lamp--off" aria-hidden="true"></span>A Page Without 2024 CSS</a></li>
+      <li><a class="toc__link" href="#slides-in-marp"><span class="lamp lamp--off" aria-hidden="true"></span>Slides in Marp</a></li>
       <li><a class="toc__link" href="#a-tool-that-reads-design-tokens"><span class="lamp lamp--off" aria-hidden="true"></span>A Tool That Reads Design Tokens</a></li>
       <li><a class="toc__link" href="#icons"><span class="lamp lamp--off" aria-hidden="true"></span>Icons</a></li>
       <li><a class="toc__link" href="#a-readme-a-favicon-a-package-icon"><span class="lamp lamp--off" aria-hidden="true"></span>A README, a Favicon, a Package Icon</a></li>

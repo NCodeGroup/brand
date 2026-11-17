@@ -9,9 +9,9 @@ The look is called Instrument: a neutral, precisely made case of engraved labels
 values, with the brace of the `{N}` mark drawn around what one boundary holds. Every token is written once, in
 [src/tokens.source.json](src/tokens.source.json), and one Node.js script with no packages, [build.mjs](build.mjs),
 writes everything a consumer takes: the tokens as CSS, Design Tokens JSON, a Design Tokens resolver document and a
-typed module, the stylesheets, the fonts, the braces, the icons, the logo kit, data for a Material UI theme and a
-syntax theme for Expressive Code. Consumers copy the files they need from a tagged release's archive, once the GitHub
-CLI has verified its build provenance, and check them against its `manifest.json`.
+typed module, the stylesheets, the fonts, the braces, the icons, the logo kit, data for a Material UI theme, a syntax
+theme for Expressive Code, an HTML email and a Marp theme for slides. Consumers copy the files they need from a tagged
+release's archive, once the GitHub CLI has verified its build provenance, and check them against its `manifest.json`.
 
 [The guide](guidelines/README.md) says what Instrument is made of, when to use each part and which file to take, and
 the [specimens](specimens/foundations.html) show every part at work. Both are published at
@@ -29,13 +29,15 @@ https://ncodegroup.github.io/brand/, from `main`, by [.github/workflows/pages.ym
 | [logo/](logo/README.md) | The `{N}` and `{id}` logo kits, for every place a mark appears |
 | [mui/](mui/) | The values a Material UI theme takes, as data |
 | [syntax/](syntax/) | `instrument-screen.json`, the syntax theme of a code block, for Expressive Code |
+| [email/](email/) | `instrument.html`, an HTML email with every value written inline |
+| [slides/](slides/) | `instrument.css`, the Marp theme for slides, with the two typefaces embedded |
 | [vendoring/](vendoring/vendor-brand.mjs) | The script a consumer copies to verify, vendor and check a release's files |
 | [guidelines/](guidelines/README.md) | The guide |
 | [guide/](guide/index.html) | The guide as web pages, which build.mjs renders from guidelines/ for the site |
 | [specimens/](specimens/) | Nine pages built on the generated files alone |
 | [src/](src/) | The sources: the tokens, the stylesheets, the fonts and the Lucide icons with their locks, NCode's icons, the marks' geometry |
 
-Every file in `tokens/`, `css/`, `fonts/`, `brace/`, `icons/`, `logo/`, `mui/`, `syntax/` and `guide/`, and `manifest.json`
+Every file in `tokens/`, `css/`, `fonts/`, `brace/`, `icons/`, `logo/`, `mui/`, `syntax/`, `email/`, `slides/` and `guide/`, and `manifest.json`
 and `index.html`, is generated: change its source in `src/` or `guidelines/` and run `npm run build`.
 
 ## Development
@@ -90,13 +92,13 @@ The workflow files come from a Copier template, which owns them: never edit `.te
 Which license covers what:
 
 - The code, the tokens, the stylesheets, the braces in [brace/](brace/), NCode's own icons in [icons/](icons/), the
-  derivation, the Material UI data, the syntax theme, the vendoring script and the guide are licensed under the
-  [Apache License 2.0](LICENSE.txt).
+  derivation, the Material UI data, the syntax theme, the email template, the slide theme, the vendoring script and the
+  guide are licensed under the [Apache License 2.0](LICENSE.txt).
 - The names NCode, NCode Group and NCode Identity and the marks are trademarks of NCode Group, and the marks' artwork,
   every file in [logo/](logo/README.md), is copyright NCode Group, all rights reserved: [TRADEMARKS.md](TRADEMARKS.md)
   says how you may use them. You may use the unmodified marks to refer to an NCode project without asking.
-- Instrument Sans and Martian Mono, in [fonts/](fonts/), are copyright their authors and licensed under the SIL Open
-  Font License 1.1, whose texts are beside them.
+- Instrument Sans and Martian Mono, in [fonts/](fonts/) and embedded in `slides/instrument.css`, are copyright their
+  authors and licensed under the SIL Open Font License 1.1, whose texts are beside them.
 - The icons in [icons/](icons/) taken from Lucide are copyright Lucide Icons and Contributors, and those Lucide
   derives from Feather also copyright Cole Bemis, under the ISC License and the MIT License in
   `icons/LICENSE-Lucide.txt`.
