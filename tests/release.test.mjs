@@ -13,6 +13,7 @@ import { pathToFileURL } from 'node:url';
 import { gunzipSync, gzipSync } from 'node:zlib';
 import { tarGz } from '../lib/archive.mjs';
 import { LIMITS } from '../lib/logo.mjs';
+import { releaseNotes } from '../tools/release-notes.mjs';
 import { ROOT, read, readJson, runNode } from './helpers.mjs';
 
 const manifest = readJson('manifest.json');
@@ -472,5 +473,31 @@ describe('.github/workflows/publish.yml', () => {
     const publishRelease = read('.template/Publish-Release.ps1');
     assert.match(publishRelease, /'\.github\/workflows\/publish\.yml'/);
     assert.match(publishRelease, /workflow_dispatch/);
+  });
+});
+
+describe('tools/release-notes.mjs', () => {
+  const changelog = [
+    '# Changelog', '', '## [Unreleased]', '', '### Added', '', '- Unreleased thing.', '',
+    '## [0.9.0] - 2026-11-16', '', '- Nine thing.', '', '## [0.8.0] - 2026-01-01', '', '- Eight thing.', '',
+    '[Unreleased]: https://example.com/unreleased', '[0.9.0]: https://example.com/0.9.0', '',
+  ].join('\n');
+
+  test('uses the version\'s section over [Unreleased] and stops at the next heading', () => {
+    assert.equal(releaseNotes(changelog, '0.9.0'), '- Nine thing.');
+  });
+
+  test('uses [Unreleased] when the version has no section, and stops before the link reference definitions', () => {
+    const only = ['# Changelog', '', '## [Unreleased]', '', '- Only thing.', '', '[Unreleased]: https://example.com/u', ''].join('\n');
+    assert.equal(releaseNotes(only, '1.0.0'), '- Only thing.');
+    assert.equal(releaseNotes(changelog, '1.0.0'), '### Added\n\n- Unreleased thing.');
+  });
+
+  test('throws on an empty section', () => {
+    assert.throws(() => releaseNotes('## [Unreleased]\n\n## [0.1.0]\n\n- x\n', '2.0.0'), /empty/);
+  });
+
+  test('throws when the changelog has neither [Unreleased] nor the version', () => {
+    assert.throws(() => releaseNotes('# Changelog\n\n## [0.1.0]\n\n- x\n', '2.0.0'), /no section/);
   });
 });
