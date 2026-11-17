@@ -487,6 +487,17 @@ describe('.github/workflows/publish.yml', () => {
   });
 });
 
+describe('.github/workflows/publish-dispatch.yml', () => {
+  test('starts publish.yml on the tag after the tagging workflow, and AGENTS.md sets release: tag', () => {
+    const tagging = read('.github/workflows/tag-release.yml').match(/^name:\s*(.+?)\s*$/m)[1];
+    const dispatch = read('.github/workflows/publish-dispatch.yml');
+    assert.match(dispatch, /^ {2}workflow_run:/m);
+    assert.ok(dispatch.includes(`workflows: [${tagging}]`), tagging);
+    assert.ok(dispatch.includes('gh workflow run publish.yml --ref'));
+    assert.match(read('AGENTS.md'), /^- release: tag$/m);
+  });
+});
+
 describe('tools/release-notes.mjs', () => {
   const changelog = [
     '# Changelog', '', '## [Unreleased]', '', '### Added', '', '- Unreleased thing.', '',
