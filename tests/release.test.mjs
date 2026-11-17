@@ -175,6 +175,11 @@ describe('vendoring/vendor-brand.mjs', () => {
     for (const folder of [consumer, other]) rmSync(folder, { recursive: true, force: true });
   });
 
+  test("starts with its #! line, then the copyright and SPDX license lines a consumer's header check reads", () => {
+    const lines = read('vendoring/vendor-brand.mjs').split('\n').slice(0, 4);
+    assert.deepEqual(lines, ['#!/usr/bin/env node', '// Copyright © NCode Group', '// SPDX-License-Identifier: Apache-2.0', '']);
+  });
+
   test("an update copies the files the lock names from the release's archive and pins their hashes", () => {
     lock({
       'src/brand/tokens.css': { source: 'tokens/tokens.css', sha256: '' },
