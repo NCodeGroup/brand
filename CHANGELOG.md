@@ -76,11 +76,14 @@ Until the first stable release, the [Unreleased] section describes the product a
 - `manifest.json`, the size and SHA-256 of every released file, and `vendoring/vendor-brand.mjs`, which copies the
   files a consumer's `brand.lock.json` names from a release's archive and checks them offline.
 - Each release's archive, `brand-<version>.tar.gz`: `manifest.json` and every file it lists, packed by
-  `node build.mjs --archive <folder>` from the tagged commit and attached to the GitHub release by
-  `.github/workflows/publish.yml` once a maintainer approves its `release` environment, with its build provenance
-  attestation and that attestation's bundle, `v<version>.intoto.jsonl`
-  ([#5](https://github.com/NCodeGroup/brand/issues/5), [#16](https://github.com/NCodeGroup/brand/issues/16),
-  [ADR-1009](docs/decisions/1009-a-release-carries-an-attested-archive-and-vendor-brand-verifies-it-before-writing.md)).
+  `node build.mjs --archive <folder>` from the tagged commit, with its build provenance attestation and that
+  attestation's bundle, `v<version>.intoto.jsonl`, and attached by `.github/workflows/publish.yml` to a draft release
+  that it publishes once a maintainer approves its `release` environment, so each release is immutable and
+  `gh release verify <tag>` checks it. `.github/workflows/publish-dispatch.yml` starts that workflow for each release
+  tag ([#5](https://github.com/NCodeGroup/brand/issues/5), [#16](https://github.com/NCodeGroup/brand/issues/16),
+  [#25](https://github.com/NCodeGroup/brand/issues/25),
+  [ADR-1009](docs/decisions/1009-a-release-carries-an-attested-archive-and-vendor-brand-verifies-it-before-writing.md),
+  [ADR-1014](docs/decisions/1014-a-release-is-drafted-with-its-archive-and-published-immutable.md)).
 - The guide in `guidelines/`: marks, color, typography, shape and the brace, layout, components, icons, motion, voice,
   accessibility, products and tenants, applying it, the token reference, and versions and license.
 - Nine specimen pages in `specimens/`, built on the generated files alone: the foundations, documentation, a landing
