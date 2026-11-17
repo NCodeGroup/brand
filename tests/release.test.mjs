@@ -529,4 +529,21 @@ describe('tools/release-notes.mjs', () => {
   test('throws when the changelog has neither [Unreleased] nor the version', () => {
     assert.throws(() => releaseNotes('# Changelog\n\n## [0.1.0]\n\n- x\n', '2.0.0'), /no section/);
   });
+
+  test('run as a script, fails without an output path and writes the notes with one', () => {
+    const script = join(ROOT, 'tools', 'release-notes.mjs');
+    const version = readJson('package.json').version;
+    const failed = spawnSync(process.execPath, [script, version], { encoding: 'utf8' });
+    assert.notEqual(failed.status, 0);
+    assert.notEqual(failed.stderr.trim(), '');
+    const folder = mkdtempSync(join(tmpdir(), 'ncode-brand-notes-'));
+    try {
+      const out = join(folder, 'notes.md');
+      const ran = spawnSync(process.execPath, [script, version, out], { encoding: 'utf8' });
+      assert.equal(ran.status, 0, ran.stderr);
+      assert.equal(readFileSync(out, 'utf8'), `${releaseNotes(read('CHANGELOG.md'), version)}\n`);
+    } finally {
+      rmSync(folder, { recursive: true, force: true });
+    }
+  });
 });

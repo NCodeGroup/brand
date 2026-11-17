@@ -28,8 +28,7 @@ a maintainer; the existing maintainers decide, and the change is recorded in thi
 
 Versions follow Semantic Versioning, as
 [ADR-1004](docs/decisions/1004-a-rename-is-a-major-version-and-a-value-change-is-never-a-patch.md) applies it to the
-tokens and files. `AGENTS.md`'s Landing section sets `release: tag`, so each release is tagged
-as its pull request merges, as
+tokens and files. `AGENTS.md`'s Landing section sets `release: tag`, so each release is tagged as its pull request merges, as
 [ADR-0016](docs/decisions/project-template/0016-releases-are-tagged-and-published-when-their-pull-request-merges.md)
 records, and `.github/workflows/publish.yml` creates the release as a draft, attaches its attested archive and
 publishes it, so the release is immutable

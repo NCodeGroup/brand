@@ -53,8 +53,8 @@ for the same trust. An npm package with provenance stays rejected for the reason
 - The bundle on the release lets anyone check the archive with `gh attestation verify --bundle`, and OpenSSF Scorecard
   counts the release as signed.
 - A rerun of the workflow completes a draft release; a published release is immutable.
-- Every release waits for a
-  maintainer to approve the `release` environment before its archive is attested and attached.
+- Every release waits for a maintainer to approve the `release` environment before its archive is attested and
+  attached.
 
 ## References
 

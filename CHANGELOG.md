@@ -1,8 +1,8 @@
 # Changelog
 
 What NCode Brand gives its consumers, in the [Keep a Changelog 1.1.0](https://keepachangelog.com/en/1.1.0/) format. A
-release's notes are the Unreleased section as it stands.
-Until the first stable release, the [Unreleased] section describes the product as it is, not its changes.
+release's notes are its `## [<version>]` section, or, until the first stable release, the Unreleased section as it
+stands. Until the first stable release, the [Unreleased] section describes the product as it is, not its changes.
 
 ## [Unreleased]
 

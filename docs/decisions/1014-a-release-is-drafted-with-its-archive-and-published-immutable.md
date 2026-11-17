@@ -9,16 +9,17 @@
 
 The template's ADR-0028 makes GitHub releases immutable: once a release is published, its assets and its tag can't
 change, and GitHub signs a release attestation. An immutable release takes no asset after publication, so the archive
-and its attestation bundle have to be attached before the release is published. With `release: tag+release`,
-`tag-release.yml` through `.template/Publish-Release.ps1` publishes the release as soon as it tags it, so a workflow
-that attaches the assets afterwards is refused by an immutable release.
+and its attestation bundle go on a draft release first, and the release is published afterwards. The template's
+`release: tag+release` publishes the release at the moment `tag-release.yml` tags it, through
+`.template/Publish-Release.ps1`, which leaves no draft to attach the assets to.
 
 ## Decision
 
 `AGENTS.md` says `release: tag`, so the template's workflow only tags, signed in a public repository, and publishes
 nothing. `.github/workflows/publish-dispatch.yml` starts `publish.yml` on the tag once that run succeeds, because a tag
 pushed with `GITHUB_TOKEN` starts no workflow. `.github/workflows/publish.yml` creates a draft release with the
-changelog's notes, attaches the archive and its attestation bundle, and publishes the release.
+changelog's notes, attaches the archive and its attestation bundle, and publishes the release. This takes publication
+out of the template's tag-and-publish step that ADR-0016 records: the template's workflow only tags.
 
 The repository's immutable releases are enabled, so GitHub signs a release attestation, and
 `gh release verify <tag>` and `gh release verify-asset <tag> brand-<version>.tar.gz` check it, as SECURITY.md says.
@@ -30,7 +31,7 @@ ADR-1009 records.
 - Keep `tag+release` and attach the assets after publication: an immutable release refuses the upload.
 - Mutable releases: the repository gives up the release attestation and the `signed_releases` check.
 - The template drafting the release: `.template/Publish-Release.ps1` is template-owned, and
-  NCodeGroup/project-template#393 is undecided.
+  [project-template#393](https://github.com/NCodeGroup/project-template/issues/393) is undecided.
 - The project completes the draft: chosen. It keeps the template untouched and the release immutable, and costs one
   small workflow.
 
