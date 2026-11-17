@@ -52,7 +52,9 @@ Every path is from the root of a release. Keep the release's folders side by sid
 | Code blocks highlighted by Expressive Code | `syntax/instrument-screen.json`, on a page that loads `tokens/tokens.css` |
 | A Material UI application | `mui/instrument.json`, `tokens/tokens.mjs`, `tokens/derive.mjs`, `css/fonts.css` with `fonts/` |
 | A tool or a format with its own theme | `tokens/tokens.json`, in the Design Tokens format 2025.10, or `tokens/tokens.resolver.json`, with the two themes as a modifier |
-| An email, or a page without 2024 CSS | `tokens/tokens.static.css`, every color written out |
+| An email | `email/instrument.html`, every value written inline |
+| A page without 2024 CSS | `tokens/tokens.static.css`, every color written out |
+| Slides in Marp | `slides/instrument.css`, with `fonts/OFL-Instrument-Sans.txt` and `fonts/OFL-Martian-Mono.txt` |
 | A logo in a README, a favicon, a package icon | The files in `logo/ncode/`, or `logo/identity/` for NCode Identity, as [Marks](01-marks.md) says |
 | An icon | `icons/sprite.svg` with `css/base.css`, or one `icons/<name>.svg`; `icons/LICENSE-Lucide.txt` with any Lucide icon, as [Icons](07-icons.md) says |
 | A component that draws the brace, an icon or the mark inline | `brace/brace.json`, `icons/icons.json`, `logo/ncode/outlines.json`, `logo/identity/outlines.json` |

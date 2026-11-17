@@ -78,3 +78,4 @@ records are indexed in [project-template/](project-template/README.md).
 | [1010](1010-the-guide-and-the-specimens-are-published-on-github-pages-from-committed-files.md) | The guide and the specimens are published on GitHub Pages from committed files (amends 1000) | Accepted |
 | [1011](1011-the-design-tokens-resolver-file-is-one-self-contained-document-with-a-theme-modifier.md) | The Design Tokens resolver file is one self-contained document with a theme modifier | Accepted |
 | [1012](1012-the-syntax-theme-names-the-screens-tokens-rather-than-their-colors.md) | The syntax theme names the screen's tokens rather than their colors | Accepted |
+| [1013](1013-slides-are-a-marp-theme-and-the-email-and-the-theme-carry-every-value-written-out.md) | Slides are a Marp theme, and the email and the theme carry every value written out | Accepted |
