@@ -7,6 +7,7 @@ import { join } from 'node:path';
 import { describe, test } from 'node:test';
 import { resolveColors } from '../lib/model.mjs';
 import { embedFonts, fillTokens } from '../lib/templates.mjs';
+import { derivedColors } from '../tokens/derive.mjs';
 import { model, read, readJson, ROOT } from './helpers.mjs';
 
 const m = model();
@@ -16,8 +17,8 @@ const version = readJson('package.json').version;
 
 describe('lib/templates.mjs', () => {
   test('fills a color role with its light value, and a dark one with its dark value', () => {
-    assert.equal(fillTokens('[[color:text]]', m), resolveColors(m, 'light').text);
-    assert.equal(fillTokens('[[dark:text]]', m), resolveColors(m, 'dark').text);
+    assert.equal(fillTokens('[[color:text]]', m), light.text);
+    assert.equal(fillTokens('[[dark:text]]', m), dark.text);
   });
 
   test('writes space in px inline and in rem otherwise, and zero as 0', () => {
@@ -72,6 +73,7 @@ describe('lib/templates.mjs', () => {
 describe('email/instrument.html', () => {
   const html = read('email/instrument.html');
   const colors = new Set(Object.values(light));
+  const colorSlots = ['on_primary', 'on_screen', 'primary', 'primary_lip', 'screen'];
 
   test('has no placeholder, custom property, style element, stylesheet or script', () => {
     assert.doesNotMatch(html, /\[\[|var\(|--nc-|<style|<link|<script/);
@@ -79,22 +81,26 @@ describe('email/instrument.html', () => {
 
   test('has the slots the guide names, and no other double brace', () => {
     const slots = [...new Set([...html.matchAll(/\{\{ ([a-z_]+) \}\}/g)].map((match) => match[1]))].sort();
-    assert.deepEqual(slots, ['action_label', 'action_url', 'code', 'footer', 'heading', 'logo_url', 'logo_width', 'message', 'preheader', 'product', 'subject']);
+    assert.deepEqual(slots, ['action_label', 'action_url', 'code', 'footer', 'heading', 'logo_url', 'logo_width', 'message', ...colorSlots, 'preheader', 'product', 'subject'].sort());
     const rest = html.replace(/\{\{ [a-z_]+ \}\}/g, '');
     assert.ok(!rest.includes('{{') && !rest.includes('}}'));
   });
 
+  test('names each color slot after a color deriveBrand() writes', () => {
+    for (const slot of colorSlots) assert.ok(derivedColors.includes(slot.replaceAll('_', '-')), `${slot} is not a derived color`);
+  });
+
   test('writes only colors of the light theme', () => {
     const hexes = [...html.matchAll(/#[0-9A-Fa-f]{6}\b/g)].map((match) => match[0]);
-    assert.ok(hexes.length >= 8, `${hexes.length} colors`);
+    assert.ok(hexes.length >= 5, `${hexes.length} colors`);
     for (const hex of hexes) assert.ok(colors.has(hex), `${hex} is not a color of the light theme`);
   });
 
-  test('colors the page, the key with its lip and the screen with their roles', () => {
+  test('colors the page with its role, and the key with its lip and the screen with their slots', () => {
     assert.ok(html.includes(`<body style="margin:0;padding:0;background-color:${light.page};">`));
-    assert.ok(html.includes(`background-color:${light.primary};border-bottom:2px solid ${light['primary-lip']};`));
-    assert.ok(html.includes(`color:${light['on-primary']};text-decoration:none;">{{ action_label }}</a>`));
-    assert.ok(html.includes(`background-color:${light.screen};`));
+    assert.ok(html.includes('background-color:{{ primary }};border-bottom:2px solid {{ primary_lip }};'));
+    assert.ok(html.includes('color:{{ on_primary }};text-decoration:none;">{{ action_label }}</a>'));
+    assert.ok(html.includes('background-color:{{ screen }};'));
   });
 
   test('writes sizes in pixels', () => {
