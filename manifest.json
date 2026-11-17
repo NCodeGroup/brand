@@ -1184,8 +1184,8 @@
       "sha256": "b51b9ab99c53ac7bbeace8eefb45d200849be037d825600f6460ffa2a71babc9"
     },
     "tokens/tokens.static.css": {
-      "bytes": 22462,
-      "sha256": "f647bfd7a69aafb92d6f0f4f95737595fd3a92f843f4c9cf9df1eeee705b4730"
+      "bytes": 22490,
+      "sha256": "8b0e692f88682e88ef21f3aaa64e06b499bccce82f1d7d7e68b5a6fa77cadeca"
     },
     "vendoring/vendor-brand.mjs": {
       "bytes": 12892,
