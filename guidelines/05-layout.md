@@ -19,7 +19,7 @@ A key stands `--nc-travel`, 2 pixels, proud of its plate. A table row is 40 pixe
 ## Long-Form Pages
 
 Documentation gets room. Text runs on a 41 rem measure, `--nc-measure`, at 17 pixels with a line height of 1.7, the
-`reading` role. The title is 56 pixels, `title-long`, and a section heading 36, `heading-long`. A section starts with a
+`reading` role. The title is 44 pixels, `title-long`, and a section heading 28, `heading-long`. A section starts with a
 rule, 64 pixels after the text before it and 40 before its heading. Listings and tables start `--nc-bleed`, 20 pixels,
 before the text and use the width of the sheet, so what is in them lines up with the text.
 

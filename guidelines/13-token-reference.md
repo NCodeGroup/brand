@@ -126,15 +126,15 @@ Public.
 | `--nc-type-title` | `600 2.75rem/1.08 Instrument Sans Variable` | the title of a page |
 | `--nc-type-title-stretch` | `86%` | the width of title |
 | `--nc-type-title-tracking` | `-0.022em` | the letter spacing of title |
-| `--nc-type-title-long` | `600 3.5rem/1.04 Instrument Sans Variable` | the title of a long-form page |
+| `--nc-type-title-long` | `600 2.75rem/1.08 Instrument Sans Variable` | the title of a long-form page |
 | `--nc-type-title-long-stretch` | `86%` | the width of title-long |
-| `--nc-type-title-long-tracking` | `-0.026em` | the letter spacing of title-long |
+| `--nc-type-title-long-tracking` | `-0.022em` | the letter spacing of title-long |
 | `--nc-type-heading` | `600 1.75rem/1.18 Instrument Sans Variable` | a section |
 | `--nc-type-heading-stretch` | `86%` | the width of heading |
 | `--nc-type-heading-tracking` | `-0.012em` | the letter spacing of heading |
-| `--nc-type-heading-long` | `600 2.25rem/1.14 Instrument Sans Variable` | a section of a long-form page |
+| `--nc-type-heading-long` | `600 1.75rem/1.18 Instrument Sans Variable` | a section of a long-form page |
 | `--nc-type-heading-long-stretch` | `86%` | the width of heading-long |
-| `--nc-type-heading-long-tracking` | `-0.022em` | the letter spacing of heading-long |
+| `--nc-type-heading-long-tracking` | `-0.012em` | the letter spacing of heading-long |
 | `--nc-type-subheading` | `600 1.375rem/1.3 Instrument Sans Variable` | a group within a section, the title of a dialog |
 | `--nc-type-subheading-stretch` | `86%` | the width of subheading |
 | `--nc-type-subheading-tracking` | `-0.012em` | the letter spacing of subheading |
