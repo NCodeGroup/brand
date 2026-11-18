@@ -265,11 +265,11 @@ export const type = {
       "Arial",
       "sans-serif"
     ],
-    "fontSize": "3.5rem",
+    "fontSize": "2.75rem",
     "fontWeight": 600,
-    "lineHeight": 1.04,
+    "lineHeight": 1.08,
     "fontStretch": "86%",
-    "letterSpacing": "-0.026em"
+    "letterSpacing": "-0.022em"
   },
   "heading": {
     "fontFamily": [
@@ -301,11 +301,11 @@ export const type = {
       "Arial",
       "sans-serif"
     ],
-    "fontSize": "2.25rem",
+    "fontSize": "1.75rem",
     "fontWeight": 600,
-    "lineHeight": 1.14,
+    "lineHeight": 1.18,
     "fontStretch": "86%",
-    "letterSpacing": "-0.022em"
+    "letterSpacing": "-0.012em"
   },
   "subheading": {
     "fontFamily": [

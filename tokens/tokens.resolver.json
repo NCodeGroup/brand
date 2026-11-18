@@ -1304,18 +1304,18 @@
             "title-long": {
               "$value": {
                 "fontFamily": "{font.family.sans}",
-                "fontSize": "{font.size.5xl}",
+                "fontSize": "{font.size.4xl}",
                 "fontWeight": "{font.weight.semibold}",
                 "letterSpacing": {
-                  "value": -0.091,
+                  "value": -0.0605,
                   "unit": "rem"
                 },
-                "lineHeight": 1.04
+                "lineHeight": 1.08
               },
               "$extensions": {
                 "org.ncode.instrument": {
                   "fontStretch": "86%",
-                  "letterSpacing": "-0.026em",
+                  "letterSpacing": "-0.022em",
                   "css": "--nc-type-title-long",
                   "cssStretch": {
                     "property": "--nc-type-title-long-stretch",
@@ -1323,7 +1323,7 @@
                   },
                   "cssTracking": {
                     "property": "--nc-type-title-long-tracking",
-                    "value": "-0.026em"
+                    "value": "var(--nc-tracking-display)"
                   }
                 }
               },
@@ -1360,18 +1360,18 @@
             "heading-long": {
               "$value": {
                 "fontFamily": "{font.family.sans}",
-                "fontSize": "{font.size.3xl}",
+                "fontSize": "{font.size.2xl}",
                 "fontWeight": "{font.weight.semibold}",
                 "letterSpacing": {
-                  "value": -0.0495,
+                  "value": -0.021,
                   "unit": "rem"
                 },
-                "lineHeight": 1.14
+                "lineHeight": 1.18
               },
               "$extensions": {
                 "org.ncode.instrument": {
                   "fontStretch": "86%",
-                  "letterSpacing": "-0.022em",
+                  "letterSpacing": "-0.012em",
                   "css": "--nc-type-heading-long",
                   "cssStretch": {
                     "property": "--nc-type-heading-long-stretch",
@@ -1379,7 +1379,7 @@
                   },
                   "cssTracking": {
                     "property": "--nc-type-heading-long-tracking",
-                    "value": "var(--nc-tracking-display)"
+                    "value": "var(--nc-tracking-heading)"
                   }
                 }
               },

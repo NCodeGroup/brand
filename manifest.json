@@ -36,8 +36,8 @@
       "sha256": "c25b3e81d24161179f3bc2c197f4ce0c8d3a210be3791eb29e697c6f03dc33a2"
     },
     "css/base.css": {
-      "bytes": 95485,
-      "sha256": "9f685f6d3b80f775eda2a1071da7991a1a0ae9a2a8dd240395f75c9ac469b6b5"
+      "bytes": 95545,
+      "sha256": "917ccdc68cc4a3835cd803b9086c6cc2434f3640763e1b81ccffe8e33d423d45"
     },
     "css/fonts.css": {
       "bytes": 2616,
@@ -1164,28 +1164,28 @@
       "sha256": "8388038c8fa0f534fdd82fbd7b86c46638893e3bb76d4cf7ae9f39943c9fe3b5"
     },
     "tokens/tokens.css": {
-      "bytes": 34312,
-      "sha256": "aa6cc692f613b0292e09622f7c29a8254f98c56b11e98de00be392913c00c7e3"
+      "bytes": 34349,
+      "sha256": "d5d3ee5c7d258dd0cbd6d793680fe8eacb4ac6d4050a89278ede13db296e02df"
     },
     "tokens/tokens.d.mts": {
       "bytes": 25658,
       "sha256": "f6f83605337f386679a70d66876ae5adcdf329e5e34f38b9d3a32ea25f073f55"
     },
     "tokens/tokens.json": {
-      "bytes": 99818,
-      "sha256": "bfc35e2e384452c77fcea97408b211c4d2f9bb3a9ec691b877702d26f47a517d"
+      "bytes": 99836,
+      "sha256": "5de9139a5d65b8dca389e854fa029d0ef2641a9aabb4beea7ad4821aa7998538"
     },
     "tokens/tokens.mjs": {
-      "bytes": 22284,
-      "sha256": "885e6ee19ee26153530e1ab1e7379eba4965886b6127b58c460cff18b8531b20"
+      "bytes": 22285,
+      "sha256": "8bf0e25546ad47e3fe638119eb2a9a61c3742b15668d7098ef549acf80e2d780"
     },
     "tokens/tokens.resolver.json": {
-      "bytes": 136820,
-      "sha256": "18e287ac8e50716da3f27df5f7cc5a7fd4a77a9f00ce4f4f69ef756b93ff2864"
+      "bytes": 136838,
+      "sha256": "8891fa5f6cdbd5bc47549b1d1bf567472ca37f517ea1d592361f387fe303b176"
     },
     "tokens/tokens.static.css": {
-      "bytes": 22491,
-      "sha256": "8bd7af87aa8255d73653e385af13d970f74545175087674fcaa5f480885d8444"
+      "bytes": 22528,
+      "sha256": "3257e68afbbe695ad3947dc2ac8712f502261e6b18097d8ce19363238088c1d5"
     },
     "vendoring/vendor-brand.mjs": {
       "bytes": 12960,

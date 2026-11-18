@@ -48,9 +48,9 @@ uppercase role, and it carries its case as `--nc-type-label-case`; a mono role a
 |---|---|---|---|---|---|---|
 | `headline` | Instrument Sans | 76 / 76 | 600 | 86% | -0.028em | The one headline of a landing page |
 | `title` | Instrument Sans | 44 / 48 | 600 | 86% | -0.022em | The title of a page |
-| `title-long` | Instrument Sans | 56 / 58 | 600 | 86% | -0.026em | The title of a long-form page |
+| `title-long` | Instrument Sans | 44 / 48 | 600 | 86% | -0.022em | The title of a long-form page |
 | `heading` | Instrument Sans | 28 / 33 | 600 | 86% | -0.012em | A section |
-| `heading-long` | Instrument Sans | 36 / 41 | 600 | 86% | -0.022em | A section of a long-form page |
+| `heading-long` | Instrument Sans | 28 / 33 | 600 | 86% | -0.012em | A section of a long-form page |
 | `subheading` | Instrument Sans | 22 / 29 | 600 | 86% | -0.012em | A group within a section, the title of a dialog |
 | `minor` | Instrument Sans | 16 / 21 | 600 | 100% | 0 | The smallest heading |
 | `lead` | Instrument Sans | 22 / 33 | 400 | 100% | 0 | The first paragraph of a long-form page |

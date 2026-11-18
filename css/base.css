@@ -1131,12 +1131,13 @@ textarea.well[wrap="off"] { white-space: pre; overflow-x: auto; }
 .prose { font: var(--nc-type-reading); font-stretch: var(--nc-width-text); }
 .prose > :not(.wide) { max-width: var(--nc-measure); }
 .prose > * + * { margin-top: 1.5rem; }
-.prose > h1 { margin-top: var(--nc-space-5); font: var(--nc-type-title-long); font-stretch: var(--nc-width-display); letter-spacing: -0.026em; }
+.prose > h1 { margin-top: var(--nc-space-5); font: var(--nc-type-title-long); font-stretch: var(--nc-type-title-long-stretch); letter-spacing: var(--nc-type-title-long-tracking); }
 .prose > .lead { margin-top: 1.75rem; }
 .prose > h2 {
   margin-top: 4rem; padding-top: 2.5rem;
   border-top: var(--nc-border-hair) solid var(--nc-color-border);
-  font: var(--nc-type-heading-long); font-stretch: var(--nc-width-display); letter-spacing: var(--nc-tracking-display);
+  font: var(--nc-type-heading-long); font-stretch: var(--nc-type-heading-long-stretch);
+  letter-spacing: var(--nc-type-heading-long-tracking);
   scroll-margin-top: var(--nc-space-5);
 }
 .prose > h2 + * { margin-top: 1.5rem; }
