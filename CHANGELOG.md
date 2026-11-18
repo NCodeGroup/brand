@@ -29,6 +29,9 @@ stands. Until the first stable release, the [Unreleased] section describes the p
 - `css/base.css`, the element and component styles: keys, wells, lamps, screens, the brace, the boundary plate, the
   display, alerts, tables, dialogs and the page layouts of the console, the sign-in pages, documentation and product
   pages. `css/fonts.css`, the `@font-face` rules. `css/starlight.css`, Starlight's custom properties from the tokens.
+  A documentation page, in `css/base.css` or Starlight, sets its title in `title-long`, 44 pixels, and a section
+  heading in `heading-long`, 28 pixels; on a phone its title is 36 pixels
+  ([#31](https://github.com/NCodeGroup/brand/issues/31)).
 - `syntax/instrument-screen.json`: the syntax theme of a code block on a screen, a VS Code color theme for Expressive
   Code. It colors keywords `--nc-color-screen-lit`, types and members `--nc-color-on-screen`, comments
   `--nc-color-on-screen-muted`, literals `--nc-color-screen-hot` and the rest `--nc-color-on-screen-secondary`, each as
