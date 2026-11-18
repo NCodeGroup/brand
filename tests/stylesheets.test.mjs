@@ -110,7 +110,8 @@ describe('Starlight', () => {
     assert.ok(BRANDS.length > 1);
   });
 
-  test('its headings follow the guide: 36 and 28 pixels where base.css sets a phone, 56 and 36 at every width beyond', () => {
+  test("its headings follow the guide: 36 and 28 pixels where base.css sets a phone, the long-form roles' steps beyond", () => {
+    const type = m.source.semantic.type;
     const all = rules(read('css/starlight.css'));
     const at = (media) => Object.assign({}, ...all.filter((r) => (media ? r.at.includes(media) : !r.at.length)).map((r) => r.declarations));
     // base.css sets a long-form page's phone headings up to and at its edge; Starlight's larger ones start past it, so
@@ -122,8 +123,9 @@ describe('Starlight', () => {
     const wider = `@media (width > ${edge})`;
     assert.equal(at()['--sl-text-h1'], 'var(--nc-text-3xl)');
     assert.equal(at()['--sl-text-h2'], 'var(--nc-text-2xl)');
-    assert.equal(at(wider)['--sl-text-h1'], 'var(--nc-text-5xl)');
-    assert.equal(at(wider)['--sl-text-h2'], 'var(--nc-text-3xl)');
+    assert.equal(at(wider)['--sl-text-h1'], `var(--nc-text-${type['title-long'].size})`);
+    assert.equal(at(wider)['--sl-text-h2'], `var(--nc-text-${type['heading-long'].size})`);
+    assert.equal(at()['--sl-line-height-headings'], String(type['heading-long'].leading));
     const media = all.filter((r) => r.at.length && ('--sl-text-h1' in r.declarations || '--sl-text-h2' in r.declarations));
     assert.deepEqual([...new Set(media.map((r) => r.at.join(' ')))], [wider]);
     for (const step of ['xl', '2xl', '3xl', '4xl', '5xl', '6xl']) assert.equal(at()[`--sl-text-${step}`], `var(--nc-text-${step})`, step);
