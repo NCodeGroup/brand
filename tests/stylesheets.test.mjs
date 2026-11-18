@@ -114,8 +114,8 @@ describe('Starlight', () => {
     const type = m.source.semantic.type;
     const all = rules(read('css/starlight.css'));
     const at = (media) => Object.assign({}, ...all.filter((r) => (media ? r.at.includes(media) : !r.at.length)).map((r) => r.declarations));
-    // base.css sets a long-form page's phone headings up to and at its edge; Starlight's larger ones start past it, so
-    // at no width do both apply.
+    // base.css sets a long-form page's phone headings up to and at its edge; Starlight's wide-screen steps start past
+    // it, so at no width do both apply.
     const phone = find(rules(read('css/base.css')), '.prose > h1').filter((r) => r.at.length).map((r) => r.at.join(' '));
     assert.equal(phone.length, 1);
     const edge = /^@media \(max-width: ([\d.]+rem)\)$/.exec(phone[0])?.[1];

@@ -112,7 +112,7 @@
 }
 
 /* Wider than 40rem, where base.css's phone rules (max-width: 40rem) end, a long-form page's title is title-long's
-   size, 44 pixels, and a section heading heading-long's, 28, as on a phone. */
+   size, 44 pixels, and a section heading is heading-long's size, 28, the same as on a phone. */
 @media (width > 40rem) {
   :root,
   :root[data-theme='light'] {
