@@ -96,13 +96,14 @@ stands. Until the first stable release, the [Unreleased] section describes the p
   page, a product page, sign-in, consent, the console, settings, and the states between screens. Each lays out for a
   phone 390 pixels wide without scrolling sideways, `foundations.html` included
   ([#4](https://github.com/NCodeGroup/brand/issues/4)).
-- The guide and the specimens as a website at <https://ncodegroup.github.io/brand/>: `build.mjs` renders each page of
-  `guidelines/` into `guide/<name>.html`, and `README.md` into `guide/index.html`, in the documentation scene of
-  `css/base.css` with `guide/guide.css`, and writes `index.html`, which opens the guide.
-  `.github/workflows/pages.yml` runs `npm run check` and publishes `index.html`, `guide/`, `specimens/` and the
-  folders their pages load to GitHub Pages on each push to `main`, building nothing. A release's archive carries none
-  of the site's own files ([#4](https://github.com/NCodeGroup/brand/issues/4),
-  [ADR-1010](docs/decisions/1010-the-guide-and-the-specimens-are-published-on-github-pages-from-committed-files.md)).
+- The guide and the specimens as a website at <https://brand.ncode.io/>: `build.mjs` renders each page of `guidelines/`
+  into `guide/<name>.html`, and `README.md` into `guide/index.html`, in the documentation scene of `css/base.css` with
+  `guide/guide.css`, and writes `index.html`, which opens the guide. `.github/workflows/pages.yml` runs `npm run check`
+  and publishes `index.html`, `guide/`, `specimens/` and the folders their pages load to GitHub Pages on each push to
+  `main`, building nothing. A release's archive carries none of the site's own files
+  ([#4](https://github.com/NCodeGroup/brand/issues/4),
+  [ADR-1010](docs/decisions/1010-the-guide-and-the-specimens-are-published-on-github-pages-from-committed-files.md),
+  [ADR-1015](docs/decisions/1015-the-guide-and-the-specimens-are-served-at-brand-ncode-io.md)).
 - `npm run build`, which writes every generated file; `npm run check`, which fails when a committed file differs from
   what the sources give; and a contrast gate that fails the build when a pairing is below WCAG 2.2 AA.
 - `TRADEMARKS.md`: how to use NCode's names and marks.

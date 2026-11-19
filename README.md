@@ -15,9 +15,9 @@ typed module, the stylesheets, the fonts, the braces, the icons, the logo kit, d
 theme for Expressive Code, an HTML email and a Marp theme for slides. Consumers copy the files they need from a tagged
 release's archive, once the GitHub CLI has verified its build provenance, and check them against its `manifest.json`.
 
-[The guide](guidelines/README.md) says what Instrument is made of, when to use each part and which file to take, and
-the [specimens](specimens/foundations.html) show every part at work. Both are published at
-https://ncodegroup.github.io/brand/, from `main`, by [.github/workflows/pages.yml](.github/workflows/pages.yml).
+[The guide](guidelines/README.md) says what Instrument is made of, when to use each part and which file to take, and the
+[specimens](specimens/foundations.html) show every part at work. Both are published at https://brand.ncode.io/, from
+`main`, by [.github/workflows/pages.yml](.github/workflows/pages.yml).
 
 ## What It Holds
 
