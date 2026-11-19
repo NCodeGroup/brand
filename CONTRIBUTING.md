@@ -33,9 +33,8 @@ For a change to the stylesheets, the tokens, a specimen or the guide's pages, al
 `node tools/shoot.mjs --out=<folder>` before and after it and compare the screenshots, and
 `node tools/browser-check.mjs`, which compares the build's color math with a browser. Neither runs in CI.
 
-`.github/workflows/pages.yml` publishes the guide and the specimens at https://brand.ncode.io/ on each
-push to `main`, from the committed files alone. It needs the repository's Pages source set to GitHub Actions, once,
-in Settings > Pages.
+`.github/workflows/pages.yml` publishes the guide and the specimens at https://brand.ncode.io/ on each push to `main`,
+from the committed files alone. It needs the repository's Pages source set to GitHub Actions, once, in Settings > Pages.
 
 To port a logo kit another generator drew, compare the build's kit with that generator's files:
 `node tools/compare-kit.mjs logo/<kit> <folder> --tolerance=1` compares every file in their subfolders, text byte for
