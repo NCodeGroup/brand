@@ -17,7 +17,7 @@ release's archive, once the GitHub CLI has verified its build provenance, and ch
 
 [The guide](guidelines/README.md) says what Instrument is made of, when to use each part and which file to take, and
 the [specimens](specimens/foundations.html) show every part at work. Both are published at
-https://ncodegroup.github.io/brand/, from `main`, by [.github/workflows/pages.yml](.github/workflows/pages.yml).
+https://brand.ncode.io/, from `main`, by [.github/workflows/pages.yml](.github/workflows/pages.yml).
 
 ## What It Holds
 

@@ -5,7 +5,7 @@ the braces from `../brace/`. [foundations.html](foundations.html) holds the whol
 real surface: documentation, a landing page, a product page, sign-in, consent, the console, a client's settings, and
 the states between screens. `foundations.html` is a catalog, laid out for a window 1280 pixels wide that folds to one
 column on a phone; every page is checked at 390 pixels too, where none scrolls sideways. Each is published at
-https://ncodegroup.github.io/brand/specimens/<name>.html.
+https://brand.ncode.io/specimens/<name>.html.
 
 Serve the repository to open them, because a browser loads no CSS mask from a `file:` address: `node tools/serve.mjs`
 prints the address, and serves every file under a strict `Content-Security-Policy`, `default-src 'self'`.

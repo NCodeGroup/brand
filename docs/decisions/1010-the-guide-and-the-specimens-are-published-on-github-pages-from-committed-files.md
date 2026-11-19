@@ -1,6 +1,6 @@
 # 1010. The guide and the specimens are published on GitHub Pages from committed files
 
-- **Status:** Accepted
+- **Status:** Accepted (amended by 1015)
 - **Date:** 2026-11-16
 - **Deciders:** NCode Group
 - **Amends:** 1000

@@ -96,7 +96,7 @@ stands. Until the first stable release, the [Unreleased] section describes the p
   page, a product page, sign-in, consent, the console, settings, and the states between screens. Each lays out for a
   phone 390 pixels wide without scrolling sideways, `foundations.html` included
   ([#4](https://github.com/NCodeGroup/brand/issues/4)).
-- The guide and the specimens as a website at <https://ncodegroup.github.io/brand/>: `build.mjs` renders each page of
+- The guide and the specimens as a website at <https://brand.ncode.io/>: `build.mjs` renders each page of
   `guidelines/` into `guide/<name>.html`, and `README.md` into `guide/index.html`, in the documentation scene of
   `css/base.css` with `guide/guide.css`, and writes `index.html`, which opens the guide.
   `.github/workflows/pages.yml` runs `npm run check` and publishes `index.html`, `guide/`, `specimens/` and the

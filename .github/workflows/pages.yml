@@ -1,6 +1,6 @@
 name: Pages
 
-# Publishes the guide and the specimens at https://ncodegroup.github.io/brand/ on each push to main (ADR-1010). It
+# Publishes the guide and the specimens at https://brand.ncode.io/ on each push to main (ADR-1010, ADR-1015). It
 # builds nothing: build.mjs wrote every page and it is committed, and npm run check proves the committed files are
 # what the sources give before the site is copied from them. The job that assembles the site reads the repository
 # with contents: read alone; only the deploy job can write, and only to Pages. Pages must publish from GitHub Actions

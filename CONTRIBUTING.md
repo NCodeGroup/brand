@@ -33,7 +33,7 @@ For a change to the stylesheets, the tokens, a specimen or the guide's pages, al
 `node tools/shoot.mjs --out=<folder>` before and after it and compare the screenshots, and
 `node tools/browser-check.mjs`, which compares the build's color math with a browser. Neither runs in CI.
 
-`.github/workflows/pages.yml` publishes the guide and the specimens at https://ncodegroup.github.io/brand/ on each
+`.github/workflows/pages.yml` publishes the guide and the specimens at https://brand.ncode.io/ on each
 push to `main`, from the committed files alone. It needs the repository's Pages source set to GitHub Actions, once,
 in Settings > Pages.
 
