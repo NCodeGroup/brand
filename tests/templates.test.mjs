@@ -144,9 +144,9 @@ describe('slides/instrument.css', () => {
 
   test('embeds each woff2 file of fonts/', () => {
     const embedded = [...css.matchAll(/url\("data:font\/woff2;base64,([A-Za-z0-9+/=]+)"\)/g)].map((match) => Buffer.from(match[1], 'base64'));
-    assert.equal(embedded.length, 4);
+    assert.equal(embedded.length, 6);
     const files = readdirSync(join(ROOT, 'fonts')).filter((name) => name.endsWith('.woff2'));
-    assert.equal(files.length, 4);
+    assert.equal(files.length, 6);
     for (const name of files) {
       const bytes = readFileSync(join(ROOT, 'fonts', name));
       assert.ok(embedded.some((data) => data.equals(bytes)), `fonts/${name} is not embedded`);

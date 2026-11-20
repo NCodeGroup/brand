@@ -1,10 +1,12 @@
 // What the stylesheets promise beyond their tokens: a focus ring stays visible on a screen, a page prints in the light
 // theme, Starlight paints only pairings the gate measures, and every swatch of the foundations page is legible.
 import assert from 'node:assert/strict';
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
 import { describe, test } from 'node:test';
 import { contrast } from '../lib/color.mjs';
 import { BRANDS, PAIRINGS, TEXT, UI } from '../lib/contrast.mjs';
-import { model, read } from './helpers.mjs';
+import { model, read, ROOT } from './helpers.mjs';
 
 const m = model();
 
@@ -159,5 +161,20 @@ describe('base.css on a phone', () => {
     assert.ok(fields.some((s) => s.includes('textarea')), 'the console sets its textareas');
     assert.ok(fields.length >= 3, fields.join(' | '));
     for (const selector of fields) assert.match(selector, /:not\(\.well--sm\)$/, selector);
+  });
+});
+
+describe('fonts', () => {
+  test('css/fonts.css sets Instrument Sans in italic beside each roman subset, from files in fonts/', () => {
+    const faces = [...read('css/fonts.css').matchAll(/@font-face \{([^}]*)\}/g)].map((match) => match[1]);
+    const ranges = (style) => faces
+      .filter((face) => face.includes('font-family: "Instrument Sans Variable";') && face.includes(`font-style: ${style};`))
+      .map((face) => /unicode-range: ([^;]+);/.exec(face)[1]);
+    assert.equal(ranges('italic').length, 2);
+    assert.deepEqual(ranges('italic'), ranges('normal'));
+    for (const face of faces) {
+      const file = /url\("\.\.\/(fonts\/[^"]+)"\)/.exec(face)[1];
+      assert.ok(existsSync(join(ROOT, file)), file);
+    }
   });
 });
