@@ -34,7 +34,8 @@ A deep field of the secondary hue with lit type on it. Class `.screen`, and `.re
 
 - *Rule.* What the system reports is shown on a screen: code, commands, counts, a document, a secret. A screen is the
   same in both themes.
-- *Do.* Light a line to point at it. Keep amber, `--nc-color-screen-hot`, for literals and for sensitive values.
+- *Do.* Light a line to point at it. Keep amber, `--nc-color-screen-hot`, for literals and for sensitive values. In
+  long-form text, keep a listing to the lines the paragraph explains, and set one name as inline code in the sentence.
 - *Don't.* Don't put running text or a form on a screen. Don't color syntax in more than the one hue and amber.
 
 ## Engraved Names, Displayed Values

@@ -35,6 +35,10 @@ reading voice there too. Starlight sets no size on running text, which keeps the
 measure of running text. In the toolchain's own rules, set running text in the `reading` role, 17 pixels, on the 41 rem
 `--nc-measure`, as `.prose` does in `css/base.css`.
 
+Starlight draws inline code on `--sl-color-bg-inline-code`, which `css/starlight.css` sets to `--nc-color-code-tint`,
+and gives it no border. Keep it so in the toolchain's rules: [inline code](03-typography.md#in-running-text) has a
+tint and no edge.
+
 Take `syntax/instrument-screen.json` for the code blocks. It is Expressive Code's syntax theme, which colors code as a
 screen does: keywords lit, literals amber and comments dimmed. Each color is the custom property of its role, so
 `tokens/tokens.css` decides it, a tenant's color included. One theme serves both page themes, because a screen is the
@@ -189,7 +193,7 @@ Take files from one tagged release, and prove in your own gate that they did not
    release's `manifest.json` lists for it.
 2. Beside it, write a `brand.lock.json` that names each file you take, where it goes and where it comes from in the
    release. Name the script itself too, so `--update` keeps it at the release's SHA-256 and `--check` holds it
-   there. Take every file a stylesheet loads, here the four fonts `css/fonts.css` names, and each font family's
+   there. Take every file a stylesheet loads, here the six fonts `css/fonts.css` names, and each font family's
    license with its fonts:
 
    ```json
@@ -201,6 +205,8 @@ Take files from one tagged release, and prove in your own gate that they did not
        "src/brand/css/fonts.css": { "source": "css/fonts.css", "sha256": "" },
        "src/brand/fonts/instrument-sans-latin-wdth-normal.woff2": { "source": "fonts/instrument-sans-latin-wdth-normal.woff2", "sha256": "" },
        "src/brand/fonts/instrument-sans-latin-ext-wdth-normal.woff2": { "source": "fonts/instrument-sans-latin-ext-wdth-normal.woff2", "sha256": "" },
+       "src/brand/fonts/instrument-sans-latin-wdth-italic.woff2": { "source": "fonts/instrument-sans-latin-wdth-italic.woff2", "sha256": "" },
+       "src/brand/fonts/instrument-sans-latin-ext-wdth-italic.woff2": { "source": "fonts/instrument-sans-latin-ext-wdth-italic.woff2", "sha256": "" },
        "src/brand/fonts/martian-mono-latin-wdth-normal.woff2": { "source": "fonts/martian-mono-latin-wdth-normal.woff2", "sha256": "" },
        "src/brand/fonts/martian-mono-latin-ext-wdth-normal.woff2": { "source": "fonts/martian-mono-latin-ext-wdth-normal.woff2", "sha256": "" },
        "src/brand/fonts/OFL-Instrument-Sans.txt": { "source": "fonts/OFL-Instrument-Sans.txt", "sha256": "" },

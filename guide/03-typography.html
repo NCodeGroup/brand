@@ -100,7 +100,7 @@ sentence case.</p>
 <div class="tableframe wide"><table class="table">
 <thead><tr><th scope="col">Family</th><th scope="col">Role</th><th scope="col">License</th><th scope="col">Files</th></tr></thead>
 <tbody>
-<tr><td>Instrument Sans Variable, weight 400 to 700, width 75 to 100</td><td>Names, headings and reading</td><td>SIL OFL 1.1, <code>fonts/OFL-Instrument-Sans.txt</code></td><td>2 woff2, 76 kB</td></tr>
+<tr><td>Instrument Sans Variable, weight 400 to 700, width 75 to 100, roman and italic</td><td>Names, headings and reading</td><td>SIL OFL 1.1, <code>fonts/OFL-Instrument-Sans.txt</code></td><td>4 woff2, 158 kB</td></tr>
 <tr><td>Martian Mono Variable, weight 100 to 800, width 75 to 112.5</td><td>Values, code, readouts</td><td>SIL OFL 1.1, <code>fonts/OFL-Martian-Mono.txt</code></td><td>2 woff2, 63 kB</td></tr>
 <tr><td>Inter Display Medium</td><td>The wordmark only</td><td>SIL OFL 1.1</td><td>None: it is outlines in the logo files</td></tr>
 </tbody>
@@ -153,13 +153,29 @@ uppercase role, and it carries its case as <code>--nc-type-label-case</code>; a 
 14, dense interface and code at 13, long-form documentation at 17. On a phone a field of the console, a dialog, the
 sign-in pages and the site bar is 16, so the browser does not zoom into it; a small field of the console or a dialog,
 <code>.well--sm</code>, stays at 13. The scale's steps are primitives: a component reads a role, not a step.</p>
+<h2 id="in-running-text">In Running Text</h2>
+<p>A value in a sentence, such as a type, a member, a file or a command, is inline code: Martian Mono on
+<code>--nc-color-code-tint</code>, the text color thinned to a tint, with no edge. The face marks the value, and the tint shows
+its extent on every surface in both themes. A reference page names dozens of identifiers on one screen: an edge
+around each turns a paragraph into a row of boxes. Code of more than one line goes on a screen.</p>
+<p>A run-in label is set in italic, never bold. It is the words that open a paragraph or a list item and name what
+follows, such as <em>You write</em>, <em>What happens:</em> or <em>Rule.</em> In long-form text a column of bold labels outweighs the
+sentences they introduce, and italic marks a label at the weight of the text. Keep bold for the one sentence of a
+section a reader must not miss, such as the rule that opens <a class="link" href="04-shape-and-depth.html#the-brace">The Brace</a>. The word
+of an alert, such as Note, is engraved: it is a label in the label voice, not a run-in label.</p>
+<p>Instrument Sans has a true italic: <code>fonts/instrument-sans-latin-wdth-italic.woff2</code> and
+<code>fonts/instrument-sans-latin-ext-wdth-italic.woff2</code>, which <code>css/fonts.css</code> names beside the roman files. Take them
+with the roman ones. <code>css/base.css</code> turns off synthesized styles, so without them an italic is set upright. Martian
+Mono has no italic: a value inside an italic label stays upright.</p>
 <h2 id="do-and-dont">Do and Don't</h2>
 <ul>
+<li>Do set a value in a sentence as inline code, and a run-in label in italic: <em>What happens:</em></li>
 <li>Do set a field's label in sentence case, and show the key a setting is stored under beside it as a value.</li>
 <li>Do set an ID, a count, a date, a hash or a secret as a value, in Martian Mono.</li>
 <li>Don't engrave a sentence, a caption or a field's label.</li>
 <li>Don't set prose in monospace, or a value in the label voice.</li>
 <li>Don't load Inter for interface text: it is the wordmark's face, and only as outlines in the logo files.</li>
+<li>Don't draw an edge around inline code, or set a run-in label in bold.</li>
 </ul>
     </article>
     <nav class="pagenav" aria-label="Previous and next page">
@@ -180,6 +196,7 @@ sign-in pages and the site bar is 16, so the browser does not zoom into it; a sm
       <li><a class="toc__link" href="#width-is-part-of-the-voice"><span class="lamp lamp--off" aria-hidden="true"></span>Width Is Part of the Voice</a></li>
       <li><a class="toc__link" href="#roles"><span class="lamp lamp--off" aria-hidden="true"></span>Roles</a></li>
       <li><a class="toc__link" href="#the-scale"><span class="lamp lamp--off" aria-hidden="true"></span>The Scale</a></li>
+      <li><a class="toc__link" href="#in-running-text"><span class="lamp lamp--off" aria-hidden="true"></span>In Running Text</a></li>
       <li><a class="toc__link" href="#do-and-dont"><span class="lamp lamp--off" aria-hidden="true"></span>Do and Don't</a></li>
     </ol>
   </aside>
