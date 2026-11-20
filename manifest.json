@@ -36,16 +36,16 @@
       "sha256": "83d94222176e19e8a812202c8879db38b2d9f9184b222c4579f9eed66890b39c"
     },
     "css/base.css": {
-      "bytes": 95545,
-      "sha256": "6c1ef197dd2139b8c1d8b7d28752d50f130470e712f591b9b7a05b06ed83e804"
+      "bytes": 95544,
+      "sha256": "501c36de011bbcdb9828fe612f35e270c3777b45dbfe7fc124d3ec083c0c00c9"
     },
     "css/fonts.css": {
       "bytes": 3506,
       "sha256": "85e6203e98679dc6ecfa404ac1589c594e160176658f0a4c094c6e47982770b1"
     },
     "css/starlight.css": {
-      "bytes": 6307,
-      "sha256": "1948a9fd69dd9ee0ab652d59109c3096ae5717251fb86cd04896a7df0eeacff9"
+      "bytes": 6302,
+      "sha256": "f04a30ef111eb266f1cec165aa6e89e86b78d446a544b140a3b7daf0c499d868"
     },
     "email/instrument.html": {
       "bytes": 4009,
@@ -1152,8 +1152,8 @@
       "sha256": "627ecaf0e4858a63e55f7390bd16b5f4a57bd40a011cdef0653a190b0b6df6ca"
     },
     "slides/instrument.css": {
-      "bytes": 302770,
-      "sha256": "64bac405d7a9071f4467cc71adad5aadb93c2d038925aa301eae84d7d3f217c2"
+      "bytes": 302799,
+      "sha256": "7f69c94262ee3eca5c37474fffb5b2612752f175c5cdff30e673e959106f8289"
     },
     "syntax/instrument-screen.json": {
       "bytes": 2686,

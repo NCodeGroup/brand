@@ -127,7 +127,7 @@ blockquote {
   line-height: inherit;
   padding: 0 0.25rem;
   border-radius: 4px;
-  background: #F0F0ED;
+  background: rgb(23 23 20 / 0.06);
 }
 
 /* A code block is a screen, the same in both themes. The theme colors no syntax: that is the deck's, beside its Marp version. */
@@ -156,4 +156,4 @@ section.invert::after, section.invert header, section.invert footer, section.inv
 section.invert blockquote, section.invert th { border-color: #797972; }
 section.invert blockquote, section.invert.lead p { color: #BEBEB8; }
 section.invert td { border-color: #343430; }
-section.invert :not(pre) > code { background: #11110F; }
+section.invert :not(pre) > code { background: rgb(240 240 237 / 0.08); }

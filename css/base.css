@@ -107,12 +107,12 @@ code, kbd, samp, pre, .value {
 }
 .value { font-size: 0.9286em; font-weight: var(--nc-weight-medium); letter-spacing: -0.01em; }
 
+/* A value in a sentence: the mono face on a tint, with no edge, so a paragraph that names many stays text. */
 :not(pre) > code {
   font-size: 0.84em;
   padding: 0.14em 0.38em;
-  border: var(--nc-border-hair) solid var(--nc-color-border);
   border-radius: var(--nc-radius-plate);
-  background: var(--nc-color-surface-sunken);
+  background: var(--nc-color-code-tint);
   color: var(--nc-color-text);
   white-space: nowrap;
 }
@@ -285,7 +285,7 @@ kbd {
 .field__hint .icon { margin-top: 0.1em; }
 .field__hint code { white-space: normal; }
 .field--error .field__label, .field--error .field__hint { color: var(--nc-color-danger-text); }
-.field--error .field__hint code { border-color: var(--nc-color-danger-border); background: var(--nc-color-danger-subtle); color: inherit; }
+.field--error .field__hint code { background: var(--nc-color-danger-subtle); color: inherit; }
 .field--disabled .field__label { color: var(--nc-color-text-disabled); }
 
 .well {

@@ -178,3 +178,17 @@ describe('fonts', () => {
     }
   });
 });
+
+describe('inline code', () => {
+  test('is drawn on code-tint without an edge, in base.css and Starlight, and the gate measures text on it', () => {
+    const code = find(rules(read('css/base.css')), ':not(pre) > code').filter((r) => !r.at.length);
+    assert.equal(code.length, 1);
+    assert.equal(code[0].declarations.background, 'var(--nc-color-code-tint)');
+    assert.deepEqual(Object.keys(code[0].declarations).filter((k) => k.startsWith('border') && k !== 'border-radius'), []);
+    const starlight = Object.assign({}, ...rules(read('css/starlight.css')).filter((r) => !r.at.length).map((r) => r.declarations));
+    assert.equal(starlight['--sl-color-bg-inline-code'], 'var(--nc-color-code-tint)');
+    for (const bg of ['page', 'surface', 'surface-raised', 'surface-sunken']) {
+      assert.ok(PAIRINGS.some((p) => p.fg === 'text' && p.bg === `${bg}+code-tint` && p.need === TEXT), bg);
+    }
+  });
+});
