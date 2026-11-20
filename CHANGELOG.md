@@ -31,7 +31,10 @@ stands. Until the first stable release, the [Unreleased] section describes the p
   pages. `css/fonts.css`, the `@font-face` rules. `css/starlight.css`, Starlight's custom properties from the tokens.
   A documentation page, in `css/base.css` or Starlight, sets its title in `title-long`, 44 pixels, and a section
   heading in `heading-long`, 28 pixels. On a phone its title is 36 pixels and a section heading 28
-  ([#31](https://github.com/NCodeGroup/brand/issues/31)).
+  ([#31](https://github.com/NCodeGroup/brand/issues/31)). Inline code, in `css/base.css`, Starlight and the slides, is
+  Martian Mono on `--nc-color-code-tint`, the text color thinned to a tint, with no edge
+  ([#35](https://github.com/NCodeGroup/brand/issues/35),
+  [ADR-1016](docs/decisions/1016-inline-code-is-a-tint-without-an-edge-and-a-run-in-label-is-italic.md)).
 - `syntax/instrument-screen.json`: the syntax theme of a code block on a screen, a VS Code color theme for Expressive
   Code. It colors keywords `--nc-color-screen-lit`, types and members `--nc-color-on-screen`, comments
   `--nc-color-on-screen-muted`, literals `--nc-color-screen-hot` and the rest `--nc-color-on-screen-secondary`, each as
@@ -51,10 +54,11 @@ stands. Until the first stable release, the [Unreleased] section describes the p
   `src/slides/` and `src/email/` with `lib/templates.mjs`
   ([#21](https://github.com/NCodeGroup/brand/issues/21),
   [ADR-1013](docs/decisions/1013-slides-are-a-marp-theme-and-the-email-and-the-theme-carry-every-value-written-out.md)).
-- Instrument Sans and Martian Mono, variable, in their Latin and Latin Extended subsets, with their SIL Open Font
-  License 1.1 texts, pinned by SHA-256 in `src/fonts/fonts.lock.json`. `tools/refresh-fonts.mjs` copies each file from
-  the npm tarball the lock pins, once the tarball matches the lock's integrity and the file its SHA-256. With `--pin`,
-  it pins the files of a release the lock moves to ([#6](https://github.com/NCodeGroup/brand/issues/6)).
+- Instrument Sans, roman and italic, and Martian Mono, variable, in their Latin and Latin Extended subsets, with
+  their SIL Open Font License 1.1 texts, pinned by SHA-256 in `src/fonts/fonts.lock.json`. `tools/refresh-fonts.mjs`
+  copies each file from the npm tarball the lock pins, once the tarball matches the lock's integrity and the file
+  its SHA-256. With `--pin`, it pins the files of a release the lock moves to
+  ([#6](https://github.com/NCodeGroup/brand/issues/6), [#35](https://github.com/NCodeGroup/brand/issues/35)).
 - The brace, drawn from the mark's construction: `brace/brace-mark.svg`, the stretching `brace-sm.svg`, `brace-md.svg`
   and `brace-lg.svg`, and `brace/brace.json`, the same pieces as path data.
 - The icon set in `icons/`: NCode's own 41 drawings and 24 icons of Lucide 1.72.0, restyled onto the same 16-unit
@@ -91,7 +95,10 @@ stands. Until the first stable release, the [Unreleased] section describes the p
   [ADR-1009](docs/decisions/1009-a-release-carries-an-attested-archive-and-vendor-brand-verifies-it-before-writing.md),
   [ADR-1014](docs/decisions/1014-a-release-is-drafted-with-its-archive-and-published-immutable.md)).
 - The guide in `guidelines/`: marks, color, typography, shape and the brace, layout, components, icons, motion, voice,
-  accessibility, products and tenants, applying it, the token reference, and versions and license.
+  accessibility, products and tenants, applying it, the token reference, and versions and license. It sets a value
+  in a sentence as inline code and a run-in label in italic, never bold
+  ([#35](https://github.com/NCodeGroup/brand/issues/35),
+  [ADR-1016](docs/decisions/1016-inline-code-is-a-tint-without-an-edge-and-a-run-in-label-is-italic.md)).
 - Nine specimen pages in `specimens/`, built on the generated files alone: the foundations, documentation, a landing
   page, a product page, sign-in, consent, the console, settings, and the states between screens. Each lays out for a
   phone 390 pixels wide without scrolling sideways, `foundations.html` included
