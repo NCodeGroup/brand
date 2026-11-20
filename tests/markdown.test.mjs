@@ -19,6 +19,11 @@ describe('renderInline', () => {
     assert.equal(renderInline('*Rule.* A key, *`x`* and 2 * 3'), '<em>Rule.</em> A key, <em><code>x</code></em> and 2 * 3');
   });
 
+  test('an asterisk with no closing one, or a space before the closing one, is text', () => {
+    assert.equal(renderInline('a *b'), 'a *b');
+    assert.equal(renderInline('*a *b'), '*a *b');
+  });
+
   test('raw inline HTML passes through and a stray angle bracket is escaped', () => {
     assert.equal(renderInline('<img src="a.svg" alt="x">'), '<img src="a.svg" alt="x">');
     assert.equal(renderInline('a < b > c'), 'a &lt; b &gt; c');
