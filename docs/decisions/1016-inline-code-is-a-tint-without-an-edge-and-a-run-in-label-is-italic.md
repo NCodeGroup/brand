@@ -58,7 +58,7 @@ Sans italic, never bold. A code block stays a screen in both themes.
   ([1004](1004-a-rename-is-a-major-version-and-a-value-change-is-never-a-patch.md)).
 - A consumer that vendors `css/fonts.css` takes the two italic files with it, or its italics are set upright.
 - A documentation toolchain that restyles Starlight's inline code draws it with no border, as the guide says.
-- The slide theme embeds two more fonts, about 110 kB of base64.
+- The slide theme embeds two more fonts as base64, which grows it by about four thirds of their size.
 - A code block keeps the weight of a screen. A page that needs it lighter shows fewer lines, not a paler screen.
 
 ## References
