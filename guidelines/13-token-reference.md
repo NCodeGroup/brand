@@ -56,6 +56,7 @@ Public.
 | `--nc-color-text-secondary` | `#4B4B45` | `#BEBEB8` |  |
 | `--nc-color-text-muted` | `#5E5E58` | `#93938C` | engraved labels, placeholders |
 | `--nc-color-text-disabled` | `#797972` | `#5E5E58` |  |
+| `--nc-color-code-tint` | `rgb(23 23 20 / 0.06)` | `rgb(240 240 237 / 0.08)` | the tint behind inline code: the text color, thinned, so it shows on every surface |
 | `--nc-color-success` | `#11813C` | `#7ADE95` |  |
 | `--nc-color-on-success` | `#FFFFFF` | `#092210` |  |
 | `--nc-color-success-mark` | `#11813C` | `#7ADE95` |  |

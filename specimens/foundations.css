@@ -301,6 +301,7 @@
 .rolesw-text-secondary { background: var(--nc-color-text-secondary); }
 .rolesw-text-muted { background: var(--nc-color-text-muted); }
 .rolesw-text-disabled { background: var(--nc-color-text-disabled); }
+.rolesw-code-tint { background: var(--nc-color-code-tint); }
 .rolesw-primary { background: var(--nc-color-primary); }
 .rolesw-on-primary { background: var(--nc-color-on-primary); }
 .rolesw-primary-shade { background: var(--nc-color-primary-shade); }

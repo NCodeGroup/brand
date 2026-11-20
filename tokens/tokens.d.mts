@@ -36,6 +36,8 @@ export declare const color: {
     /** engraved labels, placeholders */
     readonly "text-muted": string;
     readonly "text-disabled": string;
+    /** the tint behind inline code: the text color, thinned, so it shows on every surface */
+    readonly "code-tint": string;
     readonly success: string;
     readonly "on-success": string;
     readonly "success-mark": string;
@@ -143,6 +145,8 @@ export declare const color: {
     /** engraved labels, placeholders */
     readonly "text-muted": string;
     readonly "text-disabled": string;
+    /** the tint behind inline code: the text color, thinned, so it shows on every surface */
+    readonly "code-tint": string;
     readonly success: string;
     readonly "on-success": string;
     readonly "success-mark": string;
@@ -631,6 +635,7 @@ export declare const property: {
   readonly "nc-color-text-secondary": string;
   readonly "nc-color-text-muted": string;
   readonly "nc-color-text-disabled": string;
+  readonly "nc-color-code-tint": string;
   readonly "nc-color-success": string;
   readonly "nc-color-on-success": string;
   readonly "nc-color-success-mark": string;

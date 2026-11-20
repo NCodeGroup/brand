@@ -37,7 +37,7 @@ Components read roles, never ramp steps. Each role is one custom property, `--nc
 | Case | `page`, `page-sunken`, `surface`, `surface-raised`, `surface-sunken`, `well` | The case, a plate, the brightest sheet, a recess, a field |
 | Keys | `control`, `control-hover`, `control-pressed`, `ghost-hover`, `ghost-pressed` | The face of a neutral key in each state |
 | Lines | `border`, `border-strong`, `lamp-unlit` | A hairline, the edge of a control (3 to 1), an unlit lamp |
-| Type | `text`, `text-secondary`, `text-muted`, `text-disabled` | Running text, secondary text, engraved labels, disabled text |
+| Type | `text`, `text-secondary`, `text-muted`, `text-disabled`, `code-tint` | Running text, secondary text, engraved labels, disabled text, the tint behind inline code |
 | Primary | `primary`, `on-primary`, `primary-shade`, `primary-hover`, `primary-pressed`, `primary-edge`, `primary-lip`, `primary-text`, `primary-subtle`, `primary-subtle-border`, `focus` | What you press, derived from `--nc-brand` |
 | Screen | `screen`, `screen-raised`, `screen-border`, `screen-lit`, `on-screen`, `on-screen-secondary`, `on-screen-muted`, `screen-hot` | What you are shown, derived from `--nc-brand-secondary` |
 | Scope | `scope-tenant`, `scope-team`, `scope-platform` | The ink of a brace, one per kind of boundary |
@@ -75,6 +75,7 @@ requirement; [Accessibility](10-accessibility.md) says what is measured and why.
 | Text on a ghost key, touched | 3 | 4.5 | 12.21 / 9.39 |  |  |
 | Secondary text | 7 | 4.5 | 6.19 / 7.92 |  |  |
 | Engraved labels, setting keys, placeholders | 5 | 4.5 | 5.35 / 4.78 |  |  |
+| Inline code | 4 | 4.5 | 13.06 / 10.31 |  |  |
 | Edge of a control | 6 | 3 | 3.09 / 3.37 |  |  |
 | NCode's mark | 4 | 3 | 7.35 / 5.86 |  |  |
 | Brand as text, lamp, focus ring | 6 | 4.5 | 7.35 / 5.68 | 5.10 / 5.52 | 4.84 / 5.50 |
@@ -123,5 +124,5 @@ requirement; [Accessibility](10-accessibility.md) says what is measured and why.
 | Info: alert text | 1 | 4.5 | 16.49 / 15.83 |  |  |
 | Danger: key, hover | 1 | 4.5 | 8.12 / 9.73 |  |  |
 
-1102 measurements of 132 pairings: 0 below the requirement.
+1110 measurements of 136 pairings: 0 below the requirement.
 <!-- /generated:contrast -->
