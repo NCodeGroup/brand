@@ -27,7 +27,7 @@ Sans italic, never bold. A code block stays a screen in both themes.
   lighter than every dark one. The contrast gate measures text on it over every surface
   ([1006](1006-contrast-is-computed-in-node-and-the-tenant-derivation-guards-it.md)).
 - `css/base.css`'s `:not(pre) > code`, `css/starlight.css`'s `--sl-color-bg-inline-code` and the slides' inline code
-  read it. Prose, tables and alerts draw inline code alike.
+  read it. No inline code has an edge; inside an alert or a field's error hint it keeps that part's own fill.
 - The font lock pins `instrument-sans-latin-wdth-italic.woff2` and `instrument-sans-latin-ext-wdth-italic.woff2` from
   the tarball it pins for the roman, and `css/fonts.css` names them with `font-style: italic`. The slides embed them.
 - The guide states both rules in its typography section and sets its own run-in labels in italic. `lib/markdown.mjs`
@@ -57,7 +57,7 @@ Sans italic, never bold. A code block stays a screen in both themes.
 - A new role, two font files and a changed look are a minor version
   ([1004](1004-a-rename-is-a-major-version-and-a-value-change-is-never-a-patch.md)).
 - A consumer that vendors `css/fonts.css` takes the two italic files with it, or its italics are set upright.
-- A documentation toolchain that restyles Starlight's inline code drops its border to follow the guide.
+- A documentation toolchain that restyles Starlight's inline code draws it with no border, as the guide says.
 - The slide theme embeds two more fonts, about 110 kB of base64.
 - A code block keeps the weight of a screen. A page that needs it lighter shows fewer lines, not a paler screen.
 
