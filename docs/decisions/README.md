@@ -81,3 +81,4 @@ records are indexed in [project-template/](project-template/README.md).
 | [1013](1013-slides-are-a-marp-theme-and-the-email-and-the-theme-carry-every-value-written-out.md) | Slides are a Marp theme, and the email and the theme carry every value written out | Accepted |
 | [1014](1014-a-release-is-drafted-with-its-archive-and-published-immutable.md) | A release is drafted with its archive and published immutable (amends 1009) | Accepted |
 | [1015](1015-the-guide-and-the-specimens-are-served-at-brand-ncode-io.md) | The guide and the specimens are served at brand.ncode.io (amends 1010) | Accepted |
+| [1016](1016-inline-code-is-a-tint-without-an-edge-and-a-run-in-label-is-italic.md) | Inline code is a tint without an edge, and a run-in label is italic | Accepted |

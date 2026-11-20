@@ -1,5 +1,5 @@
 /*
- * The tenant derivation of NCode Brand 0.11.0: a tenant's primary and secondary color -> every color they touch,
+ * The tenant derivation of NCode Brand 0.12.0: a tenant's primary and secondary color -> every color they touch,
  * light and dark, with each pairing held at its contrast floor. It computes what tokens/tokens.css derives in CSS,
  * then moves a color whose pairing is below its floor (4.5 to 1 for text, 3 to 1 for a part) until it reaches it.
  * For NCode Blue and the proof colors it changes nothing, so it agrees with tokens.css.
@@ -543,6 +543,7 @@ const DATA = {
         "text-secondary": "#4B4B45",
         "text-muted": "#5E5E58",
         "text-disabled": "#797972",
+        "code-tint": "rgb(23 23 20 / 0.06)",
         "success": "#11813C",
         "on-success": "#FFFFFF",
         "success-mark": "#11813C",
@@ -700,6 +701,7 @@ const DATA = {
         "text-secondary": "#BEBEB8",
         "text-muted": "#93938C",
         "text-disabled": "#5E5E58",
+        "code-tint": "rgb(240 240 237 / 0.08)",
         "success": "#7ADE95",
         "on-success": "#092210",
         "success-mark": "#7ADE95",
@@ -1198,7 +1200,7 @@ const DATA = {
 const derive = createDerive(DATA);
 
 /** The NCode Brand release this module came from. */
-export const version = "0.11.0";
+export const version = "0.12.0";
 export const deriveBrand = derive.deriveBrand;
 export const customProperties = derive.customProperties;
 export const derivedColors = derive.derivedColors;

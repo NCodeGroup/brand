@@ -32,7 +32,7 @@
   </a>
 
   <div class="sitebar__tools">
-    <span class="readout" title="Version"><span class="vh">Version </span>v0.11.0</span>
+    <span class="readout" title="Version"><span class="vh">Version </span>v0.12.0</span>
     <a class="key sitebar__github" href="https://github.com/NCodeGroup/brand">
       GitHub
       <svg class="icon" aria-hidden="true"><use href="../icons/sprite.svg#i-arrow-up-right"/></svg>
@@ -96,19 +96,19 @@
 <p>The floor, stated once. Every surface built on Instrument meets it, and the build checks what can be checked.</p>
 <h2 id="the-floor">The Floor</h2>
 <ul>
-<li><strong>WCAG 2.2 AA in both themes</strong>: 4.5 to 1 for text, and 3 to 1 for large text, for the edge of a control and for the
+<li><em>WCAG 2.2 AA in both themes</em>: 4.5 to 1 for text, and 3 to 1 for large text, for the edge of a control and for the
 focus ring.</li>
-<li><strong>The ratios are computed, not estimated.</strong> build.mjs resolves every token with the same color math a browser uses
+<li><em>The ratios are computed, not estimated.</em> build.mjs resolves every token with the same color math a browser uses
 and measures every pairing the components use, for NCode's brand, for four tenant combinations and for six stress
 colors, in light and dark: <a class="link" href="02-color.html#computed-contrast">the table</a>. The build and <code>npm test</code> fail when one is below
 its requirement.</li>
-<li><strong>Meaning is never carried by color alone.</strong> A status has a lamp shape and a word. A boundary has an icon, a word and
+<li><em>Meaning is never carried by color alone.</em> A status has a lamp shape and a word. A boundary has an icon, a word and
 a fill. A switch shows an I or an O. An error has an icon and a message.</li>
-<li><strong>Keyboard focus is visible</strong> on every control, with one ring, lit on a screen, where it reaches 3 to 1 too.</li>
-<li><strong><code>prefers-reduced-motion</code> stops all motion</strong>, and each animated part rests in a designed still state.</li>
-<li><strong>A table that becomes a list on a phone</strong> keeps its table roles in the markup, and its head stays available to
+<li><em>Keyboard focus is visible</em> on every control, with one ring, lit on a screen, where it reaches 3 to 1 too.</li>
+<li><em><code>prefers-reduced-motion</code> stops all motion</em>, and each animated part rests in a designed still state.</li>
+<li><em>A table that becomes a list on a phone</em> keeps its table roles in the markup, and its head stays available to
 assistive technology.</li>
-<li><strong>Every page runs under <code>Content-Security-Policy: default-src 'self'</code></strong>: no inline styles, no <code>data:</code> addresses and no
+<li><em>Every page runs under <code>Content-Security-Policy: default-src 'self'</code></em>: no inline styles, no <code>data:</code> addresses and no
 request to another origin. <code>tools/shoot.mjs</code> serves the specimens under that policy and fails on a violation.</li>
 </ul>
 <p>Not measured as requirements, because they are decoration or exempt: the hairlines between parts, disabled text, and

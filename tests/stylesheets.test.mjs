@@ -1,10 +1,12 @@
 // What the stylesheets promise beyond their tokens: a focus ring stays visible on a screen, a page prints in the light
 // theme, Starlight paints only pairings the gate measures, and every swatch of the foundations page is legible.
 import assert from 'node:assert/strict';
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
 import { describe, test } from 'node:test';
 import { contrast } from '../lib/color.mjs';
 import { BRANDS, PAIRINGS, TEXT, UI } from '../lib/contrast.mjs';
-import { model, read } from './helpers.mjs';
+import { model, read, ROOT } from './helpers.mjs';
 
 const m = model();
 
@@ -159,5 +161,34 @@ describe('base.css on a phone', () => {
     assert.ok(fields.some((s) => s.includes('textarea')), 'the console sets its textareas');
     assert.ok(fields.length >= 3, fields.join(' | '));
     for (const selector of fields) assert.match(selector, /:not\(\.well--sm\)$/, selector);
+  });
+});
+
+describe('fonts', () => {
+  test('css/fonts.css sets Instrument Sans in italic beside each roman subset, from files in fonts/', () => {
+    const faces = [...read('css/fonts.css').matchAll(/@font-face \{([^}]*)\}/g)].map((match) => match[1]);
+    const ranges = (style) => faces
+      .filter((face) => face.includes('font-family: "Instrument Sans Variable";') && face.includes(`font-style: ${style};`))
+      .map((face) => /unicode-range: ([^;]+);/.exec(face)[1]);
+    assert.equal(ranges('italic').length, 2);
+    assert.deepEqual(ranges('italic'), ranges('normal'));
+    for (const face of faces) {
+      const file = /url\("\.\.\/(fonts\/[^"]+)"\)/.exec(face)[1];
+      assert.ok(existsSync(join(ROOT, file)), file);
+    }
+  });
+});
+
+describe('inline code', () => {
+  test('is drawn on code-tint without an edge, in base.css and Starlight, and the gate measures text on it', () => {
+    const code = find(rules(read('css/base.css')), ':not(pre) > code').filter((r) => !r.at.length);
+    assert.equal(code.length, 1);
+    assert.equal(code[0].declarations.background, 'var(--nc-color-code-tint)');
+    assert.deepEqual(Object.keys(code[0].declarations).filter((k) => k.startsWith('border') && k !== 'border-radius'), []);
+    const starlight = Object.assign({}, ...rules(read('css/starlight.css')).filter((r) => !r.at.length).map((r) => r.declarations));
+    assert.equal(starlight['--sl-color-bg-inline-code'], 'var(--nc-color-code-tint)');
+    for (const bg of ['page', 'surface', 'surface-raised', 'surface-sunken']) {
+      assert.ok(PAIRINGS.some((p) => p.fg === 'text' && p.bg === `${bg}+code-tint` && p.need === TEXT), bg);
+    }
   });
 });

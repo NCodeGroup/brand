@@ -10,15 +10,15 @@ the whole kit, and each other page is a scene from a real surface.
 
 ## Principles
 
-1. **The frame is fixed, the value is live.** Structure is stone and engraved type. Color belongs to values, to state
+1. *The frame is fixed, the value is live.* Structure is stone and engraved type. Color belongs to values, to state
    and to the tenant.
-2. **A brace marks a scope.** The mark's brace is drawn around what one boundary holds, and nowhere else.
-3. **Names are engraved, values are displayed.** A fixed part carries narrow capitals. Anything read off the system is
+2. *A brace marks a scope.* The mark's brace is drawn around what one boundary holds, and nowhere else.
+3. *Names are engraved, values are displayed.* A fixed part carries narrow capitals. Anything read off the system is
    monospace.
-4. **Depth means one thing.** A lip below: press it. A shade above: fill it. Flush: a plate. Hard edges only.
-5. **State is lit, and said.** A lamp or a lit plate always sits beside a word, and its shape changes with the state.
-6. **Hazards wear tape.** Test environments, cautions and the platform boundary carry amber and black stripes.
-7. **Keys travel, readouts tick.** A key moves 2 pixels in 70 milliseconds. A value changes in one step. Nothing else
+4. *Depth means one thing.* A lip below: press it. A shade above: fill it. Flush: a plate. Hard edges only.
+5. *State is lit, and said.* A lamp or a lit plate always sits beside a word, and its shape changes with the state.
+6. *Hazards wear tape.* Test environments, cautions and the platform boundary carry amber and black stripes.
+7. *Keys travel, readouts tick.* A key moves 2 pixels in 70 milliseconds. A value changes in one step. Nothing else
    moves.
 
 ## Sections

@@ -19,12 +19,12 @@ every NCode product is NCode Blue on NCode's own surfaces, so the family reads a
 A tenant changes five things, the fields of NCode Identity's `BrandingConfig`: its name, its logo, its primary color,
 its secondary color and the theme.
 
-- **`primaryColor` colors what you press.** It becomes `--nc-brand`. Keys, links, the focus ring, selection and lit
+- *`primaryColor` colors what you press.* It becomes `--nc-brand`. Keys, links, the focus ring, selection and lit
   lamps derive from it.
-- **`secondaryColor` colors what you are shown.** It becomes `--nc-brand-secondary`. Screens, the display, the lit
+- *`secondaryColor` colors what you are shown.* It becomes `--nc-brand-secondary`. Screens, the display, the lit
   boundary plate and the tenant's scope braces derive from it. It follows the primary until a tenant sets it.
-- **`mode`** pins the theme with `data-theme`. Without it the page follows the system setting.
-- **`logoUrl`** fills the nameplate of the tenant's card.
+- *`mode`* pins the theme with `data-theme`. Without it the page follows the system setting.
+- *`logoUrl`* fills the nameplate of the tenant's card.
 
 A tenant cannot change the typefaces, the shapes, the neutral, the status colors, hazard tape or the brace. NCode's own
 marks go one color, the text color, under a tenant's colors: set `data-brand="tenant"` on the root, and they never

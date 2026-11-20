@@ -8,7 +8,7 @@ sentence case.
 
 | Family | Role | License | Files |
 |---|---|---|---|
-| Instrument Sans Variable, weight 400 to 700, width 75 to 100 | Names, headings and reading | SIL OFL 1.1, `fonts/OFL-Instrument-Sans.txt` | 2 woff2, 76 kB |
+| Instrument Sans Variable, weight 400 to 700, width 75 to 100, roman and italic | Names, headings and reading | SIL OFL 1.1, `fonts/OFL-Instrument-Sans.txt` | 4 woff2, 158 kB |
 | Martian Mono Variable, weight 100 to 800, width 75 to 112.5 | Values, code, readouts | SIL OFL 1.1, `fonts/OFL-Martian-Mono.txt` | 2 woff2, 63 kB |
 | Inter Display Medium | The wordmark only | SIL OFL 1.1 | None: it is outlines in the logo files |
 
@@ -71,10 +71,30 @@ Sizes in pixels at the default root size: 11, 12, 13, 14, 16, 17, 19, 22, 28, 36
 sign-in pages and the site bar is 16, so the browser does not zoom into it; a small field of the console or a dialog,
 `.well--sm`, stays at 13. The scale's steps are primitives: a component reads a role, not a step.
 
+## In Running Text
+
+A value in a sentence, such as a type, a member, a file or a command, is inline code: Martian Mono on
+`--nc-color-code-tint`, the text color thinned to a tint, with no edge. The face marks the value, and the tint shows
+its extent on every surface in both themes. A reference page names dozens of identifiers on one screen: an edge
+around each turns a paragraph into a row of boxes. Code of more than one line goes on a screen.
+
+A run-in label is set in italic, never bold. It is the words that open a paragraph or a list item and name what
+follows, such as *You write*, *What happens:* or *Rule.* In long-form text a column of bold labels outweighs the
+sentences they introduce, and italic marks a label at the weight of the text. Keep bold for the one sentence of a
+section a reader must not miss, such as the rule that opens [The Brace](04-shape-and-depth.md#the-brace). The word
+of an alert, such as Note, is engraved: it is a label in the label voice, not a run-in label.
+
+Instrument Sans has a true italic: `fonts/instrument-sans-latin-wdth-italic.woff2` and
+`fonts/instrument-sans-latin-ext-wdth-italic.woff2`, which `css/fonts.css` names beside the roman files. Take them
+with the roman ones. `css/base.css` turns off synthesized styles, so without them an italic is set upright. Martian
+Mono has no italic: a value inside an italic label stays upright.
+
 ## Do and Don't
 
+- Do set a value in a sentence as inline code, and a run-in label in italic: *What happens:*
 - Do set a field's label in sentence case, and show the key a setting is stored under beside it as a value.
 - Do set an ID, a count, a date, a hash or a secret as a value, in Martian Mono.
 - Don't engrave a sentence, a caption or a field's label.
 - Don't set prose in monospace, or a value in the label voice.
 - Don't load Inter for interface text: it is the wordmark's face, and only as outlines in the logo files.
+- Don't draw an edge around inline code, or set a run-in label in bold.

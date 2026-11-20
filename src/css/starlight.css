@@ -37,7 +37,7 @@
   --sl-color-bg: var(--nc-color-page);
   --sl-color-bg-nav: var(--nc-color-page);
   --sl-color-bg-sidebar: var(--nc-color-page);
-  --sl-color-bg-inline-code: var(--nc-color-surface-sunken);
+  --sl-color-bg-inline-code: var(--nc-color-code-tint);
   --sl-color-bg-accent: var(--nc-color-primary-text);
   --sl-color-hairline-light: var(--nc-color-border);
   --sl-color-hairline: var(--nc-color-border);

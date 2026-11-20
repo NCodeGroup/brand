@@ -173,6 +173,8 @@
         <p><strong class="label alert__word" id="caution-1">Caution</strong>There is no finalizer. A buffer that is never disposed is never zeroed, so always use <code>using</code>.</p>
       </aside>
 
+      <p><em>What happens:</em> the key and the expected MAC are zeroed when the method exits, by <code>return</code> or by a thrown exception.</p>
+
       <h2 id="choosing">Choosing a buffer</h2>
 
       <div class="tableframe wide">

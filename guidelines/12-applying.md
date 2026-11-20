@@ -35,6 +35,10 @@ reading voice there too. Starlight sets no size on running text, which keeps the
 measure of running text. In the toolchain's own rules, set running text in the `reading` role, 17 pixels, on the 41 rem
 `--nc-measure`, as `.prose` does in `css/base.css`.
 
+Starlight draws inline code on `--sl-color-bg-inline-code`, which `css/starlight.css` sets to `--nc-color-code-tint`,
+and gives it no border. Keep it so in the toolchain's rules: [inline code](03-typography.md#in-running-text) has a
+tint and no edge.
+
 Take `syntax/instrument-screen.json` for the code blocks. It is Expressive Code's syntax theme, which colors code as a
 screen does: keywords lit, literals amber and comments dimmed. Each color is the custom property of its role, so
 `tokens/tokens.css` decides it, a tenant's color included. One theme serves both page themes, because a screen is the
@@ -81,7 +85,7 @@ stays in the application, under its own type check and tests.
   Blue and a secondary to the primary, and `adjusted` names any color it moved to reach its contrast floor.
 - Assert `tokens/derive.vectors.json` in the application's tests, so a vendored copy is proven to derive what this
   release derives.
-- Import `css/fonts.css` once in the application's entry: a bundler emits the four font files beside it, and a page
+- Import `css/fonts.css` once in the application's entry: a bundler emits the six font files beside it, and a page
   served under `font-src 'self'` loads them. Vendor each family's license, `fonts/OFL-Instrument-Sans.txt` and
   `fonts/OFL-Martian-Mono.txt`, with its font files: the SIL Open Font License asks every copy of a font to carry it.
 
@@ -189,18 +193,20 @@ Take files from one tagged release, and prove in your own gate that they did not
    release's `manifest.json` lists for it.
 2. Beside it, write a `brand.lock.json` that names each file you take, where it goes and where it comes from in the
    release. Name the script itself too, so `--update` keeps it at the release's SHA-256 and `--check` holds it
-   there. Take every file a stylesheet loads, here the four fonts `css/fonts.css` names, and each font family's
+   there. Take every file a stylesheet loads, here the six fonts `css/fonts.css` names, and each font family's
    license with its fonts:
 
    ```json
    {
-     "version": "0.11.0",
+     "version": "0.12.0",
      "files": {
        "vendor-brand.mjs": { "source": "vendoring/vendor-brand.mjs", "sha256": "" },
        "src/brand/tokens/tokens.css": { "source": "tokens/tokens.css", "sha256": "" },
        "src/brand/css/fonts.css": { "source": "css/fonts.css", "sha256": "" },
        "src/brand/fonts/instrument-sans-latin-wdth-normal.woff2": { "source": "fonts/instrument-sans-latin-wdth-normal.woff2", "sha256": "" },
        "src/brand/fonts/instrument-sans-latin-ext-wdth-normal.woff2": { "source": "fonts/instrument-sans-latin-ext-wdth-normal.woff2", "sha256": "" },
+       "src/brand/fonts/instrument-sans-latin-wdth-italic.woff2": { "source": "fonts/instrument-sans-latin-wdth-italic.woff2", "sha256": "" },
+       "src/brand/fonts/instrument-sans-latin-ext-wdth-italic.woff2": { "source": "fonts/instrument-sans-latin-ext-wdth-italic.woff2", "sha256": "" },
        "src/brand/fonts/martian-mono-latin-wdth-normal.woff2": { "source": "fonts/martian-mono-latin-wdth-normal.woff2", "sha256": "" },
        "src/brand/fonts/martian-mono-latin-ext-wdth-normal.woff2": { "source": "fonts/martian-mono-latin-ext-wdth-normal.woff2", "sha256": "" },
        "src/brand/fonts/OFL-Instrument-Sans.txt": { "source": "fonts/OFL-Instrument-Sans.txt", "sha256": "" },
@@ -209,10 +215,10 @@ Take files from one tagged release, and prove in your own gate that they did not
    }
    ```
 
-3. Run `node vendor-brand.mjs --update 0.11.0`. It needs the [GitHub CLI](https://cli.github.com), `gh`, signed in
-   with `gh auth login`, or with `GH_TOKEN` in CI. It downloads the release's archive, `brand-0.11.0.tar.gz`, from
-   the GitHub release `v0.11.0`, and has `gh attestation verify` prove its build provenance: signed by
-   [publish.yml](../.github/workflows/publish.yml) for the tag `v0.11.0` on a GitHub-hosted runner. It refuses the
+3. Run `node vendor-brand.mjs --update 0.12.0`. It needs the [GitHub CLI](https://cli.github.com), `gh`, signed in
+   with `gh auth login`, or with `GH_TOKEN` in CI. It downloads the release's archive, `brand-0.12.0.tar.gz`, from
+   the GitHub release `v0.12.0`, and has `gh attestation verify` prove its build provenance: signed by
+   [publish.yml](../.github/workflows/publish.yml) for the tag `v0.12.0` on a GitHub-hosted runner. It refuses the
    archive unless the attestation names its SHA-256, its `manifest.json` is that version, and it holds every file
    the manifest lists, at the manifest's size and SHA-256, and nothing else. Only then does it write the files and
    pin each hash in the lock. A release never changes, so once the lock pins a version, it refuses a file of that
@@ -226,4 +232,4 @@ request: a value change shows there, line by line. [Versions and license](14-ver
 kind of version number means.
 
 To check an archive yourself, run
-`gh attestation verify brand-0.11.0.tar.gz --repo NCodeGroup/brand --signer-workflow NCodeGroup/brand/.github/workflows/publish.yml`.
+`gh attestation verify brand-0.12.0.tar.gz --repo NCodeGroup/brand --signer-workflow NCodeGroup/brand/.github/workflows/publish.yml`.

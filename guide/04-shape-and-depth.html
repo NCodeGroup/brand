@@ -32,7 +32,7 @@
   </a>
 
   <div class="sitebar__tools">
-    <span class="readout" title="Version"><span class="vh">Version </span>v0.11.0</span>
+    <span class="readout" title="Version"><span class="vh">Version </span>v0.12.0</span>
     <a class="key sitebar__github" href="https://github.com/NCodeGroup/brand">
       GitHub
       <svg class="icon" aria-hidden="true"><use href="../icons/sprite.svg#i-arrow-up-right"/></svg>
@@ -97,15 +97,15 @@
 what keeps the instrument metaphor from turning into a picture of one.</p>
 <h2 id="shape-and-depth">Shape and Depth</h2>
 <ul>
-<li><strong>Radii grow with the part.</strong> Cell 2, label plate 4, key and well 6, plate and screen 10, dialog and card 14, lamp
+<li><em>Radii grow with the part.</em> Cell 2, label plate 4, key and well 6, plate and screen 10, dialog and card 14, lamp
 round: <code>--nc-radius-cell</code>, <code>-plate</code>, <code>-control</code>, <code>-panel</code>, <code>-module</code> and <code>-round</code>.</li>
-<li><strong>Two lines.</strong> A 1-pixel hairline between parts is decoration, <code>--nc-color-border</code>. The 1-pixel edge of a control is
+<li><em>Two lines.</em> A 1-pixel hairline between parts is decoration, <code>--nc-color-border</code>. The 1-pixel edge of a control is
 <code>--nc-color-border-strong</code>, 3 to 1 against every surface.</li>
-<li><strong>Depth is three hard-edged states.</strong> Recessed: a 2-pixel shade inside the top edge, <code>--nc-elevation-recessed</code>.
+<li><em>Depth is three hard-edged states.</em> Recessed: a 2-pixel shade inside the top edge, <code>--nc-elevation-recessed</code>.
 Flush: a 1-pixel lip, <code>--nc-elevation-flush</code>. Raised: a 2-pixel lip, <code>--nc-elevation-raised</code>.</li>
-<li><strong>One soft shadow</strong> exists, under menus, dialogs and sheets: <code>--nc-elevation-floating</code> and <code>--nc-elevation-overlay</code>.</li>
-<li><strong>Raise only what can be pressed.</strong> A raised part says "press me"; a plate that cannot be pressed is flush.</li>
-<li><strong>Focus is one ring.</strong> 2 pixels of <code>--nc-color-focus</code>, 2 pixels clear of the part, on everything. On a screen the
+<li><em>One soft shadow</em> exists, under menus, dialogs and sheets: <code>--nc-elevation-floating</code> and <code>--nc-elevation-overlay</code>.</li>
+<li><em>Raise only what can be pressed.</em> A raised part says "press me"; a plate that cannot be pressed is flush.</li>
+<li><em>Focus is one ring.</em> 2 pixels of <code>--nc-color-focus</code>, 2 pixels clear of the part, on everything. On a screen the
 ring is lit, <code>--nc-color-screen-lit</code>, and a listing that scrolls draws it just inside its own edge.</li>
 </ul>
 <h2 id="hazard-tape">Hazard Tape</h2>
@@ -127,10 +127,10 @@ secret, and nowhere else.</strong></p>
 <tr><td>The boundary plate</td><td>The kind and the name of a boundary</td><td>The mark's own brace, in the plate's ink</td></tr>
 </tbody>
 </table></div>
-<p><strong>Where it is not used:</strong> callouts, alerts, quotes, lists, headings, tables, navigation, cards that are not a boundary,
+<p><em>Where it is not used:</em> callouts, alerts, quotes, lists, headings, tables, navigation, cards that are not a boundary,
 loading and not-found pages, and anything decorative. A callout keeps its signal bar and a caution keeps its tape. A
 screen whose boundary is not known yet has no brace: a loading screen states that by leaving it out.</p>
-<p><strong>Construction.</strong> The brace is drawn the way the mark's brace is: straight stems, circular hooks at the ends, and a
+<p><em>Construction.</em> The brace is drawn the way the mark's brace is: straight stems, circular hooks at the ends, and a
 cusp of two arcs whose tip is half the stroke high. build.mjs draws every brace in <a class="link" href="https://github.com/NCodeGroup/brand/tree/main/brace">brace/</a> from the numbers
 in <a class="link" href="https://github.com/NCodeGroup/brand/blob/main/src/tokens.source.json">src/tokens.source.json</a>, and <code>brace/brace.json</code> holds the same pieces as path data for a
 component that draws the brace inline. The brace on a boundary plate is the mark's own, drawn from the mark's geometry.
@@ -145,14 +145,14 @@ twice the mark's for the same stroke, so the shape still reads as a brace when t
 <tr><td><code>brace-lg</code></td><td class="num">4 px</td><td class="num">9</td><td class="num">10</td><td class="num">23 px</td><td class="num">40 px</td><td>The frame of a console workspace</td></tr>
 </tbody>
 </table></div>
-<p><strong>Inks.</strong> A tenant's brace is <code>--nc-color-scope-tenant</code>, from the tenant's secondary color. A team's is
+<p><em>Inks.</em> A tenant's brace is <code>--nc-color-scope-tenant</code>, from the tenant's secondary color. A team's is
 <code>--nc-color-scope-team</code>, plain ink. The platform's is hazard tape, <code>--nc-color-scope-platform</code> striped with
 <code>--nc-color-on-hazard</code>. On a screen a brace is <code>--nc-color-screen-lit</code>. The ink agrees with the boundary plate, whose
 icon and word say the kind, so the kind is never told by color alone.</p>
-<p><strong>One frame in a view.</strong> A view has at most one pair of frame braces. A dialog restates the boundary with the plate,
+<p><em>One frame in a view.</em> A view has at most one pair of frame braces. A dialog restates the boundary with the plate,
 not with a second frame. On a phone the console drops the frame and keeps the plate, which stays in view on the sticky
 display.</p>
-<p><strong>Never a glyph.</strong> A brace is a CSS mask of an SVG file, so it takes any color and no font can alter it. Don't set a
+<p><em>Never a glyph.</em> A brace is a CSS mask of an SVG file, so it takes any color and no font can alter it. Don't set a
 brace in a font: a font's brace and the mark's differ. Without CSS masks, <code>css/base.css</code> draws a brace as a plain
 2-pixel rule in the same ink.</p>
 <p>In <code>css/base.css</code>: <code>.brace</code> frames an element, <code>.brace--md</code> and <code>.brace--sm</code> set the size, <code>data-scope</code> on it picks the

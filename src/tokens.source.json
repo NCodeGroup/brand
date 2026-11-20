@@ -262,7 +262,8 @@
         "text": { "light": "{stone.925}", "dark": "{stone.100}" },
         "text-secondary": { "light": "{stone.700}", "dark": "{stone.400}" },
         "text-muted": { "value": { "light": "{stone.600}", "dark": "{stone.450}" }, "note": "engraved labels, placeholders" },
-        "text-disabled": { "light": "{stone.500}", "dark": "{stone.600}" }
+        "text-disabled": { "light": "{stone.500}", "dark": "{stone.600}" },
+        "code-tint": { "value": { "light": { "alpha": ["{stone.925}", 0.06] }, "dark": { "alpha": ["{stone.100}", 0.08] } }, "note": "the tint behind inline code: the text color, thinned, so it shows on every surface" }
       },
       "success": {
         "$note": "Status. -mark is the lamp, icon or line (3 to 1 on every surface); -text is running text (4.5 to 1).",

@@ -32,7 +32,7 @@
   </a>
 
   <div class="sitebar__tools">
-    <span class="readout" title="Version"><span class="vh">Version </span>v0.11.0</span>
+    <span class="readout" title="Version"><span class="vh">Version </span>v0.12.0</span>
     <a class="key sitebar__github" href="https://github.com/NCodeGroup/brand">
       GitHub
       <svg class="icon" aria-hidden="true"><use href="../icons/sprite.svg#i-arrow-up-right"/></svg>
@@ -124,7 +124,7 @@ amber are stepped by lightness the same way. The ramps are primitives: component
 <tr><td>Case</td><td><code>page</code>, <code>page-sunken</code>, <code>surface</code>, <code>surface-raised</code>, <code>surface-sunken</code>, <code>well</code></td><td>The case, a plate, the brightest sheet, a recess, a field</td></tr>
 <tr><td>Keys</td><td><code>control</code>, <code>control-hover</code>, <code>control-pressed</code>, <code>ghost-hover</code>, <code>ghost-pressed</code></td><td>The face of a neutral key in each state</td></tr>
 <tr><td>Lines</td><td><code>border</code>, <code>border-strong</code>, <code>lamp-unlit</code></td><td>A hairline, the edge of a control (3 to 1), an unlit lamp</td></tr>
-<tr><td>Type</td><td><code>text</code>, <code>text-secondary</code>, <code>text-muted</code>, <code>text-disabled</code></td><td>Running text, secondary text, engraved labels, disabled text</td></tr>
+<tr><td>Type</td><td><code>text</code>, <code>text-secondary</code>, <code>text-muted</code>, <code>text-disabled</code>, <code>code-tint</code></td><td>Running text, secondary text, engraved labels, disabled text, the tint behind inline code</td></tr>
 <tr><td>Primary</td><td><code>primary</code>, <code>on-primary</code>, <code>primary-shade</code>, <code>primary-hover</code>, <code>primary-pressed</code>, <code>primary-edge</code>, <code>primary-lip</code>, <code>primary-text</code>, <code>primary-subtle</code>, <code>primary-subtle-border</code>, <code>focus</code></td><td>What you press, derived from <code>--nc-brand</code></td></tr>
 <tr><td>Screen</td><td><code>screen</code>, <code>screen-raised</code>, <code>screen-border</code>, <code>screen-lit</code>, <code>on-screen</code>, <code>on-screen-secondary</code>, <code>on-screen-muted</code>, <code>screen-hot</code></td><td>What you are shown, derived from <code>--nc-brand-secondary</code></td></tr>
 <tr><td>Scope</td><td><code>scope-tenant</code>, <code>scope-team</code>, <code>scope-platform</code></td><td>The ink of a brace, one per kind of boundary</td></tr>
@@ -156,6 +156,7 @@ requirement; <a class="link" href="10-accessibility.html">Accessibility</a> says
 <tr><td>Text on a ghost key, touched</td><td class="num">3</td><td class="num">4.5</td><td class="num">12.21 / 9.39</td><td class="num"></td><td class="num"></td></tr>
 <tr><td>Secondary text</td><td class="num">7</td><td class="num">4.5</td><td class="num">6.19 / 7.92</td><td class="num"></td><td class="num"></td></tr>
 <tr><td>Engraved labels, setting keys, placeholders</td><td class="num">5</td><td class="num">4.5</td><td class="num">5.35 / 4.78</td><td class="num"></td><td class="num"></td></tr>
+<tr><td>Inline code</td><td class="num">4</td><td class="num">4.5</td><td class="num">13.06 / 10.31</td><td class="num"></td><td class="num"></td></tr>
 <tr><td>Edge of a control</td><td class="num">6</td><td class="num">3</td><td class="num">3.09 / 3.37</td><td class="num"></td><td class="num"></td></tr>
 <tr><td>NCode's mark</td><td class="num">4</td><td class="num">3</td><td class="num">7.35 / 5.86</td><td class="num"></td><td class="num"></td></tr>
 <tr><td>Brand as text, lamp, focus ring</td><td class="num">6</td><td class="num">4.5</td><td class="num">7.35 / 5.68</td><td class="num">5.10 / 5.52</td><td class="num">4.84 / 5.50</td></tr>
@@ -205,7 +206,7 @@ requirement; <a class="link" href="10-accessibility.html">Accessibility</a> says
 <tr><td>Danger: key, hover</td><td class="num">1</td><td class="num">4.5</td><td class="num">8.12 / 9.73</td><td class="num"></td><td class="num"></td></tr>
 </tbody>
 </table></div>
-<p>1102 measurements of 132 pairings: 0 below the requirement.</p>
+<p>1110 measurements of 136 pairings: 0 below the requirement.</p>
     </article>
     <nav class="pagenav" aria-label="Previous and next page">
       <a class="key pagenav__key pagenav__key--prev" href="01-marks.html">

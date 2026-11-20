@@ -16,8 +16,8 @@ Tokens format, and `tokens/tokens.mjs` the public ones as an ES module.
 
 ## The Two Tiers
 
-**Semantic tokens are public**: renaming or removing one, or changing what it is for, is a major version. **Primitives
-are private**: the color ramps and the steps of the type scale exist so the roles can be built from them, and may
+*Semantic tokens are public*: renaming or removing one, or changing what it is for, is a major version. *Primitives
+are private*: the color ramps and the steps of the type scale exist so the roles can be built from them, and may
 change in any release. Read a role instead: a color role for a ramp step, a type role for a size or a weight. This
 repository's own stylesheets read primitives, because they release with them
 ([the decision](../docs/decisions/1002-custom-properties-take-the-nc-prefix-and-only-semantic-tokens-are-public.md)).
@@ -56,6 +56,7 @@ Public.
 | `--nc-color-text-secondary` | `#4B4B45` | `#BEBEB8` |  |
 | `--nc-color-text-muted` | `#5E5E58` | `#93938C` | engraved labels, placeholders |
 | `--nc-color-text-disabled` | `#797972` | `#5E5E58` |  |
+| `--nc-color-code-tint` | `rgb(23 23 20 / 0.06)` | `rgb(240 240 237 / 0.08)` | the tint behind inline code: the text color, thinned, so it shows on every surface |
 | `--nc-color-success` | `#11813C` | `#7ADE95` |  |
 | `--nc-color-on-success` | `#FFFFFF` | `#092210` |  |
 | `--nc-color-success-mark` | `#11813C` | `#7ADE95` |  |

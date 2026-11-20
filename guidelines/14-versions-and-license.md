@@ -25,7 +25,7 @@ A value change is never a patch, because the people who must look at their scree
 them: nothing breaks, but screens look different, a consumer's screenshots change, and a contrast margin may narrow.
 The contrast gate proves no pairing fell below its floor.
 
-**Before 1.0.0** the major number stays at 0, as Semantic Versioning allows for a product still taking shape: a change
+*Before 1.0.0* the major number stays at 0, as Semantic Versioning allows for a product still taking shape: a change
 the table calls major raises the minor number, and so does every value change and every addition. The changelog then
 describes the product as it is, not each change, and a rename needs no deprecation. Version 1.0.0 is released when
 the first product ships on Instrument; from then on the table binds.

@@ -4,19 +4,19 @@ The floor, stated once. Every surface built on Instrument meets it, and the buil
 
 ## The Floor
 
-- **WCAG 2.2 AA in both themes**: 4.5 to 1 for text, and 3 to 1 for large text, for the edge of a control and for the
+- *WCAG 2.2 AA in both themes*: 4.5 to 1 for text, and 3 to 1 for large text, for the edge of a control and for the
   focus ring.
-- **The ratios are computed, not estimated.** build.mjs resolves every token with the same color math a browser uses
+- *The ratios are computed, not estimated.* build.mjs resolves every token with the same color math a browser uses
   and measures every pairing the components use, for NCode's brand, for four tenant combinations and for six stress
   colors, in light and dark: [the table](02-color.md#computed-contrast). The build and `npm test` fail when one is below
   its requirement.
-- **Meaning is never carried by color alone.** A status has a lamp shape and a word. A boundary has an icon, a word and
+- *Meaning is never carried by color alone.* A status has a lamp shape and a word. A boundary has an icon, a word and
   a fill. A switch shows an I or an O. An error has an icon and a message.
-- **Keyboard focus is visible** on every control, with one ring, lit on a screen, where it reaches 3 to 1 too.
-- **`prefers-reduced-motion` stops all motion**, and each animated part rests in a designed still state.
-- **A table that becomes a list on a phone** keeps its table roles in the markup, and its head stays available to
+- *Keyboard focus is visible* on every control, with one ring, lit on a screen, where it reaches 3 to 1 too.
+- *`prefers-reduced-motion` stops all motion*, and each animated part rests in a designed still state.
+- *A table that becomes a list on a phone* keeps its table roles in the markup, and its head stays available to
   assistive technology.
-- **Every page runs under `Content-Security-Policy: default-src 'self'`**: no inline styles, no `data:` addresses and no
+- *Every page runs under `Content-Security-Policy: default-src 'self'`*: no inline styles, no `data:` addresses and no
   request to another origin. `tools/shoot.mjs` serves the specimens under that policy and fails on a violation.
 
 Not measured as requirements, because they are decoration or exempt: the hairlines between parts, disabled text, and
