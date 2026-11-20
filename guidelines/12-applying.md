@@ -85,7 +85,7 @@ stays in the application, under its own type check and tests.
   Blue and a secondary to the primary, and `adjusted` names any color it moved to reach its contrast floor.
 - Assert `tokens/derive.vectors.json` in the application's tests, so a vendored copy is proven to derive what this
   release derives.
-- Import `css/fonts.css` once in the application's entry: a bundler emits the four font files beside it, and a page
+- Import `css/fonts.css` once in the application's entry: a bundler emits the six font files beside it, and a page
   served under `font-src 'self'` loads them. Vendor each family's license, `fonts/OFL-Instrument-Sans.txt` and
   `fonts/OFL-Martian-Mono.txt`, with its font files: the SIL Open Font License asks every copy of a font to carry it.
 
