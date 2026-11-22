@@ -38,7 +38,7 @@ name: Code review
 # updates the SHA and the tag.
 # Run tools/Enable-CodeReview.ps1 from a clone of NCodeGroup/code-review once for this repository: it creates the
 # code-review environment, which only the default branch can deploy to, and gives the repository access to the
-# organization's two secrets.
+# organization's two secrets; -ApproverPrivateKeyPath stores the approver's key in that environment.
 
 on:
   pull_request_target:
@@ -90,12 +90,15 @@ jobs:
           persist-credentials: false
 
       - name: Review
-        uses: NCodeGroup/code-review@da82720a1fb582551e8d460ddd277f3cdc8b43f1 # v1.4.2
+        uses: NCodeGroup/code-review@a4cdf65d2450e4e1b2b92ed53430ceb8026d4f97 # v1.5.0
         with:
           app-private-key: ${{ secrets.NCODE_REVIEW_APP_PRIVATE_KEY }}
           bedrock-api-key: ${{ secrets.AWS_BEARER_TOKEN_BEDROCK }}
           # A review that leaves no blocker or should-fix finding open approves the pull request.
           approve: true
+          # The NCode Review Approver submits the approval, so it meets the ruleset's required approval; the key is a
+          # secret of the code-review environment, which only the default branch can deploy to.
+          approver-private-key: ${{ secrets.NCODE_REVIEW_APPROVER_PRIVATE_KEY }}
 
   outcomes:
     # A closed pull request, merged or not, whoever closed it (a merge queue merges as a bot) and whatever its labels:
@@ -116,6 +119,6 @@ jobs:
       pull-requests: read
     steps:
       - name: Record the outcomes
-        uses: NCodeGroup/code-review@da82720a1fb582551e8d460ddd277f3cdc8b43f1 # v1.4.2
+        uses: NCodeGroup/code-review@a4cdf65d2450e4e1b2b92ed53430ceb8026d4f97 # v1.5.0
         with:
           app-private-key: ${{ secrets.NCODE_REVIEW_APP_PRIVATE_KEY }}
