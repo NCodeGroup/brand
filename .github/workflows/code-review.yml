@@ -13,12 +13,20 @@ name: Code review
 # code-review environment, which only the default branch can deploy to, holds the approver's key,
 # NCODE_REVIEW_APPROVER_PRIVATE_KEY, once it is stored, and lets Anthropic's federation rule trust the review job.
 #
-# approve: true (v1.4.0 on) approves a pull request whose review leaves no blocker or should-fix finding open;
-# tools/Set-RepositoryBaseline.ps1 in the project template then requires one approval. A push dismisses it, so comment
-# /review after one; a maintainer approves a bot's pull request, which NCode Review skips.
-# docs/decisions/project-template/0022-ncode-reviews-approval-gates-the-merge.md says why. v1.4.0 was released on
-# 2026-11-15, under the three days ADR-0009 waits: approve needs it, so it is pinned by that record's commented
-# exception, and this sentence goes once 2026-11-18 has passed (NCodeGroup/project-template#392).
+# approve: true approves a pull request whose review leaves no blocker or should-fix finding open, which Scorecard's
+# Code-Review check counts. GitHub counts an approval toward a ruleset's required approval only from a reviewer that can
+# write, so the approval is submitted by the NCode Review Approver (v1.5.0 on), an app with Contents: write whose token,
+# minted after the review, can only write pull requests. tools/Enable-CodeReview.ps1 -ApproverPrivateKeyPath in
+# NCodeGroup/code-review stores its key in the code-review environment. With it, tools/Set-RepositoryBaseline.ps1 in the
+# project template requires one approval, of the last push; without it, NCode Review's own app approves, which meets no
+# required approval, and the baseline requires none where one person can write. A push dismisses the approval, so
+# comment /review after one; a maintainer approves a bot's pull request, which NCode Review skips.
+# docs/decisions/project-template/0022-ncode-reviews-approval-gates-the-merge.md,
+# 0034-with-one-writer-the-baseline-requires-no-approval.md and
+# 0036-a-required-approval-is-met-by-ncode-reviews-approver-app.md say why.
+# v1.5.0 was released on 2026-11-21, under the three days ADR-0009 waits: approver-private-key needs it, so it is
+# pinned by that record's commented exception, and this sentence goes once 2026-11-24 has passed
+# (NCodeGroup/project-template#475).
 #
 # pull_request_target and issue_comment both run this file from the default branch, so a pull request can't change its
 # own review. The engine fetches its code only to read it: nothing from it is built, run or installed.
