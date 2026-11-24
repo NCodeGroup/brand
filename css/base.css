@@ -1107,7 +1107,7 @@ textarea.well[wrap="off"] { white-space: pre; overflow-x: auto; }
  * A manual on the bench: the selector and the page index are plates on the case; the page itself is the
  * brightest sheet. The three stand together in the middle of a wide window, no wider than 90rem, so the page index
  * stays beside the text it indexes. Long-form text is dense enough to scan: the reading size on a 42rem measure, a
- * title two steps above a section's heading, and a rule above each section. Listings and tables start one bleed
+ * title one step above a section's heading, and a rule above each section. Listings and tables start one bleed
  * before the text, so what is in them lines up with it.
  */
 

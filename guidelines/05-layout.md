@@ -29,6 +29,8 @@ characters.
 The selector, the sheet and the page index stand together in the middle of the window and are no wider than 90 rem
 together. On a wider window the rest is margin on both sides, so the page index stays beside the text it indexes. The
 selector and the page index are set at 13 pixels, and an entry of the selector is 28 pixels high, `--nc-control-sm`.
+At 960 pixels and below the selector is a sheet over the page: an entry in it is the interface's 14 pixels and 40
+pixels high.
 
 ## Landing and Product Pages
 

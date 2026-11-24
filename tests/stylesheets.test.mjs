@@ -130,7 +130,7 @@ describe('Starlight', () => {
     for (const step of ['xl', '2xl', '3xl', '4xl', '5xl', '6xl']) assert.equal(at[`--sl-text-${step}`], `var(--nc-text-${step})`, step);
   });
 
-  test('running text is the reading size: Starlight\'s body size and line height are the reading role\'s', () => {
+  test("Starlight's body size and line height are the reading role's", () => {
     const type = m.source.semantic.type;
     const at = Object.assign({}, ...rules(read('css/starlight.css')).filter((r) => !r.at.length).map((r) => r.declarations));
     assert.equal(at['--sl-text-body'], `var(--nc-text-${type.reading.size})`);
@@ -157,13 +157,28 @@ describe('long-form density', () => {
     assert.ok(size(type.headline.size) <= size(type.reading.size) * 4, 'the headline is at most 4 times the text');
   });
 
-  test('the documentation frame is capped and centred, and its selector and page index are the dense interface size', () => {
+  test('the documentation frame is capped at the width the guide states and centred, with its selector and page index at the dense interface size', () => {
     const base = rules(read('css/base.css'));
-    const frame = find(base, '.docs__frame').filter((r) => !r.at.length);
-    assert.ok(frame.some((r) => /^\d+rem$/.test(r.declarations['max-width'] ?? '') && r.declarations['margin-inline'] === 'auto'));
+    const frame = find(base, '.docs__frame').filter((r) => !r.at.length && r.declarations['margin-inline'] === 'auto');
+    assert.equal(frame.length, 1);
+    const cap = /^(\d+)rem$/.exec(frame[0].declarations['max-width'])?.[1];
+    assert.equal(cap, '90');
+    assert.ok(read('guidelines/05-layout.md').replace(/\s+/g, ' ').includes(`no wider than ${cap} rem`), `the guide states ${cap} rem`);
     for (const selector of ['.docs__nav', '.toc__link']) {
       assert.ok(find(base, selector).some((r) => !r.at.length && r.declarations['font-size'] === 'var(--nc-text-sm)'), selector);
     }
+  });
+
+  test("the guide states the widths css/starlight.css gives Starlight's content panel and sidebar, and the measure", () => {
+    const at = Object.assign({}, ...rules(read('css/starlight.css')).filter((r) => !r.at.length).map((r) => r.declarations));
+    const applying = read('guidelines/12-applying.md').replace(/\s+/g, ' ');
+    for (const [name, width] of [['--sl-content-width', '52'], ['--sl-sidebar-width', '17']]) {
+      assert.equal(at[name], `${width}rem`, name);
+      assert.ok(applying.includes(`\`${name}\`, ${width} rem`), `the guide states ${name} as ${width} rem`);
+    }
+    const measure = m.source.base.size.measure.value;
+    assert.ok(applying.includes(`${measure} rem \`--nc-measure\``), `the guide states the measure as ${measure} rem`);
+    assert.ok(read('guidelines/05-layout.md').replace(/\s+/g, ' ').includes(`${measure} rem measure, \`--nc-measure\``));
   });
 });
 

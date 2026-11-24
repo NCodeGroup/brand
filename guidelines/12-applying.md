@@ -30,12 +30,14 @@ layout's widths. Starlight's inverted text on the accent, its primary link butto
 are pairings the contrast gate measures for any tenant's color. It holds no rule for Starlight's markup. The rules that
 make the sidebar's current page a latched key, a code block a screen and a callout an alert depend on the markup of
 one Starlight version, so they live in the documentation toolchain, beside the version they were written for. Set the
-reading voice there too. Starlight sets no size on running text, which keeps the browser's 16 pixels. Its
+reading voice there too. Starlight sets no size on running text, which keeps the browser's 16 pixels: it reads its
+`--sl-text-body`, which `css/starlight.css` sets to the `reading` step, for a card's text alone. Its
 `--sl-content-width`, 52 rem in `css/starlight.css`, bounds the content panel, listings and tables included, not the
 measure of running text, and its `--sl-sidebar-width`, 17 rem, is the selector with the gutter on each side of it.
 In the toolchain's own rules, set running text in the `reading` role, 15 pixels, on the 42 rem `--nc-measure`, as
 `.prose` does in `css/base.css`. Keep the selector, the sheet and the page index together in the middle of a wide
-window, as `.docs__frame` does there.
+window, as `.docs__frame` does there. Give a hero with no image one column: Starlight keeps a second column for the
+image whether or not the page has one, which leaves a headline about 490 pixels beside a sidebar.
 
 Starlight draws inline code on `--sl-color-bg-inline-code`, which `css/starlight.css` sets to `--nc-color-code-tint`,
 and gives it no border. Keep it so in the toolchain's rules: [inline code](03-typography.md#in-running-text) has a
