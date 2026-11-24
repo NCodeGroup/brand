@@ -46,30 +46,32 @@ uppercase role, and it carries its case as `--nc-type-label-case`; a mono role a
 <!-- generated:typeroles -->
 | Role | Family | Size / line | Weight | Width | Tracking | Use |
 |---|---|---|---|---|---|---|
-| `headline` | Instrument Sans | 76 / 76 | 600 | 86% | -0.028em | The one headline of a landing page |
-| `title` | Instrument Sans | 44 / 48 | 600 | 86% | -0.022em | The title of a page |
-| `title-long` | Instrument Sans | 44 / 48 | 600 | 86% | -0.022em | The title of a long-form page |
-| `heading` | Instrument Sans | 28 / 33 | 600 | 86% | -0.012em | A section |
-| `heading-long` | Instrument Sans | 28 / 33 | 600 | 86% | -0.012em | A section of a long-form page |
-| `subheading` | Instrument Sans | 22 / 29 | 600 | 86% | -0.012em | A group within a section, the title of a dialog |
+| `headline` | Instrument Sans | 60 / 60 | 600 | 86% | -0.028em | The one headline of a landing page |
+| `title` | Instrument Sans | 40 / 43 | 600 | 86% | -0.022em | The title of a page |
+| `title-long` | Instrument Sans | 32 / 35 | 600 | 86% | -0.022em | The title of a long-form page |
+| `heading` | Instrument Sans | 24 / 28 | 600 | 86% | -0.012em | A section |
+| `heading-long` | Instrument Sans | 24 / 28 | 600 | 86% | -0.012em | A section of a long-form page |
+| `subheading` | Instrument Sans | 20 / 26 | 600 | 86% | -0.012em | A group within a section, the title of a dialog |
 | `minor` | Instrument Sans | 16 / 21 | 600 | 100% | 0 | The smallest heading |
-| `lead` | Instrument Sans | 22 / 33 | 400 | 100% | 0 | The first paragraph of a long-form page |
+| `lead` | Instrument Sans | 18 / 27 | 400 | 100% | 0 | The first paragraph of a long-form page |
 | `body` | Instrument Sans | 16 / 24 | 400 | 100% | 0 | Running text outside long-form pages |
-| `reading` | Instrument Sans | 17 / 29 | 400 | 100% | 0 | Long-form documentation, on the measure |
+| `reading` | Instrument Sans | 15 / 24 | 400 | 100% | 0 | Long-form documentation, on the measure |
 | `ui` | Instrument Sans | 14 / 21 | 400 | 100% | 0 | The interface |
 | `field` | Instrument Sans | 13 / 17 | 600 | 100% | 0 | The label of a field: sentence case, because a form is read, not scanned |
 | `label` | Instrument Sans | 11 / 13 | 600 | 82% | 0.08em, uppercase | Engraved: the name of a fixed part. Column heads, group heads, tags, the boundary's kind |
 | `value` | Martian Mono | 13 / 18 | 500 | 75% | -0.01em | Displayed: anything read off the system |
-| `code` | Martian Mono | 13 / 22 | 400 | 75% | 0 | A listing |
+| `code` | Martian Mono | 13 / 21 | 400 | 75% | 0 | A listing |
 | `readout` | Martian Mono | 12 / 12 | 500 | 100% | 0 | A short value on a screen |
 <!-- /generated:typeroles -->
 
 ## The Scale
 
-Sizes in pixels at the default root size: 11, 12, 13, 14, 16, 17, 19, 22, 28, 36, 44, 56, 76. The interface is set at
-14, dense interface and code at 13, long-form documentation at 17. On a phone a field of the console, a dialog, the
-sign-in pages and the site bar is 16, so the browser does not zoom into it; a small field of the console or a dialog,
-`.well--sm`, stays at 13. The scale's steps are primitives: a component reads a role, not a step.
+Sizes in pixels at the default root size: 11, 12, 13, 14, 15, 16, 18, 20, 24, 32, 40, 48, 60. The interface is set at
+14, dense interface and code at 13, and long-form documentation at 15: a reader at a desk scans a page for one answer,
+and a size above the interface's by one step keeps a screen of it in view. On a phone long-form text is 16. On a phone
+a field of the console, a dialog, the sign-in pages and the site bar is 16 too, so the browser does not zoom into it;
+a small field of the console or a dialog, `.well--sm`, stays at 13. The scale's steps are primitives: a component
+reads a role, not a step.
 
 ## In Running Text
 

@@ -82,3 +82,4 @@ records are indexed in [project-template/](project-template/README.md).
 | [1014](1014-a-release-is-drafted-with-its-archive-and-published-immutable.md) | A release is drafted with its archive and published immutable (amends 1009) | Accepted |
 | [1015](1015-the-guide-and-the-specimens-are-served-at-brand-ncode-io.md) | The guide and the specimens are served at brand.ncode.io (amends 1010) | Accepted |
 | [1016](1016-inline-code-is-a-tint-without-an-edge-and-a-run-in-label-is-italic.md) | Inline code is a tint without an edge, and a run-in label is italic | Accepted |
+| [1017](1017-long-form-text-is-15-pixels-on-a-42-rem-measure-and-a-documentation-frame-stays-together-in-the-middle-of-the-window.md) | Long-form text is 15 pixels on a 42 rem measure, and a documentation frame stays together in the middle of the window | Accepted |

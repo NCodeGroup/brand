@@ -112,25 +112,73 @@ describe('Starlight', () => {
     assert.ok(BRANDS.length > 1);
   });
 
-  test("its headings follow the guide: 36 and 28 pixels where base.css sets a phone, the long-form roles' steps beyond", () => {
+  test("its headings follow the guide: the long-form roles' steps at every width, as base.css sets a long-form page", () => {
     const type = m.source.semantic.type;
     const all = rules(read('css/starlight.css'));
-    const at = (media) => Object.assign({}, ...all.filter((r) => (media ? r.at.includes(media) : !r.at.length)).map((r) => r.declarations));
-    // base.css sets a long-form page's phone headings up to and at its edge; Starlight's wide-screen steps start past
-    // it, so at no width do both apply.
-    const phone = find(rules(read('css/base.css')), '.prose > h1').filter((r) => r.at.length).map((r) => r.at.join(' '));
-    assert.equal(phone.length, 1);
-    const edge = /^@media \(max-width: ([\d.]+rem)\)$/.exec(phone[0])?.[1];
-    assert.ok(edge, `${phone[0]} is a max-width query`);
-    const wider = `@media (width > ${edge})`;
-    assert.equal(at()['--sl-text-h1'], 'var(--nc-text-3xl)');
-    assert.equal(at()['--sl-text-h2'], 'var(--nc-text-2xl)');
-    assert.equal(at(wider)['--sl-text-h1'], `var(--nc-text-${type['title-long'].size})`);
-    assert.equal(at(wider)['--sl-text-h2'], `var(--nc-text-${type['heading-long'].size})`);
-    assert.equal(at()['--sl-line-height-headings'], String(type['heading-long'].leading));
-    const media = all.filter((r) => r.at.length && ('--sl-text-h1' in r.declarations || '--sl-text-h2' in r.declarations));
-    assert.deepEqual([...new Set(media.map((r) => r.at.join(' ')))], [wider]);
-    for (const step of ['xl', '2xl', '3xl', '4xl', '5xl', '6xl']) assert.equal(at()[`--sl-text-${step}`], `var(--nc-text-${step})`, step);
+    const at = Object.assign({}, ...all.filter((r) => !r.at.length).map((r) => r.declarations));
+    assert.equal(at['--sl-text-h1'], `var(--nc-text-${type['title-long'].size})`);
+    assert.equal(at['--sl-text-h2'], `var(--nc-text-${type['heading-long'].size})`);
+    assert.equal(at['--sl-text-h3'], `var(--nc-text-${type.subheading.size})`);
+    assert.equal(at['--sl-line-height-headings'], String(type['heading-long'].leading));
+    // No width resizes a heading, in Starlight or on base.css's own long-form page.
+    const heading = (r) => Object.keys(r.declarations).some((name) => /^--sl-text-h\d$/.test(name));
+    assert.deepEqual(all.filter((r) => r.at.length && heading(r)), []);
+    const prose = rules(read('css/base.css'));
+    for (const selector of ['.prose > h1', '.prose > h2']) {
+      assert.deepEqual(find(prose, selector).filter((r) => r.at.length && 'font-size' in r.declarations), [], selector);
+    }
+    for (const step of ['xl', '2xl', '3xl', '4xl', '5xl', '6xl']) assert.equal(at[`--sl-text-${step}`], `var(--nc-text-${step})`, step);
+  });
+
+  test("Starlight's body size and line height are the reading role's", () => {
+    const type = m.source.semantic.type;
+    const at = Object.assign({}, ...rules(read('css/starlight.css')).filter((r) => !r.at.length).map((r) => r.declarations));
+    assert.equal(at['--sl-text-body'], `var(--nc-text-${type.reading.size})`);
+    assert.equal(at['--sl-line-height'], `var(--nc-leading-${type.reading.leading})`);
+  });
+});
+
+describe('long-form density', () => {
+  const size = (step) => m.source.base.font.size[step].value * 16;
+  const type = m.source.semantic.type;
+
+  test('long-form text is one step above the interface and one below the body size, on a measure of at most 100 characters', () => {
+    assert.ok(size(type.ui.size) < size(type.reading.size) && size(type.reading.size) < size(type.body.size));
+    // Instrument Sans sets about 0.46 em to a character of English text at the reading size.
+    const characters = (m.source.base.size.measure.value * 16) / (size(type.reading.size) * 0.46);
+    assert.ok(characters >= 80 && characters <= 100, `the measure holds about ${Math.round(characters)} characters`);
+  });
+
+  test('a long-form page steps from its text to its title in the order the guide gives', () => {
+    const steps = ['reading', 'lead', 'subheading', 'heading-long', 'title-long'].map((role) => size(type[role].size));
+    assert.deepEqual(steps, [...steps].sort((a, b) => a - b));
+    assert.equal(new Set(steps).size, steps.length);
+    assert.ok(size(type['title-long'].size) <= size(type.reading.size) * 2.25, 'the title is at most 2.25 times the text');
+    assert.ok(size(type.headline.size) <= size(type.reading.size) * 4, 'the headline is at most 4 times the text');
+  });
+
+  test('the documentation frame is capped at the width the guide states and centred, with its selector and page index at the dense interface size', () => {
+    const base = rules(read('css/base.css'));
+    const frame = find(base, '.docs__frame').filter((r) => !r.at.length && r.declarations['margin-inline'] === 'auto');
+    assert.equal(frame.length, 1);
+    const cap = /^(\d+)rem$/.exec(frame[0].declarations['max-width'])?.[1];
+    assert.equal(cap, '90');
+    assert.ok(read('guidelines/05-layout.md').replace(/\s+/g, ' ').includes(`no wider than ${cap} rem`), `the guide states ${cap} rem`);
+    for (const selector of ['.docs__nav', '.toc__link']) {
+      assert.ok(find(base, selector).some((r) => !r.at.length && r.declarations['font-size'] === 'var(--nc-text-sm)'), selector);
+    }
+  });
+
+  test("the guide states the widths css/starlight.css gives Starlight's content panel and sidebar, and the measure", () => {
+    const at = Object.assign({}, ...rules(read('css/starlight.css')).filter((r) => !r.at.length).map((r) => r.declarations));
+    const applying = read('guidelines/12-applying.md').replace(/\s+/g, ' ');
+    for (const [name, width] of [['--sl-content-width', '52'], ['--sl-sidebar-width', '17']]) {
+      assert.equal(at[name], `${width}rem`, name);
+      assert.ok(applying.includes(`\`${name}\`, ${width} rem`), `the guide states ${name} as ${width} rem`);
+    }
+    const measure = m.source.base.size.measure.value;
+    assert.ok(applying.includes(`${measure} rem \`--nc-measure\``), `the guide states the measure as ${measure} rem`);
+    assert.ok(read('guidelines/05-layout.md').replace(/\s+/g, ' ').includes(`${measure} rem measure, \`--nc-measure\``));
   });
 });
 

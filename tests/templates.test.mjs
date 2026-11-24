@@ -25,7 +25,7 @@ describe('lib/templates.mjs', () => {
     assert.equal(fillTokens('[[space:6]]', m, { inline: true }), '24px');
     assert.equal(fillTokens('[[space:6]]', m), '1.5rem');
     assert.equal(fillTokens('[[space:0]]', m), '0');
-    assert.equal(fillTokens('[[text:2xl]]', m, { inline: true }), '28px');
+    assert.equal(fillTokens('[[text:2xl]]', m, { inline: true }), '24px');
   });
 
   test('writes a radius and a border in px', () => {

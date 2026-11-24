@@ -29,10 +29,17 @@ stands. Until the first stable release, the [Unreleased] section describes the p
 - `css/base.css`, the element and component styles: keys, wells, lamps, screens, the brace, the boundary plate, the
   display, alerts, tables, dialogs and the page layouts of the console, the sign-in pages, documentation and product
   pages. `css/fonts.css`, the `@font-face` rules. `css/starlight.css`, Starlight's custom properties from the tokens.
-  A documentation page, in `css/base.css` or Starlight, sets its title in `title-long`, 44 pixels, and a section
-  heading in `heading-long`, 28 pixels. On a phone its title is 36 pixels and a section heading 28
-  ([#31](https://github.com/NCodeGroup/brand/issues/31)). Inline code, in `css/base.css`, Starlight and the slides, is
-  Martian Mono on `--nc-color-code-tint`, the text color thinned to a tint, with no edge
+  A documentation page, in `css/base.css` or Starlight, sets its text in `reading`, 15 pixels on a line of 24, on
+  the 42 rem `--nc-measure`, its first paragraph in `lead`, 18 pixels, its title in `title-long`, 32 pixels, and a
+  section heading in `heading-long`, 24 pixels, at every width; on a phone its text is 16 pixels. Its selector, sheet
+  and page index stand together in the middle of the window, no wider than 90 rem, with the selector and the page
+  index at 13 pixels. `css/starlight.css` sets Starlight's content panel to 52 rem, its sidebar to 17 rem and its
+  body size to the `reading` step. A landing page's `headline` is 60 pixels, 48 at 1088 pixels and below and 40 on
+  a phone, and its keys are `--nc-control-md` high, `--nc-control-lg` on a phone. The type scale is 11, 12, 13, 14,
+  15, 16, 18, 20, 24, 32, 40, 48 and 60 pixels ([#31](https://github.com/NCodeGroup/brand/issues/31),
+  [ADR-1017](docs/decisions/1017-long-form-text-is-15-pixels-on-a-42-rem-measure-and-a-documentation-frame-stays-together-in-the-middle-of-the-window.md)).
+  Inline code, in `css/base.css`, Starlight and the slides, is Martian Mono on `--nc-color-code-tint`, the text color
+  thinned to a tint, with no edge
   ([#35](https://github.com/NCodeGroup/brand/issues/35),
   [ADR-1016](docs/decisions/1016-inline-code-is-a-tint-without-an-edge-and-a-run-in-label-is-italic.md)).
 - `syntax/instrument-screen.json`: the syntax theme of a code block on a screen, a VS Code color theme for Expressive

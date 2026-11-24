@@ -119,15 +119,15 @@
         "xs": { "value": 0.75, "note": "12px" },
         "sm": { "value": 0.8125, "note": "13px: dense interface, code, field labels" },
         "md": { "value": 0.875, "note": "14px: interface" },
+        "reading": { "value": 0.9375, "note": "15px: long-form documentation" },
         "base": { "value": 1, "note": "16px" },
-        "reading": { "value": 1.0625, "note": "17px: long-form documentation" },
-        "lg": { "value": 1.1875, "note": "19px" },
-        "xl": { "value": 1.375, "note": "22px: lead" },
-        "2xl": { "value": 1.75, "note": "28px" },
-        "3xl": { "value": 2.25, "note": "36px" },
-        "4xl": { "value": 2.75, "note": "44px" },
-        "5xl": { "value": 3.5, "note": "56px" },
-        "6xl": { "value": 4.75, "note": "76px" }
+        "lg": { "value": 1.125, "note": "18px: lead" },
+        "xl": { "value": 1.25, "note": "20px" },
+        "2xl": { "value": 1.5, "note": "24px" },
+        "3xl": { "value": 2, "note": "32px" },
+        "4xl": { "value": 2.5, "note": "40px" },
+        "5xl": { "value": 3, "note": "48px" },
+        "6xl": { "value": 3.75, "note": "60px" }
       },
       "leading": {
         "$tier": "primitive", "$css": "leading", "$type": "number",
@@ -135,7 +135,7 @@
         "tight": 1.08,
         "snug": 1.3,
         "normal": 1.5,
-        "reading": 1.7
+        "reading": 1.6
       },
       "tracking": {
         "$tier": "primitive", "$css": "tracking", "$type": "dimension", "$unit": "em",
@@ -185,7 +185,7 @@
       "control-sm": { "value": 1.75, "unit": "rem", "note": "28px" },
       "control-md": { "value": 2.25, "unit": "rem", "note": "36px" },
       "control-lg": { "value": 2.75, "unit": "rem", "note": "44px: every control on a phone" },
-      "measure": { "value": 41, "unit": "rem", "note": "the reading column of long-form documentation: about 70 characters at the reading size" },
+      "measure": { "value": 42, "unit": "rem", "note": "the reading column of long-form documentation: about 95 characters at the reading size" },
       "bleed": { "value": 1.25, "unit": "rem", "note": "how far a listing or a table starts before the reading column, so its content lines up with the text" }
     },
 
@@ -359,19 +359,19 @@
       "$note": "Type roles. Each names a family, a size, a line height, a weight, a width and a tracking from the primitives (or gives a number). tokens.css carries each as a font shorthand, --nc-type-<role>; width and tracking are set beside it.",
       "headline": { "family": "sans", "size": "6xl", "leading": "flat", "weight": "semibold", "width": "display", "tracking": -0.028, "note": "the one headline of a landing page" },
       "title": { "family": "sans", "size": "4xl", "leading": "tight", "weight": "semibold", "width": "display", "tracking": "display", "note": "the title of a page" },
-      "title-long": { "family": "sans", "size": "4xl", "leading": "tight", "weight": "semibold", "width": "display", "tracking": "display", "note": "the title of a long-form page" },
+      "title-long": { "family": "sans", "size": "3xl", "leading": "tight", "weight": "semibold", "width": "display", "tracking": "display", "note": "the title of a long-form page" },
       "heading": { "family": "sans", "size": "2xl", "leading": 1.18, "weight": "semibold", "width": "display", "tracking": "heading", "note": "a section" },
       "heading-long": { "family": "sans", "size": "2xl", "leading": 1.18, "weight": "semibold", "width": "display", "tracking": "heading", "note": "a section of a long-form page" },
       "subheading": { "family": "sans", "size": "xl", "leading": "snug", "weight": "semibold", "width": "display", "tracking": "heading", "note": "a group within a section, the title of a dialog" },
       "minor": { "family": "sans", "size": "base", "leading": "snug", "weight": "semibold", "width": "text", "tracking": "normal", "note": "the smallest heading" },
-      "lead": { "family": "sans", "size": "xl", "leading": 1.5, "weight": "regular", "width": "text", "tracking": "normal", "note": "the first paragraph of a long-form page" },
+      "lead": { "family": "sans", "size": "lg", "leading": 1.5, "weight": "regular", "width": "text", "tracking": "normal", "note": "the first paragraph of a long-form page" },
       "body": { "family": "sans", "size": "base", "leading": "normal", "weight": "regular", "width": "text", "tracking": "normal", "note": "running text outside long-form pages" },
       "reading": { "family": "sans", "size": "reading", "leading": "reading", "weight": "regular", "width": "text", "tracking": "normal", "note": "long-form documentation, on the measure" },
       "ui": { "family": "sans", "size": "md", "leading": "normal", "weight": "regular", "width": "text", "tracking": "normal", "note": "the interface" },
       "field": { "family": "sans", "size": "sm", "leading": "snug", "weight": "semibold", "width": "text", "tracking": "normal", "note": "the label of a field: sentence case, because a form is read, not scanned" },
       "label": { "family": "sans", "size": "2xs", "leading": 1.2, "weight": "semibold", "width": "label", "tracking": "label", "case": "uppercase", "note": "engraved: the name of a fixed part. Column heads, group heads, tags, the boundary's kind" },
       "value": { "family": "mono", "size": "sm", "leading": 1.4, "weight": "medium", "width": "code", "tracking": -0.01, "note": "displayed: anything read off the system" },
-      "code": { "family": "mono", "size": "sm", "leading": 1.7, "weight": "regular", "width": "code", "tracking": "normal", "note": "a listing" },
+      "code": { "family": "mono", "size": "sm", "leading": 1.6, "weight": "regular", "width": "code", "tracking": "normal", "note": "a listing" },
       "readout": { "family": "mono", "size": "xs", "leading": "flat", "weight": "medium", "width": "readout", "tracking": "normal", "note": "a short value on a screen" }
     },
 
