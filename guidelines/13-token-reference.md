@@ -121,34 +121,34 @@ Public.
 
 | Custom property | Value | What it is |
 |---|---|---|
-| `--nc-type-headline` | `600 4.75rem/1 Instrument Sans Variable` | the one headline of a landing page |
+| `--nc-type-headline` | `600 3.75rem/1 Instrument Sans Variable` | the one headline of a landing page |
 | `--nc-type-headline-stretch` | `86%` | the width of headline |
 | `--nc-type-headline-tracking` | `-0.028em` | the letter spacing of headline |
-| `--nc-type-title` | `600 2.75rem/1.08 Instrument Sans Variable` | the title of a page |
+| `--nc-type-title` | `600 2.5rem/1.08 Instrument Sans Variable` | the title of a page |
 | `--nc-type-title-stretch` | `86%` | the width of title |
 | `--nc-type-title-tracking` | `-0.022em` | the letter spacing of title |
-| `--nc-type-title-long` | `600 2.75rem/1.08 Instrument Sans Variable` | the title of a long-form page |
+| `--nc-type-title-long` | `600 2rem/1.08 Instrument Sans Variable` | the title of a long-form page |
 | `--nc-type-title-long-stretch` | `86%` | the width of title-long |
 | `--nc-type-title-long-tracking` | `-0.022em` | the letter spacing of title-long |
-| `--nc-type-heading` | `600 1.75rem/1.18 Instrument Sans Variable` | a section |
+| `--nc-type-heading` | `600 1.5rem/1.18 Instrument Sans Variable` | a section |
 | `--nc-type-heading-stretch` | `86%` | the width of heading |
 | `--nc-type-heading-tracking` | `-0.012em` | the letter spacing of heading |
-| `--nc-type-heading-long` | `600 1.75rem/1.18 Instrument Sans Variable` | a section of a long-form page |
+| `--nc-type-heading-long` | `600 1.5rem/1.18 Instrument Sans Variable` | a section of a long-form page |
 | `--nc-type-heading-long-stretch` | `86%` | the width of heading-long |
 | `--nc-type-heading-long-tracking` | `-0.012em` | the letter spacing of heading-long |
-| `--nc-type-subheading` | `600 1.375rem/1.3 Instrument Sans Variable` | a group within a section, the title of a dialog |
+| `--nc-type-subheading` | `600 1.25rem/1.3 Instrument Sans Variable` | a group within a section, the title of a dialog |
 | `--nc-type-subheading-stretch` | `86%` | the width of subheading |
 | `--nc-type-subheading-tracking` | `-0.012em` | the letter spacing of subheading |
 | `--nc-type-minor` | `600 1rem/1.3 Instrument Sans Variable` | the smallest heading |
 | `--nc-type-minor-stretch` | `100%` | the width of minor |
 | `--nc-type-minor-tracking` | `0` | the letter spacing of minor |
-| `--nc-type-lead` | `400 1.375rem/1.5 Instrument Sans Variable` | the first paragraph of a long-form page |
+| `--nc-type-lead` | `400 1.125rem/1.5 Instrument Sans Variable` | the first paragraph of a long-form page |
 | `--nc-type-lead-stretch` | `100%` | the width of lead |
 | `--nc-type-lead-tracking` | `0` | the letter spacing of lead |
 | `--nc-type-body` | `400 1rem/1.5 Instrument Sans Variable` | running text outside long-form pages |
 | `--nc-type-body-stretch` | `100%` | the width of body |
 | `--nc-type-body-tracking` | `0` | the letter spacing of body |
-| `--nc-type-reading` | `400 1.0625rem/1.7 Instrument Sans Variable` | long-form documentation, on the measure |
+| `--nc-type-reading` | `400 0.9375rem/1.6 Instrument Sans Variable` | long-form documentation, on the measure |
 | `--nc-type-reading-stretch` | `100%` | the width of reading |
 | `--nc-type-reading-tracking` | `0` | the letter spacing of reading |
 | `--nc-type-ui` | `400 0.875rem/1.5 Instrument Sans Variable` | the interface |
@@ -164,7 +164,7 @@ Public.
 | `--nc-type-value` | `500 0.8125rem/1.4 Martian Mono Variable` | displayed: anything read off the system |
 | `--nc-type-value-stretch` | `75%` | the width of value |
 | `--nc-type-value-tracking` | `-0.01em` | the letter spacing of value |
-| `--nc-type-code` | `400 0.8125rem/1.7 Martian Mono Variable` | a listing |
+| `--nc-type-code` | `400 0.8125rem/1.6 Martian Mono Variable` | a listing |
 | `--nc-type-code-stretch` | `75%` | the width of code |
 | `--nc-type-code-tracking` | `0` | the letter spacing of code |
 | `--nc-type-readout` | `500 0.75rem/1 Martian Mono Variable` | a short value on a screen |
@@ -244,7 +244,7 @@ Public.
 | `--nc-control-sm` | `1.75rem` | 28px |
 | `--nc-control-md` | `2.25rem` | 36px |
 | `--nc-control-lg` | `2.75rem` | 44px: every control on a phone |
-| `--nc-measure` | `41rem` | the reading column of long-form documentation: about 70 characters at the reading size |
+| `--nc-measure` | `42rem` | the reading column of long-form documentation: about 95 characters at the reading size |
 | `--nc-bleed` | `1.25rem` | how far a listing or a table starts before the reading column, so its content lines up with the text |
 
 ### Breakpoint
@@ -362,20 +362,20 @@ Private: read a semantic token instead.
 | `--nc-text-xs` | `0.75rem` | 12px |
 | `--nc-text-sm` | `0.8125rem` | 13px: dense interface, code, field labels |
 | `--nc-text-md` | `0.875rem` | 14px: interface |
+| `--nc-text-reading` | `0.9375rem` | 15px: long-form documentation |
 | `--nc-text-base` | `1rem` | 16px |
-| `--nc-text-reading` | `1.0625rem` | 17px: long-form documentation |
-| `--nc-text-lg` | `1.1875rem` | 19px |
-| `--nc-text-xl` | `1.375rem` | 22px: lead |
-| `--nc-text-2xl` | `1.75rem` | 28px |
-| `--nc-text-3xl` | `2.25rem` | 36px |
-| `--nc-text-4xl` | `2.75rem` | 44px |
-| `--nc-text-5xl` | `3.5rem` | 56px |
-| `--nc-text-6xl` | `4.75rem` | 76px |
+| `--nc-text-lg` | `1.125rem` | 18px: lead |
+| `--nc-text-xl` | `1.25rem` | 20px |
+| `--nc-text-2xl` | `1.5rem` | 24px |
+| `--nc-text-3xl` | `2rem` | 32px |
+| `--nc-text-4xl` | `2.5rem` | 40px |
+| `--nc-text-5xl` | `3rem` | 48px |
+| `--nc-text-6xl` | `3.75rem` | 60px |
 | `--nc-leading-flat` | `1` |  |
 | `--nc-leading-tight` | `1.08` |  |
 | `--nc-leading-snug` | `1.3` |  |
 | `--nc-leading-normal` | `1.5` |  |
-| `--nc-leading-reading` | `1.7` |  |
+| `--nc-leading-reading` | `1.6` |  |
 | `--nc-tracking-label` | `0.08em` |  |
 | `--nc-tracking-display` | `-0.022em` |  |
 | `--nc-tracking-heading` | `-0.012em` |  |
