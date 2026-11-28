@@ -108,4 +108,4 @@ Which license covers what:
   `icons/LICENSE-Lucide.txt`.
 
 Other NCode repositories publish copies of the marks under their own licenses, such as NCodeGroup/project-template's
-`brand/` folder under its MIT License from v0.82.0 on; [TRADEMARKS.md](TRADEMARKS.md) lists them.
+`brand/` folder, in its versions v0.82.0 to v0.125.2, under its MIT License; [TRADEMARKS.md](TRADEMARKS.md) lists them.

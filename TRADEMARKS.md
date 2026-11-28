@@ -47,12 +47,15 @@ copyright and license notices the code's license asks for.
 Other NCode repositories publish copies of the marks under their own licenses, and those copies stay under the license
 they were published with:
 
-- NCodeGroup/project-template, under its MIT License: the `{N}` logo kit in its `brand/` folder from v0.82.0 on, and
-  the package icon `template/NCodeGroup.png`, which is that kit's blue NuGet tile from the same version on.
+- NCodeGroup/project-template, under its MIT License: the `{N}` logo kit in its `brand/` folder, in its versions
+  v0.82.0 to v0.125.2, and the package icon `template/NCodeGroup.png`, the kit's blue NuGet tile, from v0.82.0 on.
+  From v0.126.0 on, the template vendors that icon from a release of this repository and checks it against the
+  release's `manifest.json`.
 - Each project that template sets up as a .NET project that publishes NuGet packages under the template's icon, with
   the answers `stack: dotnet`, `nuget_package: true` and `package_icon: NCodeGroup.png`: that icon, as
-  `NCodeGroup.png` at the project's root, under the project's own license. A template update leaves the file as it
-  is, so a project set up before v0.82.0 keeps an earlier icon until it replaces the file itself.
+  `NCodeGroup.png` at the project's root, under the project's own license. An update to template v0.126.0 or later
+  replaces the file with the template's icon, unless the project names it in its `project_owned_files` answer; a
+  project on an earlier template version keeps the icon that version wrote.
 - NCodeGroup/identity, under its Apache License 2.0: the `{id}` logo kit in its `brand/` folder.
 
 The marks in this repository are released under the terms on this page.

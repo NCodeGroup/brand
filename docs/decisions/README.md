@@ -68,7 +68,7 @@ records are indexed in [project-template/](project-template/README.md).
 | [1000](1000-one-token-source-and-one-generator-write-every-committed-file.md) | One token source, and one generator writes every committed file | Accepted (amended by 1010) |
 | [1001](1001-consumers-vendor-files-from-a-tagged-release-and-check-their-hashes.md) | Consumers vendor files from a tagged release and check their hashes | Accepted (amended by 1009) |
 | [1002](1002-custom-properties-take-the-nc-prefix-and-only-semantic-tokens-are-public.md) | Custom properties take the --nc- prefix, and only semantic tokens are public | Accepted |
-| [1003](1003-code-and-tokens-are-apache-2-0-and-the-names-and-marks-are-reserved.md) | Code and tokens are Apache-2.0, and the names and marks are reserved | Accepted (amended by 1008) |
+| [1003](1003-code-and-tokens-are-apache-2-0-and-the-names-and-marks-are-reserved.md) | Code and tokens are Apache-2.0, and the names and marks are reserved | Accepted (amended by 1008, 1018) |
 | [1004](1004-a-rename-is-a-major-version-and-a-value-change-is-never-a-patch.md) | A rename is a major version, and a value change is never a patch | Accepted |
 | [1005](1005-this-repository-ships-data-and-stylesheets-never-a-frameworks-theme-code.md) | This repository ships data and stylesheets, never a framework's theme code | Accepted |
 | [1006](1006-contrast-is-computed-in-node-and-the-tenant-derivation-guards-it.md) | Contrast is computed in Node, and the tenant derivation guards it | Accepted |
@@ -83,3 +83,4 @@ records are indexed in [project-template/](project-template/README.md).
 | [1015](1015-the-guide-and-the-specimens-are-served-at-brand-ncode-io.md) | The guide and the specimens are served at brand.ncode.io (amends 1010) | Accepted |
 | [1016](1016-inline-code-is-a-tint-without-an-edge-and-a-run-in-label-is-italic.md) | Inline code is a tint without an edge, and a run-in label is italic | Accepted |
 | [1017](1017-long-form-text-is-15-pixels-on-a-42-rem-measure-and-a-documentation-frame-stays-together-in-the-middle-of-the-window.md) | Long-form text is 15 pixels on a 42 rem measure, and a documentation frame stays together in the middle of the window | Accepted |
+| [1018](1018-a-copy-under-another-license-is-listed-with-the-versions-that-carried-it.md) | A copy under another license is listed with the versions that carried it (amends 1003) | Accepted |

@@ -1,6 +1,6 @@
 # 1003. Code and tokens are Apache-2.0, and the names and marks are reserved
 
-- **Status:** Accepted (amended by 1008)
+- **Status:** Accepted (amended by 1008, 1018)
 - **Date:** 2026-11-16
 - **Deciders:** NCode Group
 
