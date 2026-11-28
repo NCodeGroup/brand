@@ -21,8 +21,10 @@ a first version reads as if every later version still carries the copy.
 1. `TRADEMARKS.md` lists each copy under another license with the versions that carry it: from its first version, and,
    once a repository stops publishing it, to its last. The copies already published stay under the license they were
    published with, as 1003 says.
-2. A file a repository vendors from a release of this repository and checks against its `manifest.json` is listed under
-   the license of the repository that publishes it, as any other copy is.
+2. A copy a repository publishes under its own license is listed, whether it drew the copy or vendors it from a release
+   of this repository, as NCodeGroup/project-template does `template/NCodeGroup.png` under its MIT License. A copy
+   vendored with `TRADEMARKS.md` beside it, whose repository's license notice keeps it under the terms on that page, as
+   NCodeGroup/docs's `vendor/brand/logo/` is, stays under those terms and is not listed.
 3. The texts that name a copy, `TRADEMARKS.md`, `src/logo/kit.md`, `README.md` and the guide's Versions and license
    section, give the same versions.
 
