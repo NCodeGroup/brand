@@ -9,12 +9,12 @@
 
 [1003](1003-code-and-tokens-are-apache-2-0-and-the-names-and-marks-are-reserved.md) has `TRADEMARKS.md` list the
 copies of the marks that other NCode repositories publish under their own licenses, and keeps each under the license it
-was published with. It names NCodeGroup/project-template's `{N}` kit in its `brand/` folder "from v0.82.0 on". The
-template removed that folder in v0.126.0, and from then on vendors its package icon, `template/NCodeGroup.png`, from a
-release of this repository, as [1001](1001-consumers-vendor-files-from-a-tagged-release-and-check-their-hashes.md)
-says, and replaces a project's copy of it on each template update
+was published with. NCodeGroup/project-template's `{N}` kit in its `brand/` folder is in its versions v0.82.0 to
+v0.125.2. From v0.126.0 on, the template vendors its package icon, `template/NCodeGroup.png`, from a release of this
+repository, as [1001](1001-consumers-vendor-files-from-a-tagged-release-and-check-their-hashes.md) says, and a
+template update replaces a project's copy of it
 ([NCodeGroup/project-template#557](https://github.com/NCodeGroup/project-template/issues/557)). A list that names only
-a first version reads as if every later version still carries the copy.
+a copy's first version reads as if every later version carries it.
 
 ## Decision
 
