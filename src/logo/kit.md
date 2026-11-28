@@ -17,8 +17,8 @@ The marks are not under this repository's Apache License 2.0. They are trademark
 copyright NCode Group, all rights reserved. [TRADEMARKS.md](../../TRADEMARKS.md) says how you may use them: unmodified,
 to refer to an NCode project, without asking.
 
-NCodeGroup/project-template publishes a copy of the `{N}` kit in its `brand/` folder, from v0.82.0 on, under its MIT
-License, and NCodeGroup/identity publishes a copy of the `{id}` kit in its `brand/` folder, under its Apache License
+NCodeGroup/project-template published a copy of the `{N}` kit in its `brand/` folder, in its versions v0.82.0 to
+v0.125.2, under its MIT License, and NCodeGroup/identity publishes a copy of the `{id}` kit in its `brand/` folder, under its Apache License
 2.0. Each copy stays under its license; [TRADEMARKS.md](../../TRADEMARKS.md) lists every copy under another license.
 
 The wordmarks are Inter Display Medium, and the descriptor on the `{id}` link previews is Inter Display Regular,

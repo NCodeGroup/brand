@@ -48,5 +48,5 @@ touches.
 | The wordmark's outlines, inside the logo files | Part of the marks, as the row above says. They were drawn from Inter Display, copyright The Inter Project Authors and licensed under the SIL Open Font License 1.1, which is credited here as a courtesy: no file needs or carries the font |
 
 Other NCode repositories publish copies of the marks under their own licenses, such as NCodeGroup/project-template's
-`brand/` folder under its MIT License from v0.82.0 on, and those copies stay under it; [TRADEMARKS.md](../TRADEMARKS.md)
+`brand/` folder, in its versions v0.82.0 to v0.125.2, under its MIT License, and those copies stay under it; [TRADEMARKS.md](../TRADEMARKS.md)
 lists them.

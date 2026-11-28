@@ -120,7 +120,10 @@ stands. Until the first stable release, the [Unreleased] section describes the p
   [ADR-1015](docs/decisions/1015-the-guide-and-the-specimens-are-served-at-brand-ncode-io.md)).
 - `npm run build`, which writes every generated file; `npm run check`, which fails when a committed file differs from
   what the sources give; and a contrast gate that fails the build when a pairing is below WCAG 2.2 AA.
-- `TRADEMARKS.md`: how to use NCode's names and marks.
+- `TRADEMARKS.md`: how to use NCode's names and marks, and the copies other NCode repositories publish under their own
+  licenses, each with the versions that carry it, such as NCodeGroup/project-template's `{N}` kit in its versions v0.82.0
+  to v0.125.2 ([#43](https://github.com/NCodeGroup/brand/issues/43),
+  [ADR-1018](docs/decisions/1018-a-copy-under-another-license-is-listed-with-the-versions-that-carried-it.md)).
 
 ### Security
 
